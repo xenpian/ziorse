@@ -1,0 +1,46 @@
+{
+  "name": "ziorse-spatial-social",
+  "version": "1.0.0",
+  "description": "Ziorse Desktop Social Network - Production Full-Stack Edition",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "server": "node server.js",
+    "build:win": "electron-builder --win nsis"
+  },
+  "keywords": [
+    "electron",
+    "social-network",
+    "desktop-app",
+    "ziorse",
+    "socketio",
+    "webrtc"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^8.0.5",
+    "bcrypt": "^6.0.0",
+    "esprima": "^4.0.1",
+    "express": "^4.22.2",
+    "js-tokens": "^10.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.ziorse.desktop",
+    "productName": "Ziorse Desktop Social",
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true
+  }
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Kanal Ayarları & İzinler</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/server-settings.css">
+  <script src="js/lib/lucide.min.js"></script>
+  <script src="js/lib/socket.io.min.js"></script>
+  <script src="js/data-store.js"></script>
+  <script>
+    if (typeof io !== 'undefined') {
+      window.socket = io('http://localhost:3000');
+    }
+    if (!window.dataStore || !window.dataStore.isLoggedIn()) {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+
+<body class="ss-body">
+
+  <!-- TITLEBAR -->
+  <div class="app-header">
+    <div class="header-brand">
+      <span class="brand-badge-title">ZIORSE</span>
+      <span id="ch-title-bar" class="header-location-breadcrumb">– Kanal Ayarları</span>
+    </div>
+  </div>
+
+  <!-- FLOATING WRAPPER -->
+  <div class="ss-wrapper">
+    <div class="ss-container">
+
+      <!-- CLOSE BUTTON -->
+      <div class="ss-close-area" id="btn-close-area">
+        <button id="btn-ss-close" class="ss-close-btn" title="Kapat">
+          <i data-lucide="x" style="width:16px; height:16px;"></i>
+        </button>
+        <span class="ss-esc-label">ESC</span>
+      </div>
+
+      <!-- SIDEBAR -->
+      <nav class="ss-sidebar">
+        <div class="ss-sidebar-server-info">
+          <div class="ss-server-icon" id="ch-sidebar-icon">
+            <i data-lucide="hash" style="width:18px;height:18px;"></i>
+          </div>
+          <div style="display:flex; flex-direction:column; min-width:0;">
+            <span class="ss-server-name" id="ch-sidebar-name"># kanal-adi</span>
+            <span style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-nunito);"
+              id="ch-sidebar-cat">Kategori</span>
+          </div>
+        </div>
+
+        <span class="ss-sidebar-label">Kanal Ayarları</span>
+        <button class="ss-nav-item active" data-section="genel">
+          <i data-lucide="settings" style="width:15px;height:15px;"></i> Genel Bilgiler
+        </button>
+        <button class="ss-nav-item" data-section="izinler">
+          <i data-lucide="shield" style="width:15px;height:15px;"></i> İzinler
+        </button>
+
+        <div style="flex:1;"></div>
+
+        <span class="ss-sidebar-label" style="color:var(--accent-rose);">Tehlikeli</span>
+        <button class="ss-nav-item ss-nav-item--danger" id="btn-sidebar-delete">
+          <i data-lucide="trash-2" style="width:15px;height:15px;"></i> Kanalı Sil
+        </button>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <main class="ss-content">
+
+        <!-- SECTION: GENEL -->
+        <section id="section-genel" class="ss-section active">
+          <div class="ss-section-header">
+            <h2>Genel Bilgiler</h2>
+            <p>Kanal adını ve türünü yapılandırın.</p>
+          </div>
+
+          <div id="owner-warning-genel" class="perm-owner-warning" style="display:none;">
+            <i data-lucide="lock" style="width:16px;height:16px;flex-shrink:0;"></i>
+            <span>Bu kanal ayarlarını yalnızca sunucu sahibi değiştirebilir.</span>
+          </div>
+
+          <!-- Channel Name -->
+          <div class="ss-card">
+            <div class="ss-field-group">
+              <label class="ss-field-label" for="ch-name-input">Kanal Adı</label>
+              <input id="ch-name-input" class="ss-input" type="text" placeholder="kanal-adi" maxlength="100">
+              <p class="ss-field-help">Küçük harfler, rakamlar ve tire işareti kullanılabilir.</p>
+            </div>
+          </div>
+
+          <!-- Channel Type -->
+          <div class="ss-card">
+            <div class="ss-field-group">
+              <label class="ss-field-label">Kanal Türü</label>
+              <div class="ch-edit-type-row" style="display:flex; gap:10px; margin-top:6px;">
+                <button type="button" class="ch-edit-type-btn selected" id="type-text" data-type="text">
+                  <i data-lucide="hash" style="width:16px;height:16px;"></i>
+                  Metin Kanalı
+                </button>
+                <button type="button" class="ch-edit-type-btn" id="type-voice" data-type="voice">
+                  <i data-lucide="volume-2" style="width:16px;height:16px;"></i>
+                  Ses Kanalı
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Voice User Limit (Kişi Sınırı 1-99) -->
+          <div class="ss-card" id="voice-limit-card" style="display:none;">
+            <div class="ss-field-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <label class="ss-field-label" for="ch-user-limit-range" style="margin-bottom:0;">KULLANICI SINIRI (KİŞİ
+                  LİMİTİ)</label>
+                <span id="ch-user-limit-display"
+                  style="font-size:0.86rem; font-weight:600; color:gray; font-family:var(--font-montserrat);">Sınırsız</span>
+              </div>
+              <input id="ch-user-limit-range" class="ss-range" type="range" min="0" max="99" value="0" step="1"
+                style="width:100%; cursor:pointer;">
+              <p class="ss-field-help" style="margin-top:6px;">Bu ses odasına aynı anda bağlanabilecek maksimum
+                kullanıcı sayısı (1-99). 0 seçildiğinde sınır kaldırılır ve sınırsız olur.</p>
+            </div>
+          </div>
+
+          <div class="ss-footer-actions">
+            <button class="ss-btn-primary" id="btn-save-genel">
+              <i data-lucide="check" style="width:14px;height:14px;"></i> Değişiklikleri Kaydet
+            </button>
+          </div>
+        </section>
+
+        <!-- SECTION: İZİNLER -->
+        <section id="section-izinler" class="ss-section">
+          <div class="ss-section-header">
+            <h2>Gelişmiş Kanal İzinleri</h2>
+            <p>Bu kanalda kimlerin mesaj gönderebileceğini, katılabileceğini veya medyaları yönetebileceğini belirleyin.
+              Kategori izinleri varsayılan olarak uygulanır.</p>
+          </div>
+
+          <div id="owner-warning-perm" class="perm-owner-warning" style="display:none;">
+            <i data-lucide="lock" style="width:16px;height:16px;flex-shrink:0;"></i>
+            <span>İzinleri yalnızca sunucu sahibi düzenleyebilir.</span>
+          </div>
+
+          <!-- Member / Role Selector Bar -->
+          <div class="perm-targets-bar" style="position:relative;">
+            <div id="perm-targets-container" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <!-- Target chips rendered dynamically -->
+            </div>
+
+            <div style="position:relative;">
+              <button type="button" class="perm-add-target-btn" id="btn-add-perm-target">
+                <i data-lucide="user-plus" style="width:13px;height:13px;"></i> Üye Ekle
+              </button>
+              <div class="perm-add-dropdown" id="perm-members-dropdown">
+                <!-- Dropdown member list -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Permissions List Container -->
+          <div id="perm-list-container">
+            <!-- Dynamic permission groups rendered by JS -->
+          </div>
+
+          <div class="ss-footer-actions">
+            <button class="ss-btn-primary" id="btn-save-perms">
+              <i data-lucide="check" style="width:14px;height:14px;"></i> İzinleri Kaydet
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div id="ch-toast" class="ch-edit-toast"></div>
+
+  <script src="js/channel-edit.js"></script>
+</body>
+
+</html>

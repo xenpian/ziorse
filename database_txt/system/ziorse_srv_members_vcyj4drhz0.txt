@@ -1,0 +1,17 @@
+[
+  {
+    "handle": "@sa",
+    "name": "ziorse creator",
+    "avatar": "http://localhost:3000/uploads/avatar_1789933007530_hoe39.png"
+  },
+  {
+    "handle": "@fafafa",
+    "name": "fafafa",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+  },
+  {
+    "handle": "@fas",
+    "name": "fas",
+    "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
+  }
+]

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build and Packaging
+dist/
+build/
+release/
+out/
+
+# User Uploads and Media Blobs (prevents GitHub 100MB file limit)
+uploads/*
+!uploads/.gitkeep
+
+# Temporary / Scratch scripts
+scratch/
+.system_generated/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+window-bounds.json

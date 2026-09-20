@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Uygulama Ayarları</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/server-settings.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <script src="js/lib/lucide.min.js"></script>
+  <script src="js/lib/socket.io.min.js"></script>
+  <script src="js/data-store.js"></script>
+  <script>
+    if (typeof io !== 'undefined') {
+      window.socket = io('http://localhost:3000');
+    }
+    if (!window.dataStore || !window.dataStore.isLoggedIn()) {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+
+<body class="ss-body">
+
+  <!-- TITLEBAR -->
+  <div class="app-header">
+    <div class="header-brand">
+      <span class="brand-badge-title">ZIORSE</span>
+      <span class="header-location-breadcrumb">– Uygulama Ayarları</span>
+    </div>
+  </div>
+
+  <!-- FLOATING WRAPPER -->
+  <div class="ss-wrapper">
+    <div class="ss-container">
+
+      <!-- CLOSE BUTTON -->
+      <div class="ss-close-area" id="btn-close-settings">
+        <button class="ss-close-btn" title="Kapat (ESC)">
+          <i data-lucide="x" style="width:16px; height:16px;"></i>
+        </button>
+        <span class="ss-esc-label">ESC</span>
+      </div>
+
+      <!-- SIDEBAR -->
+      <nav class="ss-sidebar">
+        <!-- USER QUICK INFO -->
+        <div class="ss-sidebar-server-info" style="cursor:pointer;" id="user-quick-profile-card">
+          <div class="ss-server-icon" id="settings-user-avatar" style="border-radius:50%; overflow:hidden;">
+            <img src="" id="settings-avatar-img" style="width:100%;height:100%;object-fit:cover;display:none;">
+            <span id="settings-avatar-initials">U</span>
+          </div>
+          <div style="display:flex; flex-direction:column; min-width:0;">
+            <span class="ss-server-name" id="settings-user-name">Kullanıcı</span>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-nunito);"
+              id="settings-user-handle">@kullanici</span>
+          </div>
+        </div>
+
+        <span class="ss-sidebar-label">Kullanıcı Ayarları</span>
+        <button class="ss-nav-item active" data-section="hesabim">
+          <i data-lucide="user" style="width:15px;height:15px;"></i> Hesabım
+        </button>
+        <button class="ss-nav-item" data-section="profil">
+          <i data-lucide="sparkles" style="width:15px;height:15px;"></i> Profilimi Özelleştir
+        </button>
+        <button class="ss-nav-item" data-section="gizlilik">
+          <i data-lucide="shield" style="width:15px;height:15px;"></i> Gizlilik ve Güvenlik
+        </button>
+
+        <div class="ss-sidebar-divider"></div>
+        <span class="ss-sidebar-label">Uygulama Ayarları</span>
+        <button class="ss-nav-item" data-section="gorunum">
+          <i data-lucide="palette" style="width:15px;height:15px;"></i> Görünüm
+        </button>
+        <button class="ss-nav-item" data-section="ses-video">
+          <i data-lucide="mic" style="width:15px;height:15px;"></i> Ses ve Görüntü
+        </button>
+        <button class="ss-nav-item" data-section="bildirimler">
+          <i data-lucide="bell" style="width:15px;height:15px;"></i> Bildirimler
+        </button>
+        <button class="ss-nav-item" data-section="kisayollar">
+          <i data-lucide="keyboard" style="width:15px;height:15px;"></i> Tuş Atamaları
+        </button>
+        <button class="ss-nav-item" data-section="dil">
+          <i data-lucide="globe" style="width:15px;height:15px;"></i> Dil & Bölge
+        </button>
+
+        <div class="ss-sidebar-divider"></div>
+        <button class="ss-nav-item danger" id="btn-settings-logout">
+          <i data-lucide="log-out" style="width:15px;height:15px;"></i> Çıkış Yap
+        </button>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <main class="ss-main">
+
+        <!-- ==================== HESABIM ==================== -->
+        <section class="ss-section active" id="sec-hesabim">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Hesabım</h2>
+            <p class="ss-section-desc">Kişisel bilgilerinizi ve hesap güvenliğinizi yönetin.</p>
+          </div>
+
+          <!-- Profil Kartı Önizleme -->
+          <div class="ss-card" style="padding:0; overflow:hidden;">
+            <div id="acc-banner-preview"
+              style="height:115px; background:var(--bg-servers, #eeeeee); background-size:cover; background-position:center; position:relative;">
+              <button class="btn-ss-outline" id="btn-edit-banner-quick"
+                style="position:absolute; top:12px; right:12px;">
+                <i data-lucide="image" style="width:13px;height:13px;"></i> Kapağı Değiştir
+              </button>
+            </div>
+            <div style="padding:0 20px 20px 20px; position:relative;">
+              <div
+                style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:-34px; margin-bottom:12px;">
+                <div
+                  style="width:72px; height:72px; border-radius:50%; border:4px solid var(--bg-card, #ffffff); background:var(--bg-servers, #eeeeee); overflow:hidden;"
+                  id="acc-avatar-box">
+                  <img id="acc-avatar-img" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+                  <span id="acc-avatar-initials"
+                    style="font-weight:800; font-size:1.35rem; display:flex; align-items:center; justify-content:center; height:100%; color:var(--text-main, #121212);">U</span>
+                </div>
+                <button class="btn-ss-primary" id="btn-go-profile-tab">
+                  <i data-lucide="edit-3" style="width:14px;height:14px;"></i> Profili Düzenle
+                </button>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:2px;">
+                <span id="acc-preview-name"
+                  style="font-size:1.15rem; font-weight:800; color:var(--text-main);">Kullanıcı</span>
+                <span id="acc-preview-handle" style="font-size:0.82rem; color:var(--text-muted);">@kullanici</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hesap Bilgileri Listesi -->
+          <div class="ss-card" style="margin-top:16px;">
+            <div class="acc-info-row">
+              <div>
+                <div class="acc-info-label">Görünen İsim</div>
+                <div class="acc-info-value" id="acc-info-name">Kullanıcı</div>
+              </div>
+              <button class="btn-ss-outline btn-edit-account-field" data-field="name">Düzenle</button>
+            </div>
+
+            <div class="acc-info-row">
+              <div>
+                <div class="acc-info-label">Kullanıcı Adı (Handle)</div>
+                <div class="acc-info-value" id="acc-info-handle">@kullanici</div>
+              </div>
+              <button class="btn-ss-outline btn-edit-account-field" data-field="handle">Düzenle</button>
+            </div>
+
+            <div class="acc-info-row">
+              <div>
+                <div class="acc-info-label">E-Posta</div>
+                <div class="acc-info-value" id="acc-info-email">kullanici@ziorse.app</div>
+              </div>
+              <button class="btn-ss-outline btn-edit-account-field" data-field="email">Değiştir</button>
+            </div>
+          </div>
+
+          <!-- Güvenlik & Şifre -->
+          <div class="ss-card"
+            style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:3px;">Şifre ve
+                Kimlik Doğrulama</div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">Hesabınızı güvende tutmak için şifrenizi düzenli
+                güncelleyin.</div>
+            </div>
+            <button class="btn-ss-outline" id="btn-change-password">
+              <i data-lucide="key" style="width:14px;height:14px;"></i> Şifreyi Değiştir
+            </button>
+          </div>
+        </section>
+
+        <!-- ==================== PROFİLİMİ ÖZELLEŞTİR ==================== -->
+        <section class="ss-section" id="sec-profil">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Profilimi Özelleştir</h2>
+            <p class="ss-section-desc">Profil avatarınızı, kapağınızı, durumunuzu ve biyografinizi anlık olarak
+              düzenleyin.</p>
+          </div>
+
+          <div class="profile-editor-layout">
+            <!-- SOL FORM -->
+            <div class="ss-card" style="display:flex; flex-direction:column; gap:16px;">
+
+              <!-- Avatar Upload -->
+              <div class="ss-field">
+                <label class="ss-label">Profil Fotoğrafı (Avatar)</label>
+                <div class="ss-role-icon-card">
+                  <div class="ss-role-icon-preview-box" id="prof-avatar-preview"
+                    style="border-radius:50%; width:65px; height:65px; cursor:pointer;" title="Avatar Seç">
+                    <img id="prof-avatar-img" src=""
+                      style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;">
+                    <span id="prof-avatar-initials"
+                      style="font-weight:800; font-size:1.1rem; color:var(--text-main, #121212);">U</span>
+                  </div>
+                  <div class="ss-role-icon-content">
+                    <div class="ss-role-icon-actions">
+                      <button type="button" class="ss-btn-upload-icon" id="btn-prof-pick-avatar">
+                        <i data-lucide="upload" style="width:14px;height:14px;"></i> Avatar Seç
+                      </button>
+                      <button type="button" class="ss-btn-remove-icon" id="btn-prof-remove-avatar"
+                        style="display:none;">
+                        <i data-lucide="trash-2" style="width:14px;height:14px;"></i> Kaldır
+                      </button>
+                      <input type="file" id="prof-avatar-file" accept="image/*,video/*" style="display:none;">
+                    </div>
+                    <span class="ss-role-icon-hint">Önerilen: Resim, Hareketli GIF veya Video (MP4, WebM).</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Banner Upload -->
+              <div class="ss-field">
+                <label class="ss-label">Profil Kapağı (Banner)</label>
+                <div id="prof-banner-preview"
+                  style="height:115px; border-radius:10px; background:var(--bg-input, #f7f7f7);  background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                  <span id="prof-banner-placeholder" style="font-size:0.8rem; color:var(--text-muted);">
+                    <i data-lucide="image" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;"></i>
+                    Kapak Görseli Yok
+                  </span>
+                </div>
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                  <button type="button" class="ss-btn-upload-icon" id="btn-prof-pick-banner">
+                    <i data-lucide="upload" style="width:14px;height:14px;"></i> Kapak Seç
+                  </button>
+                  <button type="button" class="ss-btn-remove-icon" id="btn-prof-remove-banner" style="display:none;">
+                    <i data-lucide="trash-2" style="width:14px;height:14px;"></i> Kaldır
+                  </button>
+                  <input type="file" id="prof-banner-file" accept="image/*,video/*" style="display:none;">
+                </div>
+              </div>
+
+              <!-- İsim & Kullanıcı Adı -->
+              <div class="ss-field">
+                <label class="ss-label" for="prof-input-name">Görünen Ad</label>
+                <input type="text" id="prof-input-name" class="ss-input" placeholder="Adınız...">
+              </div>
+
+              <div class="ss-field">
+                <label class="ss-label" for="prof-input-handle">Kullanıcı Adı (@)</label>
+                <input type="text" id="prof-input-handle" class="ss-input" placeholder="@kullanici">
+              </div>
+
+              <!-- Özel Durum Mesajı -->
+              <div class="ss-field">
+                <label class="ss-label" for="prof-input-status">Özel Durum Mesajı</label>
+                <input type="text" id="prof-input-status" class="ss-input"
+                  placeholder="Ne düşünüyorsun? (örn: Kod yazıyor...)">
+              </div>
+
+              <!-- Biyografi -->
+              <div class="ss-field">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <label class="ss-label" for="prof-input-bio" style="margin:0;">Hakkımda / Biyografi</label>
+                  <span id="prof-bio-char-count" style="font-size:0.72rem; color:var(--text-muted);">0 / 240</span>
+                </div>
+                <textarea id="prof-input-bio" class="ss-textarea" rows="3" maxlength="240"
+                  placeholder="Kendinizden, ilgi alanlarınızdan bahsedin..."></textarea>
+              </div>
+
+            </div>
+
+            <!-- SAĞ CANLI ÖNİZLEME KARTI -->
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <span class="settings-preview-section-label">Canlı Önizleme</span>
+              <div class="settings-profile-preview-card">
+                <div class="settings-preview-banner" id="live-card-banner"></div>
+                <div class="settings-preview-avatar-wrapper">
+                  <img class="settings-preview-avatar" id="live-card-avatar" src="" style="display:none;">
+                  <div class="settings-preview-avatar-initials" id="live-card-initials">U</div>
+                  <div class="settings-preview-status-dot" id="live-card-status-dot"></div>
+                </div>
+                <div class="settings-preview-body">
+                  <div>
+                    <div class="settings-preview-name" id="live-card-name">Kullanıcı</div>
+                    <div class="settings-preview-handle" id="live-card-handle">@kullanici</div>
+                  </div>
+
+                  <div id="live-card-status-container" style="display:none;">
+                    <div class="settings-preview-status-pill">
+                      <span id="live-card-status-text">Durum</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="settings-preview-section-label" style="margin-bottom:6px;">HAKKIMDA</div>
+                    <div class="settings-preview-bio-box" id="live-card-bio">
+                      <span class="settings-preview-bio-placeholder">Henüz bir biyografi eklenmedi.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== GİZLİLİK VE GÜVENLİK ==================== -->
+        <section class="ss-section" id="sec-gizlilik">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Gizlilik ve Güvenlik</h2>
+            <p class="ss-section-desc">Mesajlaşma ve arkadaşlık isteklerinizi denetleyin.</p>
+          </div>
+
+          <div class="ss-card">
+            <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:4px;">Direkt Mesaj
+              Güvenliği</div>
+            <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">Sunucu üyelerinden gelen
+              doğrudan mesajları nasıl ele almak istediğinizi seçin.</div>
+
+            <div class="ss-field-checkbox">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-allow-server-dm" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Sunucu Üyelerinden Direkt Mesajlara İzin Ver</span>
+                  <span class="ss-toggle-desc">Katıldığınız ortak sunuculardaki kullanıcılar size direkt mesaj
+                    gönderebilir.</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="ss-field-checkbox" style="margin-top:10px;">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-friend-requests-everyone" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Herkese Açık Arkadaşlık İstekleri</span>
+                  <span class="ss-toggle-desc">Herkes kullanıcı adınızı aratarak size arkadaşlık isteği
+                    gönderebilir.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== GÖRÜNÜM ==================== -->
+        <section class="ss-section" id="sec-gorunum">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Görünüm</h2>
+            <p class="ss-section-desc">Uygulamanın tema rengini, yazı boyutunu ve mesaj düzenini kişiselleştirin.</p>
+          </div>
+
+          <div class="ss-card">
+            <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:12px;">Tema</div>
+            <div class="theme-cards-grid">
+              <div class="theme-card active" data-theme="dark">
+                <div class="theme-card-icon">🌙</div>
+                <span class="theme-card-label">Koyu</span>
+              </div>
+              <div class="theme-card" data-theme="amoled">
+                <div class="theme-card-icon">🖤</div>
+                <span class="theme-card-label">AMOLED Gece</span>
+              </div>
+              <div class="theme-card" data-theme="midnight">
+                <div class="theme-card-icon">🌌</div>
+                <span class="theme-card-label">Gece Yarısı</span>
+              </div>
+            </div>
+
+            <div class="ss-field" style="margin-top:20px;">
+              <label class="ss-label">Mesaj Yazı Tipi Boyutu</label>
+              <div class="settings-range-wrap">
+                <input type="range" id="range-font-size" min="12" max="18" value="14" step="1">
+                <span class="settings-range-value" id="label-font-size">14px</span>
+              </div>
+            </div>
+
+            <div class="ss-field-checkbox" style="margin-top:12px;">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-compact-chat">
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Kompakt Mesaj Modu</span>
+                  <span class="ss-toggle-desc">Mesaj avatarlarını küçülterek ekranda aynı anda daha fazla mesaj
+                    gösterir.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SES VE GÖRÜNTÜ ==================== -->
+        <section class="ss-section" id="sec-ses-video">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Ses ve Görüntü</h2>
+            <p class="ss-section-desc">Mikrofon, hoparlör ve ses işleme ayarlarını yapılandırın.</p>
+          </div>
+
+          <div class="ss-card">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="ss-field">
+                <label class="ss-label">Giriş Aygıtı (Mikrofon)</label>
+                <select id="sel-audio-input" class="ss-input">
+                  <option value="default">Varsayılan Mikrofon</option>
+                  <option value="mic-1">Dahili Mikrofon Dizisi</option>
+                  <option value="mic-2">Harici USB Mikrofon</option>
+                </select>
+              </div>
+              <div class="ss-field">
+                <label class="ss-label">Çıkış Aygıtı (Kulaklık/Hoparlör)</label>
+                <select id="sel-audio-output" class="ss-input">
+                  <option value="default">Varsayılan Ses Çıkışı</option>
+                  <option value="speakers">Hoparlör (Realtek Audio)</option>
+                  <option value="headphones">Kulaklık</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="ss-field" style="margin-top:16px;">
+              <label class="ss-label">Giriş Ses Seviyesi (Mikrofon Kazancı)</label>
+              <div class="settings-range-wrap">
+                <input type="range" id="range-mic-vol" min="0" max="100" value="85">
+                <span class="settings-range-value" id="label-mic-vol">85%</span>
+              </div>
+            </div>
+
+            <div class="ss-field" style="margin-top:14px;">
+              <label class="ss-label">Çıkış Ses Seviyesi</label>
+              <div class="settings-range-wrap">
+                <input type="range" id="range-output-vol" min="0" max="100" value="100">
+                <span class="settings-range-value" id="label-output-vol">100%</span>
+              </div>
+            </div>
+
+            <div class="ss-field" style="margin-top:18px;">
+              <label class="ss-label">Mikrofon Testi</label>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <button type="button" class="btn-ss-outline" id="btn-test-mic">
+                  <i data-lucide="mic" style="width:14px;height:14px;"></i> Testi Başlat
+                </button>
+                <div class="mic-bar-wrap">
+                  <div id="mic-test-bar"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ss-field-checkbox" style="margin-top:18px;">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-noise-suppression" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Gelişmiş Gürültü Engelleme (RNNoise)</span>
+                  <span class="ss-toggle-desc">Klavye tıklamalarını, arka plan seslerini ve fan gürültüsünü
+                    filtreler.</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="ss-field-checkbox" style="margin-top:10px;">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-echo-cancellation" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Yankı Engelleme</span>
+                  <span class="ss-toggle-desc">Hoparlörden gelen sesin mikrofona geri dönmesini engeller.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== BİLDİRİMLER ==================== -->
+        <section class="ss-section" id="sec-bildirimler">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Bildirimler</h2>
+            <p class="ss-section-desc">Masaüstü bildirimleri ve ses efektlerini yönetin.</p>
+          </div>
+
+          <div class="ss-card">
+            <div class="ss-field-checkbox">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-desktop-notifs" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Masaüstü Bildirimlerini Etkinleştir</span>
+                  <span class="ss-toggle-desc">Yeni mesajlar ve etiketlendiğiniz gönderiler için masaüstü bildirimi
+                    alın.</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="ss-field-checkbox" style="margin-top:10px;">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-sound-msg" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Mesaj Bildirim Sesleri</span>
+                  <span class="ss-toggle-desc">Gelen direkt mesaj ve kanal mesajlarında kısa sesli uyarı çal.</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="ss-field-checkbox" style="margin-top:10px;">
+              <label class="ss-toggle-label">
+                <input type="checkbox" id="chk-sound-voice" checked>
+                <span class="ss-toggle-slider"></span>
+                <div class="ss-toggle-text">
+                  <span class="ss-toggle-title">Ses Odası Katılma/Ayrılma Sesleri</span>
+                  <span class="ss-toggle-desc">Kullanıcılar ses kanalına girdiğinde veya çıktığında ses efekti
+                    çal.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TUŞ ATAMALARI ==================== -->
+        <section class="ss-section" id="sec-kisayollar">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Tuş Atamaları & Kısayollar</h2>
+            <p class="ss-section-desc">Hızlı erişim için klavye tuş kombinasyonlarını yönetin.</p>
+          </div>
+
+          <div class="ss-card">
+            <div
+              style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #383a40;">
+              <span style="font-weight:600; font-size:0.88rem; color:var(--text-main);">Mikrofonu Sustur / Aç</span>
+              <span class="keybind-badge">Ctrl + Shift + M</span>
+            </div>
+
+            <div
+              style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #383a40;">
+              <span style="font-weight:600; font-size:0.88rem; color:var(--text-main);">Kulaklığı Kapat
+                (Sağırlaş)</span>
+              <span class="keybind-badge">Ctrl + Shift + D</span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0;">
+              <span style="font-weight:600; font-size:0.88rem; color:var(--text-main);">Hızlı Komut & Arama
+                Paleti</span>
+              <span class="keybind-badge">Ctrl + K</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== DİL VE BÖLGE ==================== -->
+        <section class="ss-section" id="sec-dil">
+          <div class="ss-section-header">
+            <h2 class="ss-section-title">Dil ve Bölge</h2>
+            <p class="ss-section-desc">Uygulama arayüz dilinizi seçin.</p>
+          </div>
+
+          <div class="ss-card">
+            <div class="ss-field">
+              <label class="ss-label">Arayüz Dili</label>
+              <select id="sel-app-lang" class="ss-input">
+                <option value="tr" selected>Türkçe (Türkiye)</option>
+                <option value="en">English (US)</option>
+                <option value="de">Deutsch (Deutschland)</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="ja">日本語</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- FLOATING SAVE BAR -->
+  <div class="ss-save-bar" id="settings-save-bar">
+    <span class="ss-save-msg">Dikkat — Kaydedilmemiş değişiklikleriniz var!</span>
+    <div class="ss-save-actions">
+      <button class="btn-ss-outline" id="btn-settings-discard">Sıfırla</button>
+      <button class="btn-ss-primary" id="btn-settings-save">Değişiklikleri Kaydet</button>
+    </div>
+  </div>
+
+  <script src="js/image-cropper.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+
+</html>

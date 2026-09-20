@@ -1,0 +1,18 @@
+[
+  {
+    "id": "dm-1787083879750",
+    "user": {
+      "name": "fafafa",
+      "handle": "@fafafa",
+      "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+    }
+  },
+  {
+    "id": "dm-1787082731887",
+    "user": {
+      "name": "fas",
+      "handle": "@fas",
+      "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
+    }
+  }
+]

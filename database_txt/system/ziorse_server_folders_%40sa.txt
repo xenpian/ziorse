@@ -1,0 +1,22 @@
+[
+  {
+    "id": "folder_1787397747404_8lex",
+    "name": "Klasör",
+    "isExpanded": false,
+    "serverIds": [
+      "srv-1787397259393",
+      "srv-1787397261579",
+      "srv-1787398055468",
+      "srv-1787398053441"
+    ]
+  },
+  {
+    "id": "folder_1787398590321_rxx3",
+    "name": "Klasör",
+    "isExpanded": false,
+    "serverIds": [
+      "srv-1787393085774",
+      "srv-1787397257516"
+    ]
+  }
+]

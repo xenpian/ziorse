@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ziorse - Modern Desktop Social Network</title>
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/lib/lucide.min.js"></script>
+  <script src="js/lib/socket.io.min.js"></script>
+  <script src="js/data-store.js"></script>
+  <script>
+    // Iframe containment guard
+    if (window.self !== window.top) {
+      document.write('<style>#app-splash { display: none !important; }</style>');
+      if (window.parent && typeof window.parent.closeModalView === 'function') {
+        window.parent.closeModalView();
+      }
+    }
+    // ZORUNLU GİRİŞ KONTROLÜ - Misafir hesaba izin verilmez
+    if (!window.dataStore || !window.dataStore.isLoggedIn()) {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="app-splash" class="ziorse-splash">
+    <div class="splash-inner">
+      <div class="splash-brand">
+        <span class="splash-title">ZIORSE</span>
+      </div>
+      <p id="splash-quote" class="splash-quote"></p>
+
+    </div>
+  </div>
+  <script>
+    (function () {
+      var quotes = [
+        { quote: "Bana bir dayanak noktası verin, dünyayı yerinden oynatayım.", author: "Arşimet" },
+        { quote: "Eğer daha ileriyi görebildiysem, bu devlerin omuzlarında durduğum içindir.", author: "Isaac Newton" },
+        { quote: "Evrenin kitabı, matematik diliyle yazılmıştır.", author: "Galileo Galilei" },
+        { quote: "Öğrenmek, zihnin asla tüketmediği tek eylemdir.", author: "Leonardo da Vinci" },
+        { quote: "Düşünüyorum, öyleyse varım.", author: "René Descartes" },
+        { quote: "Bilim ve sanat, takdir edilmediği yerden göç eder.", author: "İbn-i Sina" },
+        { quote: "Bilgi öyle bir hazinedir ki ne çalınabilir ne de kaybolur.", author: "El-Bîrûnî" },
+        { quote: "Doğa, sırlarını sabırla gözlemleyen zihinlere açar.", author: "Johannes Kepler" },
+        { quote: "Bildiğim tek şey, hiçbir şey bilmediğimdir.", author: "Sokrates" },
+        { quote: "Bilgi güçtür; doğayı ancak ona uyarak fethedebiliriz.", author: "Francis Bacon" },
+        { quote: "Sayılar evreni yönetir; her varlığın ardında bir ahenk saklıdır.", author: "Pisagor" },
+        { quote: "Akıllı insan her düşündüğünü söylemez, fakat her söylediğini düşünür.", author: "Aristoteles" },
+        { quote: "Bugün onların olsun; uğruna çalıştığım gelecek kesinlikle benimdir.", author: "Nikola Tesla" },
+        { quote: "En zor şey insanın kendisini tanımasıdır.", author: "Thales" },
+        { quote: "Düşünme hakkınızı koruyun; yanlış düşünmek bile düşünmemekten iyidir.", author: "Hypatia" },
+        { quote: "Gerçeği aramak, ona ulaşmaktan daha asil bir erdemdir.", author: "El-Kindî" },
+        { quote: "Kalbin, aklın asla bilemeyeceği kendi gerekçeleri vardır.", author: "Blaise Pascal" },
+        { quote: "Gök cisimlerinin hareketini hesaplayabilirim, fakat insanların deliliğini asla.", author: "Isaac Newton" },
+        { quote: "Güneş hareketsiz merkezdedir, dünya ise onun çevresinde döner.", author: "Nicolaus Copernicus" },
+        { quote: "Işığın yolunu takip eden, gerçeğin kapısına ulaşır.", author: "İbnü'l-Heysem" }
+      ];
+      var qEl = document.getElementById('splash-quote');
+      if (qEl) {
+        var item = quotes[Math.floor(Math.random() * quotes.length)];
+        qEl.innerHTML = '“' + item.quote + '” <span class="splash-quote-author">— ' + item.author + '</span>';
+      }
+      function dismissSplash() {
+        var splash = document.getElementById('app-splash');
+        if (!splash || splash.classList.contains('fade-out')) return;
+        splash.classList.add('fade-out');
+        setTimeout(function () {
+          if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+        }, 450);
+      }
+      window.dismissSplash = dismissSplash;
+      // Splash ekranının takılmasını kesin olarak önleyen güvenlik süresi (1200ms)
+      setTimeout(dismissSplash, 1200);
+    })();
+  </script>
+
+  <!-- Native Integrated Titlebar Header -->
+  <div class="app-header">
+    <div class="header-left-location">
+      <span class="brand-badge-title">ZIORSE</span>
+      <span id="header-location-breadcrumb" class="header-location-breadcrumb"># Ana Akış</span>
+    </div>
+
+    <div class="header-center-brand" id="header-center-brand">
+      <div id="header-server-badge" class="header-server-badge">
+        <img id="header-server-icon" class="header-server-icon" src="" alt="" style="display:none;">
+        <span id="header-server-icon-fallback" class="header-server-icon-placeholder" style="display:none;">Z</span>
+        <span id="header-server-name" class="header-server-name">ZIORSE</span>
+      </div>
+    </div>
+
+    <!-- Right Header Controls -->
+    <div style="display:flex; gap:8px; align-items:center; -webkit-app-region: no-drag; margin-right:110px;">
+      <button id="btn-notification-bell" class="notif-bell-btn" title="Bildirimler (Sağ tık: Sessize al)">
+        <svg class="ctrl-svg notif-bell-svg" viewBox="0 0 24 24" width="15" height="15" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path class="bell-base" d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+          <path class="bell-clapper" d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          <line class="bell-strike-line" x1="2" y1="2" x2="22" y2="22"></line>
+        </svg>
+        <span id="notif-bell-badge" class="notif-badge" style="display:none;">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 3-Column Hybrid Layout -->
+  <div class="app-layout">
+
+    <!-- FLOATING CHANNELS SIDEBAR CARD -->
+    <div class="left-sidebar">
+      <!-- Dynamically populated by renderServerChannels() in app.js -->
+    </div>
+
+
+    <!-- FLOATING CENTER COLUMN CARD -->
+    <div class="center-column-wrapper">
+
+      <!-- MAIN FEED VIEW -->
+      <div id="main-feed-view" class="center-feed">
+
+        <!-- Sticky Feed Header -->
+        <div class="feed-header">
+          <div id="feed-header-info" class="feed-header-info">
+            <h2 id="feed-title-text" class="feed-title"># genel-sohbet</h2>
+          </div>
+          <div class="feed-header-right">
+            <div class="feed-tabs">
+              <button class="tab-btn active" data-filter="for-you">Sizin İçin</button>
+              <button class="tab-btn" data-filter="following">Takip Edilenler</button>
+            </div>
+            <button id="btn-open-post-modal" class="btn-header-post">
+              <i data-lucide="plus-circle" style="width:15px; height:15px;"></i> Yeni Gönderi
+            </button>
+          </div>
+        </div>
+
+        <!-- MESSAGES CONTAINER (SCROLLABLE) -->
+        <div id="feed-posts-container" class="posts-list">
+          <div class="skeleton-chat-item">
+            <div class="skeleton-avatar skeleton-shimmer"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-name skeleton-shimmer" style="width:110px;"></div>
+                <div class="skeleton-line skeleton-time skeleton-shimmer" style="width:48px;"></div>
+              </div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:85%;"></div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:65%;"></div>
+            </div>
+          </div>
+          <div class="skeleton-chat-item">
+            <div class="skeleton-avatar skeleton-shimmer"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-name skeleton-shimmer" style="width:140px;"></div>
+                <div class="skeleton-line skeleton-time skeleton-shimmer" style="width:48px;"></div>
+              </div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:92%;"></div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:78%;"></div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:48%;"></div>
+              <div class="skeleton-media skeleton-shimmer" style="height:180px; width:75%; max-width:340px;"></div>
+            </div>
+          </div>
+          <div class="skeleton-chat-item">
+            <div class="skeleton-avatar skeleton-shimmer"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-name skeleton-shimmer" style="width:100px;"></div>
+                <div class="skeleton-line skeleton-time skeleton-shimmer" style="width:48px;"></div>
+              </div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:72%;"></div>
+            </div>
+          </div>
+          <div class="skeleton-chat-item">
+            <div class="skeleton-avatar skeleton-shimmer"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-name skeleton-shimmer" style="width:130px;"></div>
+                <div class="skeleton-line skeleton-time skeleton-shimmer" style="width:48px;"></div>
+              </div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:88%;"></div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:55%;"></div>
+              <div class="skeleton-media skeleton-shimmer" style="height:125px; width:80%; max-width:340px;"></div>
+            </div>
+          </div>
+          <div class="skeleton-chat-item">
+            <div class="skeleton-avatar skeleton-shimmer"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-name skeleton-shimmer" style="width:115px;"></div>
+                <div class="skeleton-line skeleton-time skeleton-shimmer" style="width:48px;"></div>
+              </div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:94%;"></div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:70%;"></div>
+            </div>
+          </div>
+          <div class="skeleton-chat-item">
+            <div class="skeleton-avatar skeleton-shimmer"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-name skeleton-shimmer" style="width:105px;"></div>
+                <div class="skeleton-line skeleton-time skeleton-shimmer" style="width:48px;"></div>
+              </div>
+              <div class="skeleton-line skeleton-text skeleton-shimmer" style="width:62%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POST / CHAT COMPOSER CARD AT BOTTOM -->
+        <div id="composer-card" class="post-composer-card">
+          <div id="composer-avatar-wrap" class="composer-avatar-wrap">
+            <img id="composer-user-avatar" class="user-avatar-sm" src="https://i.imgur.com/w3OhOmW.jpeg" alt="Avatar">
+          </div>
+          <div class="composer-right">
+            <!-- REPLY PREVIEW BAR -->
+            <div id="composer-reply-bar" class="composer-reply-bar" style="display:none;">
+              <div class="composer-reply-info">
+                <i data-lucide="corner-down-right" class="composer-reply-icon"></i>
+                <span class="composer-reply-label">Yanıtlanan:</span>
+                <img id="composer-reply-avatar" class="quote-reply-avatar" src="" alt="Avatar" style="display:none;">
+                <span id="composer-reply-author" class="composer-reply-author"></span>
+                <span id="composer-reply-text" class="composer-reply-text"></span>
+              </div>
+              <button id="btn-cancel-reply" class="composer-reply-close-btn" type="button" title="Yanıtı İptal Et">
+                <i data-lucide="x" style="width:13px;height:13px;"></i>
+              </button>
+            </div>
+
+            <!-- MAIN TEXTAREA INPUT WITH MENTION AUTOCOMPLETE -->
+            <div class="composer-text-wrapper" style="position:relative; width:100%;">
+              <div id="mention-autocomplete-popup" class="mention-autocomplete-popup" style="display:none;"></div>
+              <textarea id="composer-text" class="composer-textarea"
+                placeholder="Mesajınızı yazın... (Enter ile Gönder, Shift+Enter ile yeni satır)"></textarea>
+            </div>
+
+            <!-- IMAGE PREVIEW -->
+            <div id="image-preview-bar" class="image-preview-bar">
+              <img id="image-preview-img" src="" alt="Preview">
+              <button id="btn-remove-image" class="btn-remove-image">✕</button>
+            </div>
+
+            <!-- VOICE RECORDING BAR -->
+            <div id="voice-recording-bar" class="voice-recording-indicator">
+              <div class="rec-pulse-dot"></div>
+              <span id="rec-status-text">SES KAYDEDİLİYOR... (Durdurmak için tekrar mikrofon ikonuna tıklayın)</span>
+            </div>
+
+            <!-- CODE ATTACH SUB-PANEL (GİZLENEBİLİR ÇEKMECE) -->
+            <div id="code-attach-wrapper" class="composer-sub-panel" style="display:none;">
+              <div class="composer-sub-header">
+                <span class="composer-sub-title"><i data-lucide="code" style="width:14px;height:14px;"></i> Kod
+                  Bloğu</span>
+                <button type="button" id="btn-close-code" class="composer-sub-close-btn" title="Kaldır">✕</button>
+              </div>
+              <textarea id="code-attach-input" class="code-attach-input"
+                placeholder="// Kod bloğunu buraya yapıştırın veya yazın..."></textarea>
+            </div>
+
+            <!-- POLL ATTACH SUB-PANEL (GİZLENEBİLİR ÇEKMECE) -->
+            <div id="poll-attach-container" class="composer-sub-panel" style="display:none;">
+              <div class="composer-sub-header">
+                <span class="composer-sub-title"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Anket
+                  Oluştur</span>
+                <button type="button" id="btn-close-poll" class="composer-sub-close-btn" title="Kaldır">✕</button>
+              </div>
+              <div class="poll-inputs-wrapper">
+                <div class="poll-option-row">
+                  <span class="poll-opt-num">1</span>
+                  <input type="text" id="poll-opt-1" class="poll-opt-input" placeholder="1. Seçenek (Örn: Evet)">
+                </div>
+                <div class="poll-option-row">
+                  <span class="poll-opt-num">2</span>
+                  <input type="text" id="poll-opt-2" class="poll-opt-input" placeholder="2. Seçenek (Örn: Hayır)">
+                </div>
+              </div>
+            </div>
+
+            <!-- FILE PREVIEW -->
+            <div id="file-preview-bar" class="file-preview-bar" style="display:none;">
+              <div class="file-preview-left">
+                <i data-lucide="file" style="width:16px;height:16px;flex-shrink:0;"></i>
+                <span id="file-preview-name" class="file-preview-name"></span>
+              </div>
+              <button id="btn-remove-file" type="button" class="btn-remove-file" title="Kaldır">✕</button>
+            </div>
+
+            <!-- HIDDEN FILE PICKERS -->
+            <input type="file" id="file-picker-image" accept="image/*" style="display:none;">
+            <input type="file" id="file-picker-video" accept="video/*,image/gif" style="display:none;">
+            <input type="file" id="file-picker-file" accept="*/*" style="display:none;">
+
+            <!-- COMPOSER TOOLBAR -->
+            <div class="composer-toolbar">
+              <div class="composer-toolbar-left">
+                <!-- HIZLI EKLER BUTONU (AÇILIR ÇEKMECE / TOGGLE) -->
+                <button type="button" id="btn-toggle-extra-tools" class="tool-btn tool-plus-btn"
+                  title="Ekler ve Araçlar Menüsü">
+                  <i data-lucide="plus" style="width:15px; height:15px;"></i>
+                  <span class="tool-btn-text">Ekler</span>
+                </button>
+
+                <!-- DİĞER FAZLA ARAÇLAR ÇEKMECESİ (GİZLENİP GÖRÜNÜR) -->
+                <div id="composer-extra-drawer" class="composer-extra-drawer" style="display:none;">
+                  <button id="btn-attach-video" class="tool-drawer-item" type="button" title="Video Yükle">
+                    <i data-lucide="video" style="width:14px; height:14px;"></i>
+                    <span>Video</span>
+                  </button>
+                  <button id="btn-attach-file" class="tool-drawer-item" type="button" title="Dosya Ekle">
+                    <i data-lucide="paperclip" style="width:14px; height:14px;"></i>
+                    <span>Dosya</span>
+                  </button>
+                  <button id="btn-attach-code" class="tool-drawer-item" type="button" title="Kod Bloğu Ekle">
+                    <i data-lucide="code" style="width:14px; height:14px;"></i>
+                    <span>Kod</span>
+                  </button>
+                  <button id="btn-attach-poll" class="tool-drawer-item" type="button" title="Anket Oluştur">
+                    <i data-lucide="bar-chart-2" style="width:14px; height:14px;"></i>
+                    <span>Anket</span>
+                  </button>
+                  <button id="btn-record-voice" class="tool-drawer-item" type="button" title="Ses Kaydet">
+                    <i data-lucide="mic" style="width:14px; height:14px;"></i>
+                    <span>Ses</span>
+                  </button>
+                </div>
+
+                <!-- BİRİNCİL HIZLI ERİŞİM BUTONLARI -->
+                <div class="composer-quick-actions">
+                  <button id="btn-attach-image" class="tool-btn" type="button" title="Fotoğraf Yükle">
+                    <i data-lucide="image" style="width:15px; height:15px;"></i>
+                    <span class="tool-label-text">Fotoğraf</span>
+                  </button>
+                  <button id="btn-open-gif-picker" class="tool-btn" type="button" title="GIF Ara & Gönder">
+                    <i data-lucide="play-square" style="width:15px; height:15px;"></i>
+                    <span class="tool-label-text">GIF</span>
+                  </button>
+                  <button id="btn-open-emoji-composer" class="tool-btn" type="button" title="Emoji Ekle">
+                    <i data-lucide="smile" style="width:15px; height:15px;"></i>
+                    <span class="tool-label-text">Emoji</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- SAĞ TARAF: GÖNDER BUTONU -->
+              <div class="composer-toolbar-right">
+                <button type="button" id="btn-send-post" class="btn-send-post-action" title="Gönder (Enter)">
+                  <i data-lucide="send" style="width:14px; height:14px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DIRECT MESSAGES VIEW -->
+      <div id="dm-view" class="dm-container" style="display:none;">
+
+        <!-- SOL PANEL -->
+        <div class="dm-left-panel">
+          <div class="dm-left-header">
+            <span class="dm-left-title">Mesajlar</span>
+            <button id="btn-open-create-dm" class="dm-add-btn" title="Arkadaş Ekle">
+              <i data-lucide="user-plus" style="width:15px;height:15px;"></i>
+            </button>
+          </div>
+
+          <!-- TABS -->
+          <div class="dm-tabs">
+            <button class="dm-tab active" data-dm-tab="friends">
+              Arkadaşlar
+            </button>
+            <button class="dm-tab" data-dm-tab="incoming">
+              İstekler
+              <span id="dm-incoming-badge" class="dm-badge" style="display:none;">0</span>
+            </button>
+            <button class="dm-tab" data-dm-tab="outgoing">
+              Gönderilen
+            </button>
+          </div>
+
+          <!-- TAB ICERIKLERI -->
+          <div id="dm-tab-friends" class="dm-tab-panel active"></div>
+          <div id="dm-tab-incoming" class="dm-tab-panel" style="display:none;"></div>
+          <div id="dm-tab-outgoing" class="dm-tab-panel" style="display:none;"></div>
+        </div>
+
+        <!-- SAG PANEL: SOHBET ALANI -->
+        <div class="dm-right-panel">
+          <div class="dm-chat-header" id="dm-chat-header-bar">
+            <div id="dm-chat-header-info" class="dm-chat-header-info">
+              <span id="dm-chat-user-title" class="dm-chat-title">Bir sohbet seçin</span>
+            </div>
+          </div>
+          <div id="dm-chat-messages" class="dm-chat-messages"></div>
+
+          <!-- DM ATTACHMENT PREVIEW BAR -->
+          <div id="dm-attach-preview-bar"
+            style="display:none; padding:8px 14px; background:var(--bg-input); border-top:1px solid var(--border-color); align-items:center; justify-content:space-between; gap:10px;">
+            <div id="dm-attach-preview-content"
+              style="display:flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:600; overflow:hidden;">
+            </div>
+            <button id="btn-dm-remove-attach" type="button"
+              style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-weight:bold;">✕</button>
+          </div>
+
+          <div class="dm-input-bar" id="dm-input-bar" style="display:none;">
+            <div class="dm-input-tools">
+              <button type="button" class="tool-btn" id="btn-dm-attach-image" title="Fotoğraf Gönder">
+                <i data-lucide="image" style="width:15px;height:15px;"></i>
+              </button>
+              <button type="button" class="tool-btn" id="btn-dm-attach-video" title="Video / GIF Gönder">
+                <i data-lucide="video" style="width:15px;height:15px;"></i>
+              </button>
+              <button type="button" class="tool-btn" id="btn-dm-attach-file" title="Dosya Gönder">
+                <i data-lucide="paperclip" style="width:15px;height:15px;"></i>
+              </button>
+              <button type="button" class="tool-btn" id="btn-dm-open-gif-picker" title="GIF Ara & Gönder">
+                <i data-lucide="play-square" style="width:15px;height:15px;"></i>
+              </button>
+              <button type="button" class="tool-btn" id="btn-dm-open-emoji" title="Emoji Ekle">
+                <i data-lucide="smile" style="width:15px;height:15px;"></i>
+              </button>
+            </div>
+            <input type="file" id="dm-file-image" accept="image/*" style="display:none;">
+            <input type="file" id="dm-file-video" accept="video/*,image/gif" style="display:none;">
+            <input type="file" id="dm-file-any" accept="*/*" style="display:none;">
+            <div class="dm-input-text-wrapper" style="position:relative; flex:1; display:flex; align-items:center;">
+              <div id="dm-mention-autocomplete-popup" class="mention-autocomplete-popup" style="display:none;"></div>
+              <input type="text" id="dm-input-text" class="dm-input-text"
+                placeholder="Mesaj yazın... (Enter ile Gönder)">
+            </div>
+            <button type="button" id="btn-dm-send" class="btn-send-post-action dm-send-btn-action">
+              <i data-lucide="send" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR (ONLINE MEMBERS & VOICE ROOMS) -->
+    <div class="right-sidebar" id="right-sidebar">
+      <div id="voice-active-bar"
+        style="display:none; background:rgba(16,185,129,0.1); border:1px solid var(--accent-emerald); border-radius:var(--radius-md); padding:10px 14px; align-items:center; justify-content:space-between;">
+        <div>
+          <div
+            style="font-size:0.72rem; color:var(--accent-emerald); font-weight:700; font-family:var(--font-montserrat);">
+            SESLİ KANALDA AKTİF</div>
+          <div id="voice-active-name"
+            style="font-weight:700; font-size:0.85rem; color:var(--text-main); font-family:var(--font-montserrat);">Ses
+            Odası</div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button id="btn-share-screen" class="tool-btn" style="padding:4px 8px;" title="Ekran Paylaş">
+            <i data-lucide="monitor" style="width:14px; height:14px;"></i>
+          </button>
+          <button id="btn-mute-mic" class="tool-btn" style="padding:4px 8px;" title="Mikrofonu Sustur">
+            <i data-lucide="mic-off" style="width:14px; height:14px;"></i>
+          </button>
+          <button id="btn-deafen-voice" class="tool-btn" style="padding:4px 8px;" title="Sesi Kapat">
+            <i data-lucide="headphones" style="width:14px; height:14px;"></i>
+          </button>
+          <button id="btn-leave-voice"
+            style="background:var(--accent-rose); color:#fff; border:none; padding:5px 10px; border-radius:var(--radius-sm); font-weight:700; font-size:0.72rem; cursor:pointer; font-family:var(--font-montserrat);">Ayrıl</button>
+        </div>
+      </div>
+
+
+
+      <!-- MESAJ ARAMA KARTI (USERLIST'İN ÜSTÜNDE) -->
+      <div class="widget-card sidebar-msg-search-card" id="sidebar-msg-search-card">
+        <div class="sidebar-msg-search-box" id="sidebar-msg-search-box">
+          <i data-lucide="search" class="sidebar-msg-search-icon"></i>
+          <input type="text" id="sidebar-msg-search-input" class="sidebar-msg-search-input"
+            placeholder="Mesajlarda ara..." autocomplete="off">
+          <button type="button" id="btn-sidebar-msg-search-clear" class="sidebar-msg-search-clear" style="display:none;"
+            title="Aramayı Kapat / Temizle">✕</button>
+        </div>
+
+        <!-- ARAMA SONUÇLARI (INPUTA BASINCA USERLIST YERİNE AÇILAN ALAN) -->
+        <div id="sidebar-msg-search-results" class="sidebar-msg-search-results" style="display:none;">
+          <div class="sidebar-msg-search-header">
+            <span class="sidebar-msg-search-title">Mesajlar</span>
+            <span id="sidebar-msg-search-count" class="sidebar-msg-search-count"></span>
+          </div>
+          <div id="sidebar-msg-search-empty" class="sidebar-msg-search-empty">
+            <i data-lucide="message-square" style="width:22px; height:22px; opacity:0.35; margin-bottom:4px;"></i>
+            <span>Aramak istediğiniz mesajı yazın...</span>
+          </div>
+          <div id="sidebar-msg-search-list" class="sidebar-msg-search-list"></div>
+        </div>
+      </div>
+
+      <!-- KULLANICI LİSTESİ ALANI (USERLIST) -->
+      <div id="sidebar-userlist-content" class="sidebar-userlist-content">
+        <div class="widget-card" id="members-widget-card">
+          <div class="widget-title">Üyeler Listesi</div>
+          <div id="online-members-container" style="display:flex; flex-direction:column; gap:4px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🚀 TASKBAR SERVERS RAIL (UYGULAMANIN ALTINDA TASKBAR) -->
+  <div class="servers-rail" id="servers-taskbar">
+    <!-- MORPHING MAIN HUB (FOR-YOU / MESSAGES / SAVED) -->
+    <div class="nav-hub-wrapper" id="nav-hub-wrapper">
+      <div class="server-icon active nav-hub-main-btn" id="nav-hub-main-btn" title="Ana Menü">
+        <div class="server-icon-badge"></div>
+        <div class="nav-hub-icon-box">
+          <i id="nav-hub-main-icon" data-lucide="home" style="width:20px; height:20px;"></i>
+        </div>
+      </div>
+
+      <!-- UPWARD FLYOUT MINI ICONS (AÇILIR MENÜ) -->
+      <div class="nav-hub-flyout" id="nav-hub-flyout">
+        <button class="hub-mini-btn active" data-nav="for-you" data-icon="home" title="Ana Akış">
+          <i data-lucide="home" style="width:16px; height:16px;"></i>
+        </button>
+        <button class="hub-mini-btn" data-nav="messages" data-icon="message-square" title="Direkt Mesajlar">
+          <i data-lucide="message-square" style="width:16px; height:16px;"></i>
+        </button>
+        <button class="hub-mini-btn" data-nav="saved" data-icon="bookmark" title="Kaydedilenler">
+          <i data-lucide="bookmark" style="width:16px; height:16px;"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="server-divider"></div>
+
+    <!-- SCROLLABLE SERVERS LIST CONTAINER -->
+    <div class="servers-scrollable-area" id="servers-scrollable-area">
+      <div id="servers-list-container" class="servers-list-container"></div>
+
+      <div class="server-icon btn-add-server" id="btn-open-create-server" title="Yeni Sunucu Oluştur">
+        <i data-lucide="plus" style="width:20px; height:20px;"></i>
+      </div>
+    </div>
+
+    <!-- User Profile Bar + Action Controls -->
+    <div class="user-controls-wrapper">
+      <div id="user-profile-bar" class="user-profile-bar" title="Profil">
+        <div class="avatar-wrapper-status">
+          <div id="user-avatar-wrap" class="user-avatar-wrap">
+            <img id="user-avatar-display" class="user-avatar-sm" src="https://i.imgur.com/w3OhOmW.jpeg"
+              alt="User Avatar">
+          </div>
+          <span id="user-status-dot-mini" class="user-status-dot-mini" title="Çevrim İçi"></span>
+        </div>
+        <div class="user-info-text">
+          <span id="user-name-display" class="user-display-name">Kurtv</span>
+          <span id="user-handle-display" class="user-handle-name">@kurtv_dev</span>
+        </div>
+      </div>
+
+      <div class="user-controls-actions">
+        <!-- MIKROFON BUTONU (ANIMATED SVG) -->
+        <button id="btn-user-mic" class="user-ctrl-btn" title="Mikrofonu Sustur / Aç">
+          <svg class="ctrl-svg mic-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path class="mic-base" d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path class="mic-stand" d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line class="mic-pole" x1="12" x2="12" y1="19" y2="22"></line>
+            <line class="strike-line" x1="3" y1="3" x2="21" y2="21"></line>
+          </svg>
+        </button>
+
+        <!-- KULAKLIK BUTONU (ANIMATED SVG) -->
+        <button id="btn-user-deafen" class="user-ctrl-btn" title="Kulaklığı Kapat / Aç">
+          <svg class="ctrl-svg deafen-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path class="headphones-base"
+              d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3">
+            </path>
+            <line class="strike-line" x1="3" y1="3" x2="21" y2="21"></line>
+          </svg>
+        </button>
+
+        <!-- SES KANALINDAN AYRIL BUTONU (KIRMIZI TELEFON) -->
+        <button id="btn-voice-disconnect" class="user-ctrl-btn voice-disconnect-btn" title="Ses Kanalından Ayrıl"
+          style="display:none;">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91">
+            </path>
+            <line x1="23" y1="1" x2="1" y2="23"></line>
+          </svg>
+        </button>
+
+        <!-- AYARLAR BUTONU -->
+        <button id="btn-user-settings" class="user-ctrl-btn" title="Profil Ayarları">
+          <i data-lucide="settings" style="width:15px; height:15px;"></i>
+        </button>
+
+        <!-- TEMA DEĞİŞTİR BUTONU -->
+        <button id="btn-toggle-theme" class="user-ctrl-btn theme-toggle-ctrl" title="Tema Değiştir (Açık / Koyu)">
+          <i data-lucide="moon" class="theme-icon-moon" style="width:15px; height:15px;"></i>
+          <i data-lucide="sun" class="theme-icon-sun" style="width:15px; height:15px; display:none;"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- NOTIFICATION DROPDOWN -->
+  <div id="notification-dropdown" class="notif-dropdown" style="display:none;">
+    <div class="notif-dropdown-header">
+      <span>Bildirimler</span>
+      <button id="btn-mark-notifs-read" class="notif-mark-read-btn">Tümünü Okundu İşaretle</button>
+    </div>
+    <div id="notif-list" class="notif-list"></div>
+  </div>
+
+  <!-- EMOJI PICKER MODAL -->
+  <div id="emoji-picker-modal" class="emoji-picker-modal" style="display:none;">
+    <div class="emoji-picker-header">
+      <input id="emoji-search-input" type="text" placeholder="Emoji ara..." class="emoji-search">
+      <button id="emoji-picker-close" class="emoji-picker-close-btn"><i data-lucide="x"
+          style="width:13px;height:13px;"></i></button>
+    </div>
+    <div class="emoji-categories">
+      <button class="emoji-cat-btn active" data-cat="smileys">😀</button>
+      <button class="emoji-cat-btn" data-cat="server" title="Özel Sunucu Emojileri">⭐</button>
+      <button class="emoji-cat-btn" data-cat="people">👋</button>
+      <button class="emoji-cat-btn" data-cat="nature">🌿</button>
+      <button class="emoji-cat-btn" data-cat="food">🍕</button>
+      <button class="emoji-cat-btn" data-cat="activities">⚽</button>
+      <button class="emoji-cat-btn" data-cat="travel">✈️</button>
+      <button class="emoji-cat-btn" data-cat="objects">💡</button>
+      <button class="emoji-cat-btn" data-cat="symbols">❤️</button>
+    </div>
+    <div id="emoji-grid" class="emoji-grid"></div>
+  </div>
+
+  <!-- QUICK SWITCHER MODAL (Ctrl+K) -->
+  <div id="quick-switcher-modal" class="quick-switcher-overlay" style="display:none;">
+    <div class="quick-switcher-box">
+      <div class="qs-header">
+        <i data-lucide="search" style="width:18px;height:18px;color:var(--text-muted);"></i>
+        <input id="qs-input" type="text" placeholder="Sunucu, kanal veya arkadaş ara..." class="qs-input">
+        <span class="qs-esc-hint">ESC</span>
+      </div>
+      <div id="qs-results" class="qs-results"></div>
+    </div>
+  </div>
+
+  <!-- KEYBOARD SHORTCUTS MODAL (Ctrl+/) -->
+  <div id="shortcuts-modal" class="shortcuts-modal-overlay" style="display:none;">
+    <div class="shortcuts-modal-box">
+      <div class="shortcuts-header">
+        <h3>Klavye Kısayolları</h3>
+        <button id="btn-close-shortcuts" class="modal-close-btn"><i data-lucide="x"
+            style="width:15px;height:15px;"></i></button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>K</kbd><span>Hızlı Geçiş</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>/</kbd><span>Kısayol Listesi</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd><span>Direkt Mesajlar</span></div>
+        <div class="shortcut-row"><kbd>Ctrl</kbd>+<kbd>,</kbd><span>Ayarlar</span></div>
+        <div class="shortcut-row"><kbd>Esc</kbd><span>Modal Kapat</span></div>
+        <div class="shortcut-row"><kbd>Enter</kbd><span>Mesaj Gönder</span></div>
+        <div class="shortcut-row"><kbd>Shift</kbd>+<kbd>Enter</kbd><span>Yeni Satır</span></div>
+        <div class="shortcut-row"><kbd>Alt</kbd>+<kbd>↑/↓</kbd><span>Kanal Geç</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN LIGHTBOX & IMAGE EDITOR -->
+  <div id="modal-lightbox" class="lightbox-modal">
+    <!-- TOP TOOLBAR OVER TITLEBAR AREA -->
+    <div class="lightbox-top-bar">
+      <div class="lightbox-top-left">
+        <button id="btn-close-lightbox" class="lightbox-tool-btn danger" title="Kapat (ESC)">
+          <i data-lucide="x" style="width:16px; height:16px;"></i>
+          <span>Kapat</span>
+        </button>
+        <div class="lightbox-tool-divider"></div>
+        <button id="btn-download-lightbox" class="lightbox-tool-btn" title="Görseli İndir">
+          <i data-lucide="download" style="width:16px; height:16px;"></i>
+          <span>İndir</span>
+        </button>
+        <button id="btn-edit-lightbox" class="lightbox-tool-btn primary" title="Görseli Düzenle / Çizim Yap">
+          <i data-lucide="pencil" style="width:16px; height:16px;"></i>
+          <span>Düzenle & Çiz</span>
+        </button>
+      </div>
+
+      <!-- EDIT TOOLS BAR (Düzenleme modundayken açılır) -->
+      <div id="lightbox-edit-toolbar" class="lightbox-edit-toolbar" style="display:none;">
+        <button id="btn-draw-brush" class="lightbox-draw-tool active" title="Fırça">
+          <i data-lucide="paintbrush" style="width:15px; height:15px;"></i>
+          <span>Fırça</span>
+        </button>
+        <button id="btn-draw-eraser" class="lightbox-draw-tool" title="Silgi">
+          <i data-lucide="eraser" style="width:15px; height:15px;"></i>
+          <span>Silgi</span>
+        </button>
+
+        <div class="lightbox-tool-divider"></div>
+
+        <!-- Full Color Palette / Picker -->
+        <div class="draw-color-palette">
+          <label for="draw-color-input" class="draw-color-picker-btn" title="Tüm Renk Paleti (Renk Seç)">
+            <span id="draw-color-preview" class="draw-color-preview-dot" style="background:#ef4444;"></span>
+            <span id="draw-color-hex" class="draw-color-hex-text">#ef4444</span>
+            <input type="color" id="draw-color-input" class="draw-color-native-input" value="#ef4444">
+          </label>
+        </div>
+
+        <div class="lightbox-tool-divider"></div>
+
+        <!-- Line Width Picker -->
+        <div class="draw-size-picker">
+          <button class="draw-size-btn" data-size="3" title="İnce Çizgi">
+            <span class="draw-size-dot" style="width:4px; height:4px;"></span>
+          </button>
+          <button class="draw-size-btn active" data-size="7" title="Orta Çizgi">
+            <span class="draw-size-dot" style="width:8px; height:8px;"></span>
+          </button>
+          <button class="draw-size-btn" data-size="15" title="Kalın Çizgi">
+            <span class="draw-size-dot" style="width:12px; height:12px;"></span>
+          </button>
+        </div>
+
+        <div class="lightbox-tool-divider"></div>
+
+        <button id="btn-draw-undo" class="lightbox-draw-tool" title="Geri Al">
+          <i data-lucide="undo" style="width:15px; height:15px;"></i>
+        </button>
+        <button id="btn-draw-clear" class="lightbox-draw-tool" title="Temizle">
+          <i data-lucide="trash-2" style="width:15px; height:15px;"></i>
+        </button>
+
+        <div class="lightbox-tool-divider"></div>
+
+        <button id="btn-save-drawn-image" class="lightbox-save-btn" title="Çizimi Kaydet ve İndir">
+          <i data-lucide="check" style="width:15px; height:15px;"></i>
+          <span>Kaydet & İndir</span>
+        </button>
+        <button id="btn-cancel-drawn-image" class="lightbox-cancel-btn" title="Düzenlemeyi İptal Et">
+          <span>İptal</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN MEDIA CONTAINER -->
+    <div class="lightbox-img-wrapper" id="lightbox-wrapper">
+      <img id="lightbox-target-img" src="" alt="Büyütülmüş Görsel" crossorigin="anonymous">
+      <canvas id="lightbox-canvas" class="lightbox-canvas" style="display:none;"></canvas>
+    </div>
+  </div>
+
+  <!-- CREATE / JOIN SERVER MODAL -->
+  <div id="modal-create-server" class="modal-overlay">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.1rem; font-weight:700;">Yeni Sunucu Oluştur</h3>
+        <button id="btn-close-modal-server" class="modal-close-btn" title="Kapat">
+          <i data-lucide="x" style="width:15px; height:15px;"></i>
+        </button>
+      </div>
+      <input type="text" id="new-server-name-input" placeholder="Sunucu Adı (Örn: Yazılım & Topluluk, Gaming TR)">
+      <button id="btn-submit-create-server" class="btn-send-post"
+        style="width:100%; border-radius:var(--radius-md); padding:10px;">Sunucu Oluştur</button>
+    </div>
+  </div>
+
+  <!-- CREATE CATEGORY MODAL -->
+  <div id="modal-create-category" class="modal-overlay">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.1rem; font-weight:700;">Yeni Kategori Oluştur</h3>
+        <button id="btn-close-modal-category" class="modal-close-btn" title="Kapat">
+          <i data-lucide="x" style="width:15px; height:15px;"></i>
+        </button>
+      </div>
+      <input type="text" id="new-category-name-input" placeholder="Kategori Adı (Örn: SOHBET KANALLARI, SES KANALLARI)"
+        maxlength="50">
+      <button id="btn-submit-create-category" class="btn-send-post"
+        style="width:100%; border-radius:var(--radius-md); padding:10px;">Kategori Oluştur</button>
+    </div>
+  </div>
+
+  <!-- CREATE CHANNEL MODAL -->
+  <div id="modal-create-channel" class="modal-overlay">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.1rem; font-weight:700;">Yeni Kanal Oluştur</h3>
+        <button id="btn-close-modal-channel" class="modal-close-btn" title="Kapat">
+          <i data-lucide="x" style="width:15px; height:15px;"></i>
+        </button>
+      </div>
+      <p id="modal-channel-cat-info"
+        style="font-size:0.75rem; color:var(--text-muted); margin:4px 0 10px; font-family:var(--font-montserrat);"></p>
+      <input type="text" id="new-channel-name-input" placeholder="Kanal Adı (Örn: genel-sohbet, oyun, müzik)"
+        maxlength="50">
+      <div class="ch-edit-type-row" style="margin-bottom:12px;">
+        <button class="ch-edit-type-btn selected" id="modal-channel-type-text" data-type="text" type="button">
+          <i data-lucide="hash" style="width:14px; height:14px;"></i> Metin
+        </button>
+        <button class="ch-edit-type-btn" id="modal-channel-type-voice" data-type="voice" type="button">
+          <i data-lucide="volume-2" style="width:14px; height:14px;"></i> Ses
+        </button>
+      </div>
+      <button id="btn-submit-create-channel" class="btn-send-post"
+        style="width:100%; border-radius:var(--radius-md); padding:10px;">Kanal Oluştur</button>
+    </div>
+  </div>
+
+
+  <!-- CREATE POST MODAL -->
+  <div id="modal-create-post" class="modal-overlay">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.1rem; font-weight:700;">Yeni Gönderi</h3>
+        <button id="btn-close-modal-post" class="modal-close-btn" title="Kapat">
+          <i data-lucide="x" style="width:15px; height:15px;"></i>
+        </button>
+      </div>
+      <textarea id="modal-post-text" placeholder="Düşüncelerini aktar... (Enter ile Gönder)"></textarea>
+    </div>
+  </div>
+
+  <!-- FLOATING USER PROFILE POPOVER TOOLTIP -->
+  <div id="user-profile-popover" class="user-popover-tooltip" style="display:none;">
+    <div id="popover-banner" class="popover-banner" style="position:relative; overflow:hidden;"></div>
+    <div class="popover-body">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:-28px;">
+        <div id="popover-avatar-wrap" class="popover-avatar-wrap"
+          style="width:65px; height:65px; border-radius:50%;  overflow:hidden; position:relative; flex-shrink:0; background:var(--bg-input);">
+          <img id="popover-avatar" class="popover-avatar" src="" alt="User Avatar"
+            style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;">
+        </div>
+        <div class="popover-action-buttons" style="display:flex; gap:5px; align-items:center;">
+          <button id="popover-view-btn" class="popover-icon-btn" title="Profili Görüntüle">
+            <i data-lucide="user" style="width:16px; height:16px;"></i>
+          </button>
+          <button id="popover-action-btn" class="popover-icon-btn" title="Düzenle">
+            <i data-lucide="edit-3" style="width:16px; height:16px;"></i>
+          </button>
+          <button id="popover-friend-btn" class="popover-icon-btn popover-friend-btn" title="Arkadaş Ekle">
+            <i data-lucide="user-plus" style="width:16px; height:16px;"></i>
+          </button>
+        </div>
+      </div>
+      <div style="margin-top:6px;">
+        <strong id="popover-name" style="font-size:0.95rem; display:block; color:var(--text-main);">İsim</strong>
+        <span id="popover-handle"
+          style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">@handle</span>
+      </div>
+      <p id="popover-bio" style="font-size:0.78rem; margin-top:6px; color:var(--text-main); line-height:1.35;"></p>
+      <!-- ROLLER BÖLÜMÜ (Sunucularda görünür) -->
+      <div id="popover-roles-section"
+        style="display:none; margin-top:8px; border-top:1px solid var(--border-color); padding-top:8px;">
+        <div
+          style="font-size:0.68rem; font-weight:800; color:var(--text-muted); letter-spacing:0.5px; margin-bottom:5px; text-transform:uppercase;">
+          ROLLER</div>
+        <div id="popover-roles-container" style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;"></div>
+      </div>
+      <!-- ORTAK ARKADAŞLAR, ORTAK SUNUCULAR & ARKADAŞ SAYISI -->
+      <div class="popover-stats-grid">
+        <div class="popover-stat-item" id="popover-stat-friends" title="Toplam Arkadaş Sayısı">
+          <span class="popover-stat-val" id="popover-friend-count">0</span>
+          <span class="popover-stat-lbl">Arkadaş</span>
+        </div>
+        <div class="popover-stat-item popover-stat-clickable" id="popover-stat-mutual-friends"
+          title="Ortak Arkadaşlar (Görmek için tıkla)">
+          <span class="popover-stat-val" id="popover-mutual-friends">0</span>
+          <span class="popover-stat-lbl">Ortak Arkadaş</span>
+        </div>
+        <div class="popover-stat-item popover-stat-clickable" id="popover-stat-mutual-servers"
+          title="Ortak Sunucular (Görmek için tıkla)">
+          <span class="popover-stat-val" id="popover-mutual-servers">0</span>
+          <span class="popover-stat-lbl">Ortak Sunucu</span>
+        </div>
+      </div>
+
+      <!-- Ortak Arkadaşlar / Ortak Sunucular Detay Listesi -->
+      <div id="popover-mutual-details" class="popover-mutual-details" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- COMPACT DISCORD-STYLE GIF PICKER POPOVER (TENOR & NSFWGIFY) -->
+  <div id="gif-picker-modal" class="gif-picker-modal" style="display:none;">
+    <div class="gif-picker-header">
+      <div class="gif-picker-title-row">
+        <div class="gif-provider-tabs">
+          <button class="gif-tab-btn active" data-source="tenor" type="button">
+            Tenor.com
+          </button>
+          <button class="gif-tab-btn" data-source="nsfwgify" type="button">
+            NSFWGify.com
+          </button>
+        </div>
+        <button id="btn-close-gif-picker" class="gif-picker-close-btn" title="Kapat" type="button">
+          <i data-lucide="x" style="width:14px; height:14px;"></i>
+        </button>
+      </div>
+
+      <div class="gif-search-bar">
+        <i data-lucide="search" style="width:14px; height:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <input type="text" id="gif-search-input" placeholder="GIF Ara... (Örn: anime, dans, komik, ass)">
+        <button id="btn-clear-gif-search" class="gif-clear-btn" style="display:none;" type="button">✕</button>
+      </div>
+
+    </div>
+
+    <div class="gif-results-container" id="gif-results-container">
+      <div id="gif-loading-spinner" class="gif-loading-state" style="display:none;">
+        <span class="ziorse-spinner"></span>
+        <span>GIF'ler yükleniyor...</span>
+      </div>
+      <div id="gif-results-grid" class="gif-results-grid"></div>
+    </div>
+  </div>
+
+  <!-- IN-APP MODAL LAYER (Eliminates full page reloads on settings/edit) -->
+  <div id="ziorse-modal-layer" class="ziorse-modal-layer"
+    style="display:none; position:fixed; inset:0; z-index:999999; background:rgba(0,0,0,0.65); backdrop-filter:blur(8px); opacity:0; transition:opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);">
+    <iframe id="ziorse-modal-iframe" src="about:blank"
+      style="width:100%; height:100%; border:none; background:transparent; display:block;"></iframe>
+  </div>
+
+  <script src="js/audio-synth.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/image-cropper.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function dismissSplash() {
+      var splash = document.getElementById('app-splash');
+      if (!splash || splash.classList.contains('fade-out')) return;
+      splash.classList.add('fade-out');
+      setTimeout(function () {
+        if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 450);
+    }
+    window.dismissSplash = dismissSplash;
+  </script>
+</body>
+
+</html>

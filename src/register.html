@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Kayıt Ol</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/lib/lucide.min.js"></script>
+</head>
+
+<body class="auth-body">
+
+  <!-- MERKEZ KART -->
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <div class="auth-card-header">
+        <div class="auth-brand">ZIORSE</div>
+        <h1 class="auth-title">Hesap Oluştur</h1>
+        <p class="auth-subtitle">Ziorse topluluğuna katılmak için formu doldur.</p>
+      </div>
+
+      <div class="auth-form">
+
+        <div id="auth-error" class="auth-error"></div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-name">İsim Soyisim</label>
+          <input type="text" id="reg-name" class="auth-input" placeholder="Adınız Soyadınız" autocomplete="name">
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-handle">Kullanıcı Adı</label>
+          <input type="text" id="reg-handle" class="auth-input" placeholder="@kullanici" autocomplete="username">
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-email">E-Posta Adresi</label>
+          <input type="email" id="reg-email" class="auth-input" placeholder="ornek@ziorse.dev" autocomplete="email">
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-password">Şifre</label>
+          <input type="password" id="reg-password" class="auth-input" placeholder="En az 6 karakter"
+            autocomplete="new-password">
+        </div>
+
+        <button id="btn-register-submit" class="auth-submit-btn">Kayıt Ol</button>
+
+        <div class="auth-divider"></div>
+
+        <p class="auth-footer">
+          Zaten hesabın var mı?
+          <a href="login.html">Giriş Yap</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="auth-toast" class="auth-toast-container"></div>
+
+  <script src="js/data-store.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => initRegister());
+  </script>
+</body>
+
+</html>

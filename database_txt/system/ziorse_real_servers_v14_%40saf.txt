@@ -1,0 +1,34 @@
+[
+  {
+    "id": "srv-1787401956241",
+    "name": "fds",
+    "icon": "FD",
+    "inviteCode": "a5dv3nwp30",
+    "ownerHandle": "@saf",
+    "memberCount": 1,
+    "categories": [
+      {
+        "id": "cat-1787401956241",
+        "name": "METİN KANALLARI",
+        "collapsed": false,
+        "channels": [
+          {
+            "id": "genel",
+            "name": "genel-sohbet",
+            "type": "text"
+          },
+          {
+            "id": "duyurular",
+            "name": "duyurular",
+            "type": "text"
+          },
+          {
+            "id": "kod-paylasim",
+            "name": "kod-paylasimi",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+]

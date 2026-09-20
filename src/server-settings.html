@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Sunucu Ayarlari</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/server-settings.css">
+  <script src="js/lib/lucide.min.js"></script>
+  <script src="js/lib/socket.io.min.js"></script>
+  <script src="js/data-store.js"></script>
+  <script>
+    if (typeof io !== 'undefined') {
+      window.socket = io('http://localhost:3000');
+    }
+    if (!window.dataStore || !window.dataStore.isLoggedIn()) {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+
+<body class="ss-body">
+
+  <!-- TITLEBAR -->
+  <div class="app-header">
+    <div class="header-brand">
+      <span class="brand-badge-title">ZIORSE</span>
+      <span id="ss-server-title-bar" class="header-location-breadcrumb">– Sunucu Ayarları</span>
+    </div>
+  </div>
+
+  <!-- FLOATING WRAPPER -->
+  <div class="ss-wrapper">
+
+    <!-- CONTAINER CARD -->
+    <div class="ss-container">
+
+      <!-- SAG UST KAPAT ALANI -->
+      <div class="ss-close-area">
+        <button id="btn-ss-close" class="ss-close-btn" title="Geri dön">
+          <i data-lucide="x" style="width:16px; height:16px;"></i>
+        </button>
+        <span class="ss-esc-label">ESC</span>
+      </div>
+
+      <!-- SIDEBAR -->
+      <nav class="ss-sidebar">
+        <div class="ss-sidebar-server-info">
+          <div class="ss-server-icon" id="ss-sidebar-icon">SR</div>
+          <span class="ss-server-name" id="ss-sidebar-name">Sunucu Yükleniyor...</span>
+        </div>
+
+        <span class="ss-sidebar-label">Genel</span>
+        <button class="ss-nav-item active" data-section="genel">
+          <i data-lucide="settings" style="width:15px;height:15px;"></i> Genel Bilgiler
+        </button>
+        <button class="ss-nav-item" data-section="roller">
+          <i data-lucide="shield" style="width:15px;height:15px;"></i> Roller
+        </button>
+        <button class="ss-nav-item" data-section="kanallar">
+          <i data-lucide="hash" style="width:15px;height:15px;"></i> Kanallar
+        </button>
+        <button class="ss-nav-item" data-section="uyeler">
+          <i data-lucide="users" style="width:15px;height:15px;"></i> Üyeler
+        </button>
+
+        <span class="ss-sidebar-label">Davet & Erişim</span>
+        <button class="ss-nav-item" data-section="davet">
+          <i data-lucide="link" style="width:15px;height:15px;"></i> Davet Bağlantısı
+        </button>
+
+        <span class="ss-sidebar-label" style="margin-top:auto;"></span>
+        <button class="ss-nav-item danger" data-section="tehlike">
+          <i data-lucide="triangle-alert" style="width:15px;height:15px;"></i> Tehlike Bölgesi
+        </button>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <main class="ss-main">
+
+        <!-- ── GENEL BİLGİLER ── -->
+        <section class="ss-section active" id="section-genel">
+          <h2 class="ss-section-title">Genel Bilgiler</h2>
+
+          <!-- Sunucu ikonu -->
+          <div class="ss-card">
+            <span class="ss-card-title">Sunucu İkonu</span>
+            <div class="ss-icon-row">
+              <div class="ss-icon-preview" id="ss-icon-preview">
+                <span id="ss-icon-initials">?</span>
+                <img id="ss-icon-img" alt="Sunucu İkonu">
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <button class="ss-btn" id="btn-ss-pick-icon">
+                  <i data-lucide="image" style="width:14px;height:14px;"></i> Galeriden Seç
+                </button>
+                <button class="ss-btn" id="btn-ss-reset-icon">
+                  <i data-lucide="refresh-ccw" style="width:14px;height:14px;"></i> Sıfırla
+                </button>
+              </div>
+            </div>
+            <input type="file" id="ss-file-icon" accept="image/*" style="display:none;">
+          </div>
+
+          <!-- Sunucu Bannerı -->
+          <div class="ss-card">
+            <span class="ss-card-title">Sunucu Bannerı</span>
+            <div class="ss-banner-card-box">
+              <div class="ss-banner-preview" id="ss-banner-preview">
+                <span class="ss-banner-placeholder" id="ss-banner-placeholder">Banner Yok (Varsayılan Gradyan)</span>
+                <img id="ss-banner-img" alt="Sunucu Bannerı" style="display:none;">
+              </div>
+              <div class="ss-banner-actions">
+                <button class="ss-btn" id="btn-ss-pick-banner">
+                  <i data-lucide="image" style="width:14px;height:14px;"></i> Banner Seç
+                </button>
+                <button class="ss-btn" id="btn-ss-reset-banner">
+                  <i data-lucide="refresh-ccw" style="width:14px;height:14px;"></i> Sıfırla
+                </button>
+              </div>
+            </div>
+            <input type="file" id="ss-file-banner" accept="image/*" style="display:none;">
+          </div>
+
+          <!-- Sunucu adı & açıklaması -->
+          <div class="ss-card">
+            <span class="ss-card-title">Sunucu Bilgileri</span>
+
+            <div class="ss-field">
+              <label class="ss-label" for="ss-input-name">Sunucu Adı</label>
+              <input type="text" id="ss-input-name" class="ss-input" placeholder="Sunucunuzun adı...">
+            </div>
+
+            <div class="ss-field">
+              <label class="ss-label" for="ss-input-desc">Açıklama (İsteğe bağlı)</label>
+              <textarea id="ss-input-desc" class="ss-input ss-textarea"
+                placeholder="Sunucunuzdan kısaca bahsedin..."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── ROLLER ── -->
+        <section class="ss-section" id="section-roller">
+          <div class="ss-roles-header">
+            <div>
+              <h2 class="ss-section-title" style="margin:0;">Roller</h2>
+              <p class="ss-roles-desc">Üyelerinize roller vererek sunucunuzdaki yetkilerini ve sohbet renklerini
+                belirleyin.</p>
+            </div>
+            <button class="ss-btn ss-btn-primary" id="btn-ss-create-role">
+              <i data-lucide="plus" style="width:14px;height:14px;"></i> Rol Oluştur
+            </button>
+          </div>
+
+          <div class="ss-roles-layout">
+            <!-- Sol: Rol Listesi & Sıralama -->
+            <div class="ss-roles-sidebar">
+              <div class="ss-roles-list-header">
+                <span>ROLLER (HİYERARŞİ)</span>
+                <span class="ss-roles-count" id="ss-roles-count">0</span>
+              </div>
+              <div id="ss-roles-list" class="ss-roles-list">
+                <!-- Rol itemleri render edilir -->
+              </div>
+            </div>
+
+            <!-- Sağ: Seçili Rol Düzenleyici -->
+            <div class="ss-role-editor" id="ss-role-editor" style="display:none;">
+              <div class="ss-role-editor-top">
+                <div class="ss-role-title-row">
+                  <span class="ss-role-color-badge" id="ss-role-preview-badge"></span>
+                  <h3 id="ss-role-editor-title" style="font-size:1.1rem; margin:0;">Rol Düzenle</h3>
+                </div>
+                <button class="ss-btn ss-btn-danger ss-btn-sm" id="btn-ss-delete-role" title="Rolü Sil">
+                  <i data-lucide="trash-2" style="width:13px;height:13px;"></i> Sil
+                </button>
+              </div>
+
+              <!-- Rol Adı & Rengi -->
+              <div class="ss-card" style="margin-top:12px;">
+                <div class="ss-field">
+                  <label class="ss-label" for="ss-role-name-input">Rol Adı</label>
+                  <input type="text" id="ss-role-name-input" class="ss-input" placeholder="Rol adı...">
+                </div>
+
+                <div class="ss-field" style="margin-top:12px;">
+                  <label class="ss-label">Rol Rengi</label>
+                  <div class="ss-color-picker-row">
+                    <div class="ss-color-swatches" id="ss-color-swatches"></div>
+                    <div class="ss-custom-color-wrap">
+                      <input type="color" id="ss-role-color-picker" class="ss-color-input" value="#dbdbdb">
+                      <input type="text" id="ss-role-color-hex" class="ss-input ss-hex-input" value="#dbdbdb"
+                        maxlength="7">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ss-field" style="margin-top:14px;">
+                  <label class="ss-label">Rol Simgesi</label>
+                  <div class="ss-role-icon-card">
+                    <div class="ss-role-icon-preview-box" id="ss-role-icon-preview"
+                      title="Görsel Yüklemek İçin Tıklayın">
+                      <i data-lucide="image" style="width:20px;height:20px;color:var(--text-muted);"></i>
+                    </div>
+                    <div class="ss-role-icon-content">
+                      <div class="ss-role-icon-actions">
+                        <button type="button" class="ss-btn-upload-icon" id="btn-ss-role-pick-icon">
+                          <i data-lucide="upload" style="width:14px;height:14px;"></i> Görsel Yükle
+                        </button>
+                        <button type="button" class="ss-btn-remove-icon" id="btn-ss-role-remove-icon"
+                          style="display:none;">
+                          <i data-lucide="trash-2" style="width:14px;height:14px;"></i> Kaldır
+                        </button>
+                        <input type="file" id="ss-role-icon-file" accept="image/*" style="display:none;">
+                      </div>
+                      <span class="ss-role-icon-hint">Önerilen: 64x64 veya 128x128 piksel kare PNG/JPG/GIF
+                        görseli.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ss-field-checkbox" style="margin-top:14px;">
+                  <label class="ss-toggle-label">
+                    <input type="checkbox" id="ss-role-hoist" checked>
+                    <span class="ss-toggle-slider"></span>
+                    <div class="ss-toggle-text">
+                      <span class="ss-toggle-title">Üyeleri Bu Rol Başlığı Altında Ayrı Göster</span>
+                      <span class="ss-toggle-desc">Çevrim içi üyeler sağ üye listesinde bu rol başlığı altında
+                        gruplanır.</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- İzinler -->
+              <div class="ss-card" style="margin-top:12px;">
+                <span class="ss-card-title">Rol İzinleri</span>
+                <p class="ss-card-subtitle" style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Bu
+                  role sahip kullanıcıların yapabileceği eylemleri belirleyin.</p>
+
+                <div class="ss-perms-grid" id="ss-perms-grid">
+                  <!-- Perm toggles dynamically generated -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Rol Seçilmediğinde Gösterilen Placeholder -->
+            <div class="ss-role-editor-empty" id="ss-role-editor-empty">
+              <i data-lucide="shield" style="width:40px;height:40px;color:var(--text-muted);opacity:0.4;"></i>
+              <p style="margin-top:8px; font-size:0.85rem; color:var(--text-muted);">Düzenlemek için soldan bir rol
+                seçin veya yeni rol oluşturun.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── KANALLAR ── -->
+        <section class="ss-section" id="section-kanallar">
+          <h2 class="ss-section-title">Kanallar</h2>
+
+          <div class="ss-card">
+            <span class="ss-card-title">Metin Kanalları</span>
+            <div id="ss-channels-list" style="display:flex; flex-direction:column;"></div>
+            <div class="ss-add-row">
+              <input type="text" id="ss-new-channel-input" class="ss-input" placeholder="Yeni kanal adı..."
+                style="flex:1;">
+              <button class="ss-btn ss-btn-primary" id="btn-ss-add-channel">
+                <i data-lucide="plus" style="width:14px;height:14px;"></i> Ekle
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── UYELER ── -->
+        <section class="ss-section" id="section-uyeler">
+          <h2 class="ss-section-title">Üyeler</h2>
+
+          <div class="ss-card">
+            <span class="ss-card-title" id="ss-member-count-label">Üye Listesi</span>
+            <div id="ss-members-list" style="display:flex; flex-direction:column;"></div>
+          </div>
+        </section>
+
+        <!-- ── DAVET ── -->
+        <section class="ss-section" id="section-davet">
+          <h2 class="ss-section-title">Davet Bağlantısı</h2>
+
+          <div class="ss-card">
+            <span class="ss-card-title">Geçerli Davet</span>
+            <div class="ss-invite-box">
+              <span class="ss-invite-url" id="ss-invite-url">Yükleniyor...</span>
+              <button class="ss-btn" id="btn-ss-copy-invite">
+                <i data-lucide="copy" style="width:14px;height:14px;"></i> Kopyala
+              </button>
+            </div>
+            <button class="ss-btn" id="btn-ss-regen-invite" style="align-self:flex-start;">
+              <i data-lucide="refresh-ccw" style="width:14px;height:14px;"></i> Yeni Kod Oluştur
+            </button>
+            <p style="font-size:0.78rem; color:var(--text-muted); font-family:var(--font-nunito); line-height:1.5;">
+              Daveti paylaşmak için: Ana akışta <code
+                style="font-family:var(--font-mono); background:var(--bg-app); padding:1px 5px; border-radius:4px; font-size:0.8rem;">ziorse/KOD</code>
+              yazın.
+            </p>
+          </div>
+        </section>
+
+        <!-- ── TEHLİKE ── -->
+        <section class="ss-section" id="section-tehlike">
+          <h2 class="ss-section-title">Tehlike Bölgesi</h2>
+
+          <div class="ss-danger-card">
+            <div class="ss-danger-text">
+              <h4>Sunucuyu Sil</h4>
+              <p>Bu işlem geri alınamaz. Sunucudaki tüm kanallar ve mesajlar kalıcı olarak silinir.</p>
+            </div>
+            <button class="ss-btn ss-btn-danger" id="btn-ss-delete-server">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i> Sunucuyu Sil
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+    <!-- /CONTAINER -->
+
+  </div>
+  <!-- /WRAPPER -->
+
+  <!-- KAYDET CUBUGU -->
+  <div class="ss-save-bar" id="ss-save-bar">
+    <span>Kaydedilmemiş değişiklikler var.</span>
+    <button class="ss-btn" id="btn-ss-discard">Geri Al</button>
+    <button class="ss-btn ss-btn-primary" id="btn-ss-save">
+      <i data-lucide="check" style="width:14px;height:14px;"></i> Değişiklikleri Kaydet
+    </button>
+  </div>
+
+  <!-- SİLME ONAY MODALI -->
+  <div class="ss-confirm-overlay" id="ss-confirm-overlay">
+    <div class="ss-confirm-box">
+      <h3 class="ss-confirm-title" id="ss-confirm-title">Sunucuyu Sil</h3>
+      <p class="ss-confirm-text" id="ss-confirm-text">
+        Bu işlem geri alınamaz. Onaylamak için aşağıya sunucu adını yazın:
+      </p>
+      <p style="font-family:var(--font-mono); font-size:0.85rem; background:var(--bg-app); padding:8px 12px; border-radius:6px; color:var(--text-main);"
+        id="ss-confirm-name-hint"></p>
+      <input type="text" class="ss-confirm-input" id="ss-confirm-input" placeholder="Sunucu adını yazın...">
+      <div class="ss-confirm-actions">
+        <button class="ss-btn" id="btn-ss-confirm-cancel">Vazgeç</button>
+        <button class="ss-btn ss-btn-danger" id="btn-ss-confirm-delete" disabled>Sil</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- KANAL DÜZENLEME MODALI -->
+  <div class="ss-confirm-overlay" id="ss-channel-edit-overlay">
+    <div class="ss-confirm-box">
+      <h3 class="ss-confirm-title" style="color:var(--text-main);">Kanalı Düzenle</h3>
+      <div class="ss-field">
+        <label class="ss-label" for="ss-edit-channel-input">Kanal Adı</label>
+        <input type="text" class="ss-input" id="ss-edit-channel-input" placeholder="Kanal adı...">
+      </div>
+      <div class="ss-confirm-actions">
+        <button class="ss-btn" id="btn-ss-edit-channel-cancel">Vazgeç</button>
+        <button class="ss-btn ss-btn-primary" id="btn-ss-edit-channel-save">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="ss-toast" id="ss-toast"></div>
+
+  <script src="js/data-store.js"></script>
+  <script src="js/image-cropper.js"></script>
+  <script src="js/server-settings.js"></script>
+</body>
+
+</html>

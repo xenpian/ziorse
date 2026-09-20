@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Profil</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/profile-view.css">
+  <script src="js/lib/lucide.min.js"></script>
+  <script src="js/lib/socket.io.min.js"></script>
+  <script src="js/data-store.js"></script>
+  <script>
+    if (typeof io !== 'undefined') {
+      window.socket = io('http://localhost:3000');
+    }
+    if (!window.dataStore || !window.dataStore.isLoggedIn()) {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+
+<body class="profile-view-body">
+
+  <!-- TITLEBAR -->
+  <div class="app-header">
+    <div class="header-brand">
+      <span class="brand-badge-title">ZIORSE</span>
+      <span id="pv-titlebar-breadcrumb" class="header-location-breadcrumb">– Profil</span>
+    </div>
+  </div>
+
+  <!-- SAYFA ICERIK -->
+  <div class="pv-page">
+
+    <!-- SAG UST KAPAT ALANI -->
+    <div class="pv-close-area">
+      <button id="btn-close-profile-view" class="pv-close-btn" title="Geri dön">
+        <i data-lucide="x" style="width:16px; height:16px;"></i>
+      </button>
+      <span class="pv-esc-label">ESC</span>
+    </div>
+
+    <!-- SOL: Profil kart + sabit -->
+    <aside class="pv-sidebar">
+
+      <!-- BANNER + AVATAR KARTI -->
+      <div class="pv-profile-card">
+        <div id="pv-banner" class="pv-banner"></div>
+        <div class="pv-avatar-wrap">
+          <img id="pv-avatar" class="pv-avatar" src="" alt="Avatar">
+          <div class="pv-status-dot"></div>
+        </div>
+        <div class="pv-identity">
+          <h2 id="pv-name" class="pv-name"></h2>
+          <span id="pv-handle" class="pv-handle"></span>
+          <span id="pv-custom-status" class="pv-custom-status-badge" style="display:none;"></span>
+        </div>
+        <p id="pv-bio" class="pv-bio"></p>
+
+        <!-- ISTATISTIKLER -->
+        <div class="pv-stats">
+          <div class="pv-stat-item">
+            <span id="pv-stat-posts" class="pv-stat-num">0</span>
+            <span class="pv-stat-lbl">Gönderi</span>
+          </div>
+          <div class="pv-stat-divider"></div>
+          <div class="pv-stat-item">
+            <span id="pv-stat-followers" class="pv-stat-num">0</span>
+            <span class="pv-stat-lbl">Takipçi</span>
+          </div>
+          <div class="pv-stat-divider"></div>
+          <div class="pv-stat-item">
+            <span id="pv-stat-following" class="pv-stat-num">0</span>
+            <span class="pv-stat-lbl">Takip</span>
+          </div>
+        </div>
+
+        <!-- AKSIYON BUTONU -->
+        <button id="pv-action-btn" class="pv-action-btn">Takip Et</button>
+      </div>
+
+    </aside>
+
+    <!-- SAG: Gonderiler -->
+    <main class="pv-main">
+      <div class="pv-posts-header">
+        <span id="pv-posts-title" class="pv-posts-title">Gönderiler</span>
+      </div>
+      <div id="pv-posts-list" class="pv-posts-list">
+        <div class="pv-empty">Henüz gönderi yok.</div>
+      </div>
+    </main>
+
+  </div>
+
+  <div id="pv-toast" class="pv-toast-container"></div>
+
+  <script src="js/data-store.js"></script>
+  <script src="js/profile-view.js"></script>
+</body>
+
+</html>

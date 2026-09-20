@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Giriş Yap</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/lib/lucide.min.js"></script>
+</head>
+
+<body class="auth-body">
+
+  <!-- MERKEZ KART -->
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <div class="auth-card-header">
+        <div class="auth-brand">ZIORSE</div>
+        <h1 class="auth-title">Hoş Geldin</h1>
+        <p class="auth-subtitle">Hesabına giriş yap veya yeni bir hesap oluştur.</p>
+      </div>
+
+      <div class="auth-form">
+
+        <div id="auth-error" class="auth-error"></div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="login-email">E-Posta Adresi veya Kullanıcı Adı</label>
+          <input type="text" id="login-email" class="auth-input" placeholder="ornek@ziorse.dev veya @kullanici" autocomplete="username">
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="login-password">Şifre</label>
+          <input type="password" id="login-password" class="auth-input" placeholder="••••••••"
+            autocomplete="current-password">
+        </div>
+
+        <button id="btn-login-submit" class="auth-submit-btn">Giriş Yap</button>
+
+        <div class="auth-divider"></div>
+
+        <p class="auth-footer">
+          Hesabın yok mu?
+          <a href="register.html">Kayıt Ol</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="auth-toast" class="auth-toast-container"></div>
+
+  <script src="js/data-store.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => initLogin());
+  </script>
+</body>
+
+</html>

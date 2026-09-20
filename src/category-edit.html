@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziorse - Kategori Ayarları & İzinler</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/server-settings.css">
+  <script src="js/lib/lucide.min.js"></script>
+  <script src="js/lib/socket.io.min.js"></script>
+  <script src="js/data-store.js"></script>
+  <script>
+    if (typeof io !== 'undefined') {
+      window.socket = io('http://localhost:3000');
+    }
+    if (!window.dataStore || !window.dataStore.isLoggedIn()) {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+
+<body class="ss-body">
+
+  <!-- TITLEBAR -->
+  <div class="app-header">
+    <div class="header-brand">
+      <span class="brand-badge-title">ZIORSE</span>
+      <span id="cat-title-bar" class="header-location-breadcrumb">– Kategori Ayarları</span>
+    </div>
+  </div>
+
+  <!-- FLOATING WRAPPER -->
+  <div class="ss-wrapper">
+    <div class="ss-container">
+
+      <!-- CLOSE BUTTON -->
+      <div class="ss-close-area" id="btn-close-area">
+        <button id="btn-ss-close" class="ss-close-btn" title="Kapat">
+          <i data-lucide="x" style="width:16px; height:16px;"></i>
+        </button>
+        <span class="ss-esc-label">ESC</span>
+      </div>
+
+      <!-- SIDEBAR -->
+      <nav class="ss-sidebar">
+        <div class="ss-sidebar-server-info">
+          <div class="ss-server-icon" id="cat-sidebar-icon">
+            <i data-lucide="folder" style="width:18px;height:18px;"></i>
+          </div>
+          <div style="display:flex; flex-direction:column; min-width:0;">
+            <span class="ss-server-name" id="cat-sidebar-name">Kategori</span>
+            <span style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-nunito);"
+              id="cat-sidebar-srv">Sunucu</span>
+          </div>
+        </div>
+
+        <span class="ss-sidebar-label">Kategori Ayarları</span>
+        <button class="ss-nav-item active" data-section="genel">
+          <i data-lucide="settings" style="width:15px;height:15px;"></i> Genel Bilgiler
+        </button>
+        <button class="ss-nav-item" data-section="izinler">
+          <i data-lucide="shield" style="width:15px;height:15px;"></i> İzinler
+        </button>
+
+        <div style="flex:1;"></div>
+
+        <span class="ss-sidebar-label" style="color:var(--accent-rose);">Tehlikeli</span>
+        <button class="ss-nav-item ss-nav-item--danger" id="btn-sidebar-delete">
+          <i data-lucide="trash-2" style="width:15px;height:15px;"></i> Kategoriyi Sil
+        </button>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <main class="ss-content">
+
+        <!-- SECTION: GENEL -->
+        <section id="section-genel" class="ss-section active">
+          <div class="ss-section-header">
+            <h2>Genel Bilgiler</h2>
+            <p>Kategori adını ve simgesini yapılandırın.</p>
+          </div>
+
+          <div id="owner-warning-genel" class="perm-owner-warning" style="display:none;">
+            <i data-lucide="lock" style="width:16px;height:16px;flex-shrink:0;"></i>
+            <span>Bu kategori ayarlarını yalnızca sunucu sahibi değiştirebilir.</span>
+          </div>
+
+          <!-- Category Name -->
+          <div class="ss-card">
+            <div class="ss-field-group">
+              <label class="ss-field-label" for="cat-name-input">Kategori Adı</label>
+              <input id="cat-name-input" class="ss-input" type="text" placeholder="KATEGORİ ADI" maxlength="100">
+            </div>
+          </div>
+
+          <!-- Category Icon -->
+          <div class="ss-card">
+            <div class="ss-field-group">
+              <label class="ss-field-label">Kategori Görseli (Minik İkon)</label>
+              <div style="display:flex; align-items:center; gap:12px; margin-top:6px;">
+                <div id="cat-icon-preview-box"
+                  style="width:38px; height:38px; border-radius:8px; border:1px solid var(--border-dark); background:var(--bg-app); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0;">
+                  <img id="cat-icon-preview-img" src="" alt="İkon"
+                    style="width:100%; height:100%; object-fit:cover; display:none;">
+                  <i id="cat-icon-preview-placeholder" data-lucide="image"
+                    style="width:16px; height:16px; color:var(--text-muted);"></i>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <input type="file" id="cat-icon-file-input" accept="image/*" style="display:none;">
+                  <button type="button" class="ss-btn-secondary" id="btn-pick-cat-icon"
+                    style="padding:7px 12px; font-size:0.8rem;">
+                    <i data-lucide="upload" style="width:13px; height:13px;"></i> Görsel Seç
+                  </button>
+                  <button type="button" class="ss-btn-secondary" id="btn-remove-cat-icon"
+                    style="padding:7px 12px; font-size:0.8rem; display:none;">
+                    Kaldır
+                  </button>
+                </div>
+              </div>
+              <p class="ss-field-help">Kategori başlığının solunda minik rozet olarak gösterilir.</p>
+            </div>
+          </div>
+
+          <!-- Channel count info -->
+          <div class="ss-card">
+            <div class="ss-field-group">
+              <label class="ss-field-label">Bağlı Kanallar</label>
+              <p id="ch-count-info"
+                style="font-size:0.85rem; color:var(--text-muted); font-family:var(--font-nunito); margin:0;"></p>
+            </div>
+          </div>
+
+          <div class="ss-footer-actions">
+            <button class="ss-btn-primary" id="btn-save-genel">
+              <i data-lucide="check" style="width:14px;height:14px;"></i> Değişiklikleri Kaydet
+            </button>
+          </div>
+        </section>
+
+        <!-- SECTION: İZİNLER -->
+        <section id="section-izinler" class="ss-section">
+          <div class="ss-section-header">
+            <h2>Kategori İzinleri (Tüm Kanallara Uygulanır)</h2>
+            <p>Burada ayarladığınız izinler bu kategorideki tüm kanallar için geçerli olur. Kanalların kendi özel
+              izinleri kategorinin üzerine yazabilir.</p>
+          </div>
+
+          <div id="owner-warning-perm" class="perm-owner-warning" style="display:none;">
+            <i data-lucide="lock" style="width:16px;height:16px;flex-shrink:0;"></i>
+            <span>İzinleri yalnızca sunucu sahibi düzenleyebilir.</span>
+          </div>
+
+          <!-- Member / Role Selector Bar -->
+          <div class="perm-targets-bar" style="position:relative;">
+            <div id="perm-targets-container" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <!-- Target chips rendered dynamically -->
+            </div>
+
+            <div style="position:relative;">
+              <button type="button" class="perm-add-target-btn" id="btn-add-perm-target">
+                <i data-lucide="user-plus" style="width:13px;height:13px;"></i> Üye Ekle
+              </button>
+              <div class="perm-add-dropdown" id="perm-members-dropdown">
+                <!-- Dropdown member list -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Permissions List Container -->
+          <div id="perm-list-container">
+            <!-- Dynamic permission groups rendered by JS -->
+          </div>
+
+          <div class="ss-footer-actions">
+            <button class="ss-btn-primary" id="btn-save-perms">
+              <i data-lucide="check" style="width:14px;height:14px;"></i> Kategori İzinlerini Kaydet
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div id="ch-toast" class="ch-edit-toast"></div>
+
+  <script src="js/image-cropper.js"></script>
+  <script src="js/category-edit.js"></script>
+</body>
+
+</html>

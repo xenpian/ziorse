@@ -1,0 +1,1 @@
+{"incoming":[{"handle":"@sa","name":"sa","avatar":"http://localhost:3000/uploads/avatar_sa.jpg","timestamp":"2026-08-18T19:52:08.577Z","firstMessage":null}],"outgoing":[]}

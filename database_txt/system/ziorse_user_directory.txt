@@ -1,0 +1,132 @@
+{
+  "@kurtv_dev": {
+    "name": "Kurtv",
+    "handle": "@kurtv_dev",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
+    "banner": "#999999",
+    "bio": "Ziorse Developer",
+    "followers": 128,
+    "following": 42,
+    "status": {
+      "type": "online",
+      "text": "Kod yazıyor..."
+    }
+  },
+  "@sa": {
+    "name": "ziorse creator",
+    "handle": "@sa",
+    "avatar": "http://localhost:3000/uploads/avatar_1789933007530_hoe39.png",
+    "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
+    "bio": "fdffa",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "idle",
+      "text": "porno"
+    }
+  },
+  "@saf": {
+    "name": "safsfdsvv",
+    "handle": "@saf",
+    "avatar": "http://localhost:3000/uploads/avatar_saf.png",
+    "banner": "http://localhost:3000/uploads/migrated_1787418808372_1wmf8qzdhdj.jpg",
+    "bio": "fdf",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "online",
+      "text": ""
+    }
+  },
+  "@fas": {
+    "name": "fas",
+    "handle": "@fas",
+    "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png",
+    "banner": "",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "online",
+      "text": ""
+    }
+  },
+  "@selamsa": {
+    "name": "selam",
+    "handle": "@selamsa",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80",
+    "banner": "#999999",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "offline",
+      "text": ""
+    }
+  },
+  "@sasasa": {
+    "name": "sa",
+    "handle": "@sasasa",
+    "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E",
+    "banner": "#999999",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "online",
+      "text": ""
+    }
+  },
+  "@as": {
+    "name": "s",
+    "handle": "@as",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80",
+    "banner": "#999999",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "offline",
+      "text": ""
+    }
+  },
+  "@yarra": {
+    "name": "yarra",
+    "handle": "@yarra",
+    "avatar": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=120&auto=format&fit=crop&q=80",
+    "banner": "#999999",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "offline",
+      "text": ""
+    }
+  },
+  "@fafa": {
+    "name": "fafa",
+    "handle": "@fafa",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
+    "banner": "#999999",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "offline",
+      "text": ""
+    }
+  },
+  "@ahmet": {
+    "name": "AHMET",
+    "handle": "@ahmet",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
+    "banner": "#999999",
+    "bio": "",
+    "followers": 0,
+    "following": 0,
+    "status": {
+      "type": "offline",
+      "text": ""
+    }
+  }
+}

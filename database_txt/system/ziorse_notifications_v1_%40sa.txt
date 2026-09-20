@@ -1,0 +1,222 @@
+[
+  {
+    "id": "notif-1789924403684",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "zsnin anasını siktim: @fas",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-09-20T17:13:23.684Z",
+    "read": false
+  },
+  {
+    "id": "notif-1789924399655",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "zsnin anasını siktim: @",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-09-20T17:13:19.655Z",
+    "read": false
+  },
+  {
+    "id": "notif-1789923929778",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "zsnin anasını siktim: @seks",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-09-20T17:05:29.778Z",
+    "read": false
+  },
+  {
+    "id": "notif-1789923926921",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "zsnin anasını siktim: @everyone",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-09-20T17:05:26.921Z",
+    "read": false
+  },
+  {
+    "id": "notif-1789923864240",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "zsnin anasını siktim: @sa",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-09-20T17:04:24.240Z",
+    "read": false
+  },
+  {
+    "id": "notif-1789923856515",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "zsnin anasını siktim: @fas",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-09-20T17:04:16.515Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787403890465",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "fasfsad: Video gönderdi",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T13:04:50.465Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787403829222",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "fasfsad: Video gönderdi",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T13:03:49.222Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787403826111",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "fasfsad: Fotoğraf gönderdi",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T13:03:46.111Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787403819883",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "fasfsad: Dosya gönderdi",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T13:03:39.883Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787393500293",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "sa: dfdsligdsjl",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T10:11:40.293Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787393499542",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "sa: dfdss",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T10:11:39.542Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787393327943",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "sa: naber",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-22T10:08:47.943Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787153661542",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "sa: naber",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-19T15:34:21.542Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787082800727",
+    "type": "dm",
+    "title": "Yeni Mesaj",
+    "body": "sa: sa",
+    "meta": {
+      "handle": "@fas"
+    },
+    "timestamp": "2026-08-18T19:53:20.727Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787079422143",
+    "type": "comment",
+    "title": "Yeni Yorum",
+    "body": "sa gönderinize yorum yaptı.",
+    "meta": {
+      "postId": "post-1787003209921"
+    },
+    "timestamp": "2026-08-18T18:57:02.143Z",
+    "read": false
+  },
+  {
+    "id": "notif-1787078981903",
+    "type": "comment",
+    "title": "Yeni Yorum",
+    "body": "sa gönderinize yorum yaptı.",
+    "meta": {
+      "postId": "post-1787003209921"
+    },
+    "timestamp": "2026-08-18T18:49:41.903Z",
+    "read": true
+  },
+  {
+    "id": "notif-1787078978936",
+    "type": "comment",
+    "title": "Yeni Yorum",
+    "body": "sa gönderinize yorum yaptı.",
+    "meta": {
+      "postId": "post-1787003209921"
+    },
+    "timestamp": "2026-08-18T18:49:38.936Z",
+    "read": true
+  },
+  {
+    "id": "notif-1787078971447",
+    "type": "comment",
+    "title": "Yeni Yorum",
+    "body": "sa gönderinize yorum yaptı.",
+    "meta": {
+      "postId": "post-1787003209921"
+    },
+    "timestamp": "2026-08-18T18:49:31.447Z",
+    "read": true
+  },
+  {
+    "id": "notif-1787078962015",
+    "type": "comment",
+    "title": "Yeni Yorum",
+    "body": "sa gönderinize yorum yaptı.",
+    "meta": {
+      "postId": "post-1787003209921"
+    },
+    "timestamp": "2026-08-18T18:49:22.015Z",
+    "read": true
+  }
+]
