@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "server": "node server.js",
+    "sync": "node scripts/github-auto-sync.js",
     "build:win": "electron-builder --win nsis"
   },
   "keywords": [
