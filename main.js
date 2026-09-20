@@ -519,12 +519,14 @@ app.on('before-quit', () => {
   app.isQuitting = true;
   flushPersistentStore();
   if (serverProcess) serverProcess.kill();
+  if (syncProcess) syncProcess.kill();
 });
 
 app.on('window-all-closed', () => {
   flushPersistentStore();
   if (process.platform !== 'darwin') {
     if (serverProcess) serverProcess.kill();
+    if (syncProcess) syncProcess.kill();
     app.quit();
   }
 });
