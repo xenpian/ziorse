@@ -9,6 +9,8 @@ let serverProcess = null;
 
 // Start Server Child Process
 let isAppQuitting = false;
+let syncProcess = null;
+
 function startBackendServer() {
   const serverPath = path.join(__dirname, 'server.js');
   serverProcess = fork(serverPath);
@@ -22,6 +24,18 @@ function startBackendServer() {
       setTimeout(startBackendServer, 1000);
     }
   });
+}
+
+function startGitHubAutoSync() {
+  const syncScript = path.join(__dirname, 'scripts/github-auto-sync.js');
+  if (fs.existsSync(syncScript)) {
+    syncProcess = fork(syncScript);
+    syncProcess.on('exit', (code) => {
+      if (!isAppQuitting) {
+        setTimeout(startGitHubAutoSync, 3000);
+      }
+    });
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════
