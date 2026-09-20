@@ -457,6 +457,7 @@ app.whenReady().then(() => {
     app.setAppUserModelId('com.ziorse.desktop');
   }
   startBackendServer();
+  startGitHubAutoSync();
   createMainWindow();
   createSystemTray();
 
