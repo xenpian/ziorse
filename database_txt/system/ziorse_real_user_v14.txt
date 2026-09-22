@@ -7,10 +7,10 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "cinzel",
-  "nameColor": "#ed4040",
+  "fontStyle": "playfair",
+  "nameColor": "#ff0000",
   "nameEffects": [
-    "neon"
+    "shadow"
   ],
   "avatarFrame": "assets/avatar-frames/Liaz.png",
   "profileEffect": "none",

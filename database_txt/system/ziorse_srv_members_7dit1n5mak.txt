@@ -3,10 +3,10 @@
     "handle": "@sa",
     "name": "ziorse creatorf",
     "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-    "fontStyle": "cinzel",
-    "nameColor": "#ed4040",
+    "fontStyle": "playfair",
+    "nameColor": "#ff0000",
     "nameEffects": [
-      "neon"
+      "shadow"
     ],
     "avatarFrame": "assets/avatar-frames/Liaz.png",
     "fontWeight": "900"
