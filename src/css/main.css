@@ -7651,62 +7651,39 @@ body.dark-mode .cr-search-input:focus {
 .popover-avatar-wrap,
 .comment-composer-avatar-wrap,
 .pbd-avatar-wrap,
-.dm-profile-avatar-wrap {
+.dm-profile-avatar-wrap,
+.hesabim-avatar-wrap {
   border-radius: 50% !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   position: relative !important;
   flex-shrink: 0 !important;
   aspect-ratio: 1 / 1 !important;
   box-sizing: border-box !important;
 }
 
+/* Internal Avatar Media (Images & Videos remain strictly circular with cover fit) */
 .avatar-wrapper-status video,
-.avatar-wrapper-status img,
+.avatar-wrapper-status img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .post-avatar-wrap video,
-.post-avatar-wrap img,
+.post-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .dm-friend-avatar-wrap video,
-.dm-friend-avatar-wrap img,
+.dm-friend-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .dm-header-avatar-wrap video,
-.dm-header-avatar-wrap img,
+.dm-header-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .dm-msg-avatar-wrap video,
-.dm-msg-avatar-wrap img,
+.dm-msg-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .comment-avatar-wrap video,
-.comment-avatar-wrap img,
+.comment-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .popover-avatar-wrap video,
-.popover-avatar-wrap img,
+.popover-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .comment-composer-avatar-wrap video,
-.comment-composer-avatar-wrap img,
+.comment-composer-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .pbd-avatar-wrap video,
-.pbd-avatar-wrap img,
+.pbd-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .dm-profile-avatar-wrap video,
-.dm-profile-avatar-wrap img,
-.user-avatar-sm,
-.post-avatar,
-.dm-header-avatar,
-.dm-msg-avatar,
-.comment-avatar,
-.popover-avatar,
-.comment-composer-avatar,
-.pbd-avatar,
-.avatar-wrapper-status img,
-.post-avatar-wrap video,
-.post-avatar-wrap img,
-.dm-friend-avatar-wrap video,
-.dm-friend-avatar-wrap img,
-.dm-header-avatar-wrap video,
-.dm-header-avatar-wrap img,
-.dm-msg-avatar-wrap video,
-.dm-msg-avatar-wrap img,
-.comment-avatar-wrap video,
-.comment-avatar-wrap img,
-.popover-avatar-wrap video,
-.popover-avatar-wrap img,
-.comment-composer-avatar-wrap video,
-.comment-composer-avatar-wrap img,
-.pbd-avatar-wrap video,
-.pbd-avatar-wrap img,
-.dm-profile-avatar-wrap video,
-.dm-profile-avatar-wrap img,
+.dm-profile-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
+.hesabim-avatar-wrap video,
+.hesabim-avatar-wrap img:not(.global-avatar-frame-overlay):not(.hesabim-avatar-frame-overlay),
 .user-avatar-sm,
 .post-avatar,
 .dm-header-avatar,
@@ -7722,6 +7699,25 @@ body.dark-mode .cr-search-input:focus {
   max-height: 100% !important;
   border-radius: 50% !important;
   object-fit: cover !important;
+  display: block !important;
+}
+
+/* ── Universal Avatar Frame Overlay PNG (Never forced to circle, perfectly centered) ── */
+img.global-avatar-frame-overlay,
+img.hesabim-avatar-frame-overlay {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  pointer-events: none !important;
+  z-index: 15 !important;
   display: block !important;
 }
 
