@@ -803,18 +803,18 @@ document.addEventListener('DOMContentLoaded', () => {
   window.applyUserNameStyling = applyUserNameStyling;
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 178,
-    'altin-tac.png': 134,
-    'ates-cemberi.png': 133,
-    'galaksi-mor.png': 133,
-    'sakura-cicegi.png': 131,
-    'siber-neon.png': 133
+    'Lord.png': 156,
+    'altin-tac.png': 118,
+    'ates-cemberi.png': 117,
+    'galaksi-mor.png': 117,
+    'sakura-cicegi.png': 116,
+    'siber-neon.png': 117
   };
 
   function getFrameScale(frameSrc) {
-    if (!frameSrc || frameSrc === 'none') return 130;
+    if (!frameSrc || frameSrc === 'none') return 118;
     const cleanName = String(frameSrc).split('/').pop().split('?')[0];
-    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 132;
+    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 118;
   }
   window.getFrameScale = getFrameScale;
 
