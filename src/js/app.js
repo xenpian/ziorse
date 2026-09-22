@@ -4509,7 +4509,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   </div>
                   <div class="dm-msg-body">
                     <div class="dm-msg-meta">
-                      <span class="dm-msg-name" style="cursor:pointer;" data-handle="${escapeHtml(senderHandle)}" ${authorNameStyle}>${escapeHtml(authorName)}</span>
+                      <span class="dm-msg-name" data-handle="${escapeHtml(senderHandle)}" ${authorNameStyle}>${escapeHtml(authorName)}</span>
                       <span class="dm-msg-time">${formatDateTime(m.timestamp)}</span>
                     </div>
                     ${renderInviteCardHtml(m.invite)}
