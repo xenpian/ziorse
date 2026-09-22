@@ -404,11 +404,12 @@ function getFrameHoleScale(filePath) {
     const avgDim = (width + height) / 2;
 
     if (avgHole > 20) {
-      const scalePct = Math.round((avgDim / avgHole) * 100);
-      return Math.min(Math.max(scalePct, 110), 195);
+      // Snug overlap factor (~88%) so inner frame rim overlaps avatar edge and leaves ZERO white gap
+      const scalePct = Math.round((avgDim / avgHole) * 88);
+      return Math.min(Math.max(scalePct, 105), 165);
     }
   } catch (e) { }
-  return 130;
+  return 118;
 }
 
 ipcMain.handle('get-avatar-frames', () => {
@@ -500,6 +501,7 @@ function createMainWindow() {
   }
 
   mainWindow.loadFile(path.join(__dirname, 'src/index.html'));
+  mainWindow.webContents.openDevTools();
   mainWindow.on('resize', () => saveWindowBounds(mainWindow.getBounds()));
   mainWindow.on('move', () => saveWindowBounds(mainWindow.getBounds()));
   mainWindow.on('maximize', () => mainWindow.webContents.send('window-maximized-state', true));
