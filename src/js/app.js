@@ -4790,15 +4790,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const isSelf = cu && cu.handle && cu.handle.toLowerCase().replace('@', '') === cleanReqH;
     const resolvedAvatar = (isSelf && cu.avatar ? cu.avatar : null) || profile.avatar || window.DEFAULT_AVATAR;
     const resolvedName = (isSelf && cu.name ? cu.name : null) || profile.name || handle;
+    const resolvedFrame = (isSelf && cu.avatarFrame ? cu.avatarFrame : null) || profile.avatarFrame;
+    const resolvedFont = (isSelf && cu.fontStyle ? cu.fontStyle : null) || profile.fontStyle;
+    const resolvedColor = (isSelf && cu.nameColor ? cu.nameColor : null) || profile.nameColor;
+    const resolvedEffects = (isSelf && cu.nameEffects ? cu.nameEffects : null) || profile.nameEffects;
 
     const popAvatarWrap = document.getElementById('popover-avatar-wrap');
     const popAvatar = document.getElementById('popover-avatar');
     if (popAvatarWrap) {
       applyAvatarToElement(popAvatarWrap, resolvedAvatar);
+      applyAvatarFrameToContainer(popAvatarWrap, resolvedFrame);
     } else if (popAvatar) {
       applyAvatarToElement(popAvatar, resolvedAvatar);
     }
-    document.getElementById('popover-name').textContent = resolvedName;
+    const popNameEl = document.getElementById('popover-name');
+    if (popNameEl) {
+      popNameEl.textContent = resolvedName;
+      applyUserNameStyling(popNameEl, resolvedFont, resolvedColor, resolvedEffects);
+    }
     document.getElementById('popover-handle').textContent = profile.handle || handle;
     document.getElementById('popover-bio').textContent = profile.bio || '';
 
