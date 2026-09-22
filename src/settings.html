@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ziorse - Uygulama Ayarları</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Russo+One&display=swap">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/server-settings.css">
   <link rel="stylesheet" href="css/settings.css">
@@ -100,79 +101,210 @@
         <section class="ss-section active" id="sec-hesabim">
           <div class="ss-section-header">
             <h2 class="ss-section-title">Hesabım</h2>
-            <p class="ss-section-desc">Kişisel bilgilerinizi ve hesap güvenliğinizi yönetin.</p>
+            <p class="ss-section-desc">Kişisel bilgilerinizi, görünen ad stilinizi ve profil çerçevenizi yönetin.</p>
           </div>
 
-          <!-- Profil Kartı Önizleme -->
-          <div class="ss-card" style="padding:0; overflow:hidden;">
-            <div id="acc-banner-preview"
-              style="height:115px; background:var(--bg-servers, #eeeeee); background-size:cover; background-position:center; position:relative;">
-              <button class="btn-ss-outline" id="btn-edit-banner-quick"
-                style="position:absolute; top:12px; right:12px;">
-                <i data-lucide="image" style="width:13px;height:13px;"></i> Kapağı Değiştir
-              </button>
-            </div>
-            <div style="padding:0 20px 20px 20px; position:relative;">
-              <div
-                style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:-34px; margin-bottom:12px;">
-                <div
-                  style="width:72px; height:72px; border-radius:50%; border:4px solid var(--bg-card, #ffffff); background:var(--bg-servers, #eeeeee); overflow:hidden;"
-                  id="acc-avatar-box">
-                  <img id="acc-avatar-img" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
-                  <span id="acc-avatar-initials"
-                    style="font-weight:800; font-size:1.35rem; display:flex; align-items:center; justify-content:center; height:100%; color:var(--text-main, #121212);">U</span>
+          <div class="hesabim-two-column-layout">
+
+            <!-- LEFT COLUMN: Bilgiler + İsim Fontu + Profil Çerçevesi + Güvenlik -->
+            <div class="hesabim-left-column">
+
+              <!-- 1. HESAP BİLGİLERİ KARTI -->
+              <div class="ss-card">
+                <div class="acc-info-row">
+                  <div>
+                    <div class="acc-info-label">Görünen İsim</div>
+                    <div class="acc-info-value" id="acc-info-name">Kullanıcı</div>
+                  </div>
+                  <button class="btn-ss-outline btn-edit-account-field" data-field="name">Düzenle</button>
                 </div>
-                <button class="btn-ss-primary" id="btn-go-profile-tab">
-                  <i data-lucide="edit-3" style="width:14px;height:14px;"></i> Profili Düzenle
+
+                <div class="acc-info-row">
+                  <div>
+                    <div class="acc-info-label">Kullanıcı Adı (Handle)</div>
+                    <div class="acc-info-value" id="acc-info-handle">@kullanici</div>
+                  </div>
+                  <button class="btn-ss-outline btn-edit-account-field" data-field="handle">Düzenle</button>
+                </div>
+
+                <div class="acc-info-row">
+                  <div>
+                    <div class="acc-info-label">E-Posta</div>
+                    <div class="acc-info-value" id="acc-info-email">kullanici@ziorse.app</div>
+                  </div>
+                  <button class="btn-ss-outline btn-edit-account-field" data-field="email">Değiştir</button>
+                </div>
+              </div>
+
+              <!-- 2. GÖRÜNEN AD YAZI TİPİ (FONT) VE RENK STİLİ -->
+              <div class="ss-card" style="margin-top:16px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                  <div>
+                    <div style="font-size:0.92rem; font-weight:700; color:var(--text-main);">Görünen Ad Yazı Tipi (Font) & Stili</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">İsminizin tüm uygulamada nasıl görüneceğini seçin.</div>
+                  </div>
+                  <span class="ss-badge-new" style="background:#5865f2; color:#fff; font-size:0.6rem; font-weight:800; padding:2px 8px; border-radius:10px;">YENİ</span>
+                </div>
+
+                <!-- Font Seçici Grid -->
+                <div class="hesabim-font-grid" id="hesabim-font-grid">
+                  <div class="hesabim-font-chip active" data-font="outfit">
+                    <span style="font-family:'Outfit', sans-serif; font-size:0.9rem; font-weight:700;">Modern</span>
+                    <small>Outfit</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="cyber">
+                    <span style="font-family:'Russo One', sans-serif; font-size:0.85rem;">CYBERPUNK</span>
+                    <small>Russo One</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="cursive">
+                    <span style="font-family:'Caveat', cursive; font-size:1.05rem; font-weight:700;">Kaligrafi</span>
+                    <small>Caveat</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="pixel">
+                    <span style="font-family:'Press Start 2P', monospace; font-size:0.65rem;">PIXEL</span>
+                    <small>Retro 8-Bit</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="serif">
+                    <span style="font-family:'Cinzel', serif; font-size:0.82rem; font-weight:700;">ASİL SERİF</span>
+                    <small>Cinzel</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="neon">
+                    <span style="font-family:'Righteous', cursive; font-size:0.88rem;">Neon Glow</span>
+                    <small>Righteous</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="terminal">
+                    <span style="font-family:'JetBrains Mono', monospace; font-size:0.82rem;">terminal.io</span>
+                    <small>JetBrains</small>
+                  </div>
+                  <div class="hesabim-font-chip" data-font="inter">
+                    <span style="font-family:'Inter', sans-serif; font-size:0.88rem; font-weight:600;">Minimal</span>
+                    <small>Inter</small>
+                  </div>
+                </div>
+
+                <!-- Renk & Gradyan Seçici -->
+                <div style="margin-top:14px;">
+                  <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">İsim Rengi / Efekt Paleti</div>
+                  <div class="hesabim-color-row" id="hesabim-color-row">
+                    <div class="hesabim-color-dot active" data-color="#ffffff" style="background:#ffffff;" title="Saf Beyaz"></div>
+                    <div class="hesabim-color-dot" data-color="linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)" style="background:linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);" title="Cyber Cyan"></div>
+                    <div class="hesabim-color-dot" data-color="linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)" style="background:linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);" title="Neon Pembe"></div>
+                    <div class="hesabim-color-dot" data-color="linear-gradient(135deg, #f6d365 0%, #fda085 100%)" style="background:linear-gradient(135deg, #f6d365 0%, #fda085 100%);" title="Altın Gün Batımı"></div>
+                    <div class="hesabim-color-dot" data-color="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" style="background:linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" title="Zümrüt"></div>
+                    <div class="hesabim-color-dot" data-color="linear-gradient(135deg, #ff0844 0%, #ffb199 100%)" style="background:linear-gradient(135deg, #ff0844 0%, #ffb199 100%);" title="Ateş Kırmızı"></div>
+                    <div class="hesabim-color-dot" data-color="linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" style="background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);" title="Lavanta"></div>
+
+                    <label class="hesabim-custom-color-btn" title="Özel Renk Seç">
+                      <i data-lucide="pipette" style="width:12px; height:12px;"></i>
+                      <span>Özel</span>
+                      <input type="color" id="hesabim-custom-color-input" value="#5865f2">
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Metin Efekti Toggles -->
+                <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="btn-ss-outline hesabim-effect-toggle" data-effect="glow">
+                    <i data-lucide="sparkles" style="width:13px;height:13px;"></i> Neon Parlama
+                  </button>
+                  <button type="button" class="btn-ss-outline hesabim-effect-toggle" data-effect="shadow">
+                    3D Gölge
+                  </button>
+                  <button type="button" class="btn-ss-outline hesabim-effect-toggle" data-effect="spaced">
+                    Aralıklı Harfler
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. OTOMATİK DİNAMİK PROFİL ÇERÇEVESİ KARTI -->
+              <div class="ss-card" style="margin-top:16px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <div style="font-size:0.92rem; font-weight:700; color:var(--text-main);">Profil Çerçevesi (Avatar Frame)</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">
+                      Klasöre attığınız her <code>.png</code> dosyası burada otomatik olarak çerçeve olarak gözükür.
+                    </div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <button class="btn-ss-outline" id="btn-open-frames-folder" title="Klasörü Dosya Gezgininde Aç">
+                      <i data-lucide="folder-open" style="width:13px;height:13px;"></i> Klasörü Aç
+                    </button>
+                    <button class="btn-ss-outline" id="btn-refresh-frames" title="Çerçeveleri Yenile">
+                      <i data-lucide="rotate-cw" style="width:13px;height:13px;"></i> Yenile
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Çerçeveler Listesi Izgarası (Dinamik doldurulur) -->
+                <div class="hesabim-frames-grid" id="hesabim-frames-grid">
+                  <div class="hesabim-frame-item active" data-frame-id="none">
+                    <div class="hesabim-frame-preview-box">
+                      <div class="hesabim-frame-none-icon">🚫</div>
+                    </div>
+                    <span class="hesabim-frame-name">Çerçevesiz</span>
+                  </div>
+                  <!-- Dinamik PNG çerçeveleri buraya yerleşecek -->
+                </div>
+              </div>
+
+              <!-- 4. GÜVENLİK & ŞİFRE -->
+              <div class="ss-card"
+                style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                <div>
+                  <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:3px;">Şifre ve Kimlik Doğrulama</div>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Hesabınızı güvende tutmak için şifrenizi düzenli güncelleyin.</div>
+                </div>
+                <button class="btn-ss-outline" id="btn-change-password">
+                  <i data-lucide="key" style="width:14px;height:14px;"></i> Şifreyi Değiştir
                 </button>
               </div>
-              <div style="display:flex; flex-direction:column; gap:2px;">
-                <span id="acc-preview-name"
-                  style="font-size:1.15rem; font-weight:800; color:var(--text-main);">Kullanıcı</span>
-                <span id="acc-preview-handle" style="font-size:0.82rem; color:var(--text-muted);">@kullanici</span>
+
+            </div>
+            <!-- /LEFT COLUMN -->
+
+            <!-- RIGHT COLUMN: KÜÇÜLTÜLMÜŞ KOMPAKT PROFİL ÖNİZLEME KARTI -->
+            <div class="hesabim-right-column">
+              <div class="hesabim-compact-preview-card">
+                <div class="hesabim-preview-badge">CANLI ÖNİZLEME</div>
+
+                <!-- Banner with Quick Edit Button -->
+                <div id="acc-banner-preview" class="hesabim-compact-banner">
+                  <button class="btn-ss-outline" id="btn-edit-banner-quick" title="Afişi Değiştir">
+                    <i data-lucide="image" style="width:12px;height:12px;"></i> Kapağı Değiştir
+                  </button>
+                </div>
+
+                <!-- Avatar and Profile Info -->
+                <div class="hesabim-compact-body">
+                  <div class="hesabim-avatar-row">
+                    <div class="hesabim-avatar-wrap" id="acc-avatar-box">
+                      <img id="acc-avatar-img" src="" alt="Avatar" style="display:none;">
+                      <span id="acc-avatar-initials">U</span>
+                      <!-- Dynamic Frame Overlay PNG -->
+                      <img id="acc-avatar-frame-overlay" class="hesabim-avatar-frame-overlay" src="" alt="Frame" style="display:none;">
+                    </div>
+
+                    <button class="btn-ss-primary" id="btn-go-profile-tab" style="padding:6px 12px; font-size:0.75rem;">
+                      <i data-lucide="edit-3" style="width:13px;height:13px;"></i> Profili Düzenle
+                    </button>
+                  </div>
+
+                  <div class="hesabim-compact-identity">
+                    <span id="acc-preview-name" class="hesabim-compact-name">Kullanıcı</span>
+                    <span id="acc-preview-handle" class="hesabim-compact-handle">@kullanici</span>
+                  </div>
+
+                  <div class="hesabim-compact-divider"></div>
+
+                  <div style="font-size:0.72rem; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+                    <i data-lucide="sparkles" style="width:12px; height:12px; color:var(--accent-purple);"></i>
+                    <span>Tüm değişiklikler anında profiline yansır.</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+            <!-- /RIGHT COLUMN -->
 
-          <!-- Hesap Bilgileri Listesi -->
-          <div class="ss-card" style="margin-top:16px;">
-            <div class="acc-info-row">
-              <div>
-                <div class="acc-info-label">Görünen İsim</div>
-                <div class="acc-info-value" id="acc-info-name">Kullanıcı</div>
-              </div>
-              <button class="btn-ss-outline btn-edit-account-field" data-field="name">Düzenle</button>
-            </div>
-
-            <div class="acc-info-row">
-              <div>
-                <div class="acc-info-label">Kullanıcı Adı (Handle)</div>
-                <div class="acc-info-value" id="acc-info-handle">@kullanici</div>
-              </div>
-              <button class="btn-ss-outline btn-edit-account-field" data-field="handle">Düzenle</button>
-            </div>
-
-            <div class="acc-info-row">
-              <div>
-                <div class="acc-info-label">E-Posta</div>
-                <div class="acc-info-value" id="acc-info-email">kullanici@ziorse.app</div>
-              </div>
-              <button class="btn-ss-outline btn-edit-account-field" data-field="email">Değiştir</button>
-            </div>
-          </div>
-
-          <!-- Güvenlik & Şifre -->
-          <div class="ss-card"
-            style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-            <div>
-              <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:3px;">Şifre ve
-                Kimlik Doğrulama</div>
-              <div style="font-size:0.78rem; color:var(--text-muted);">Hesabınızı güvende tutmak için şifrenizi düzenli
-                güncelleyin.</div>
-            </div>
-            <button class="btn-ss-outline" id="btn-change-password">
-              <i data-lucide="key" style="width:14px;height:14px;"></i> Şifreyi Değiştir
-            </button>
           </div>
         </section>
 
