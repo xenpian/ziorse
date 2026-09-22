@@ -187,6 +187,22 @@
                   </div>
                 </div>
 
+                <!-- Font Kalınlığı (Weight) Seçimi -->
+                <div class="font-weight-control-row" style="margin-top:14px;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Yazı Kalınlığı (Font Weight)</span>
+                    <span id="label-current-weight" style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">700 (Kalın)</span>
+                  </div>
+                  <div class="weight-pills-row" id="hesabim-weight-pills">
+                    <button type="button" class="btn-weight-pill" data-weight="400">İnce (400)</button>
+                    <button type="button" class="btn-weight-pill" data-weight="500">Normal (500)</button>
+                    <button type="button" class="btn-weight-pill" data-weight="600">Orta (600)</button>
+                    <button type="button" class="btn-weight-pill active" data-weight="700">Kalın (700)</button>
+                    <button type="button" class="btn-weight-pill" data-weight="800">Ekstra (800)</button>
+                    <button type="button" class="btn-weight-pill" data-weight="900">Siyah (900)</button>
+                  </div>
+                </div>
+
                 <!-- 2. ETKİYİ SEÇ BÖLÜMÜ -->
                 <div class="style-section-header" style="margin-top:20px;">
                   <span class="style-section-title">Etkiyi seç</span>
@@ -224,12 +240,45 @@
 
                 <!-- 3. RENK SEÇ BÖLÜMÜ -->
                 <div class="style-section-header" style="margin-top:20px;">
-                  <span class="style-section-title">Renk Seç</span>
+                  <div>
+                    <span class="style-section-title">Renk & Efekt Rengi</span>
+                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Metin, Neon parlaması, Pop, Çizgi Film veya Gradyan rengini değiştirin</div>
+                  </div>
                   <button type="button" class="btn-style-reset" id="btn-reset-name-color" title="Rengi Sıfırla">
                     <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i>
                   </button>
                 </div>
 
+                <!-- A. Efekt & Tek Renk Seçim Çubuğu -->
+                <div class="solid-color-row" style="margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px; padding:10px 14px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <label class="color-swatch-btn" title="Özel Renk Seç (Tıkla)" style="position:relative; width:34px; height:34px; border-radius:8px; border:2px solid #cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                      <div id="hesabim-color-swatch-preview" style="width:100%; height:100%; background:#8b5cf6;"></div>
+                      <input type="color" id="hesabim-custom-color-input" value="#8b5cf6" style="position:absolute; opacity:0; width:100%; height:100%; cursor:pointer;">
+                    </label>
+                    <div style="display:flex; align-items:center; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; padding:0 8px; height:34px;">
+                      <span style="font-size:0.8rem; font-weight:700; color:#94a3b8; margin-right:2px;">#</span>
+                      <input type="text" id="hesabim-color-hex-text" value="8B5CF6" maxlength="7" style="border:none; outline:none; background:transparent; font-size:0.82rem; font-weight:700; width:70px; color:#0f172a; text-transform:uppercase;">
+                    </div>
+                  </div>
+
+                  <!-- Hızlı Efekt Renk Çipleri (Neon & Efektler için popüler tonlar) -->
+                  <div class="color-chips-row" id="hesabim-color-chips" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; flex:1;">
+                    <button type="button" class="effect-color-chip active" data-color="#8b5cf6" style="background:#8b5cf6;" title="Neon Mor"></button>
+                    <button type="button" class="effect-color-chip" data-color="#06b6d4" style="background:#06b6d4;" title="Siber Camgöbeği"></button>
+                    <button type="button" class="effect-color-chip" data-color="#10b981" style="background:#10b981;" title="Zümrüt Yeşil"></button>
+                    <button type="button" class="effect-color-chip" data-color="#ec4899" style="background:#ec4899;" title="Neon Pembe"></button>
+                    <button type="button" class="effect-color-chip" data-color="#f97316" style="background:#f97316;" title="Ateş Turuncu"></button>
+                    <button type="button" class="effect-color-chip" data-color="#ef4444" style="background:#ef4444;" title="Akkor Kırmızı"></button>
+                    <button type="button" class="effect-color-chip" data-color="#eab308" style="background:#eab308;" title="Altın Sarı"></button>
+                    <button type="button" class="effect-color-chip" data-color="#3b82f6" style="background:#3b82f6;" title="Kraliyet Mavi"></button>
+                    <button type="button" class="effect-color-chip" data-color="#ffffff" style="background:#ffffff; border:1px solid #cbd5e1;" title="Saf Beyaz"></button>
+                    <button type="button" class="effect-color-chip" data-color="#18181b" style="background:#18181b;" title="Gece Siyahı"></button>
+                  </div>
+                </div>
+
+                <!-- B. Çoklu Gradyan Kontrolü -->
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Çoklu Gradyan Renkleri (4 Nokta Geçiş)</div>
                 <div class="color-picker-row">
                   <!-- İnteraktif Gradyan Kontrol Çubuğu -->
                   <div class="gradient-slider-container">
@@ -272,9 +321,6 @@
                     <div class="preset-pill" data-gradient="linear-gradient(90deg, #fb7185, #f43f5e, #fde047)" style="background:linear-gradient(90deg, #fb7185, #f43f5e, #fde047);" title="Güneş"></div>
                   </div>
                 </div>
-
-                <!-- Gizli tek renk input (sabit mod için) -->
-                <input type="color" id="hesabim-custom-color-input" value="#ffffff" style="display:none;">
               </div>
 
               <!-- 3. OTOMATİK DİNAMİK PROFİL ÇERÇEVESİ KARTI -->
