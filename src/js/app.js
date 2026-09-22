@@ -832,7 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
       frameImg.className = 'global-avatar-frame-overlay';
       frameImg.src = resolvedSrc;
       frameImg.alt = 'Frame';
-      frameImg.style.cssText = 'position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;';
+      frameImg.style.cssText = 'position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:122%; height:122%; pointer-events:none; z-index:10; object-fit:contain; display:block;';
       container.appendChild(frameImg);
     }
   }
