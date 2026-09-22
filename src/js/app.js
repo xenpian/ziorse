@@ -748,13 +748,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.FONT_FAMILIES = {
     'outfit': "'Outfit', sans-serif",
-    'cyber': "'Russo One', sans-serif",
-    'cursive': "'Caveat', cursive",
+    'inter': "'Inter', sans-serif",
+    'montserrat': "'Montserrat', sans-serif",
+    'poppins': "'Poppins', sans-serif",
+    'cinzel': "'Cinzel', serif",
+    'playfair': "'Playfair Display', serif",
+    'caveat': "'Caveat', cursive",
+    'pacifico': "'Pacifico', cursive",
     'pixel': "'Press Start 2P', monospace",
-    'serif': "'Cinzel', serif",
+    'cyber': "'Russo One', sans-serif",
+    'orbitron': "'Orbitron', sans-serif",
     'neon': "'Righteous', cursive",
+    'bebas': "'Bebas Neue', cursive",
     'terminal': "'JetBrains Mono', monospace",
-    'inter': "'Inter', sans-serif"
+    'fira': "'Fira Code', monospace",
+    'architect': "'Architects Daughter', cursive"
   };
 
   function applyUserNameStyling(element, fontStyle, nameColor, nameEffects, fallbackColor) {
