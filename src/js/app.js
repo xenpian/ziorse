@@ -776,8 +776,17 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.fontFamily = '';
     }
 
-    const effects = Array.isArray(nameEffects) ? nameEffects : [];
+    const effects = Array.isArray(nameEffects) ? nameEffects : [nameEffects].filter(Boolean);
     let textShadows = [];
+    if (effects.includes('neon')) {
+      textShadows.push('0 0 10px rgba(168, 85, 247, 0.9), 0 0 20px rgba(168, 85, 247, 0.5)');
+    }
+    if (effects.includes('cartoon')) {
+      textShadows.push('1.5px 1.5px 0 #18181b, -1px -1px 0 #18181b, 1px -1px 0 #18181b, -1px 1px 0 #18181b');
+    }
+    if (effects.includes('pop')) {
+      textShadows.push('2px 2px 0 #047857');
+    }
     if (effects.includes('glow')) {
       const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#00f2fe';
       textShadows.push(`0 0 12px ${glowColor}`);
@@ -813,13 +822,32 @@ document.addEventListener('DOMContentLoaded', () => {
   window.applyUserNameStyling = applyUserNameStyling;
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 156
+    'Lord.png': 156,
+    'Liaz.png': 139
   };
 
+  async function initAppAvatarFrames() {
+    try {
+      if (window.electronAPI && typeof window.electronAPI.getAvatarFrames === 'function') {
+        const frames = await window.electronAPI.getAvatarFrames();
+        frames.forEach(f => {
+          if (f.scale) window.FRAME_SCALES[f.id] = f.scale;
+        });
+      } else {
+        const res = await fetch('http://localhost:3000/api/avatar-frames');
+        const data = await res.json();
+        (data.frames || []).forEach(f => {
+          if (f.scale) window.FRAME_SCALES[f.id] = f.scale;
+        });
+      }
+    } catch (e) { }
+  }
+  initAppAvatarFrames();
+
   function getFrameScale(frameSrc) {
-    if (!frameSrc || frameSrc === 'none') return 118;
+    if (!frameSrc || frameSrc === 'none') return 140;
     const cleanName = String(frameSrc).split('/').pop().split('?')[0];
-    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 118;
+    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 140;
   }
   window.getFrameScale = getFrameScale;
 
