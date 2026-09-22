@@ -131,10 +131,70 @@ document.addEventListener('DOMContentLoaded', () => {
       elAvatar.onerror = () => { elAvatar.src = window.DEFAULT_AVATAR; };
     }
 
-    // Kimlik
+    // Avatar Frame Overlay
+    const elFrameOverlay = document.getElementById('pv-avatar-frame-overlay');
+    if (elFrameOverlay) {
+      if (profile.avatarFrame && profile.avatarFrame !== 'none') {
+        let frameSrc = profile.avatarFrame;
+        if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
+          frameSrc = `assets/avatar-frames/${frameSrc}`;
+        }
+        elFrameOverlay.src = frameSrc;
+        elFrameOverlay.style.display = 'block';
+      } else {
+        elFrameOverlay.style.display = 'none';
+      }
+    }
+
+    // Kimlik & Font / Renk / Efekt Stili
     elName.textContent = profile.name || handle;
     elHandle.textContent = profile.handle || handle;
     document.title = `Ziorse - ${profile.name || handle}`;
+
+    const fontFamilies = {
+      'outfit': "'Outfit', sans-serif",
+      'cyber': "'Russo One', sans-serif",
+      'cursive': "'Caveat', cursive",
+      'pixel': "'Press Start 2P', monospace",
+      'serif': "'Cinzel', serif",
+      'neon': "'Righteous', cursive",
+      'terminal': "'JetBrains Mono', monospace",
+      'inter': "'Inter', sans-serif"
+    };
+    if (profile.fontStyle && fontFamilies[profile.fontStyle]) {
+      elName.style.fontFamily = fontFamilies[profile.fontStyle];
+    } else {
+      elName.style.fontFamily = '';
+    }
+
+    const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : [];
+    let textShadows = [];
+    if (effects.includes('glow')) {
+      const glowColor = (profile.nameColor && profile.nameColor.startsWith('#')) ? profile.nameColor : '#00f2fe';
+      textShadows.push(`0 0 12px ${glowColor}`);
+    }
+    if (effects.includes('shadow')) {
+      textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
+    }
+    elName.style.textShadow = textShadows.join(', ') || '';
+    elName.style.letterSpacing = effects.includes('spaced') ? '2px' : '';
+
+    if (profile.nameColor && profile.nameColor.startsWith('linear-gradient')) {
+      elName.style.backgroundImage = profile.nameColor;
+      elName.style.webkitBackgroundClip = 'text';
+      elName.style.webkitTextFillColor = 'transparent';
+      elName.style.color = 'transparent';
+    } else if (profile.nameColor && profile.nameColor !== 'none') {
+      elName.style.backgroundImage = 'none';
+      elName.style.webkitBackgroundClip = 'unset';
+      elName.style.webkitTextFillColor = profile.nameColor;
+      elName.style.color = profile.nameColor;
+    } else {
+      elName.style.backgroundImage = 'none';
+      elName.style.webkitBackgroundClip = 'unset';
+      elName.style.webkitTextFillColor = '';
+      elName.style.color = '';
+    }
 
     const titleBreadcrumb = document.getElementById('pv-titlebar-breadcrumb');
     if (titleBreadcrumb) {
@@ -175,7 +235,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (profile.isSelf) {
       elActionBtn.textContent = 'Profili Düzenle';
       elActionBtn.className = 'pv-action-btn self';
-      elActionBtn.onclick = () => { window.location.href = 'profile-edit.html'; };
+      elActionBtn.onclick = () => {
+        if (window.parent && window.parent !== window && typeof window.parent.openModalView === 'function') {
+          window.parent.openModalView('settings.html?section=hesabim');
+        } else {
+          window.location.href = 'settings.html?section=hesabim';
+        }
+      };
     } else if (profile.isFollowing) {
       elActionBtn.textContent = 'Takipten Çık';
       elActionBtn.className = 'pv-action-btn following';
