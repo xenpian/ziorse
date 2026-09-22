@@ -438,7 +438,7 @@ body.dark-mode .user-controls-wrapper {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   flex-shrink: 0;
   display: flex;
