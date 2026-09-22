@@ -4387,16 +4387,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const senderProfile = ds.getUserProfile(senderHandle);
             const authorAvatar = senderProfile.avatar || window.DEFAULT_AVATAR;
             const authorName = senderProfile.name || (mine ? ds.currentUser.name : activeThread.user.name);
+            const authorFrame = senderProfile.avatarFrame;
+            const authorNameStyle = getAuthorNameStyleAttr(senderProfile, null);
 
             if (m.type === 'server-invite') {
               return `
                 <div class="dm-msg-row ${mine ? 'mine' : 'theirs'}">
-                  <div class="dm-msg-avatar-wrap" data-handle="${escapeHtml(senderHandle)}" style="width:36px; height:36px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0; cursor:pointer;" title="${escapeHtml(authorName)} - Profili gor">
+                  <div class="dm-msg-avatar-wrap" data-handle="${escapeHtml(senderHandle)}" style="width:36px; height:36px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" title="${escapeHtml(authorName)} - Profili gor">
                     ${renderMediaAvatarHtml(authorAvatar, 'dm-msg-avatar')}
+                    ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
                   </div>
                   <div class="dm-msg-body">
                     <div class="dm-msg-meta">
-                      <span class="dm-msg-name" style="cursor:pointer;" data-handle="${escapeHtml(senderHandle)}">${escapeHtml(authorName)}</span>
+                      <span class="dm-msg-name" style="cursor:pointer;" data-handle="${escapeHtml(senderHandle)}" ${authorNameStyle}>${escapeHtml(authorName)}</span>
                       <span class="dm-msg-time">${formatDateTime(m.timestamp)}</span>
                     </div>
                     ${renderInviteCardHtml(m.invite)}
@@ -4434,12 +4437,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             return `
               <div class="dm-msg-row ${mine ? 'mine' : 'theirs'}">
-                <div class="dm-msg-avatar-wrap" data-handle="${escapeHtml(senderHandle)}" style="width:36px; height:36px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0; cursor:pointer;" title="${escapeHtml(authorName)} - Profili gor">
+                <div class="dm-msg-avatar-wrap" data-handle="${escapeHtml(senderHandle)}" style="width:36px; height:36px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" title="${escapeHtml(authorName)} - Profili gor">
                   ${renderMediaAvatarHtml(authorAvatar, 'dm-msg-avatar')}
+                  ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
                 </div>
                 <div class="dm-msg-body">
                   <div class="dm-msg-meta">
-                    <span class="dm-msg-name" style="cursor:pointer;" data-handle="${escapeHtml(senderHandle)}">${escapeHtml(authorName)}</span>
+                    <span class="dm-msg-name" style="cursor:pointer;" data-handle="${escapeHtml(senderHandle)}" ${authorNameStyle}>${escapeHtml(authorName)}</span>
                     <span class="dm-msg-time">${formatDateTime(m.timestamp)}</span>
                   </div>
                   ${m.text ? `<div class="dm-msg-text">${parseContentFormatting(m.text)}</div>` : ''}
