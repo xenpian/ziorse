@@ -665,6 +665,13 @@ io.on('connection', (socket) => {
         if (data.banner) acc.banner = data.banner;
         if (data.name) acc.name = data.name;
         if (data.bio) acc.bio = data.bio;
+        if (data.pronouns !== undefined) acc.pronouns = data.pronouns;
+        if (data.fontStyle !== undefined) acc.fontStyle = data.fontStyle;
+        if (data.nameColor !== undefined) acc.nameColor = data.nameColor;
+        if (data.nameEffects !== undefined) acc.nameEffects = data.nameEffects;
+        if (data.avatarFrame !== undefined) acc.avatarFrame = data.avatarFrame;
+        if (data.profileEffect !== undefined) acc.profileEffect = data.profileEffect;
+        if (data.widgets !== undefined) acc.widgets = data.widgets;
       }
 
       // Üyenin profil fotoğrafı/adı değiştiğinde tüm sunucu üye listelerini güncelle
