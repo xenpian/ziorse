@@ -387,15 +387,20 @@ const configPath = path.join(app.getPath('userData'), 'window-bounds.json');
 function loadWindowBounds() {
   try {
     if (fs.existsSync(configPath)) {
-      return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const b = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      if (b && b.width && b.height && b.width < 1920 && b.height < 1080) {
+        return b;
+      }
     }
   } catch (e) { }
-  return { width: 1360, height: 760, x: undefined, y: undefined };
+  return { width: 1320, height: 760, x: undefined, y: undefined };
 }
 
 function saveWindowBounds(bounds) {
   try {
-    fs.writeFileSync(configPath, JSON.stringify(bounds));
+    if (bounds && bounds.width < 1920 && bounds.height < 1080) {
+      fs.writeFileSync(configPath, JSON.stringify(bounds));
+    }
   } catch (e) { }
 }
 
@@ -403,12 +408,13 @@ function createMainWindow() {
   const bounds = loadWindowBounds();
 
   mainWindow = new BrowserWindow({
-    width: bounds.width,
-    height: bounds.height,
+    width: 1320,
+    height: 760,
     x: bounds.x,
     y: bounds.y,
     minWidth: 1000,
     minHeight: 680,
+    center: true,
     frame: false,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
@@ -428,7 +434,6 @@ function createMainWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'src/index.html'));
-  mainWindow.webContents.openDevTools();
   mainWindow.on('resize', () => saveWindowBounds(mainWindow.getBounds()));
   mainWindow.on('move', () => saveWindowBounds(mainWindow.getBounds()));
   mainWindow.on('maximize', () => mainWindow.webContents.send('window-maximized-state', true));
