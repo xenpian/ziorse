@@ -4808,7 +4808,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ev.stopPropagation();
           userPopover.style.display = 'none';
           delete userPopover.dataset.activeHandle;
-          window.openModalView('settings.html');
+          window.openModalView('profile-edit.html');
         };
       } else {
         popoverActionBtn.title = 'Sohbet Başlat';

@@ -29,5 +29,7 @@
       "value": "Synthwave Dreams - Retro Knight",
       "icon": "🎵"
     }
-  ]
+  ],
+  "statusText": "porno",
+  "statusType": "idle"
 }
