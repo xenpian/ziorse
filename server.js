@@ -43,24 +43,99 @@ const framesDir = path.join(__dirname, 'src', 'assets', 'avatar-frames');
 const rootFramesDir = path.join(__dirname, 'assets', 'avatar-frames');
 if (!fs.existsSync(framesDir)) fs.mkdirSync(framesDir, { recursive: true });
 if (!fs.existsSync(rootFramesDir)) fs.mkdirSync(rootFramesDir, { recursive: true });
+
+function syncFramesDirs() {
+  try {
+    if (fs.existsSync(rootFramesDir)) {
+      fs.readdirSync(rootFramesDir).filter(f => f.toLowerCase().endsWith('.png')).forEach(file => {
+        const dest = path.join(framesDir, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(rootFramesDir, file), dest);
+      });
+    }
+    if (fs.existsSync(framesDir)) {
+      fs.readdirSync(framesDir).filter(f => f.toLowerCase().endsWith('.png')).forEach(file => {
+        const dest = path.join(rootFramesDir, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(framesDir, file), dest);
+      });
+    }
+  } catch (e) { }
+}
+syncFramesDirs();
+
+const zlib = require('zlib');
+
+function getFrameHoleScale(filePath) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    const width = buf.readUInt32BE(16);
+    const height = buf.readUInt32BE(20);
+    let offset = 8;
+    const idatChunks = [];
+    while (offset < buf.length) {
+      const length = buf.readUInt32BE(offset);
+      const type = buf.toString('ascii', offset + 4, offset + 8);
+      if (type === 'IDAT') idatChunks.push(buf.slice(offset + 8, offset + 8 + length));
+      offset += 12 + length;
+    }
+    const decompressed = zlib.inflateSync(Buffer.concat(idatChunks));
+    const stride = width * 4 + 1;
+    const cx = Math.floor(width / 2);
+    const cy = Math.floor(height / 2);
+    const maxR = Math.min(cx, cy) - 2;
+    let innerR = 30;
+
+    for (let r = 20; r <= maxR; r += 2) {
+      let opaqueCount = 0;
+      const numSamples = 60;
+      for (let i = 0; i < numSamples; i++) {
+        const angle = (i * 2 * Math.PI) / numSamples;
+        const x = Math.round(cx + r * Math.cos(angle));
+        const y = Math.round(cy + r * Math.sin(angle));
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+          const a = decompressed[y * stride + 1 + x * 4 + 3];
+          if (a > 60) opaqueCount++;
+        }
+      }
+      if (opaqueCount / numSamples >= 0.20) {
+        innerR = r;
+        break;
+      }
+    }
+
+    const holeDiameter = innerR * 2;
+    const avgDim = (width + height) / 2;
+    if (holeDiameter > 20) {
+      const scale = Math.round((avgDim / holeDiameter) * 96);
+      return Math.min(Math.max(scale, 115), 180);
+    }
+  } catch (e) { }
+  return 140;
+}
+
 app.use('/assets/avatar-frames', express.static(framesDir));
 app.use('/assets/avatar-frames', express.static(rootFramesDir));
 
 // API: Avatar Frames listing
 app.get('/api/avatar-frames', (req, res) => {
   try {
+    syncFramesDirs();
     const list = new Set();
     [framesDir, rootFramesDir].forEach(dir => {
       if (fs.existsSync(dir)) {
         fs.readdirSync(dir).filter(f => f.toLowerCase().endsWith('.png')).forEach(f => list.add(f));
       }
     });
-    const result = Array.from(list).map(file => ({
-      id: file,
-      name: path.parse(file).name.replace(/[-_]/g, ' '),
-      url: `assets/avatar-frames/${file}`,
-      filename: file
-    }));
+    const result = Array.from(list).map(file => {
+      const fPath = fs.existsSync(path.join(framesDir, file)) ? path.join(framesDir, file) : path.join(rootFramesDir, file);
+      const scale = getFrameHoleScale(fPath);
+      return {
+        id: file,
+        name: path.parse(file).name.replace(/[-_]/g, ' '),
+        url: `assets/avatar-frames/${file}`,
+        filename: file,
+        scale: scale
+      };
+    });
     res.json({ frames: result });
   } catch (e) {
     res.json({ frames: [] });
