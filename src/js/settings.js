@@ -283,7 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
+        const scale = getFrameScale(frameSrc);
         frameOverlay.src = frameSrc;
+        frameOverlay.style.width = `${scale}%`;
+        frameOverlay.style.height = `${scale}%`;
         frameOverlay.style.display = 'block';
       } else {
         frameOverlay.style.display = 'none';
@@ -876,22 +879,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================
   let availableFrames = [];
 
+  window.FRAME_SCALES = window.FRAME_SCALES || {
+    'Lord.png': 178,
+    'altin-tac.png': 134,
+    'ates-cemberi.png': 133,
+    'galaksi-mor.png': 133,
+    'sakura-cicegi.png': 131,
+    'siber-neon.png': 133
+  };
+
+  function getFrameScale(frameSrc) {
+    if (!frameSrc || frameSrc === 'none') return 130;
+    const cleanName = String(frameSrc).split('/').pop().split('?')[0];
+    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 132;
+  }
+  window.getFrameScale = getFrameScale;
+
   async function loadAvatarFrames() {
     try {
       if (window.electronAPI && typeof window.electronAPI.getAvatarFrames === 'function') {
         availableFrames = await window.electronAPI.getAvatarFrames();
+        availableFrames.forEach(f => {
+          if (f.scale) window.FRAME_SCALES[f.id] = f.scale;
+        });
       } else {
         const res = await fetch('http://localhost:3000/api/avatar-frames');
         const data = await res.json();
         availableFrames = data.frames || [];
+        availableFrames.forEach(f => {
+          if (f.scale) window.FRAME_SCALES[f.id] = f.scale;
+        });
       }
     } catch (err) {
       availableFrames = [
-        { id: 'siber-neon.png', name: 'Siber Neon', url: 'assets/avatar-frames/siber-neon.png' },
-        { id: 'altin-tac.png', name: 'Altın Taç', url: 'assets/avatar-frames/altin-tac.png' },
-        { id: 'ates-cemberi.png', name: 'Ateş Çemberi', url: 'assets/avatar-frames/ates-cemberi.png' },
-        { id: 'sakura-cicegi.png', name: 'Sakura Çiçeği', url: 'assets/avatar-frames/sakura-cicegi.png' },
-        { id: 'galaksi-mor.png', name: 'Galaksi Mor', url: 'assets/avatar-frames/galaksi-mor.png' }
+        { id: 'Lord.png', name: 'Lord', url: 'assets/avatar-frames/Lord.png', scale: 178 },
+        { id: 'siber-neon.png', name: 'Siber Neon', url: 'assets/avatar-frames/siber-neon.png', scale: 133 },
+        { id: 'altin-tac.png', name: 'Altın Taç', url: 'assets/avatar-frames/altin-tac.png', scale: 134 },
+        { id: 'ates-cemberi.png', name: 'Ateş Çemberi', url: 'assets/avatar-frames/ates-cemberi.png', scale: 133 },
+        { id: 'sakura-cicegi.png', name: 'Sakura Çiçeği', url: 'assets/avatar-frames/sakura-cicegi.png', scale: 131 },
+        { id: 'galaksi-mor.png', name: 'Galaksi Mor', url: 'assets/avatar-frames/galaksi-mor.png', scale: 133 }
       ];
     }
     renderAvatarFramesGrid();
@@ -941,19 +967,103 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Çerçeve listesi güncellendi');
   });
 
+  // Debounced Broadcast: Runs once per animation frame (max 60fps) to eliminate UI freezing
+  let broadcastRaf = null;
   function broadcastLiveStyleChanges() {
-    const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
-    if (targetParent && typeof targetParent.updateLiveUserMedia === 'function') {
-      targetParent.updateLiveUserMedia(
-        draftProfile.handle,
-        draftProfile.avatar,
-        draftProfile.banner,
-        draftProfile.fontStyle,
-        draftProfile.nameColor,
-        draftProfile.nameEffects,
-        draftProfile.avatarFrame
-      );
+    if (broadcastRaf) cancelAnimationFrame(broadcastRaf);
+    broadcastRaf = requestAnimationFrame(() => {
+      broadcastRaf = null;
+      const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
+      if (targetParent && typeof targetParent.updateLiveUserMedia === 'function') {
+        targetParent.updateLiveUserMedia(
+          draftProfile.handle,
+          draftProfile.avatar,
+          draftProfile.banner,
+          draftProfile.fontStyle,
+          draftProfile.nameColor,
+          draftProfile.nameEffects,
+          draftProfile.avatarFrame
+        );
+      }
+    });
+  }
+
+  // Ultra-lightweight in-place style updater (no video reloads, zero lag)
+  function updateLiveStyleControlsAndPreview() {
+    if (accPreviewName) {
+      const fontFamilies = {
+        'outfit': "'Outfit', sans-serif",
+        'cyber': "'Russo One', sans-serif",
+        'cursive': "'Caveat', cursive",
+        'pixel': "'Press Start 2P', monospace",
+        'serif': "'Cinzel', serif",
+        'neon': "'Righteous', cursive",
+        'terminal': "'JetBrains Mono', monospace",
+        'inter': "'Inter', sans-serif"
+      };
+      accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
+
+      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
+        accPreviewName.style.background = draftProfile.nameColor;
+        accPreviewName.style.webkitBackgroundClip = 'text';
+        accPreviewName.style.webkitTextFillColor = 'transparent';
+        accPreviewName.style.color = 'transparent';
+      } else {
+        accPreviewName.style.background = 'none';
+        accPreviewName.style.webkitBackgroundClip = 'unset';
+        accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
+        accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
+      }
+
+      const effects = draftProfile.nameEffects || [];
+      let textShadows = [];
+      if (effects.includes('glow')) {
+        const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
+        textShadows.push(`0 0 12px ${glowColor}`);
+      }
+      if (effects.includes('shadow')) {
+        textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
+      }
+      accPreviewName.style.textShadow = textShadows.length > 0 ? textShadows.join(', ') : 'none';
+      accPreviewName.style.letterSpacing = effects.includes('spaced') ? '2px' : 'normal';
     }
+
+    const frameOverlay = document.getElementById('acc-avatar-frame-overlay');
+    if (frameOverlay) {
+      if (draftProfile.avatarFrame && draftProfile.avatarFrame !== 'none') {
+        let frameSrc = draftProfile.avatarFrame;
+        if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
+          frameSrc = `assets/avatar-frames/${frameSrc}`;
+        }
+        const scale = getFrameScale(frameSrc);
+        frameOverlay.src = frameSrc;
+        frameOverlay.style.width = `${scale}%`;
+        frameOverlay.style.height = `${scale}%`;
+        frameOverlay.style.display = 'block';
+      } else {
+        frameOverlay.style.display = 'none';
+      }
+    }
+
+    document.querySelectorAll('.hesabim-font-chip').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.font === draftProfile.fontStyle);
+    });
+    document.querySelectorAll('.hesabim-color-dot').forEach(dot => {
+      dot.classList.toggle('active', dot.dataset.color === draftProfile.nameColor);
+    });
+    document.querySelectorAll('.hesabim-effect-toggle').forEach(tgl => {
+      tgl.classList.toggle('active', (draftProfile.nameEffects || []).includes(tgl.dataset.effect));
+    });
+    document.querySelectorAll('.hesabim-frame-item').forEach(item => {
+      const fId = item.dataset.frameId;
+      const isAct = (!draftProfile.avatarFrame || draftProfile.avatarFrame === 'none')
+        ? (fId === 'none')
+        : (draftProfile.avatarFrame === fId || draftProfile.avatarFrame === item.dataset.frameUrl || (draftProfile.avatarFrame && draftProfile.avatarFrame.endsWith(fId)));
+      item.classList.toggle('active', isAct);
+    });
+
+    checkChanges();
+    broadcastLiveStyleChanges();
   }
 
   // Frame item click
@@ -962,9 +1072,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!item) return;
     const fId = item.dataset.frameId;
     draftProfile.avatarFrame = fId === 'none' ? 'none' : (item.dataset.frameUrl || fId);
-    renderUserInfo();
-    checkChanges();
-    broadcastLiveStyleChanges();
+    updateLiveStyleControlsAndPreview();
   });
 
   // Font chips click in Hesabım
@@ -972,9 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chip = e.target.closest('.hesabim-font-chip');
     if (!chip) return;
     draftProfile.fontStyle = chip.dataset.font;
-    renderUserInfo();
-    checkChanges();
-    broadcastLiveStyleChanges();
+    updateLiveStyleControlsAndPreview();
   });
 
   // Color dots click in Hesabım
@@ -982,17 +1088,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const dot = e.target.closest('.hesabim-color-dot');
     if (!dot) return;
     draftProfile.nameColor = dot.dataset.color;
-    renderUserInfo();
-    checkChanges();
-    broadcastLiveStyleChanges();
+    updateLiveStyleControlsAndPreview();
   });
 
   // Custom color picker in Hesabım
   document.getElementById('hesabim-custom-color-input')?.addEventListener('input', (e) => {
     draftProfile.nameColor = e.target.value;
-    renderUserInfo();
-    checkChanges();
-    broadcastLiveStyleChanges();
+    updateLiveStyleControlsAndPreview();
   });
 
   // Effect toggles click in Hesabım
@@ -1005,9 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         draftProfile.nameEffects.push(eff);
       }
-      renderUserInfo();
-      checkChanges();
-      broadcastLiveStyleChanges();
+      updateLiveStyleControlsAndPreview();
     });
   });
 
