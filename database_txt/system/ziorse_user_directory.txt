@@ -21,20 +21,7 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "idle",
-      "text": "porno"
-    },
-    "pronouns": "",
-    "fontStyle": "cinzel",
-    "nameColor": "linear-gradient(90deg, #ff007f, #00f2fe, #facc15)",
-    "nameEffects": [
-      "cartoon"
-    ],
-    "avatarFrame": "assets/avatar-frames/Liaz.png",
-    "profileEffect": "none",
-    "widgets": [],
-    "customStatus": {
-      "emoji": "💭",
+      "type": "online",
       "text": ""
     }
   },
