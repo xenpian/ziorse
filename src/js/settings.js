@@ -859,7 +859,128 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Initial render
+  // =========================================================
+  // HESABIM: DYNAMIC AVATAR FRAMES & FONT / COLOR HANDLERS
+  // =========================================================
+  let availableFrames = [];
+
+  async function loadAvatarFrames() {
+    try {
+      if (window.electronAPI && typeof window.electronAPI.getAvatarFrames === 'function') {
+        availableFrames = await window.electronAPI.getAvatarFrames();
+      } else {
+        const res = await fetch('http://localhost:3000/api/avatar-frames');
+        const data = await res.json();
+        availableFrames = data.frames || [];
+      }
+    } catch (err) {
+      availableFrames = [
+        { id: 'siber-neon.png', name: 'Siber Neon', url: 'assets/avatar-frames/siber-neon.png' },
+        { id: 'altin-tac.png', name: 'Altın Taç', url: 'assets/avatar-frames/altin-tac.png' },
+        { id: 'ates-cemberi.png', name: 'Ateş Çemberi', url: 'assets/avatar-frames/ates-cemberi.png' },
+        { id: 'sakura-cicegi.png', name: 'Sakura Çiçeği', url: 'assets/avatar-frames/sakura-cicegi.png' },
+        { id: 'galaksi-mor.png', name: 'Galaksi Mor', url: 'assets/avatar-frames/galaksi-mor.png' }
+      ];
+    }
+    renderAvatarFramesGrid();
+  }
+
+  function renderAvatarFramesGrid() {
+    const grid = document.getElementById('hesabim-frames-grid');
+    if (!grid) return;
+    grid.innerHTML = `
+      <div class="hesabim-frame-item ${(!draftProfile.avatarFrame || draftProfile.avatarFrame === 'none') ? 'active' : ''}" data-frame-id="none">
+        <div class="hesabim-frame-preview-box">
+          <div class="hesabim-frame-none-icon">🚫</div>
+        </div>
+        <span class="hesabim-frame-name">Çerçevesiz</span>
+      </div>
+    `;
+
+    availableFrames.forEach(f => {
+      const isAct = draftProfile.avatarFrame === f.id || draftProfile.avatarFrame === f.url || (draftProfile.avatarFrame && draftProfile.avatarFrame.endsWith(f.id));
+      const div = document.createElement('div');
+      div.className = `hesabim-frame-item ${isAct ? 'active' : ''}`;
+      div.dataset.frameId = f.id;
+      div.dataset.frameUrl = f.url;
+      div.innerHTML = `
+        <div class="hesabim-frame-preview-box">
+          <img src="${f.url}" alt="${f.name}">
+        </div>
+        <span class="hesabim-frame-name" title="${f.name}">${f.name}</span>
+      `;
+      grid.appendChild(div);
+    });
+  }
+
+  // Open frames folder in Windows Explorer
+  document.getElementById('btn-open-frames-folder')?.addEventListener('click', () => {
+    if (window.electronAPI && typeof window.electronAPI.openAvatarFramesFolder === 'function') {
+      window.electronAPI.openAvatarFramesFolder();
+      showToast('Çerçeveler klasörü açıldı');
+    } else {
+      showToast('Klasör: src/assets/avatar-frames/');
+    }
+  });
+
+  // Refresh frames list button
+  document.getElementById('btn-refresh-frames')?.addEventListener('click', async () => {
+    await loadAvatarFrames();
+    showToast('Çerçeve listesi güncellendi');
+  });
+
+  // Frame item click
+  document.getElementById('hesabim-frames-grid')?.addEventListener('click', (e) => {
+    const item = e.target.closest('.hesabim-frame-item');
+    if (!item) return;
+    const fId = item.dataset.frameId;
+    draftProfile.avatarFrame = fId === 'none' ? 'none' : (item.dataset.frameUrl || fId);
+    renderUserInfo();
+    checkChanges();
+  });
+
+  // Font chips click in Hesabım
+  document.getElementById('hesabim-font-grid')?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.hesabim-font-chip');
+    if (!chip) return;
+    draftProfile.fontStyle = chip.dataset.font;
+    renderUserInfo();
+    checkChanges();
+  });
+
+  // Color dots click in Hesabım
+  document.getElementById('hesabim-color-row')?.addEventListener('click', (e) => {
+    const dot = e.target.closest('.hesabim-color-dot');
+    if (!dot) return;
+    draftProfile.nameColor = dot.dataset.color;
+    renderUserInfo();
+    checkChanges();
+  });
+
+  // Custom color picker in Hesabım
+  document.getElementById('hesabim-custom-color-input')?.addEventListener('input', (e) => {
+    draftProfile.nameColor = e.target.value;
+    renderUserInfo();
+    checkChanges();
+  });
+
+  // Effect toggles click in Hesabım
+  document.querySelectorAll('.hesabim-effect-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const eff = btn.dataset.effect;
+      if (!draftProfile.nameEffects) draftProfile.nameEffects = [];
+      if (draftProfile.nameEffects.includes(eff)) {
+        draftProfile.nameEffects = draftProfile.nameEffects.filter(x => x !== eff);
+      } else {
+        draftProfile.nameEffects.push(eff);
+      }
+      renderUserInfo();
+      checkChanges();
+    });
+  });
+
+  // Initial frames load & render
+  loadAvatarFrames();
   renderUserInfo();
   checkChanges();
 });
