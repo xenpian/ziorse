@@ -446,7 +446,7 @@ body.dark-mode .user-controls-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-card);
+  background: transparent !important;
 }
 
 .user-avatar-sm,
@@ -7659,6 +7659,9 @@ body.dark-mode .cr-search-input:focus {
   flex-shrink: 0 !important;
   aspect-ratio: 1 / 1 !important;
   box-sizing: border-box !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Internal Avatar Media (Images & Videos remain strictly circular with cover fit) */
