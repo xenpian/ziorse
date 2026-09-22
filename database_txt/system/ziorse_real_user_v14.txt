@@ -8,7 +8,7 @@
   "loggedIn": true,
   "pronouns": "",
   "fontStyle": "terminal",
-  "nameColor": "#ffffff",
+  "nameColor": "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)",
   "nameEffects": [],
   "avatarFrame": "cyber",
   "profileEffect": "none",

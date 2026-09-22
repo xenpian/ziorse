@@ -21,20 +21,20 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "online",
-      "text": ""
+      "type": "idle",
+      "text": "porno"
     },
+    "pronouns": "",
     "fontStyle": "terminal",
-    "nameColor": "#ffffff",
+    "nameColor": "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)",
     "nameEffects": [],
     "avatarFrame": "cyber",
     "profileEffect": "none",
-    "pronouns": "",
+    "widgets": [],
     "customStatus": {
       "emoji": "💭",
       "text": ""
-    },
-    "widgets": []
+    }
   },
   "@saf": {
     "name": "safsfdsvv",
