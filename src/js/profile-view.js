@@ -140,17 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
         const frameScales = {
-          'Lord.png': 178,
-          'altin-tac.png': 134,
-          'ates-cemberi.png': 133,
-          'galaksi-mor.png': 133,
-          'sakura-cicegi.png': 131,
-          'siber-neon.png': 133
+          'Lord.png': 156,
+          'altin-tac.png': 118,
+          'ates-cemberi.png': 117,
+          'galaksi-mor.png': 117,
+          'sakura-cicegi.png': 116,
+          'siber-neon.png': 117
         };
         const cleanName = String(frameSrc).split('/').pop().split('?')[0];
         const scale = (window.parent && window.parent.getFrameScale)
           ? window.parent.getFrameScale(frameSrc)
-          : (frameScales[cleanName] || 132);
+          : (frameScales[cleanName] || 118);
 
         elFrameOverlay.src = frameSrc;
         elFrameOverlay.style.width = `${scale}%`;
