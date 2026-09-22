@@ -778,45 +778,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const effects = Array.isArray(nameEffects) ? nameEffects : [nameEffects].filter(Boolean);
     let textShadows = [];
+    let extraLetterSpacing = '';
     if (effects.includes('neon')) {
-      textShadows.push('0 0 10px rgba(168, 85, 247, 0.9), 0 0 20px rgba(168, 85, 247, 0.5)');
+      textShadows.push('0 0 6px rgba(124, 58, 237, 0.45), 0 0 14px rgba(168, 85, 247, 0.3)');
     }
     if (effects.includes('cartoon')) {
-      textShadows.push('1.5px 1.5px 0 #18181b, -1px -1px 0 #18181b, 1px -1px 0 #18181b, -1px 1px 0 #18181b');
+      textShadows.push('1.5px 1.5px 0 #0f172a');
+      extraLetterSpacing = '0.5px';
     }
     if (effects.includes('pop')) {
-      textShadows.push('2px 2px 0 #047857');
+      textShadows.push('2px 2px 0 #134e4a');
+      extraLetterSpacing = '0.8px';
     }
     if (effects.includes('glow')) {
       const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#00f2fe';
-      textShadows.push(`0 0 12px ${glowColor}`);
+      textShadows.push(`0 0 10px ${glowColor}`);
     }
     if (effects.includes('shadow')) {
-      textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
+      textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.6)');
     }
-    element.style.textShadow = textShadows.join(', ') || '';
-    element.style.letterSpacing = effects.includes('spaced') ? '2px' : '';
+    if (effects.includes('spaced')) {
+      extraLetterSpacing = '1.5px';
+    }
+    element.style.textShadow = textShadows.join(', ') || 'none';
+    element.style.letterSpacing = extraLetterSpacing || 'normal';
 
     if (nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient')) {
       element.style.backgroundImage = nameColor;
       element.style.webkitBackgroundClip = 'text';
+      element.style.backgroundClip = 'text';
       element.style.webkitTextFillColor = 'transparent';
       element.style.color = 'transparent';
+      element.style.display = 'inline-block';
     } else if (nameColor && nameColor !== 'none') {
       element.style.backgroundImage = 'none';
       element.style.webkitBackgroundClip = 'unset';
+      element.style.backgroundClip = 'unset';
       element.style.webkitTextFillColor = nameColor;
       element.style.color = nameColor;
+      element.style.display = '';
     } else if (fallbackColor) {
       element.style.backgroundImage = 'none';
       element.style.webkitBackgroundClip = 'unset';
+      element.style.backgroundClip = 'unset';
       element.style.webkitTextFillColor = fallbackColor;
       element.style.color = fallbackColor;
+      element.style.display = '';
     } else {
       element.style.backgroundImage = 'none';
       element.style.webkitBackgroundClip = 'unset';
+      element.style.backgroundClip = 'unset';
       element.style.webkitTextFillColor = '';
       element.style.color = '';
+      element.style.display = '';
     }
   }
   window.applyUserNameStyling = applyUserNameStyling;
