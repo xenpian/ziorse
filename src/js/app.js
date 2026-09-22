@@ -5773,9 +5773,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = (isSelf && cu.name ? cu.name : null) || prof.name || m.name || m.handle;
       const mFrame = (isSelf && cu.avatarFrame ? cu.avatarFrame : null) || prof.avatarFrame || m.avatarFrame;
       const mFont = (isSelf && cu.fontStyle ? cu.fontStyle : null) || prof.fontStyle || m.fontStyle;
+      const mWeight = (isSelf && cu.fontWeight ? cu.fontWeight : null) || prof.fontWeight || m.fontWeight;
       const mColor = (isSelf && cu.nameColor ? cu.nameColor : null) || prof.nameColor || m.nameColor;
       const mEffects = (isSelf && cu.nameEffects ? cu.nameEffects : null) || prof.nameEffects || m.nameEffects;
-      const memberStyleAttr = getAuthorNameStyleAttr({ fontStyle: mFont, nameColor: mColor, nameEffects: mEffects }, highestRole);
+      const memberStyleAttr = getAuthorNameStyleAttr({ fontStyle: mFont, fontWeight: mWeight, nameColor: mColor, nameEffects: mEffects }, highestRole);
 
       return `
         <div class="user-member-item" data-handle="${m.handle}"
