@@ -1188,14 +1188,19 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (eff === 'pop') {
       draftProfile.nameEffects = ['pop'];
       if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
-        draftProfile.nameColor = '#0d9488';
+        draftProfile.nameColor = '#059669';
+      }
+    } else if (eff === 'shadow') {
+      draftProfile.nameEffects = ['shadow'];
+      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff') {
+        draftProfile.nameColor = '#334155';
       }
     } else if (eff === 'candy') {
       draftProfile.nameEffects = ['spaced'];
-      draftProfile.nameColor = 'linear-gradient(135deg, #ec4899, #a855f7, #06b6d4)';
+      draftProfile.nameColor = 'linear-gradient(135deg, #ec4899, #d946ef, #06b6d4)';
     } else if (eff === 'prizma') {
       draftProfile.nameEffects = ['spaced'];
-      draftProfile.nameColor = 'linear-gradient(135deg, #e11d48, #9333ea, #2563eb, #059669)';
+      draftProfile.nameColor = 'linear-gradient(135deg, #ef4444, #f59e0b, #10b981, #06b6d4, #8b5cf6)';
     }
     updateLiveStyleControlsAndPreview();
   });
