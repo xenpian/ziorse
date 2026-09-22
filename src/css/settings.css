@@ -662,7 +662,9 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   position: relative;
   flex-shrink: 0;
-  box-shadow: 0 0 0 3px var(--bg-card, #1e1f22);
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
 }
 
 .hesabim-avatar-wrap img#acc-avatar-img {
