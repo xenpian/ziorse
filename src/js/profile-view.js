@@ -140,12 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
         const frameScales = {
-          'Lord.png': 156,
-          'altin-tac.png': 118,
-          'ates-cemberi.png': 117,
-          'galaksi-mor.png': 117,
-          'sakura-cicegi.png': 116,
-          'siber-neon.png': 117
+          'Lord.png': 156
         };
         const cleanName = String(frameSrc).split('/').pop().split('?')[0];
         const scale = (window.parent && window.parent.getFrameScale)
