@@ -99,11 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusText = (status && status.text) ? String(status.text).trim() : '';
     const statusType = (status && status.type) ? String(status.type) : 'online';
     const fontStyle = (p && p.fontStyle) ? String(p.fontStyle) : 'outfit';
+    const fontWeight = (p && p.fontWeight) ? String(p.fontWeight) : '700';
     const nameColor = (p && p.nameColor) ? String(p.nameColor) : '#ffffff';
     const nameEffects = (p && Array.isArray(p.nameEffects)) ? [...p.nameEffects] : [];
     const avatarFrame = (p && p.avatarFrame) ? String(p.avatarFrame) : 'none';
 
-    return { name, handle, avatar, banner, bio, email, statusText, statusType, fontStyle, nameColor, nameEffects, avatarFrame };
+    return { name, handle, avatar, banner, bio, email, statusText, statusType, fontStyle, fontWeight, nameColor, nameEffects, avatarFrame };
   }
 
   // Local state drafts
