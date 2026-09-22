@@ -188,6 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
       elName.style.fontFamily = '';
     }
 
+    if (profile.fontWeight) {
+      elName.style.fontWeight = profile.fontWeight;
+    }
+
     const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : (profile.nameEffects ? [profile.nameEffects] : []);
     let textShadows = [];
     let extraLetterSpacing = '';
@@ -196,19 +200,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isGrad) {
       if (effects.includes('neon')) {
         const glowColor = (profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('#')) ? profile.nameColor : '#8b5cf6';
-        textShadows.push(`0 0 6px ${glowColor}99, 0 0 14px ${glowColor}4d`);
+        textShadows.push(`0 0 6px ${glowColor}cc, 0 0 16px ${glowColor}80, 0 0 26px ${glowColor}40`);
         extraLetterSpacing = '0.4px';
       }
       if (effects.includes('cartoon')) {
-        textShadows.push('1.5px 1.5px 0 #0f172a');
+        textShadows.push('1.5px 1.5px 0 #0f172a, -1px -1px 0 #0f172a');
         extraLetterSpacing = '0.5px';
       }
       if (effects.includes('pop')) {
-        textShadows.push('2px 2px 0 #064e3b');
+        textShadows.push('2px 2px 0 #0f172a');
         extraLetterSpacing = '0.8px';
       }
       if (effects.includes('shadow')) {
-        textShadows.push('0 2px 5px rgba(0, 0, 0, 0.3)');
+        textShadows.push('0 2px 6px rgba(0, 0, 0, 0.4)');
         extraLetterSpacing = '0.4px';
       }
       if (effects.includes('glow')) {
