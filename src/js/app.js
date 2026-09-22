@@ -6176,7 +6176,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const highestRole = (activeServerId && activeServerId !== 'home')
           ? window.dataStore.getMemberHighestRole(activeServerId, post.handle)
           : null;
-        const authorNameStyle = highestRole?.color ? `style="color:${highestRole.color}; font-weight:600;"` : '';
+        const authorFrame = authorProf.avatarFrame || post.avatarFrame;
+        const authorNameStyle = getAuthorNameStyleAttr(authorProf, highestRole);
         const roleIconHtml = highestRole?.icon
           ? `<img src="${highestRole.icon}" class="chat-role-icon" style="width:20px;height:20px;object-fit:cover;border-radius:3px;vertical-align:middle;display:inline-block;" title="${escapeHtml(highestRole.name)}">`
           : '';
@@ -6184,8 +6185,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
         <div class="channel-chat-item" data-id="${post.id}">
           ${renderHoverPanelHtml(post.id, authorName, post.content, authorAvatar, post.handle)}
-          <div class="post-avatar-wrap" style="width:38px; height:38px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0; cursor:pointer;" data-handle="${post.handle}">
+          <div class="post-avatar-wrap" style="width:38px; height:38px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" data-handle="${post.handle}">
             ${renderMediaAvatarHtml(authorAvatar, 'post-avatar')}
+            ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
           </div>
           <div class="channel-chat-body">
             <div class="channel-chat-header">
@@ -6210,15 +6212,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const authorProf = window.dataStore.getUserProfile(post.handle);
         const authorAvatar = authorProf.avatar || post.avatar || window.DEFAULT_AVATAR;
         const authorName = authorProf.name || post.author || post.handle;
+        const authorFrame = authorProf.avatarFrame || post.avatarFrame;
+        const authorNameStyle = getAuthorNameStyleAttr(authorProf, null);
         const open = !!expandedCommentsPosts[post.id];
         return `<div class="post-card" data-id="${post.id}">
           ${renderHoverPanelHtml(post.id, authorName, post.content, authorAvatar, post.handle)}
-          <div class="post-avatar-wrap" style="width:42px; height:42px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0; cursor:pointer;" data-handle="${post.handle}">
+          <div class="post-avatar-wrap" style="width:42px; height:42px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" data-handle="${post.handle}">
             ${renderMediaAvatarHtml(authorAvatar, 'post-avatar')}
+            ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
           </div>
           <div class="post-content-area">
             <div class="post-header-line">
-              <div class="post-author-info" data-handle="${post.handle}"><span class="post-author-name">${escapeHtml(authorName)}</span><span class="post-author-handle">${escapeHtml(post.handle)}</span></div>
+              <div class="post-author-info" data-handle="${post.handle}"><span class="post-author-name" ${authorNameStyle}>${escapeHtml(authorName)}</span><span class="post-author-handle">${escapeHtml(post.handle)}</span></div>
               <div style="display:flex;align-items:center;gap:6px;">
                 ${post.isPinned ? '<span class="pin-badge">📌 Sabitlendi</span>' : ''}
                 <span class="post-time" title="${post.timestamp}">${formatDateTime(post.timestamp)}</span>
