@@ -693,6 +693,10 @@ io.on('connection', (socket) => {
         if (data.banner) acc.banner = data.banner;
         if (data.name) acc.name = data.name;
         if (data.bio) acc.bio = data.bio;
+        if (data.fontStyle) acc.fontStyle = data.fontStyle;
+        if (data.nameColor) acc.nameColor = data.nameColor;
+        if (data.nameEffects) acc.nameEffects = data.nameEffects;
+        if (data.avatarFrame) acc.avatarFrame = data.avatarFrame;
       }
 
       // Üyenin profil fotoğrafı/adı değiştiğinde tüm sunucu üye listelerini güncelle
@@ -701,6 +705,10 @@ io.on('connection', (socket) => {
         if (mIdx !== -1) {
           if (data.avatar) globalServerMembers[invCode][mIdx].avatar = data.avatar;
           if (data.name) globalServerMembers[invCode][mIdx].name = data.name;
+          if (data.fontStyle) globalServerMembers[invCode][mIdx].fontStyle = data.fontStyle;
+          if (data.nameColor) globalServerMembers[invCode][mIdx].nameColor = data.nameColor;
+          if (data.nameEffects) globalServerMembers[invCode][mIdx].nameEffects = data.nameEffects;
+          if (data.avatarFrame) globalServerMembers[invCode][mIdx].avatarFrame = data.avatarFrame;
         }
       });
       saveSyncDb();
