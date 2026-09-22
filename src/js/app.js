@@ -1079,7 +1079,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!user) return;
     if (userNameDisplay) {
       userNameDisplay.textContent = user.name || '';
-      applyUserNameStyling(userNameDisplay, user.fontStyle, user.nameColor, user.nameEffects);
+      applyUserNameStyling(userNameDisplay, user.fontStyle, user.nameColor, user.nameEffects, null, user.fontWeight);
     }
     if (userHandleDisplay) userHandleDisplay.textContent = user.handle || '';
     if (userAvatarDisplay) applyAvatarToElement(userAvatarDisplay, user.avatar);
@@ -1254,7 +1254,7 @@ document.addEventListener('DOMContentLoaded', () => {
       refreshIcons(dropdown);
 
       const pbdName = dropdown.querySelector('.pbd-name');
-      if (pbdName) applyUserNameStyling(pbdName, u.fontStyle, u.nameColor, u.nameEffects);
+      if (pbdName) applyUserNameStyling(pbdName, u.fontStyle, u.nameColor, u.nameEffects, null, u.fontWeight);
       const pbdAvWrap = dropdown.querySelector('.pbd-avatar-wrap');
       if (pbdAvWrap) applyAvatarFrameToContainer(pbdAvWrap, u.avatarFrame);
 
@@ -4918,6 +4918,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resolvedName = (isSelf && cu.name ? cu.name : null) || profile.name || handle;
     const resolvedFrame = (isSelf && cu.avatarFrame ? cu.avatarFrame : null) || profile.avatarFrame;
     const resolvedFont = (isSelf && cu.fontStyle ? cu.fontStyle : null) || profile.fontStyle;
+    const resolvedWeight = (isSelf && cu.fontWeight ? cu.fontWeight : null) || profile.fontWeight;
     const resolvedColor = (isSelf && cu.nameColor ? cu.nameColor : null) || profile.nameColor;
     const resolvedEffects = (isSelf && cu.nameEffects ? cu.nameEffects : null) || profile.nameEffects;
 
@@ -4932,7 +4933,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const popNameEl = document.getElementById('popover-name');
     if (popNameEl) {
       popNameEl.textContent = resolvedName;
-      applyUserNameStyling(popNameEl, resolvedFont, resolvedColor, resolvedEffects);
+      applyUserNameStyling(popNameEl, resolvedFont, resolvedColor, resolvedEffects, null, resolvedWeight);
     }
     document.getElementById('popover-handle').textContent = profile.handle || handle;
     document.getElementById('popover-bio').textContent = profile.bio || '';
