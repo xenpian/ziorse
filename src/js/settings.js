@@ -1010,6 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'serif': "'Cinzel', serif"
       };
       accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
+      accPreviewName.style.fontWeight = draftProfile.fontWeight || '700';
 
       if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
         accPreviewName.style.background = draftProfile.nameColor;
@@ -1024,7 +1025,7 @@ document.addEventListener('DOMContentLoaded', () => {
         accPreviewName.style.backgroundClip = 'unset';
         accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
         accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
-        accPreviewName.style.display = '';
+        accPreviewName.style.display = 'inline-block';
       }
 
       const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
@@ -1035,19 +1036,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isGrad) {
         if (effects.includes('neon')) {
           const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#8b5cf6';
-          textShadows.push(`0 0 6px ${glowColor}99, 0 0 14px ${glowColor}4d`);
+          textShadows.push(`0 0 6px ${glowColor}cc, 0 0 16px ${glowColor}80, 0 0 26px ${glowColor}40`);
           extraLetterSpacing = '0.4px';
         }
         if (effects.includes('cartoon')) {
-          textShadows.push('1.5px 1.5px 0 #0f172a');
+          textShadows.push('1.5px 1.5px 0 #0f172a, -1px -1px 0 #0f172a');
           extraLetterSpacing = '0.5px';
         }
         if (effects.includes('pop')) {
-          textShadows.push('2px 2px 0 #064e3b');
+          textShadows.push('2px 2px 0 #0f172a');
           extraLetterSpacing = '0.8px';
         }
         if (effects.includes('shadow')) {
-          textShadows.push('0 2px 5px rgba(0, 0, 0, 0.3)');
+          textShadows.push('0 2px 6px rgba(0, 0, 0, 0.4)');
           extraLetterSpacing = '0.4px';
         }
         if (effects.includes('glow')) {
@@ -1061,6 +1062,21 @@ document.addEventListener('DOMContentLoaded', () => {
       accPreviewName.style.textShadow = textShadows.length > 0 ? textShadows.join(', ') : 'none';
       accPreviewName.style.letterSpacing = extraLetterSpacing || 'normal';
     }
+
+    // Weight label and active pills
+    const weightLabel = document.getElementById('label-current-weight');
+    const curW = draftProfile.fontWeight || '700';
+    const weightNames = { '400': 'İnce (400)', '500': 'Normal (500)', '600': 'Orta (600)', '700': 'Kalın (700)', '800': 'Ekstra (800)', '900': 'Siyah (900)' };
+    if (weightLabel) weightLabel.textContent = weightNames[curW] || `${curW}`;
+    document.querySelectorAll('.btn-weight-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.weight === curW);
+    });
+
+    // Effect color chips active state
+    const curColorLower = (draftProfile.nameColor || '').toLowerCase();
+    document.querySelectorAll('.effect-color-chip').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.color.toLowerCase() === curColorLower);
+    });
 
     const frameOverlay = document.getElementById('acc-avatar-frame-overlay');
     if (frameOverlay) {
@@ -1084,12 +1100,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorInput = document.getElementById('hesabim-custom-color-input');
     const hexInput = document.getElementById('hesabim-color-hex-text');
     const curColor = draftProfile.nameColor || '#ffffff';
-    if (colorSwatch) colorSwatch.style.background = curColor;
+    if (colorSwatch) {
+      if (curColor.startsWith('linear-gradient')) {
+        colorSwatch.style.background = curColor;
+      } else {
+        colorSwatch.style.background = curColor;
+      }
+    }
     if (colorInput && curColor.startsWith('#') && curColor.length === 7) {
       colorInput.value = curColor;
     }
     if (hexInput && document.activeElement !== hexInput) {
-      hexInput.value = curColor.startsWith('#') ? curColor.slice(1).toUpperCase() : curColor.toUpperCase();
+      hexInput.value = curColor.startsWith('#') ? curColor.slice(1).toUpperCase() : (curColor.startsWith('linear') ? 'GRAD' : curColor.toUpperCase());
     }
 
     // Active states for Font Cards (.gg-font-card)
