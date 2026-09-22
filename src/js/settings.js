@@ -1115,4 +1115,10 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAvatarFrames();
   renderUserInfo();
   checkChanges();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialSection = urlParams.get('section');
+  if (initialSection) {
+    switchSection(initialSection);
+  }
 });
