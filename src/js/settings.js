@@ -604,6 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
       statusText: curStatus,
       statusType: draftProfile.statusType || 'online',
       fontStyle: draftProfile.fontStyle || 'outfit',
+      fontWeight: draftProfile.fontWeight || '700',
       nameColor: draftProfile.nameColor || '#ffffff',
       nameEffects: draftProfile.nameEffects || [],
       avatarFrame: draftProfile.avatarFrame || 'none'
@@ -629,7 +630,8 @@ document.addEventListener('DOMContentLoaded', () => {
           updateObj.fontStyle,
           updateObj.nameColor,
           updateObj.nameEffects,
-          updateObj.avatarFrame
+          updateObj.avatarFrame,
+          updateObj.fontWeight
         );
       }
       if (typeof targetParent.syncUserDisplay === 'function') {
@@ -647,6 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
         banner: updateObj.banner,
         bio: updateObj.bio,
         fontStyle: updateObj.fontStyle,
+        fontWeight: updateObj.fontWeight,
         nameColor: updateObj.nameColor,
         nameEffects: updateObj.nameEffects,
         avatarFrame: updateObj.avatarFrame,
