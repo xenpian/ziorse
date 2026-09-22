@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, ipcMain, Notification } = require('electron');
+const { app, BrowserWindow, Tray, Menu, ipcMain, Notification, shell } = require('electron');
 const path = require('path');
 const { fork } = require('child_process');
 const fs = require('fs');
@@ -329,6 +329,57 @@ ipcMain.handle('store-set', (event, key, val) => {
 
 ipcMain.handle('store-get-all', () => {
   return readPersistentStore();
+});
+
+// Avatar Frames Discovery & Management
+const AVATAR_FRAMES_DIR = path.join(__dirname, 'src', 'assets', 'avatar-frames');
+const ROOT_FRAMES_DIR = path.join(__dirname, 'assets', 'avatar-frames');
+if (!fs.existsSync(AVATAR_FRAMES_DIR)) fs.mkdirSync(AVATAR_FRAMES_DIR, { recursive: true });
+if (!fs.existsSync(ROOT_FRAMES_DIR)) fs.mkdirSync(ROOT_FRAMES_DIR, { recursive: true });
+
+function syncFramesDirs() {
+  try {
+    if (fs.existsSync(ROOT_FRAMES_DIR)) {
+      const rf = fs.readdirSync(ROOT_FRAMES_DIR).filter(f => f.toLowerCase().endsWith('.png'));
+      rf.forEach(file => {
+        const dest = path.join(AVATAR_FRAMES_DIR, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(ROOT_FRAMES_DIR, file), dest);
+      });
+    }
+    if (fs.existsSync(AVATAR_FRAMES_DIR)) {
+      const af = fs.readdirSync(AVATAR_FRAMES_DIR).filter(f => f.toLowerCase().endsWith('.png'));
+      af.forEach(file => {
+        const dest = path.join(ROOT_FRAMES_DIR, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(AVATAR_FRAMES_DIR, file), dest);
+      });
+    }
+  } catch (e) { }
+}
+
+ipcMain.handle('get-avatar-frames', () => {
+  syncFramesDirs();
+  try {
+    if (!fs.existsSync(AVATAR_FRAMES_DIR)) return [];
+    const files = fs.readdirSync(AVATAR_FRAMES_DIR).filter(f => f.toLowerCase().endsWith('.png'));
+    return files.map(file => ({
+      id: file,
+      name: path.parse(file).name.replace(/[-_]/g, ' '),
+      url: `assets/avatar-frames/${file}`,
+      filename: file
+    }));
+  } catch (e) {
+    return [];
+  }
+});
+
+ipcMain.handle('open-avatar-frames-folder', () => {
+  syncFramesDirs();
+  if (fs.existsSync(ROOT_FRAMES_DIR)) {
+    shell.openPath(ROOT_FRAMES_DIR);
+  } else if (fs.existsSync(AVATAR_FRAMES_DIR)) {
+    shell.openPath(AVATAR_FRAMES_DIR);
+  }
+  return true;
 });
 
 const configPath = path.join(app.getPath('userData'), 'window-bounds.json');
