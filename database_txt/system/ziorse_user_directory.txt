@@ -21,18 +21,7 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "idle",
-      "text": "porno"
-    },
-    "pronouns": "",
-    "fontStyle": "architect",
-    "nameColor": "#808080",
-    "nameEffects": [],
-    "avatarFrame": "assets/avatar-frames/Lord.png",
-    "profileEffect": "none",
-    "widgets": [],
-    "customStatus": {
-      "emoji": "💭",
+      "type": "online",
       "text": ""
     }
   },
