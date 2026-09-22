@@ -802,6 +802,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.applyUserNameStyling = applyUserNameStyling;
 
+  window.FRAME_SCALES = window.FRAME_SCALES || {
+    'Lord.png': 178,
+    'altin-tac.png': 134,
+    'ates-cemberi.png': 133,
+    'galaksi-mor.png': 133,
+    'sakura-cicegi.png': 131,
+    'siber-neon.png': 133
+  };
+
+  function getFrameScale(frameSrc) {
+    if (!frameSrc || frameSrc === 'none') return 130;
+    const cleanName = String(frameSrc).split('/').pop().split('?')[0];
+    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 132;
+  }
+  window.getFrameScale = getFrameScale;
+
+  function renderAvatarFrameHtml(frameSrc) {
+    if (!frameSrc || frameSrc === 'none') return '';
+    let resolvedSrc = frameSrc;
+    if (!resolvedSrc.includes('/') && !resolvedSrc.startsWith('data:')) {
+      resolvedSrc = 'assets/avatar-frames/' + resolvedSrc;
+    }
+    const scale = getFrameScale(frameSrc);
+    return `<img class="global-avatar-frame-overlay" src="${escapeHtml(resolvedSrc)}" alt="Frame" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:${scale}%; height:${scale}%; pointer-events:none; z-index:15; object-fit:contain; display:block;">`;
+  }
+  window.renderAvatarFrameHtml = renderAvatarFrameHtml;
+
   function applyAvatarFrameToContainer(container, frameSrc) {
     if (!container) return;
     const existingOverlay = container.querySelector('.global-avatar-frame-overlay');
@@ -819,20 +846,24 @@ document.addEventListener('DOMContentLoaded', () => {
     container.style.position = 'relative';
     container.style.overflow = 'visible';
 
-    const innerMedia = container.querySelector('img, video');
+    const innerMedia = container.querySelector('img:not(.global-avatar-frame-overlay), video');
     if (innerMedia) {
       innerMedia.style.borderRadius = '50%';
     }
 
+    const scale = getFrameScale(frameSrc);
+
     if (existingOverlay) {
       if (existingOverlay.src !== resolvedSrc) existingOverlay.src = resolvedSrc;
+      existingOverlay.style.width = `${scale}%`;
+      existingOverlay.style.height = `${scale}%`;
       existingOverlay.style.display = 'block';
     } else {
       const frameImg = document.createElement('img');
       frameImg.className = 'global-avatar-frame-overlay';
       frameImg.src = resolvedSrc;
       frameImg.alt = 'Frame';
-      frameImg.style.cssText = 'position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:122%; height:122%; pointer-events:none; z-index:10; object-fit:contain; display:block;';
+      frameImg.style.cssText = `position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:${scale}%; height:${scale}%; pointer-events:none; z-index:15; object-fit:contain; display:block;`;
       container.appendChild(frameImg);
     }
   }
