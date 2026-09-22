@@ -112,20 +112,20 @@ function loadSyncDb() {
         serverPosts = data.posts;
       }
 
-    // Merge accounts from txt database
-    const txtAccPath = path.join(__dirname, 'database_txt', 'system', 'ziorse_accounts.txt');
-    if (fs.existsSync(txtAccPath)) {
-      try {
-        const raw = JSON.parse(fs.readFileSync(txtAccPath, 'utf8'));
-        if (Array.isArray(raw)) {
-          raw.forEach(acc => {
-            if (acc && acc.handle && !globalAccounts.some(a => (a.handle && a.handle.toLowerCase() === acc.handle.toLowerCase()) || (a.email && acc.email && a.email.toLowerCase() === acc.email.toLowerCase()))) {
-              globalAccounts.push(acc);
-            }
-          });
-        }
-      } catch (e) { }
-    }
+      // Merge accounts from txt database
+      const txtAccPath = path.join(__dirname, 'database_txt', 'system', 'ziorse_accounts.txt');
+      if (fs.existsSync(txtAccPath)) {
+        try {
+          const raw = JSON.parse(fs.readFileSync(txtAccPath, 'utf8'));
+          if (Array.isArray(raw)) {
+            raw.forEach(acc => {
+              if (acc && acc.handle && !globalAccounts.some(a => (a.handle && a.handle.toLowerCase() === acc.handle.toLowerCase()) || (a.email && acc.email && a.email.toLowerCase() === acc.email.toLowerCase()))) {
+                globalAccounts.push(acc);
+              }
+            });
+          }
+        } catch (e) { }
+      }
 
       // Reconcile and ensure all server members (owners, past posters, registry members) are preserved in globalServerMembers
       Object.keys(globalInviteRegistry).forEach(code => {
@@ -601,8 +601,8 @@ app.get('/api/gifs', async (req, res) => {
     const html = await response.text();
 
     const matches = html.match(/https:\/\/media\.tenor\.com\/[a-zA-Z0-9_\-\/]+AAAAM\/[a-zA-Z0-9_\-]+\.gif/gi) ||
-                    html.match(/https:\/\/media\.tenor\.com\/[a-zA-Z0-9_\-\/]+AAAAC\/[a-zA-Z0-9_\-]+\.gif/gi) ||
-                    html.match(/https:\/\/media\.tenor\.com\/[a-zA-Z0-9_\-\/]+\.gif/gi) || [];
+      html.match(/https:\/\/media\.tenor\.com\/[a-zA-Z0-9_\-\/]+AAAAC\/[a-zA-Z0-9_\-]+\.gif/gi) ||
+      html.match(/https:\/\/media\.tenor\.com\/[a-zA-Z0-9_\-\/]+\.gif/gi) || [];
 
     const unique = Array.from(new Set(matches));
 
@@ -665,13 +665,6 @@ io.on('connection', (socket) => {
         if (data.banner) acc.banner = data.banner;
         if (data.name) acc.name = data.name;
         if (data.bio) acc.bio = data.bio;
-        if (data.pronouns !== undefined) acc.pronouns = data.pronouns;
-        if (data.fontStyle !== undefined) acc.fontStyle = data.fontStyle;
-        if (data.nameColor !== undefined) acc.nameColor = data.nameColor;
-        if (data.nameEffects !== undefined) acc.nameEffects = data.nameEffects;
-        if (data.avatarFrame !== undefined) acc.avatarFrame = data.avatarFrame;
-        if (data.profileEffect !== undefined) acc.profileEffect = data.profileEffect;
-        if (data.widgets !== undefined) acc.widgets = data.widgets;
       }
 
       // Üyenin profil fotoğrafı/adı değiştiğinde tüm sunucu üye listelerini güncelle

@@ -90,7 +90,7 @@ function ziorseRemoveStorage(key) {
   if (window.electronAPI?.storeSetSync) {
     try { window.electronAPI.storeSetSync(key, null); } catch (e) { }
   } else if (window.electronAPI?.storeSet) {
-    window.electronAPI.storeSet(key, null).catch(() => {});
+    window.electronAPI.storeSet(key, null).catch(() => { });
   }
   if (window.parent && window.parent !== window) {
     try {
@@ -117,7 +117,7 @@ function ziorseSetStorage(key, val) {
   if (window.electronAPI?.storeSetSync) {
     try { window.electronAPI.storeSetSync(key, isObj ? val : strVal); } catch (e) { }
   } else if (window.electronAPI?.storeSet) {
-    window.electronAPI.storeSet(key, isObj ? val : strVal).catch(() => {});
+    window.electronAPI.storeSet(key, isObj ? val : strVal).catch(() => { });
   }
 
   // Cross-frame sync: If inside an iframe/modal, sync directly to parent window's in-memory store
@@ -365,15 +365,7 @@ class DataStore {
       bio: user.bio || '',
       followers: user.followers || 0,
       following: user.following || 0,
-      status: user.status || this.userStatus || { type: 'online', text: '' },
-      fontStyle: user.fontStyle || 'outfit',
-      nameColor: user.nameColor || '#ffffff',
-      nameEffects: user.nameEffects || [],
-      avatarFrame: user.avatarFrame || 'none',
-      profileEffect: user.profileEffect || 'none',
-      pronouns: user.pronouns || '',
-      customStatus: user.customStatus || null,
-      widgets: user.widgets || []
+      status: user.status || this.userStatus || { type: 'online', text: '' }
     };
     dir[user.handle] = userObj;
     ziorseSetStorage(key, dir);
@@ -1236,7 +1228,7 @@ class DataStore {
       const raw = ziorseGetStorage(this._serverMembersKey(inviteCode));
       const parsed = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
       if (Array.isArray(parsed)) storageMembers = parsed.length;
-    } catch {}
+    } catch { }
 
     const srvMembersCount = (srv && Array.isArray(srv.members)) ? srv.members.length : 0;
     const regMembersCount = (regInfo && Array.isArray(regInfo.members)) ? regInfo.members.length : 0;

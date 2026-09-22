@@ -1052,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       dropdown.querySelector('#pbd-edit')?.addEventListener('click', () => {
         dropdown.remove();
-        window.openModalView('profile-edit.html');
+        window.openModalView('settings.html');
       });
       dropdown.querySelector('#pbd-logout')?.addEventListener('click', () => {
         dropdown.remove();
@@ -3883,7 +3883,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.renderServers = renderServers;
-  window.updateLiveServerMedia = function(serverId, icon, banner) {
+  window.updateLiveServerMedia = function (serverId, icon, banner) {
     if (window.dataStore && window.dataStore.servers) {
       const s = window.dataStore.servers.find(srv => String(srv.id) === String(serverId));
       if (s) {
@@ -4808,7 +4808,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ev.stopPropagation();
           userPopover.style.display = 'none';
           delete userPopover.dataset.activeHandle;
-          window.openModalView('profile-edit.html');
+          window.openModalView('settings.html');
         };
       } else {
         popoverActionBtn.title = 'Sohbet Başlat';
