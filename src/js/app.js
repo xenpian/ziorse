@@ -6669,8 +6669,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ── INSTANT IN-PLACE LIVE MEDIA UPDATER (Zero App Reload) ──
-  window.updateLiveUserMedia = function (handle, newAvatar, newBanner) {
+  // ── INSTANT IN-PLACE LIVE MEDIA & STYLING UPDATER (Zero App Reload) ──
+  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame) {
     if (!handle) return;
     const cleanH = handle.toLowerCase().replace('@', '');
     const fullH = '@' + cleanH;
@@ -6680,6 +6680,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.dataStore.currentUser && (window.dataStore.currentUser.handle || '').toLowerCase().replace('@', '') === cleanH) {
         if (newAvatar !== undefined) window.dataStore.currentUser.avatar = newAvatar;
         if (newBanner !== undefined) window.dataStore.currentUser.banner = newBanner;
+        if (newFontStyle !== undefined) window.dataStore.currentUser.fontStyle = newFontStyle;
+        if (newNameColor !== undefined) window.dataStore.currentUser.nameColor = newNameColor;
+        if (newNameEffects !== undefined) window.dataStore.currentUser.nameEffects = newNameEffects;
+        if (newAvatarFrame !== undefined) window.dataStore.currentUser.avatarFrame = newAvatarFrame;
       }
       if (window.dataStore.userDirectory) {
         const dir = window.dataStore.userDirectory;
@@ -6687,16 +6691,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (entry) {
           if (newAvatar !== undefined) entry.avatar = newAvatar;
           if (newBanner !== undefined) entry.banner = newBanner;
+          if (newFontStyle !== undefined) entry.fontStyle = newFontStyle;
+          if (newNameColor !== undefined) entry.nameColor = newNameColor;
+          if (newNameEffects !== undefined) entry.nameEffects = newNameEffects;
+          if (newAvatarFrame !== undefined) entry.avatarFrame = newAvatarFrame;
         }
       }
     }
+
+    const isSelf = window.dataStore.currentUser && (window.dataStore.currentUser.handle || '').toLowerCase().replace('@', '') === cleanH;
 
     // 2. Targeted In-Place Image DOM Updates (NO PAGE REFRESH!)
     if (newAvatar) {
       const resolvedAvatar = normalizeMediaUrl(newAvatar) || window.DEFAULT_AVATAR;
 
-      if (userAvatarDisplay) applyAvatarToElement(userAvatarDisplay, resolvedAvatar);
-      if (composerUserAvatar) applyAvatarToElement(composerUserAvatar, resolvedAvatar);
+      if (userAvatarDisplay && isSelf) applyAvatarToElement(userAvatarDisplay, resolvedAvatar);
+      if (composerUserAvatar && isSelf) applyAvatarToElement(composerUserAvatar, resolvedAvatar);
 
       // All post cards and chat items by this user across the screen
       document.querySelectorAll(`.post-avatar-wrap[data-handle="${fullH}"], .post-avatar-wrap[data-handle="${cleanH}"], .post-avatar-wrap[data-handle="@${cleanH}"]`).forEach(wrap => {
@@ -6704,9 +6714,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // DM messages
-      document.querySelectorAll('.dm-msg-row.mine .dm-msg-avatar-wrap, .dm-msg-row.mine .dm-msg-avatar').forEach(el => {
-        applyAvatarToElement(el, resolvedAvatar);
-      });
+      if (isSelf) {
+        document.querySelectorAll('.dm-msg-row.mine .dm-msg-avatar-wrap, .dm-msg-row.mine .dm-msg-avatar').forEach(el => {
+          applyAvatarToElement(el, resolvedAvatar);
+        });
+      }
 
       // Member list in right sidebar
       document.querySelectorAll(`.user-member-item[data-handle="${fullH}"], .user-member-item[data-handle="${cleanH}"], .user-member-item[data-handle="@${cleanH}"]`).forEach(item => {
@@ -6717,8 +6729,85 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // Profile popover if currently open
-      const popoverAvatar = document.getElementById('popover-avatar-wrap') || document.getElementById('popover-avatar');
-      if (popoverAvatar) applyAvatarToElement(popoverAvatar, resolvedAvatar);
+      const popover = document.getElementById('user-profile-popover');
+      if (popover && popover.style.display !== 'none' && popover.dataset.activeHandle && popover.dataset.activeHandle.toLowerCase().replace('@', '') === cleanH) {
+        const popoverAvatar = document.getElementById('popover-avatar-wrap') || document.getElementById('popover-avatar');
+        if (popoverAvatar) applyAvatarToElement(popoverAvatar, resolvedAvatar);
+      }
+    }
+
+    // 3. Targeted In-Place Avatar Frame DOM Updates
+    if (newAvatarFrame !== undefined) {
+      if (isSelf) {
+        const myAvWrap = document.getElementById('user-avatar-wrap');
+        if (myAvWrap) applyAvatarFrameToContainer(myAvWrap, newAvatarFrame);
+        const compAvWrap = document.getElementById('composer-avatar-wrap');
+        if (compAvWrap) applyAvatarFrameToContainer(compAvWrap, newAvatarFrame);
+      }
+
+      // Chat feed post avatar wraps
+      document.querySelectorAll(`.post-avatar-wrap[data-handle="${fullH}"], .post-avatar-wrap[data-handle="${cleanH}"], .post-avatar-wrap[data-handle="@${cleanH}"]`).forEach(wrap => {
+        applyAvatarFrameToContainer(wrap, newAvatarFrame);
+      });
+
+      // DM messages
+      if (isSelf) {
+        document.querySelectorAll('.dm-msg-row.mine .dm-msg-avatar-wrap').forEach(wrap => {
+          applyAvatarFrameToContainer(wrap, newAvatarFrame);
+        });
+      }
+
+      // Right sidebar member avatars
+      document.querySelectorAll(`.user-member-item[data-handle="${fullH}"], .user-member-item[data-handle="${cleanH}"], .user-member-item[data-handle="@${cleanH}"]`).forEach(item => {
+        const wrap = item.querySelector('.avatar-wrapper-status');
+        if (wrap) applyAvatarFrameToContainer(wrap, newAvatarFrame);
+      });
+
+      // Profile popover if open
+      const popover = document.getElementById('user-profile-popover');
+      if (popover && popover.style.display !== 'none' && popover.dataset.activeHandle && popover.dataset.activeHandle.toLowerCase().replace('@', '') === cleanH) {
+        const popAvatarWrap = document.getElementById('popover-avatar-wrap');
+        if (popAvatarWrap) applyAvatarFrameToContainer(popAvatarWrap, newAvatarFrame);
+      }
+
+      // Profile bar dropdown if open
+      const pbd = document.getElementById('profile-bar-dropdown');
+      if (pbd && isSelf) {
+        const pbdWrap = pbd.querySelector('.pbd-avatar-wrap');
+        if (pbdWrap) applyAvatarFrameToContainer(pbdWrap, newAvatarFrame);
+      }
+    }
+
+    // 4. Targeted In-Place Font Style, Color & Effect Updates
+    if (newFontStyle !== undefined || newNameColor !== undefined || newNameEffects !== undefined) {
+      if (isSelf && userNameDisplay) {
+        applyUserNameStyling(userNameDisplay, newFontStyle, newNameColor, newNameEffects);
+      }
+
+      // Chat feed author names
+      document.querySelectorAll(`.post-author-name[data-handle="${fullH}"], .post-author-name[data-handle="${cleanH}"], .post-author-name[data-handle="@${cleanH}"]`).forEach(el => {
+        applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects);
+      });
+
+      // Right sidebar member names
+      document.querySelectorAll(`.user-member-item[data-handle="${fullH}"], .user-member-item[data-handle="${cleanH}"], .user-member-item[data-handle="@${cleanH}"]`).forEach(item => {
+        const nameEl = item.querySelector('.user-member-name');
+        if (nameEl) applyUserNameStyling(nameEl, newFontStyle, newNameColor, newNameEffects);
+      });
+
+      // Popover if open
+      const popover = document.getElementById('user-profile-popover');
+      if (popover && popover.style.display !== 'none' && popover.dataset.activeHandle && popover.dataset.activeHandle.toLowerCase().replace('@', '') === cleanH) {
+        const popName = document.getElementById('popover-name');
+        if (popName) applyUserNameStyling(popName, newFontStyle, newNameColor, newNameEffects);
+      }
+
+      // Profile bar dropdown if open
+      const pbd = document.getElementById('profile-bar-dropdown');
+      if (pbd && isSelf) {
+        const pbdName = pbd.querySelector('.pbd-name');
+        if (pbdName) applyUserNameStyling(pbdName, newFontStyle, newNameColor, newNameEffects);
+      }
     }
 
     // 3. Targeted Banner DOM Update
