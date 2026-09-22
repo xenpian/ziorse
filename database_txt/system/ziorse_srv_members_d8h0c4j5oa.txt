@@ -2,10 +2,6 @@
   {
     "handle": "@sa",
     "name": "ziorse creatorf",
-    "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-    "fontStyle": "cyber",
-    "nameColor": "#0015ff",
-    "nameEffects": [],
-    "avatarFrame": "assets/avatar-frames/Lord.png"
+    "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png"
   }
 ]
