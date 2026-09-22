@@ -762,7 +762,9 @@ document.addEventListener('DOMContentLoaded', () => {
     'bebas': "'Bebas Neue', cursive",
     'terminal': "'JetBrains Mono', monospace",
     'fira': "'Fira Code', monospace",
-    'architect': "'Architects Daughter', cursive"
+    'architect': "'Architects Daughter', cursive",
+    'cursive': "'Caveat', cursive",
+    'serif': "'Cinzel', serif"
   };
 
   function applyUserNameStyling(element, fontStyle, nameColor, nameEffects, fallbackColor) {
