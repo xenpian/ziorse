@@ -284,16 +284,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Live in-place targeted update for any user whose media changed
         Object.keys(dir).forEach(h => {
           const uData = dir[h];
-          if (uData && uData.avatar && typeof window.updateLiveUserMedia === 'function') {
-            window.updateLiveUserMedia(h, uData.avatar, uData.banner);
+          if (uData && typeof window.updateLiveUserMedia === 'function') {
+            window.updateLiveUserMedia(
+              h,
+              uData.avatar,
+              uData.banner,
+              uData.fontStyle,
+              uData.nameColor,
+              uData.nameEffects,
+              uData.avatarFrame
+            );
           }
         });
       }
       if (window.dataStore && window.dataStore.currentUser) {
-        const myProf = window.dataStore.getUserProfile(window.dataStore.currentUser.handle);
-        if (userAvatarDisplay) applyAvatarToElement(userAvatarDisplay, myProf.avatar || window.DEFAULT_AVATAR);
-        if (userNameDisplay) userNameDisplay.textContent = myProf.name || window.dataStore.currentUser.name;
-        if (composerUserAvatar) applyAvatarToElement(composerUserAvatar, myProf.avatar || window.DEFAULT_AVATAR);
+        syncUserDisplay();
       }
       renderOnlineMembers();
       updateRightSidebar();
