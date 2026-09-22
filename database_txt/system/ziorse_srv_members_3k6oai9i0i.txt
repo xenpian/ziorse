@@ -4,10 +4,8 @@
     "name": "ziorse creatorf",
     "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
     "fontStyle": "playfair",
-    "nameColor": "#ff0000",
-    "nameEffects": [
-      "shadow"
-    ],
+    "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #ffffff 66%, #ff0000 100%)",
+    "nameEffects": [],
     "avatarFrame": "assets/avatar-frames/Liaz.png",
     "fontWeight": "900"
   }
