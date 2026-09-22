@@ -813,12 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.applyUserNameStyling = applyUserNameStyling;
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 156,
-    'altin-tac.png': 118,
-    'ates-cemberi.png': 117,
-    'galaksi-mor.png': 117,
-    'sakura-cicegi.png': 116,
-    'siber-neon.png': 117
+    'Lord.png': 156
   };
 
   function getFrameScale(frameSrc) {
