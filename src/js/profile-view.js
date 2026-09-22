@@ -140,12 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
         const frameScales = {
-          'Lord.png': 156
+          'Lord.png': 156,
+          'Liaz.png': 139
         };
         const cleanName = String(frameSrc).split('/').pop().split('?')[0];
         const scale = (window.parent && window.parent.getFrameScale)
           ? window.parent.getFrameScale(frameSrc)
-          : (frameScales[cleanName] || 118);
+          : (frameScales[cleanName] || 140);
 
         elFrameOverlay.src = frameSrc;
         elFrameOverlay.style.width = `${scale}%`;
