@@ -4942,13 +4942,13 @@ body.dark-mode .afd-btn:hover {
 }
 
 .pbd-avatar-wrap {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  border: 3px solid var(--bg-card);
+  border: none !important;
   position: relative;
-  background: var(--bg-card);
-  margin-bottom: 4px;
+  background: transparent !important;
+  margin-bottom: 18px;
 }
 
 .pbd-avatar {
@@ -4961,6 +4961,8 @@ body.dark-mode .afd-btn:hover {
 .pbd-names {
   display: flex;
   flex-direction: column;
+  margin-top: 4px;
+  gap: 3px;
 }
 
 .pbd-name {
