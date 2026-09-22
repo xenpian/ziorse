@@ -979,7 +979,8 @@ document.addEventListener('DOMContentLoaded', () => {
           draftProfile.fontStyle,
           draftProfile.nameColor,
           draftProfile.nameEffects,
-          draftProfile.avatarFrame
+          draftProfile.avatarFrame,
+          draftProfile.fontWeight
         );
       }
     });
