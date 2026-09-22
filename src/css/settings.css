@@ -970,6 +970,63 @@ textarea {
   letter-spacing: 0.3px;
 }
 
+/* Font Weight Selector */
+.weight-pills-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-weight-pill {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e4e4e7;
+  background: #f4f4f5;
+  color: #3f3f46;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-weight-pill:hover {
+  background: #e4e4e7;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+.btn-weight-pill.active {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2) !important;
+}
+
+/* Effect Color Chips */
+.effect-color-chip {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.effect-color-chip:hover {
+  transform: scale(1.18);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.effect-color-chip.active {
+  border-color: #0f172a !important;
+  transform: scale(1.22);
+  box-shadow: 0 0 0 2px #ffffff, 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
 /* 3. Renk & Gradyan Seçici Alanı */
 .color-picker-row {
   display: flex;
