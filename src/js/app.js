@@ -6986,17 +6986,19 @@ document.addEventListener('DOMContentLoaded', () => {
           window.dataStore.saveUser(result.user);
         }
       }
-      syncUserDisplay();
       const cu = window.dataStore.currentUser;
       if (cu && cu.handle) {
-        const cleanH = cu.handle.toLowerCase().replace('@', '');
-        document.querySelectorAll(`.post-author-name[data-handle="${cu.handle}"], .post-author-name[data-handle="${cleanH}"], .post-author-name[data-handle="@${cleanH}"]`).forEach(el => {
-          el.textContent = cu.name;
-        });
-        document.querySelectorAll(`.post-avatar-wrap[data-handle="${cu.handle}"] img, .post-avatar-wrap[data-handle="${cleanH}"] img, .post-avatar-wrap[data-handle="@${cleanH}"] img`).forEach(img => {
-          if (cu.avatar) img.src = cu.avatar;
-        });
+        window.updateLiveUserMedia(
+          cu.handle,
+          cu.avatar,
+          cu.banner,
+          cu.fontStyle,
+          cu.nameColor,
+          cu.nameEffects,
+          cu.avatarFrame
+        );
       }
+      syncUserDisplay();
       return;
     }
 
