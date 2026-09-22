@@ -234,8 +234,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reset frame classes
     liveAvatarFrame.className = 'pe-avatar-frame-element';
+    liveAvatarFrame.style.backgroundImage = 'none';
     if (current.avatarFrame && current.avatarFrame !== 'none') {
-      liveAvatarFrame.classList.add(`avatar-frame-${current.avatarFrame}`);
+      if (current.avatarFrame.endsWith('.png') || current.avatarFrame.includes('/')) {
+        let fUrl = current.avatarFrame;
+        if (!fUrl.includes('/') && !fUrl.startsWith('data:')) fUrl = `assets/avatar-frames/${fUrl}`;
+        liveAvatarFrame.style.backgroundImage = `url('${fUrl}')`;
+        liveAvatarFrame.style.backgroundSize = 'contain';
+        liveAvatarFrame.style.backgroundPosition = 'center';
+        liveAvatarFrame.style.backgroundRepeat = 'no-repeat';
+      } else {
+        liveAvatarFrame.classList.add(`avatar-frame-${current.avatarFrame}`);
+      }
     }
 
     // 4. Banner (Image or Gradient/Color)
@@ -662,6 +672,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Load dynamic PNG frames into profile-edit frame grid
+  async function loadDynamicFramesInProfileEdit() {
+    let frames = [];
+    try {
+      if (window.electronAPI && typeof window.electronAPI.getAvatarFrames === 'function') {
+        frames = await window.electronAPI.getAvatarFrames();
+      } else {
+        const res = await fetch('http://localhost:3000/api/avatar-frames');
+        const data = await res.json();
+        frames = data.frames || [];
+      }
+    } catch (e) {
+      frames = [];
+    }
+
+    const grid = document.getElementById('pe-frame-grid');
+    if (!grid || frames.length === 0) return;
+
+    frames.forEach(f => {
+      if (grid.querySelector(`[data-frame="${f.url}"]`) || grid.querySelector(`[data-frame="${f.id}"]`)) return;
+      const tile = document.createElement('div');
+      tile.className = 'pe-frame-tile';
+      tile.dataset.frame = f.url || f.id;
+      tile.innerHTML = `
+        <div class="pe-frame-tile-circle" style="background:transparent; display:flex; align-items:center; justify-content:center;">
+          <img src="${f.url}" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <span class="pe-frame-tile-name" title="${f.name}">${f.name}</span>
+      `;
+      grid.appendChild(tile);
+    });
+
+    document.querySelectorAll('.pe-frame-tile').forEach(tile => {
+      const fr = tile.dataset.frame;
+      const isAct = current.avatarFrame === fr || (current.avatarFrame && current.avatarFrame.endsWith(fr));
+      tile.classList.toggle('active', isAct);
+    });
+  }
+
   // Populate initially
   populateUI(original);
+  loadDynamicFramesInProfileEdit();
 });
