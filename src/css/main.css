@@ -450,7 +450,7 @@ body.dark-mode .user-controls-wrapper {
 }
 
 .user-avatar-sm,
-.user-avatar-wrap img,
+.user-avatar-wrap img:not(.global-avatar-frame-overlay),
 .user-avatar-wrap video {
   width: 100% !important;
   height: 100% !important;
