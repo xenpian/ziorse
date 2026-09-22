@@ -880,12 +880,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let availableFrames = [];
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 156,
-    'altin-tac.png': 118,
-    'ates-cemberi.png': 117,
-    'galaksi-mor.png': 117,
-    'sakura-cicegi.png': 116,
-    'siber-neon.png': 117
+    'Lord.png': 156
   };
 
   function getFrameScale(frameSrc) {
@@ -912,12 +907,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       availableFrames = [
-        { id: 'Lord.png', name: 'Lord', url: 'assets/avatar-frames/Lord.png', scale: 156 },
-        { id: 'siber-neon.png', name: 'Siber Neon', url: 'assets/avatar-frames/siber-neon.png', scale: 117 },
-        { id: 'altin-tac.png', name: 'Altın Taç', url: 'assets/avatar-frames/altin-tac.png', scale: 118 },
-        { id: 'ates-cemberi.png', name: 'Ateş Çemberi', url: 'assets/avatar-frames/ates-cemberi.png', scale: 117 },
-        { id: 'sakura-cicegi.png', name: 'Sakura Çiçeği', url: 'assets/avatar-frames/sakura-cicegi.png', scale: 116 },
-        { id: 'galaksi-mor.png', name: 'Galaksi Mor', url: 'assets/avatar-frames/galaksi-mor.png', scale: 117 }
+        { id: 'Lord.png', name: 'Lord', url: 'assets/avatar-frames/Lord.png', scale: 156 }
       ];
     }
     renderAvatarFramesGrid();
