@@ -21,9 +21,29 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "online",
-      "text": ""
-    }
+      "type": "idle",
+      "text": "porno"
+    },
+    "pronouns": "",
+    "fontStyle": "pixel",
+    "nameColor": "#ffffff",
+    "nameEffects": [],
+    "avatarFrame": "cyber",
+    "profileEffect": "none",
+    "widgets": [
+      {
+        "id": "favorite_game",
+        "title": "Favori Oyun",
+        "value": "League of Legends",
+        "icon": "🏆"
+      },
+      {
+        "id": "spotify",
+        "title": "Sevdiğim Şarkı",
+        "value": "Synthwave Dreams - Retro Knight",
+        "icon": "🎵"
+      }
+    ]
   },
   "@saf": {
     "name": "safsfdsvv",

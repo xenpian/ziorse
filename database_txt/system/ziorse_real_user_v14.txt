@@ -7,7 +7,7 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "outfit",
+  "fontStyle": "pixel",
   "nameColor": "#ffffff",
   "nameEffects": [],
   "avatarFrame": "cyber",

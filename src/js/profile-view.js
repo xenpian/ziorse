@@ -133,6 +133,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Kimlik
     elName.textContent = profile.name || handle;
+    const fontFamilies = {
+      'outfit': "'Outfit', sans-serif",
+      'cyber': "'Russo One', sans-serif",
+      'cursive': "'Caveat', cursive",
+      'pixel': "'Press Start 2P', monospace",
+      'serif': "'Cinzel', serif",
+      'neon': "'Righteous', cursive",
+      'terminal': "'JetBrains Mono', monospace",
+      'inter': "'Inter', sans-serif"
+    };
+    if (profile.fontStyle && fontFamilies[profile.fontStyle]) {
+      elName.style.fontFamily = fontFamilies[profile.fontStyle];
+    }
+    if (profile.nameColor) {
+      if (profile.nameColor.startsWith('linear-gradient')) {
+        elName.style.background = profile.nameColor;
+        elName.style.webkitBackgroundClip = 'text';
+        elName.style.webkitTextFillColor = 'transparent';
+      } else {
+        elName.style.color = profile.nameColor;
+      }
+    }
     elHandle.textContent = profile.handle || handle;
     document.title = `Ziorse - ${profile.name || handle}`;
 
@@ -175,7 +197,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (profile.isSelf) {
       elActionBtn.textContent = 'Profili Düzenle';
       elActionBtn.className = 'pv-action-btn self';
-      elActionBtn.onclick = () => { window.location.href = 'profile-edit.html'; };
+      elActionBtn.onclick = () => {
+        if (window.parent && window.parent !== window && typeof window.parent.openModalView === 'function') {
+          window.parent.openModalView('profile-edit.html');
+        } else {
+          window.location.href = 'profile-edit.html';
+        }
+      };
     } else if (profile.isFollowing) {
       elActionBtn.textContent = 'Takipten Çık';
       elActionBtn.className = 'pv-action-btn following';
