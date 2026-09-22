@@ -1184,9 +1184,18 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLiveStyleControlsAndPreview();
   });
 
+  // Font Weight Pills Click
+  document.getElementById('hesabim-weight-pills')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-weight-pill');
+    if (!btn) return;
+    draftProfile.fontWeight = btn.dataset.weight;
+    updateLiveStyleControlsAndPreview();
+  });
+
   // Reset Font Button
   document.getElementById('btn-reset-font')?.addEventListener('click', () => {
     draftProfile.fontStyle = 'outfit';
+    draftProfile.fontWeight = '700';
     updateLiveStyleControlsAndPreview();
   });
 
