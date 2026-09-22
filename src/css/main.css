@@ -445,19 +445,7 @@ body.dark-mode .user-controls-wrapper {
   display: block;
 }
 
-.user-status-dot-mini,
-.discord-status-dot-mini {
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1.5px solid var(--bg-sidebar);
-  background: #22c55e;
-  z-index: 3;
-  pointer-events: none;
-}
+
 
 .user-info-text {
   display: flex;
@@ -1543,27 +1531,8 @@ body.dark-mode .header-server-badge {
   display: block;
 }
 
-.discord-status-dot-mini {
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent-emerald);
-  border: 1.5px solid var(--bg-sidebar);
-}
 
-.discord-status-dot {
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--accent-emerald);
-  border: 1.5px solid var(--bg-sidebar);
-}
+
 
 .user-info-text {
   display: flex;
