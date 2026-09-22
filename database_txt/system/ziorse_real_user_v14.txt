@@ -8,7 +8,7 @@
   "loggedIn": true,
   "pronouns": "",
   "fontStyle": "cinzel",
-  "nameColor": "#18181b",
+  "nameColor": "#ed4040",
   "nameEffects": [
     "neon"
   ],

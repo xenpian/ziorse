@@ -94,7 +94,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -194,7 +194,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -246,7 +246,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -298,7 +298,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -415,7 +415,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -467,7 +467,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -519,7 +519,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -570,7 +570,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -621,7 +621,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -673,7 +673,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -724,7 +724,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -775,7 +775,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -826,7 +826,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -877,7 +877,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -928,7 +928,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -979,7 +979,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1030,7 +1030,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1081,7 +1081,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1132,7 +1132,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1183,7 +1183,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1234,7 +1234,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1285,7 +1285,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1336,7 +1336,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1387,7 +1387,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1438,7 +1438,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1489,7 +1489,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1540,7 +1540,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1591,7 +1591,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1639,7 +1639,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1690,7 +1690,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1741,7 +1741,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
@@ -1792,7 +1792,7 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "cinzel",
-        "nameColor": "#18181b",
+        "nameColor": "#ed4040",
         "nameEffects": [
           "neon"
         ],
