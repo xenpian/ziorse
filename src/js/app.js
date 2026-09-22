@@ -6903,8 +6903,13 @@ document.addEventListener('DOMContentLoaded', () => {
         applyUserNameStyling(userNameDisplay, newFontStyle, newNameColor, newNameEffects);
       }
 
-      // Chat feed author names
-      document.querySelectorAll(`.post-author-name[data-handle="${fullH}"], .post-author-name[data-handle="${cleanH}"], .post-author-name[data-handle="@${cleanH}"]`).forEach(el => {
+      // Chat feed author names (both channel chat & home feed)
+      document.querySelectorAll(`.post-author-name[data-handle="${fullH}"], .post-author-name[data-handle="${cleanH}"], .post-author-name[data-handle="@${cleanH}"], .post-author-info[data-handle="${fullH}"] .post-author-name, .post-author-info[data-handle="${cleanH}"] .post-author-name, .post-author-info[data-handle="@${cleanH}"] .post-author-name`).forEach(el => {
+        applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects);
+      });
+
+      // DM message author names
+      document.querySelectorAll(`.dm-msg-name[data-handle="${fullH}"], .dm-msg-name[data-handle="${cleanH}"], .dm-msg-name[data-handle="@${cleanH}"]`).forEach(el => {
         applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects);
       });
 
