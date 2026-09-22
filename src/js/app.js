@@ -776,26 +776,33 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.fontFamily = '';
     }
 
-    const effects = Array.isArray(nameEffects) ? nameEffects : [nameEffects].filter(Boolean);
+    const effects = Array.isArray(nameEffects) ? nameEffects : (nameEffects ? [nameEffects] : []);
     let textShadows = [];
     let extraLetterSpacing = '';
-    if (effects.includes('neon')) {
-      textShadows.push('0 0 6px rgba(124, 58, 237, 0.45), 0 0 14px rgba(168, 85, 247, 0.3)');
-    }
-    if (effects.includes('cartoon')) {
-      textShadows.push('1.5px 1.5px 0 #0f172a');
-      extraLetterSpacing = '0.5px';
-    }
-    if (effects.includes('pop')) {
-      textShadows.push('2px 2px 0 #134e4a');
-      extraLetterSpacing = '0.8px';
-    }
-    if (effects.includes('glow')) {
-      const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#00f2fe';
-      textShadows.push(`0 0 10px ${glowColor}`);
-    }
-    if (effects.includes('shadow')) {
-      textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.6)');
+    const isGradient = nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient');
+
+    if (!isGradient) {
+      if (effects.includes('neon')) {
+        const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#8b5cf6';
+        textShadows.push(`0 0 6px ${glowColor}99, 0 0 14px ${glowColor}4d`);
+        extraLetterSpacing = '0.4px';
+      }
+      if (effects.includes('cartoon')) {
+        textShadows.push('1.5px 1.5px 0 #0f172a');
+        extraLetterSpacing = '0.5px';
+      }
+      if (effects.includes('pop')) {
+        textShadows.push('2px 2px 0 #064e3b');
+        extraLetterSpacing = '0.8px';
+      }
+      if (effects.includes('shadow')) {
+        textShadows.push('0 2px 5px rgba(0, 0, 0, 0.3)');
+        extraLetterSpacing = '0.4px';
+      }
+      if (effects.includes('glow')) {
+        const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#00f2fe';
+        textShadows.push(`0 0 10px ${glowColor}`);
+      }
     }
     if (effects.includes('spaced')) {
       extraLetterSpacing = '1.5px';
@@ -803,7 +810,7 @@ document.addEventListener('DOMContentLoaded', () => {
     element.style.textShadow = textShadows.join(', ') || 'none';
     element.style.letterSpacing = extraLetterSpacing || 'normal';
 
-    if (nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient')) {
+    if (isGradient) {
       element.style.backgroundImage = nameColor;
       element.style.webkitBackgroundClip = 'text';
       element.style.backgroundClip = 'text';
@@ -816,7 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.backgroundClip = 'unset';
       element.style.webkitTextFillColor = nameColor;
       element.style.color = nameColor;
-      element.style.display = '';
+      element.style.display = 'inline-block';
     } else if (fallbackColor) {
       element.style.backgroundImage = 'none';
       element.style.webkitBackgroundClip = 'unset';
@@ -922,28 +929,53 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prof?.fontStyle && fontFamilies[prof.fontStyle]) {
       styles.push(`font-family:${fontFamilies[prof.fontStyle]}`);
     }
-    const eff = Array.isArray(prof?.nameEffects) ? prof.nameEffects : [];
+    const eff = Array.isArray(prof?.nameEffects) ? prof.nameEffects : (prof?.nameEffects ? [prof.nameEffects] : []);
     let shadows = [];
-    if (eff.includes('glow')) {
-      const gc = (prof?.nameColor && prof.nameColor.startsWith('#')) ? prof.nameColor : '#00f2fe';
-      shadows.push(`0 0 12px ${gc}`);
-    }
-    if (eff.includes('shadow')) {
-      shadows.push('2px 3px 5px rgba(0,0,0,0.8)');
+    let extraLetterSpacing = '';
+    const isGradient = prof?.nameColor && typeof prof.nameColor === 'string' && prof.nameColor.startsWith('linear-gradient');
+
+    if (!isGradient) {
+      if (eff.includes('neon')) {
+        const gc = (prof?.nameColor && typeof prof.nameColor === 'string' && prof.nameColor.startsWith('#')) ? prof.nameColor : '#8b5cf6';
+        shadows.push(`0 0 6px ${gc}99, 0 0 14px ${gc}4d`);
+        extraLetterSpacing = '0.4px';
+      }
+      if (eff.includes('cartoon')) {
+        shadows.push('1.5px 1.5px 0 #0f172a');
+        extraLetterSpacing = '0.5px';
+      }
+      if (eff.includes('pop')) {
+        shadows.push('2px 2px 0 #064e3b');
+        extraLetterSpacing = '0.8px';
+      }
+      if (eff.includes('shadow')) {
+        shadows.push('0 2px 5px rgba(0,0,0,0.3)');
+        extraLetterSpacing = '0.4px';
+      }
+      if (eff.includes('glow')) {
+        const gc = (prof?.nameColor && prof.nameColor.startsWith('#')) ? prof.nameColor : '#00f2fe';
+        shadows.push(`0 0 10px ${gc}`);
+      }
     }
     if (shadows.length) styles.push(`text-shadow:${shadows.join(', ')}`);
-    if (eff.includes('spaced')) styles.push('letter-spacing:2px');
+    if (eff.includes('spaced') || extraLetterSpacing) {
+      styles.push(`letter-spacing:${extraLetterSpacing || '2px'}`);
+    }
 
-    if (prof?.nameColor && prof.nameColor.startsWith('linear-gradient')) {
+    if (isGradient) {
       styles.push(`background-image:${prof.nameColor}`);
       styles.push('-webkit-background-clip:text');
+      styles.push('background-clip:text');
       styles.push('-webkit-text-fill-color:transparent');
       styles.push('color:transparent');
+      styles.push('display:inline-block');
+    } else if (prof?.nameColor && prof.nameColor !== 'none') {
+      styles.push(`color:${prof.nameColor}`);
+      styles.push(`-webkit-text-fill-color:${prof.nameColor}`);
+      styles.push('display:inline-block');
     } else if (highestRole?.color) {
       styles.push(`color:${highestRole.color}`);
       styles.push('font-weight:600');
-    } else if (prof?.nameColor && prof.nameColor !== 'none') {
-      styles.push(`color:${prof.nameColor}`);
     }
     return styles.length ? `style="${styles.join('; ')}"` : '';
   }
