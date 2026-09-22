@@ -41,4 +41,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     const { pathToFileURL } = require('url');
     return pathToFileURL(path.join(__dirname, 'sounds')).href;
   },
+
+  // Avatar Frames Folder Bridge
+  getAvatarFrames: () => ipcRenderer.invoke('get-avatar-frames'),
+  openAvatarFramesFolder: () => ipcRenderer.invoke('open-avatar-frames-folder'),
 });
