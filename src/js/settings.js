@@ -941,6 +941,21 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Çerçeve listesi güncellendi');
   });
 
+  function broadcastLiveStyleChanges() {
+    const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
+    if (targetParent && typeof targetParent.updateLiveUserMedia === 'function') {
+      targetParent.updateLiveUserMedia(
+        draftProfile.handle,
+        draftProfile.avatar,
+        draftProfile.banner,
+        draftProfile.fontStyle,
+        draftProfile.nameColor,
+        draftProfile.nameEffects,
+        draftProfile.avatarFrame
+      );
+    }
+  }
+
   // Frame item click
   document.getElementById('hesabim-frames-grid')?.addEventListener('click', (e) => {
     const item = e.target.closest('.hesabim-frame-item');
@@ -949,6 +964,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draftProfile.avatarFrame = fId === 'none' ? 'none' : (item.dataset.frameUrl || fId);
     renderUserInfo();
     checkChanges();
+    broadcastLiveStyleChanges();
   });
 
   // Font chips click in Hesabım
@@ -958,6 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draftProfile.fontStyle = chip.dataset.font;
     renderUserInfo();
     checkChanges();
+    broadcastLiveStyleChanges();
   });
 
   // Color dots click in Hesabım
@@ -967,6 +984,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draftProfile.nameColor = dot.dataset.color;
     renderUserInfo();
     checkChanges();
+    broadcastLiveStyleChanges();
   });
 
   // Custom color picker in Hesabım
@@ -974,6 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draftProfile.nameColor = e.target.value;
     renderUserInfo();
     checkChanges();
+    broadcastLiveStyleChanges();
   });
 
   // Effect toggles click in Hesabım
@@ -988,6 +1007,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       renderUserInfo();
       checkChanges();
+      broadcastLiveStyleChanges();
     });
   });
 
