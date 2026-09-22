@@ -6,6 +6,41 @@
   --pv-sidebar-width: 320px;
 }
 
+/* =========================================================
+   Profil Sayfasındaki Tüm Normal Yazılar: Montserrat
+   ========================================================= */
+body,
+.profile-view-body,
+.pv-page,
+.pv-sidebar,
+.pv-profile-card,
+.pv-identity,
+.pv-handle,
+.pv-custom-status-badge,
+.pv-bio,
+.pv-stats,
+.pv-stat-item,
+.pv-stat-num,
+.pv-stat-lbl,
+.pv-action-btn,
+.pv-main,
+.pv-posts-header,
+.pv-posts-title,
+.pv-empty,
+.pv-post-card,
+.pv-post-meta,
+.pv-post-time,
+.pv-post-text,
+.pv-post-stats,
+.pv-post-stat,
+.pv-toast-item,
+.pv-esc-label,
+button,
+input,
+textarea {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 .profile-view-body {
   overflow: hidden;
   height: 100vh;
