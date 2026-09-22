@@ -6342,7 +6342,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="post-content-area">
             <div class="post-header-line">
-              <div class="post-author-info" data-handle="${post.handle}"><span class="post-author-name" ${authorNameStyle}>${escapeHtml(authorName)}</span><span class="post-author-handle">${escapeHtml(post.handle)}</span></div>
+              <div class="post-author-info" data-handle="${post.handle}"><span class="post-author-name" data-handle="${post.handle}" ${authorNameStyle}>${escapeHtml(authorName)}</span><span class="post-author-handle">${escapeHtml(post.handle)}</span></div>
               <div style="display:flex;align-items:center;gap:6px;">
                 ${post.isPinned ? '<span class="pin-badge">📌 Sabitlendi</span>' : ''}
                 <span class="post-time" title="${post.timestamp}">${formatDateTime(post.timestamp)}</span>
