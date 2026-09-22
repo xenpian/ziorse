@@ -955,10 +955,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function syncUserDisplay() {
     const user = window.dataStore.currentUser;
     if (!user) return;
-    if (userNameDisplay) userNameDisplay.textContent = user.name || '';
+    if (userNameDisplay) {
+      userNameDisplay.textContent = user.name || '';
+      applyUserNameStyling(userNameDisplay, user.fontStyle, user.nameColor, user.nameEffects);
+    }
     if (userHandleDisplay) userHandleDisplay.textContent = user.handle || '';
     if (userAvatarDisplay) applyAvatarToElement(userAvatarDisplay, user.avatar);
     if (composerUserAvatar) applyAvatarToElement(composerUserAvatar, user.avatar);
+
+    const userAvatarWrap = document.getElementById('user-avatar-wrap');
+    if (userAvatarWrap) {
+      applyAvatarFrameToContainer(userAvatarWrap, user.avatarFrame);
+    }
+    const composerAvatarWrap = document.getElementById('composer-avatar-wrap');
+    if (composerAvatarWrap) {
+      applyAvatarFrameToContainer(composerAvatarWrap, user.avatarFrame);
+    }
 
     // Status dot color update
     const userStatus = window.dataStore.userStatus || { type: 'online', text: '' };
@@ -974,6 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnOpenAuth) btnOpenAuth.style.display = isLoggedIn ? 'none' : '';
     if (userProfileBar) userProfileBar.style.display = isLoggedIn ? '' : 'none';
   }
+  window.syncUserDisplay = syncUserDisplay;
   syncUserDisplay();
 
   // ── PROFILE BAR DROPDOWN ─────────────────────────────────────
