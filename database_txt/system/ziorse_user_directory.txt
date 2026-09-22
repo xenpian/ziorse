@@ -13,7 +13,7 @@
     }
   },
   "@sa": {
-    "name": "ziorse creator",
+    "name": "ziorse creatorf",
     "handle": "@sa",
     "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
     "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",

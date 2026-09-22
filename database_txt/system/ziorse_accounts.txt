@@ -63,7 +63,7 @@
     "bio": ""
   },
   {
-    "name": "ziorse creator",
+    "name": "ziorse creatorf",
     "handle": "@sa",
     "email": "sa@sa.s",
     "password": "sas",
