@@ -1008,26 +1008,45 @@ document.addEventListener('DOMContentLoaded', () => {
       if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
         accPreviewName.style.background = draftProfile.nameColor;
         accPreviewName.style.webkitBackgroundClip = 'text';
+        accPreviewName.style.backgroundClip = 'text';
         accPreviewName.style.webkitTextFillColor = 'transparent';
         accPreviewName.style.color = 'transparent';
+        accPreviewName.style.display = 'inline-block';
       } else {
         accPreviewName.style.background = 'none';
         accPreviewName.style.webkitBackgroundClip = 'unset';
+        accPreviewName.style.backgroundClip = 'unset';
         accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
         accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
+        accPreviewName.style.display = '';
       }
 
-      const effects = draftProfile.nameEffects || [];
+      const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
       let textShadows = [];
+      let extraLetterSpacing = '';
+      if (effects.includes('neon')) {
+        textShadows.push('0 0 6px rgba(124, 58, 237, 0.45), 0 0 14px rgba(168, 85, 247, 0.3)');
+      }
+      if (effects.includes('cartoon')) {
+        textShadows.push('1.5px 1.5px 0 #0f172a');
+        extraLetterSpacing = '0.5px';
+      }
+      if (effects.includes('pop')) {
+        textShadows.push('2px 2px 0 #134e4a');
+        extraLetterSpacing = '0.8px';
+      }
       if (effects.includes('glow')) {
         const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
-        textShadows.push(`0 0 12px ${glowColor}`);
+        textShadows.push(`0 0 10px ${glowColor}`);
       }
       if (effects.includes('shadow')) {
-        textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
+        textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.6)');
+      }
+      if (effects.includes('spaced')) {
+        extraLetterSpacing = '1.5px';
       }
       accPreviewName.style.textShadow = textShadows.length > 0 ? textShadows.join(', ') : 'none';
-      accPreviewName.style.letterSpacing = effects.includes('spaced') ? '2px' : 'normal';
+      accPreviewName.style.letterSpacing = extraLetterSpacing || 'normal';
     }
 
     const frameOverlay = document.getElementById('acc-avatar-frame-overlay');
