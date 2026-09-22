@@ -727,142 +727,276 @@ input[type="range"]::-moz-range-thumb {
   margin: 14px 0 12px 0;
 }
 
-/* Font Selector Grid */
-.hesabim-font-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
-  gap: 8px;
-  max-height: 220px;
-  overflow-y: auto;
-  padding: 4px 2px;
+/* =============================================================
+   Görünen Ad Stilini Değiştir (Görsel Tasarımı - Beyaz Tema)
+   ============================================================= */
+
+.style-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
-.hesabim-font-chip {
-  background: var(--bg-input, #f7f7f7);
+.style-section-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main, #18181b);
+}
+
+.btn-style-reset {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text-muted, #71717a);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.btn-style-reset:hover {
+  background: #f4f4f5;
+  color: #18181b;
+  border-color: #d1d5db;
+}
+
+/* 1. Gg Font Kartları Grid */
+.gg-font-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 650px) {
+  .gg-font-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.gg-font-card {
+  background: #f4f4f5;
+  border: 1.5px solid #e4e4e7;
+  border-radius: 10px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  user-select: none;
+}
+
+.gg-font-card:hover {
+  background: #e4e4e7;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.gg-font-card.active {
+  background: #ffffff !important;
+  border: 2px solid #18181b !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+}
+
+.gg-font-card span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #18181b;
+  line-height: 1;
+}
+
+/* 2. Etkiyi Seç Grid */
+.effect-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 650px) {
+  .effect-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.effect-card {
+  background: #f4f4f5;
+  border: 1.5px solid #e4e4e7;
+  border-radius: 10px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  user-select: none;
+  padding: 0 8px;
+  text-align: center;
+}
+
+.effect-card:hover {
+  background: #e4e4e7;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.effect-card.active {
+  background: #ffffff !important;
+  border: 2px solid #18181b !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Effect Labels */
+.effect-label-sabit {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #18181b;
+}
+
+.effect-label-gradyan {
+  font-size: 0.82rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.effect-label-neon {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #a855f7;
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
+}
+
+.effect-label-cartoon {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ec4899;
+  text-shadow: 1px 1px 0 #18181b, -0.5px -0.5px 0 #18181b;
+}
+
+.effect-label-pop {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #10b981;
+  text-shadow: 1.5px 1.5px 0 #047857;
+}
+
+.effect-label-candy {
+  font-size: 0.82rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #f472b6, #a78bfa, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.effect-label-prizma {
+  font-size: 0.82rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff007f, #00f2fe, #facc15);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 3. Renk & Gradyan Seçici Alanı */
+.color-picker-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.gradient-slider-container {
+  flex: 1;
+  min-width: 200px;
+  background: #f4f4f5;
+  border: 1.5px solid #e4e4e7;
+  border-radius: 10px;
   padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  min-width: 0;
-  box-sizing: border-box;
+  gap: 8px;
+  justify-content: center;
 }
 
-.hesabim-font-chip:hover {
-  background: var(--bg-card, #ffffff);
-  border-color: var(--border-dark, #a1a1aa);
-}
-
-.hesabim-font-chip.active {
-  background: #27272a !important;
-  border-color: #18181b !important;
-  color: #ffffff !important;
-}
-
-.hesabim-font-chip.active span,
-.hesabim-font-chip.active small {
-  color: #ffffff !important;
-}
-
-.hesabim-font-chip span {
-  font-size: 0.82rem;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
-}
-
-.hesabim-font-chip small {
-  font-size: 0.65rem;
-  color: var(--text-muted, #71717a);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
-}
-
-/* Tek Renk Seçim Kutusu */
-.hesabim-color-picker-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--bg-input, #f7f7f7);
-  border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 10px;
-  padding: 7px 12px;
-  width: fit-content;
-  max-width: 100%;
-}
-
-.hesabim-color-swatch-wrap {
-  position: relative;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1.5px solid var(--border-color, #d1d5db);
-  cursor: pointer;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: block;
-}
-
-.hesabim-color-swatch-preview {
+.gradient-track {
+  height: 24px;
+  border-radius: 7px;
   width: 100%;
-  height: 100%;
-  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(90deg, #10b981 0%, #06b6d4 35%, #3b82f6 70%, #ffffff 100%);
   transition: background 0.15s ease;
 }
 
-.hesabim-color-swatch-wrap input[type="color"] {
+.gradient-stops-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.gradient-pin-item {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.gradient-pin-item input[type="color"] {
   position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 200%;
-  height: 200%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   cursor: pointer;
 }
 
-.hesabim-hex-input-group {
+.gradient-pin-head {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
-  background: #ffffff;
-  border: 1px solid var(--border-color, #d1d5db);
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.gradient-pin-head:hover {
+  transform: scale(1.18);
+}
+
+.preset-gradients-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 125px;
+  align-content: center;
+}
+
+.preset-pill {
+  height: 24px;
   border-radius: 6px;
-  padding: 5px 8px;
-  gap: 3px;
+  cursor: pointer;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.hesabim-hex-prefix {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-muted, #71717a);
-  user-select: none;
+.preset-pill:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
 }
 
-.hesabim-hex-text-input {
-  border: none;
-  background: transparent;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-main, #18181b);
-  width: 65px;
-  text-transform: uppercase;
-  outline: none;
-}
-
-.hesabim-effect-toggle.active {
-  background: #27272a !important;
-  color: #ffffff !important;
-  border-color: #18181b !important;
+.preset-pill.active {
+  border: 2px solid #18181b !important;
+  transform: scale(1.06);
 }
 
 /* Dynamic Frames Grid */
