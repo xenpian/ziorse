@@ -21,7 +21,18 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "online",
+      "type": "idle",
+      "text": "porno"
+    },
+    "pronouns": "",
+    "fontStyle": "cyber",
+    "nameColor": "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)",
+    "nameEffects": [],
+    "avatarFrame": "assets/avatar-frames/sakura-cicegi.png",
+    "profileEffect": "none",
+    "widgets": [],
+    "customStatus": {
+      "emoji": "💭",
       "text": ""
     }
   },
