@@ -365,7 +365,15 @@ class DataStore {
       bio: user.bio || '',
       followers: user.followers || 0,
       following: user.following || 0,
-      status: user.status || this.userStatus || { type: 'online', text: '' }
+      status: user.status || this.userStatus || { type: 'online', text: '' },
+      fontStyle: user.fontStyle || 'outfit',
+      nameColor: user.nameColor || '#ffffff',
+      nameEffects: user.nameEffects || [],
+      avatarFrame: user.avatarFrame || 'none',
+      profileEffect: user.profileEffect || 'none',
+      pronouns: user.pronouns || '',
+      customStatus: user.customStatus || null,
+      widgets: user.widgets || []
     };
     dir[user.handle] = userObj;
     ziorseSetStorage(key, dir);
