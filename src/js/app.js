@@ -1026,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${isVidBanner ? `<video src="${escapeHtml(u.banner)}" autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; pointer-events:none;"></video>` : ''}
           </div>
           <div class="pbd-header">
-            <div class="avatar-wrapper-status pbd-avatar-wrap" style="width:50px; height:50px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0;">
+            <div class="avatar-wrapper-status pbd-avatar-wrap" style="width:50px; height:50px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0;">
               ${renderMediaAvatarHtml(u.avatar, 'pbd-avatar')}
               <div class="discord-status-dot pbd-status-dot" style="background:${curStatusInfo.color}; z-index:2;"></div>
             </div>
