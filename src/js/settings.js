@@ -983,13 +983,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (accPreviewName) {
       const fontFamilies = {
         'outfit': "'Outfit', sans-serif",
-        'cyber': "'Russo One', sans-serif",
+        'inter': "'Inter', sans-serif",
+        'montserrat': "'Montserrat', sans-serif",
+        'poppins': "'Poppins', sans-serif",
+        'cinzel': "'Cinzel', serif",
+        'playfair': "'Playfair Display', serif",
+        'caveat': "'Caveat', cursive",
         'cursive': "'Caveat', cursive",
+        'pacifico': "'Pacifico', cursive",
         'pixel': "'Press Start 2P', monospace",
-        'serif': "'Cinzel', serif",
+        'cyber': "'Russo One', sans-serif",
+        'orbitron': "'Orbitron', sans-serif",
         'neon': "'Righteous', cursive",
+        'bebas': "'Bebas Neue', cursive",
         'terminal': "'JetBrains Mono', monospace",
-        'inter': "'Inter', sans-serif"
+        'fira': "'Fira Code', monospace",
+        'architect': "'Architects Daughter', cursive",
+        'serif': "'Cinzel', serif"
       };
       accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
 
@@ -1035,11 +1045,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Color Swatch, Native Picker & Hex Input Sync
+    const colorSwatch = document.getElementById('hesabim-color-swatch-preview');
+    const colorInput = document.getElementById('hesabim-custom-color-input');
+    const hexInput = document.getElementById('hesabim-color-hex-text');
+    const curColor = draftProfile.nameColor || '#ffffff';
+    if (colorSwatch) colorSwatch.style.background = curColor;
+    if (colorInput && curColor.startsWith('#') && curColor.length === 7) {
+      colorInput.value = curColor;
+    }
+    if (hexInput && document.activeElement !== hexInput) {
+      hexInput.value = curColor.startsWith('#') ? curColor.slice(1).toUpperCase() : curColor.toUpperCase();
+    }
+
     document.querySelectorAll('.hesabim-font-chip').forEach(chip => {
       chip.classList.toggle('active', chip.dataset.font === draftProfile.fontStyle);
-    });
-    document.querySelectorAll('.hesabim-color-dot').forEach(dot => {
-      dot.classList.toggle('active', dot.dataset.color === draftProfile.nameColor);
     });
     document.querySelectorAll('.hesabim-effect-toggle').forEach(tgl => {
       tgl.classList.toggle('active', (draftProfile.nameEffects || []).includes(tgl.dataset.effect));
@@ -1073,17 +1093,31 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLiveStyleControlsAndPreview();
   });
 
-  // Color dots click in Hesabım
-  document.getElementById('hesabim-color-row')?.addEventListener('click', (e) => {
-    const dot = e.target.closest('.hesabim-color-dot');
-    if (!dot) return;
-    draftProfile.nameColor = dot.dataset.color;
+  // Tek Renk Seçme Alanı: Native Picker, Hex Girişi ve Sıfırlama Butonu
+  const customColorInput = document.getElementById('hesabim-custom-color-input');
+  const hexTextInput = document.getElementById('hesabim-color-hex-text');
+  const btnResetColor = document.getElementById('btn-reset-name-color');
+
+  customColorInput?.addEventListener('input', (e) => {
+    draftProfile.nameColor = e.target.value;
+    if (hexTextInput) hexTextInput.value = e.target.value.replace('#', '').toUpperCase();
     updateLiveStyleControlsAndPreview();
   });
 
-  // Custom color picker in Hesabım
-  document.getElementById('hesabim-custom-color-input')?.addEventListener('input', (e) => {
-    draftProfile.nameColor = e.target.value;
+  hexTextInput?.addEventListener('input', (e) => {
+    let val = e.target.value.replace(/[^0-9A-Fa-f]/g, '').slice(0, 6);
+    e.target.value = val.toUpperCase();
+    if (val.length === 6) {
+      draftProfile.nameColor = '#' + val;
+      if (customColorInput) customColorInput.value = '#' + val;
+      updateLiveStyleControlsAndPreview();
+    }
+  });
+
+  btnResetColor?.addEventListener('click', () => {
+    draftProfile.nameColor = '#ffffff';
+    if (customColorInput) customColorInput.value = '#ffffff';
+    if (hexTextInput) hexTextInput.value = 'FFFFFF';
     updateLiveStyleControlsAndPreview();
   });
 
