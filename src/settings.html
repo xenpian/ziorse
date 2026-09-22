@@ -138,113 +138,140 @@
 
               <!-- 2. GÖRÜNEN AD YAZI TİPİ (FONT) VE RENK STİLİ -->
               <div class="ss-card" style="margin-top:16px;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-                  <div>
-                    <div style="font-size:0.92rem; font-weight:700; color:var(--text-main);">Görünen Ad Yazı Tipi (Font) & Stili</div>
-                    <div style="font-size:0.75rem; color:var(--text-muted);">İsminizin tüm uygulamada nasıl görüneceğini seçin.</div>
+                <div style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin-bottom:16px;">Görünen Ad Stilini Değiştir</div>
+
+                <!-- 1. FONT SEÇ BÖLÜMÜ -->
+                <div class="style-section-header">
+                  <span class="style-section-title">Font Seç</span>
+                  <button type="button" class="btn-style-reset" id="btn-reset-font" title="Varsayılan Fonta Sıfırla">
+                    <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i>
+                  </button>
+                </div>
+
+                <div class="gg-font-grid" id="hesabim-font-grid">
+                  <div class="gg-font-card active" data-font="outfit" title="Modern (Outfit)">
+                    <span style="font-family:'Outfit', sans-serif;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="inter" title="Minimal (Inter)">
+                    <span style="font-family:'Inter', sans-serif;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="pacifico" title="Yuvarlak El Yazısı (Pacifico)">
+                    <span style="font-family:'Pacifico', cursive; font-size:1.3rem;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="cinzel" title="Asil Klasik (Cinzel)">
+                    <span style="font-family:'Cinzel', serif;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="neon" title="Neon Retro (Righteous)">
+                    <span style="font-family:'Righteous', cursive;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="poppins" title="Geometrik Yuvarlak (Poppins)">
+                    <span style="font-family:'Poppins', sans-serif;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="pixel" title="8-Bit Piksel (Press Start 2P)">
+                    <span style="font-family:'Press Start 2P', monospace; font-size:1rem;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="playfair" title="Zarif Serif (Playfair Display)">
+                    <span style="font-family:'Playfair Display', serif;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="bebas" title="Başlık (Bebas Neue)">
+                    <span style="font-family:'Bebas Neue', cursive; font-size:1.55rem; letter-spacing:1px;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="cyber" title="Siber Kalın (Russo One)">
+                    <span style="font-family:'Russo One', sans-serif;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="terminal" title="Terminal Kod (JetBrains Mono)">
+                    <span style="font-family:'JetBrains Mono', monospace;">Gg</span>
+                  </div>
+                  <div class="gg-font-card" data-font="orbitron" title="Fütüristik (Orbitron)">
+                    <span style="font-family:'Orbitron', sans-serif;">Gg</span>
                   </div>
                 </div>
 
-                <!-- Font Seçici Grid (16 Font, taşmayan şık kutular) -->
-                <div class="hesabim-font-grid" id="hesabim-font-grid">
-                  <div class="hesabim-font-chip active" data-font="outfit">
-                    <span style="font-family:'Outfit', sans-serif;">Modern</span>
-                    <small>Outfit</small>
+                <!-- 2. ETKİYİ SEÇ BÖLÜMÜ -->
+                <div class="style-section-header" style="margin-top:20px;">
+                  <span class="style-section-title">Etkiyi seç</span>
+                  <button type="button" class="btn-style-reset" id="btn-reset-effect" title="Efekti Sıfırla">
+                    <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i>
+                  </button>
+                </div>
+
+                <div class="effect-grid" id="hesabim-effects-grid">
+                  <div class="effect-card active" data-effect="sabit" title="Normal Sabit Metin">
+                    <span class="effect-label-sabit">Sabit</span>
                   </div>
-                  <div class="hesabim-font-chip" data-font="inter">
-                    <span style="font-family:'Inter', sans-serif;">Minimal</span>
-                    <small>Inter</small>
+                  <div class="effect-card" data-effect="gradyan" title="Canlı Gradyan">
+                    <span class="effect-label-gradyan">Gradyan</span>
                   </div>
-                  <div class="hesabim-font-chip" data-font="montserrat">
-                    <span style="font-family:'Montserrat', sans-serif;">Geometrik</span>
-                    <small>Montserrat</small>
+                  <div class="effect-card" data-effect="neon" title="Neon Parlama">
+                    <span class="effect-label-neon">Neon</span>
                   </div>
-                  <div class="hesabim-font-chip" data-font="poppins">
-                    <span style="font-family:'Poppins', sans-serif;">Yuvarlak</span>
-                    <small>Poppins</small>
+                  <div class="effect-card" data-effect="cartoon" title="Çizgi Film Konturu">
+                    <span class="effect-label-cartoon">Çizgi Film</span>
                   </div>
-                  <div class="hesabim-font-chip" data-font="cinzel">
-                    <span style="font-family:'Cinzel', serif;">Asil</span>
-                    <small>Cinzel</small>
+                  <div class="effect-card" data-effect="pop" title="Retro Pop">
+                    <span class="effect-label-pop">Pop</span>
                   </div>
-                  <div class="hesabim-font-chip" data-font="playfair">
-                    <span style="font-family:'Playfair Display', serif;">Klasik</span>
-                    <small>Playfair</small>
+                  <div class="effect-card" data-effect="candy" title="Tatlı Şeker Gradyanı">
+                    <span class="effect-label-candy">Şekercik</span>
                   </div>
-                  <div class="hesabim-font-chip" data-font="caveat">
-                    <span style="font-family:'Caveat', cursive; font-size:1.05rem;">Kaligrafi</span>
-                    <small>Caveat</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="pacifico">
-                    <span style="font-family:'Pacifico', cursive; font-size:0.85rem;">El Yazısı</span>
-                    <small>Pacifico</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="pixel">
-                    <span style="font-family:'Press Start 2P', monospace; font-size:0.65rem;">PIXEL</span>
-                    <small>Retro</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="cyber">
-                    <span style="font-family:'Russo One', sans-serif;">Siber</span>
-                    <small>Russo</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="orbitron">
-                    <span style="font-family:'Orbitron', sans-serif; font-size:0.8rem;">Fütürist</span>
-                    <small>Orbitron</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="neon">
-                    <span style="font-family:'Righteous', cursive;">Neon</span>
-                    <small>Righteous</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="bebas">
-                    <span style="font-family:'Bebas Neue', cursive; font-size:1.05rem; letter-spacing:1px;">BAŞLIK</span>
-                    <small>Bebas</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="terminal">
-                    <span style="font-family:'JetBrains Mono', monospace; font-size:0.8rem;">Terminal</span>
-                    <small>JetBrains</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="fira">
-                    <span style="font-family:'Fira Code', monospace; font-size:0.8rem;">Kod</span>
-                    <small>Fira Code</small>
-                  </div>
-                  <div class="hesabim-font-chip" data-font="architect">
-                    <span style="font-family:'Architects Daughter', cursive; font-size:0.85rem;">Çizim</span>
-                    <small>Architect</small>
+                  <div class="effect-card" data-effect="prizma" title="Prizmatik Dağılım">
+                    <span class="effect-label-prizma">Prizma</span>
                   </div>
                 </div>
 
-                <!-- Tek Renk Seçme Alanı (Tüm renkler tek alandan seçilir) -->
-                <div style="margin-top:14px;">
-                  <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">İsim Rengi</div>
-                  <div class="hesabim-color-picker-box" id="hesabim-color-picker-box">
-                    <label class="hesabim-color-swatch-wrap" title="Renk Paletini Aç">
-                      <div class="hesabim-color-swatch-preview" id="hesabim-color-swatch-preview" style="background:#ffffff;"></div>
-                      <input type="color" id="hesabim-custom-color-input" value="#ffffff">
-                    </label>
+                <!-- 3. RENK SEÇ BÖLÜMÜ -->
+                <div class="style-section-header" style="margin-top:20px;">
+                  <span class="style-section-title">Renk Seç</span>
+                  <button type="button" class="btn-style-reset" id="btn-reset-name-color" title="Rengi Sıfırla">
+                    <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i>
+                  </button>
+                </div>
 
-                    <div class="hesabim-hex-input-group">
-                      <span class="hesabim-hex-prefix">#</span>
-                      <input type="text" id="hesabim-color-hex-text" class="hesabim-hex-text-input" maxlength="6" placeholder="FFFFFF" value="FFFFFF" spellcheck="false">
+                <div class="color-picker-row">
+                  <!-- İnteraktif Gradyan Kontrol Çubuğu -->
+                  <div class="gradient-slider-container">
+                    <div class="gradient-track" id="gradient-track-bar"></div>
+                    <div class="gradient-stops-row">
+                      <label class="gradient-pin-item" title="1. Renk Noktası (Tıkla Değiştir)">
+                        <div class="gradient-pin-head" id="grad-pin-start" style="background:#10b981;">
+                          <i data-lucide="pipette" style="width:11px;height:11px;"></i>
+                        </div>
+                        <input type="color" id="input-grad-start" value="#10b981">
+                      </label>
+                      <label class="gradient-pin-item" title="2. Renk Noktası (Tıkla Değiştir)">
+                        <div class="gradient-pin-head" id="grad-pin-mid1" style="background:#06b6d4;">
+                          <i data-lucide="pipette" style="width:11px;height:11px;"></i>
+                        </div>
+                        <input type="color" id="input-grad-mid1" value="#06b6d4">
+                      </label>
+                      <label class="gradient-pin-item" title="3. Renk Noktası (Tıkla Değiştir)">
+                        <div class="gradient-pin-head" id="grad-pin-mid2" style="background:#3b82f6;">
+                          <i data-lucide="pipette" style="width:11px;height:11px;"></i>
+                        </div>
+                        <input type="color" id="input-grad-mid2" value="#3b82f6">
+                      </label>
+                      <label class="gradient-pin-item" title="4. Renk Noktası (Tıkla Değiştir)">
+                        <div class="gradient-pin-head" id="grad-pin-end" style="background:#ffffff;">
+                          <i data-lucide="pipette" style="width:11px;height:11px;"></i>
+                        </div>
+                        <input type="color" id="input-grad-end" value="#ffffff">
+                      </label>
                     </div>
+                  </div>
 
-                    <button type="button" class="btn-ss-outline" id="btn-reset-name-color" style="padding:6px 12px; font-size:0.75rem;">
-                      Varsayılan
-                    </button>
+                  <!-- Hazır Gradyan Hapları (Görseldeki 6 Gradyan) -->
+                  <div class="preset-gradients-grid">
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #eab308)" style="background:linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #eab308);" title="Gökkuşağı"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #f97316, #ec4899, #8b5cf6)" style="background:linear-gradient(90deg, #f97316, #ec4899, #8b5cf6);" title="Gün Batımı"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #ef4444, #f97316, #eab308)" style="background:linear-gradient(90deg, #ef4444, #f97316, #eab308);" title="Ateş"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #a855f7, #60a5fa, #38bdf8)" style="background:linear-gradient(90deg, #a855f7, #60a5fa, #38bdf8);" title="Pastel"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #10b981, #06b6d4, #3b82f6)" style="background:linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);" title="Siber Okyanus"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #fb7185, #f43f5e, #fde047)" style="background:linear-gradient(90deg, #fb7185, #f43f5e, #fde047);" title="Güneş"></div>
                   </div>
                 </div>
 
-                <!-- Metin Efekti Toggles -->
-                <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;">
-                  <button type="button" class="btn-ss-outline hesabim-effect-toggle" data-effect="glow">
-                    <i data-lucide="sparkles" style="width:13px;height:13px;"></i> Parlama
-                  </button>
-                  <button type="button" class="btn-ss-outline hesabim-effect-toggle" data-effect="shadow">
-                    3D Gölge
-                  </button>
-                  <button type="button" class="btn-ss-outline hesabim-effect-toggle" data-effect="spaced">
-                    Aralıklı Harfler
-                  </button>
-                </div>
+                <!-- Gizli tek renk input (sabit mod için) -->
+                <input type="color" id="hesabim-custom-color-input" value="#ffffff" style="display:none;">
               </div>
 
               <!-- 3. OTOMATİK DİNAMİK PROFİL ÇERÇEVESİ KARTI -->
