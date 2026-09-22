@@ -1163,23 +1163,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (eff === 'sabit') {
       draftProfile.nameEffects = [];
       if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
-        draftProfile.nameColor = '#ffffff';
+        draftProfile.nameColor = '#18181b';
       }
     } else if (eff === 'gradyan') {
       draftProfile.nameEffects = [];
       draftProfile.nameColor = buildCustomGradient();
     } else if (eff === 'neon') {
       draftProfile.nameEffects = ['neon'];
+      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
+        draftProfile.nameColor = '#7c3aed';
+      }
     } else if (eff === 'cartoon') {
       draftProfile.nameEffects = ['cartoon'];
+      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
+        draftProfile.nameColor = '#db2777';
+      }
     } else if (eff === 'pop') {
       draftProfile.nameEffects = ['pop'];
+      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
+        draftProfile.nameColor = '#0d9488';
+      }
     } else if (eff === 'candy') {
-      draftProfile.nameEffects = [];
-      draftProfile.nameColor = 'linear-gradient(90deg, #f472b6, #a78bfa, #38bdf8)';
+      draftProfile.nameEffects = ['spaced'];
+      draftProfile.nameColor = 'linear-gradient(135deg, #ec4899, #a855f7, #06b6d4)';
     } else if (eff === 'prizma') {
-      draftProfile.nameEffects = [];
-      draftProfile.nameColor = 'linear-gradient(90deg, #ff007f, #00f2fe, #facc15)';
+      draftProfile.nameEffects = ['spaced'];
+      draftProfile.nameColor = 'linear-gradient(135deg, #e11d48, #9333ea, #2563eb, #059669)';
     }
     updateLiveStyleControlsAndPreview();
   });
@@ -1188,7 +1197,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-reset-effect')?.addEventListener('click', () => {
     draftProfile.nameEffects = [];
     if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
-      draftProfile.nameColor = '#ffffff';
+      draftProfile.nameColor = '#18181b';
     }
     updateLiveStyleControlsAndPreview();
   });
