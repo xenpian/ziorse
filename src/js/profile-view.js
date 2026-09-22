@@ -164,13 +164,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fontFamilies = {
       'outfit': "'Outfit', sans-serif",
-      'cyber': "'Russo One', sans-serif",
-      'cursive': "'Caveat', cursive",
+      'inter': "'Inter', sans-serif",
+      'montserrat': "'Montserrat', sans-serif",
+      'poppins': "'Poppins', sans-serif",
+      'cinzel': "'Cinzel', serif",
+      'playfair': "'Playfair Display', serif",
+      'caveat': "'Caveat', cursive",
+      'pacifico': "'Pacifico', cursive",
       'pixel': "'Press Start 2P', monospace",
-      'serif': "'Cinzel', serif",
+      'cyber': "'Russo One', sans-serif",
+      'orbitron': "'Orbitron', sans-serif",
       'neon': "'Righteous', cursive",
+      'bebas': "'Bebas Neue', cursive",
       'terminal': "'JetBrains Mono', monospace",
-      'inter': "'Inter', sans-serif"
+      'fira': "'Fira Code', monospace",
+      'architect': "'Architects Daughter', cursive",
+      'cursive': "'Caveat', cursive",
+      'serif': "'Cinzel', serif"
     };
     if (profile.fontStyle && fontFamilies[profile.fontStyle]) {
       elName.style.fontFamily = fontFamilies[profile.fontStyle];
@@ -178,33 +188,61 @@ document.addEventListener('DOMContentLoaded', () => {
       elName.style.fontFamily = '';
     }
 
-    const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : [];
+    const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : (profile.nameEffects ? [profile.nameEffects] : []);
     let textShadows = [];
-    if (effects.includes('glow')) {
-      const glowColor = (profile.nameColor && profile.nameColor.startsWith('#')) ? profile.nameColor : '#00f2fe';
-      textShadows.push(`0 0 12px ${glowColor}`);
-    }
-    if (effects.includes('shadow')) {
-      textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
-    }
-    elName.style.textShadow = textShadows.join(', ') || '';
-    elName.style.letterSpacing = effects.includes('spaced') ? '2px' : '';
+    let extraLetterSpacing = '';
+    const isGrad = profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('linear-gradient');
 
-    if (profile.nameColor && profile.nameColor.startsWith('linear-gradient')) {
+    if (!isGrad) {
+      if (effects.includes('neon')) {
+        const glowColor = (profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('#')) ? profile.nameColor : '#8b5cf6';
+        textShadows.push(`0 0 6px ${glowColor}99, 0 0 14px ${glowColor}4d`);
+        extraLetterSpacing = '0.4px';
+      }
+      if (effects.includes('cartoon')) {
+        textShadows.push('1.5px 1.5px 0 #0f172a');
+        extraLetterSpacing = '0.5px';
+      }
+      if (effects.includes('pop')) {
+        textShadows.push('2px 2px 0 #064e3b');
+        extraLetterSpacing = '0.8px';
+      }
+      if (effects.includes('shadow')) {
+        textShadows.push('0 2px 5px rgba(0, 0, 0, 0.3)');
+        extraLetterSpacing = '0.4px';
+      }
+      if (effects.includes('glow')) {
+        const glowColor = (profile.nameColor && profile.nameColor.startsWith('#')) ? profile.nameColor : '#00f2fe';
+        textShadows.push(`0 0 10px ${glowColor}`);
+      }
+    }
+    if (effects.includes('spaced')) {
+      extraLetterSpacing = '1.5px';
+    }
+    elName.style.textShadow = textShadows.join(', ') || 'none';
+    elName.style.letterSpacing = extraLetterSpacing || 'normal';
+
+    if (isGrad) {
       elName.style.backgroundImage = profile.nameColor;
       elName.style.webkitBackgroundClip = 'text';
+      elName.style.backgroundClip = 'text';
       elName.style.webkitTextFillColor = 'transparent';
       elName.style.color = 'transparent';
+      elName.style.display = 'inline-block';
     } else if (profile.nameColor && profile.nameColor !== 'none') {
       elName.style.backgroundImage = 'none';
       elName.style.webkitBackgroundClip = 'unset';
+      elName.style.backgroundClip = 'unset';
       elName.style.webkitTextFillColor = profile.nameColor;
       elName.style.color = profile.nameColor;
+      elName.style.display = 'inline-block';
     } else {
       elName.style.backgroundImage = 'none';
       elName.style.webkitBackgroundClip = 'unset';
+      elName.style.backgroundClip = 'unset';
       elName.style.webkitTextFillColor = '';
       elName.style.color = '';
+      elName.style.display = '';
     }
 
     const titleBreadcrumb = document.getElementById('pv-titlebar-breadcrumb');
