@@ -374,42 +374,38 @@ function getFrameHoleScale(filePath) {
     }
 
     const decompressed = zlib.inflateSync(Buffer.concat(idatChunks));
-    const bytesPerPixel = 4;
-    const stride = width * bytesPerPixel + 1;
-    const centerX = Math.floor(width / 2);
-    const centerY = Math.floor(height / 2);
+    const stride = width * 4 + 1;
+    const cx = Math.floor(width / 2);
+    const cy = Math.floor(height / 2);
+    const maxR = Math.min(cx, cy) - 2;
+    let innerR = 30;
 
-    // Scan horizontal transparent radius from center
-    const centerRowOffset = centerY * stride + 1;
-    let innerLeft = centerX, innerRight = centerX;
-    while (innerLeft > 0 && decompressed[centerRowOffset + innerLeft * bytesPerPixel + 3] < 40) {
-      innerLeft--;
+    for (let r = 20; r <= maxR; r += 2) {
+      let opaqueCount = 0;
+      const numSamples = 60;
+      for (let i = 0; i < numSamples; i++) {
+        const angle = (i * 2 * Math.PI) / numSamples;
+        const x = Math.round(cx + r * Math.cos(angle));
+        const y = Math.round(cy + r * Math.sin(angle));
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+          const a = decompressed[y * stride + 1 + x * 4 + 3];
+          if (a > 60) opaqueCount++;
+        }
+      }
+      if (opaqueCount / numSamples >= 0.20) {
+        innerR = r;
+        break;
+      }
     }
-    while (innerRight < width - 1 && decompressed[centerRowOffset + innerRight * bytesPerPixel + 3] < 40) {
-      innerRight++;
-    }
-    const innerDiameterX = innerRight - innerLeft;
 
-    // Scan vertical transparent radius from center
-    let innerTop = centerY, innerBottom = centerY;
-    while (innerTop > 0 && decompressed[innerTop * stride + 1 + centerX * bytesPerPixel + 3] < 40) {
-      innerTop--;
-    }
-    while (innerBottom < height - 1 && decompressed[innerBottom * stride + 1 + centerX * bytesPerPixel + 3] < 40) {
-      innerBottom++;
-    }
-    const innerDiameterY = innerBottom - innerTop;
-
-    const avgHole = (innerDiameterX + innerDiameterY) / 2;
+    const holeDiameter = innerR * 2;
     const avgDim = (width + height) / 2;
-
-    if (avgHole > 20) {
-      // Snug overlap factor (~88%) so inner frame rim overlaps avatar edge and leaves ZERO white gap
-      const scalePct = Math.round((avgDim / avgHole) * 88);
-      return Math.min(Math.max(scalePct, 105), 165);
+    if (holeDiameter > 20) {
+      const scale = Math.round((avgDim / holeDiameter) * 96);
+      return Math.min(Math.max(scale, 115), 180);
     }
   } catch (e) { }
-  return 118;
+  return 140;
 }
 
 ipcMain.handle('get-avatar-frames', () => {
