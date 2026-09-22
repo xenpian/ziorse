@@ -5644,18 +5644,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const avatar = (isSelf && cu.avatar ? cu.avatar : null) || prof.avatar || m.avatar || window.DEFAULT_AVATAR;
       const name = (isSelf && cu.name ? cu.name : null) || prof.name || m.name || m.handle;
+      const mFrame = (isSelf && cu.avatarFrame ? cu.avatarFrame : null) || prof.avatarFrame || m.avatarFrame;
+      const mFont = (isSelf && cu.fontStyle ? cu.fontStyle : null) || prof.fontStyle || m.fontStyle;
+      const mColor = (isSelf && cu.nameColor ? cu.nameColor : null) || prof.nameColor || m.nameColor;
+      const mEffects = (isSelf && cu.nameEffects ? cu.nameEffects : null) || prof.nameEffects || m.nameEffects;
+      const memberStyleAttr = getAuthorNameStyleAttr({ fontStyle: mFont, nameColor: mColor, nameEffects: mEffects }, highestRole);
 
       return `
         <div class="user-member-item" data-handle="${m.handle}"
           style="display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;${!isOnline ? 'opacity:0.55;' : ''}">
           <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-            <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+            <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
               ${renderMediaAvatarHtml(avatar, 'user-avatar-sm')}
+              ${mFrame && mFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${mFrame.includes('/') || mFrame.startsWith('data:') ? mFrame : 'assets/avatar-frames/' + mFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
             </div>
             <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
               <div style="display:flex;align-items:center;gap:2px;">
                 ${roleIconHtml}
-                <span class="user-member-name" style="${highestRole ? `color:${highestRole.color}; font-weight:600;` : ''}">${escapeHtml(name)}</span>
+                <span class="user-member-name" ${memberStyleAttr}>${escapeHtml(name)}</span>
               </div>
               <span class="user-member-status" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;" title="${escapeHtml(customTxt)}">${escapeHtml(customTxt)}</span>
             </div>
