@@ -6796,7 +6796,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ── INSTANT IN-PLACE LIVE MEDIA & STYLING UPDATER (Zero App Reload) ──
-  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame) {
+  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame, newFontWeight) {
     if (!handle) return;
     const cleanH = handle.toLowerCase().replace('@', '');
     const fullH = '@' + cleanH;
@@ -6807,6 +6807,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (newAvatar !== undefined) window.dataStore.currentUser.avatar = newAvatar;
         if (newBanner !== undefined) window.dataStore.currentUser.banner = newBanner;
         if (newFontStyle !== undefined) window.dataStore.currentUser.fontStyle = newFontStyle;
+        if (newFontWeight !== undefined) window.dataStore.currentUser.fontWeight = newFontWeight;
         if (newNameColor !== undefined) window.dataStore.currentUser.nameColor = newNameColor;
         if (newNameEffects !== undefined) window.dataStore.currentUser.nameEffects = newNameEffects;
         if (newAvatarFrame !== undefined) window.dataStore.currentUser.avatarFrame = newAvatarFrame;
@@ -6818,6 +6819,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (newAvatar !== undefined) entry.avatar = newAvatar;
           if (newBanner !== undefined) entry.banner = newBanner;
           if (newFontStyle !== undefined) entry.fontStyle = newFontStyle;
+          if (newFontWeight !== undefined) entry.fontWeight = newFontWeight;
           if (newNameColor !== undefined) entry.nameColor = newNameColor;
           if (newNameEffects !== undefined) entry.nameEffects = newNameEffects;
           if (newAvatarFrame !== undefined) entry.avatarFrame = newAvatarFrame;
