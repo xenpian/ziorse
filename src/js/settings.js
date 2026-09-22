@@ -880,13 +880,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let availableFrames = [];
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 156
+    'Lord.png': 156,
+    'Liaz.png': 139
   };
 
   function getFrameScale(frameSrc) {
-    if (!frameSrc || frameSrc === 'none') return 118;
+    if (!frameSrc || frameSrc === 'none') return 140;
     const cleanName = String(frameSrc).split('/').pop().split('?')[0];
-    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 118;
+    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 140;
   }
   window.getFrameScale = getFrameScale;
 
@@ -907,7 +908,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       availableFrames = [
-        { id: 'Lord.png', name: 'Lord', url: 'assets/avatar-frames/Lord.png', scale: 156 }
+        { id: 'Lord.png', name: 'Lord', url: 'assets/avatar-frames/Lord.png', scale: 156 },
+        { id: 'Liaz.png', name: 'Liaz', url: 'assets/avatar-frames/Liaz.png', scale: 139 }
       ];
     }
     renderAvatarFramesGrid();
