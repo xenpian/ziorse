@@ -10,7 +10,7 @@
   "fontStyle": "cyber",
   "nameColor": "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)",
   "nameEffects": [],
-  "avatarFrame": "cyber",
+  "avatarFrame": "assets/avatar-frames/sakura-cicegi.png",
   "profileEffect": "none",
   "customStatus": {
     "emoji": "💭",
