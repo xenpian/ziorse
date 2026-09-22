@@ -18,8 +18,10 @@
       "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
       "bio": "fdffa",
       "fontStyle": "architect",
-      "nameColor": "#808080",
-      "nameEffects": [],
+      "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+      "nameEffects": [
+        "pop"
+      ],
       "avatarFrame": "assets/avatar-frames/Liaz.png"
     },
     {
@@ -105,8 +107,10 @@
       },
       "pronouns": "",
       "fontStyle": "architect",
-      "nameColor": "#808080",
-      "nameEffects": [],
+      "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+      "nameEffects": [
+        "pop"
+      ],
       "avatarFrame": "assets/avatar-frames/Liaz.png",
       "profileEffect": "none",
       "widgets": [],
@@ -1577,8 +1581,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       },
       {
@@ -1598,8 +1604,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1609,8 +1617,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1620,8 +1630,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       },
       {
@@ -1636,8 +1648,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1647,8 +1661,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1658,8 +1674,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1669,8 +1687,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1680,8 +1700,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1705,8 +1727,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1716,8 +1740,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1727,8 +1753,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1738,8 +1766,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1749,8 +1779,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1760,8 +1792,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1771,8 +1805,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1782,8 +1818,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1793,8 +1831,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1804,8 +1844,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1815,8 +1857,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1826,8 +1870,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1837,8 +1883,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1848,8 +1896,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1859,8 +1909,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1870,8 +1922,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1881,8 +1935,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1892,8 +1948,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1903,8 +1961,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1914,8 +1974,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1925,8 +1987,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1936,8 +2000,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ],
@@ -1947,8 +2013,10 @@
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "architect",
-        "nameColor": "#808080",
-        "nameEffects": [],
+        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #000000 66%, #ffffff 100%)",
+        "nameEffects": [
+          "pop"
+        ],
         "avatarFrame": "assets/avatar-frames/Liaz.png"
       }
     ]
