@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ziorse - Profil</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Russo+One&display=swap">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/profile-view.css">
   <script src="js/lib/lucide.min.js"></script>
@@ -47,8 +48,9 @@
       <!-- BANNER + AVATAR KARTI -->
       <div class="pv-profile-card">
         <div id="pv-banner" class="pv-banner"></div>
-        <div class="pv-avatar-wrap">
+        <div class="pv-avatar-wrap" id="pv-avatar-wrap" style="position:relative; overflow:visible;">
           <img id="pv-avatar" class="pv-avatar" src="" alt="Avatar">
+          <img id="pv-avatar-frame-overlay" class="global-avatar-frame-overlay" src="" alt="" style="display:none;">
           <div class="pv-status-dot"></div>
         </div>
         <div class="pv-identity">
