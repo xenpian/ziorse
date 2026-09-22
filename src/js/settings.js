@@ -381,6 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
       curAvatar !== origAvatar ||
       curBanner !== origBanner ||
       draftProfile.fontStyle !== originalProfile.fontStyle ||
+      draftProfile.fontWeight !== originalProfile.fontWeight ||
       draftProfile.nameColor !== originalProfile.nameColor ||
       draftProfile.avatarFrame !== originalProfile.avatarFrame ||
       JSON.stringify(draftProfile.nameEffects || []) !== JSON.stringify(originalProfile.nameEffects || []);
