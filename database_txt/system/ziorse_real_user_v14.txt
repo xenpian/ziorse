@@ -7,7 +7,7 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "serif",
+  "fontStyle": "architect",
   "nameColor": "#808080",
   "nameEffects": [],
   "avatarFrame": "assets/avatar-frames/Lord.png",
