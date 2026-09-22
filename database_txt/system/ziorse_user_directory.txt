@@ -21,23 +21,9 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "idle",
-      "text": "porno"
-    },
-    "pronouns": "",
-    "fontStyle": "cinzel",
-    "nameColor": "#ed4040",
-    "nameEffects": [
-      "neon"
-    ],
-    "avatarFrame": "assets/avatar-frames/Liaz.png",
-    "profileEffect": "none",
-    "widgets": [],
-    "customStatus": {
-      "emoji": "💭",
+      "type": "online",
       "text": ""
-    },
-    "fontWeight": "900"
+    }
   },
   "@saf": {
     "name": "safsfdsvv",
