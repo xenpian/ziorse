@@ -862,10 +862,10 @@ textarea {
 }
 
 .effect-card {
-  background: #ffffff;
-  border: 1.5px solid #e4e4e7;
-  border-radius: 10px;
-  height: 50px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -878,68 +878,78 @@ textarea {
 }
 
 .effect-card:hover {
-  background: #f8fafc;
+  background: #ffffff;
   border-color: #cbd5e1;
-  transform: translateY(-1.5px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .effect-card.active {
   background: #ffffff !important;
-  border: 2px solid #18181b !important;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+  border: 2px solid #0f172a !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09) !important;
 }
 
 /* Crisp & Gorgeous Effect Labels */
 .effect-label-sabit {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  color: #18181b;
+  color: #1e293b;
   letter-spacing: 0.2px;
 }
 
 .effect-label-gradyan {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #059669, #0284c7, #6366f1);
+  background: linear-gradient(135deg, #10b981, #06b6d4, #6366f1);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   display: inline-block;
-  letter-spacing: 0.2px;
-}
-
-.effect-label-neon {
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: #7c3aed;
-  text-shadow: 0 0 6px rgba(124, 58, 237, 0.45);
-  display: inline-block;
   letter-spacing: 0.3px;
 }
 
-.effect-label-cartoon {
-  font-size: 0.88rem;
+.effect-label-neon {
+  font-size: 0.92rem;
   font-weight: 800;
-  color: #db2777;
+  color: #8b5cf6;
+  text-shadow: 0 0 5px rgba(139, 92, 246, 0.65), 0 0 12px rgba(139, 92, 246, 0.35);
+  display: inline-block;
+  letter-spacing: 0.4px;
+}
+
+.effect-label-cartoon {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #f43f5e;
   text-shadow: 1.5px 1.5px 0 #0f172a;
   letter-spacing: 0.5px;
   display: inline-block;
 }
 
 .effect-label-pop {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  color: #0d9488;
-  text-shadow: 1.5px 1.5px 0 #134e4a;
-  letter-spacing: 0.8px;
+  color: #059669;
+  text-shadow: 1.5px 1.5px 0 #064e3b;
+  letter-spacing: 1.2px;
+  display: inline-block;
+}
+
+.effect-label-shadow {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #334155;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.4px;
   display: inline-block;
 }
 
 .effect-label-candy {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ec4899, #a855f7, #06b6d4);
+  background: linear-gradient(135deg, #ec4899, #d946ef, #06b6d4);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -949,15 +959,15 @@ textarea {
 }
 
 .effect-label-prizma {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #e11d48, #9333ea, #2563eb, #059669);
+  background: linear-gradient(135deg, #ef4444, #f59e0b, #10b981, #06b6d4, #8b5cf6);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   display: inline-block;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
 }
 
 /* 3. Renk & Gradyan Seçici Alanı */
