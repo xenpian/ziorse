@@ -39,6 +39,34 @@ app.use(express.static(path.join(__dirname, 'src')));
 app.use('/uploads', express.static(uploadsDir));
 app.use('/sounds', express.static(path.join(__dirname, 'sounds')));
 
+const framesDir = path.join(__dirname, 'src', 'assets', 'avatar-frames');
+const rootFramesDir = path.join(__dirname, 'assets', 'avatar-frames');
+if (!fs.existsSync(framesDir)) fs.mkdirSync(framesDir, { recursive: true });
+if (!fs.existsSync(rootFramesDir)) fs.mkdirSync(rootFramesDir, { recursive: true });
+app.use('/assets/avatar-frames', express.static(framesDir));
+app.use('/assets/avatar-frames', express.static(rootFramesDir));
+
+// API: Avatar Frames listing
+app.get('/api/avatar-frames', (req, res) => {
+  try {
+    const list = new Set();
+    [framesDir, rootFramesDir].forEach(dir => {
+      if (fs.existsSync(dir)) {
+        fs.readdirSync(dir).filter(f => f.toLowerCase().endsWith('.png')).forEach(f => list.add(f));
+      }
+    });
+    const result = Array.from(list).map(file => ({
+      id: file,
+      name: path.parse(file).name.replace(/[-_]/g, ' '),
+      url: `assets/avatar-frames/${file}`,
+      filename: file
+    }));
+    res.json({ frames: result });
+  } catch (e) {
+    res.json({ frames: [] });
+  }
+});
+
 // CORS middleware
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
