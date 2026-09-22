@@ -617,7 +617,15 @@ document.addEventListener('DOMContentLoaded', () => {
         try { targetParent.dataStore.saveUser(updateObj); } catch (e) {}
       }
       if (typeof targetParent.updateLiveUserMedia === 'function') {
-        targetParent.updateLiveUserMedia(updateObj.handle, updateObj.avatar, updateObj.banner);
+        targetParent.updateLiveUserMedia(
+          updateObj.handle,
+          updateObj.avatar,
+          updateObj.banner,
+          updateObj.fontStyle,
+          updateObj.nameColor,
+          updateObj.nameEffects,
+          updateObj.avatarFrame
+        );
       }
       if (typeof targetParent.syncUserDisplay === 'function') {
         targetParent.syncUserDisplay();
