@@ -7,7 +7,7 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "pixel",
+  "fontStyle": "terminal",
   "nameColor": "#ffffff",
   "nameEffects": [],
   "avatarFrame": "cyber",
@@ -16,20 +16,7 @@
     "emoji": "💭",
     "text": ""
   },
-  "widgets": [
-    {
-      "id": "favorite_game",
-      "title": "Favori Oyun",
-      "value": "League of Legends",
-      "icon": "🏆"
-    },
-    {
-      "id": "spotify",
-      "title": "Sevdiğim Şarkı",
-      "value": "Synthwave Dreams - Retro Knight",
-      "icon": "🎵"
-    }
-  ],
+  "widgets": [],
   "statusText": "porno",
   "statusType": "idle"
 }

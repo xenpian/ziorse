@@ -100,25 +100,16 @@
         "text": "porno"
       },
       "pronouns": "",
-      "fontStyle": "pixel",
+      "fontStyle": "terminal",
       "nameColor": "#ffffff",
       "nameEffects": [],
       "avatarFrame": "cyber",
       "profileEffect": "none",
-      "widgets": [
-        {
-          "id": "favorite_game",
-          "title": "Favori Oyun",
-          "value": "League of Legends",
-          "icon": "🏆"
-        },
-        {
-          "id": "spotify",
-          "title": "Sevdiğim Şarkı",
-          "value": "Synthwave Dreams - Retro Knight",
-          "icon": "🎵"
-        }
-      ]
+      "widgets": [],
+      "customStatus": {
+        "emoji": "💭",
+        "text": ""
+      }
     },
     "@saf": {
       "name": "safsfdsvv",
