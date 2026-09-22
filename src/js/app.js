@@ -1131,6 +1131,11 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(dropdown);
       refreshIcons(dropdown);
 
+      const pbdName = dropdown.querySelector('.pbd-name');
+      if (pbdName) applyUserNameStyling(pbdName, u.fontStyle, u.nameColor, u.nameEffects);
+      const pbdAvWrap = dropdown.querySelector('.pbd-avatar-wrap');
+      if (pbdAvWrap) applyAvatarFrameToContainer(pbdAvWrap, u.avatarFrame);
+
       const pbdMainView = dropdown.querySelector('#pbd-main-view');
       const pbdStatusView = dropdown.querySelector('#pbd-status-view');
       const btnOpenStatus = dropdown.querySelector('#pbd-btn-open-status');
