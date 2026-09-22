@@ -406,11 +406,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnGoProfileTab) {
     btnGoProfileTab.addEventListener('click', () => {
-      if (window.openModalView) {
-        window.openModalView('profile-edit.html');
-      } else {
-        switchSection('profil');
-      }
+      switchSection('profil');
+    });
+  }
+  const accAvatarBox = document.getElementById('acc-avatar-box');
+  if (accAvatarBox && profAvatarFile) {
+    accAvatarBox.style.cursor = 'pointer';
+    accAvatarBox.title = 'Profil Resmini Değiştir';
+    accAvatarBox.addEventListener('click', () => {
+      profAvatarFile.click();
     });
   }
   if (btnEditBannerQuick) {
