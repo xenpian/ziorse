@@ -25,8 +25,8 @@
       "text": "porno"
     },
     "pronouns": "",
-    "fontStyle": "cyber",
-    "nameColor": "#0015ff",
+    "fontStyle": "serif",
+    "nameColor": "#808080",
     "nameEffects": [],
     "avatarFrame": "assets/avatar-frames/Lord.png",
     "profileEffect": "none",
