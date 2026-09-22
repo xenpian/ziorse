@@ -1291,6 +1291,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Effect Color Chips Click
+  document.getElementById('hesabim-color-chips')?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.effect-color-chip');
+    if (!chip) return;
+    draftProfile.nameColor = chip.dataset.color;
+    updateLiveStyleControlsAndPreview();
+  });
+
+  // Native Color Picker Input
+  document.getElementById('hesabim-custom-color-input')?.addEventListener('input', (e) => {
+    draftProfile.nameColor = e.target.value;
+    updateLiveStyleControlsAndPreview();
+  });
+
+  // Hex Text Input
+  document.getElementById('hesabim-color-hex-text')?.addEventListener('input', (e) => {
+    let val = e.target.value.trim().replace('#', '');
+    if (val.length === 6 || val.length === 3) {
+      draftProfile.nameColor = '#' + val;
+      updateLiveStyleControlsAndPreview();
+    }
+  });
+
   // Reset Color Button
   document.getElementById('btn-reset-name-color')?.addEventListener('click', () => {
     draftProfile.nameColor = '#ffffff';
