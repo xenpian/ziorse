@@ -741,6 +741,131 @@ document.addEventListener('DOMContentLoaded', () => {
     return `<img class="${className}" src="${escapeHtml(url)}" alt="Avatar" onerror="this.onerror=null;this.src=window.DEFAULT_AVATAR;" ${extraAttrs} style="object-fit:cover; border-radius:inherit; width:100%; height:100%; display:block;">`;
   }
 
+  window.FONT_FAMILIES = {
+    'outfit': "'Outfit', sans-serif",
+    'cyber': "'Russo One', sans-serif",
+    'cursive': "'Caveat', cursive",
+    'pixel': "'Press Start 2P', monospace",
+    'serif': "'Cinzel', serif",
+    'neon': "'Righteous', cursive",
+    'terminal': "'JetBrains Mono', monospace",
+    'inter': "'Inter', sans-serif"
+  };
+
+  function applyUserNameStyling(element, fontStyle, nameColor, nameEffects, fallbackColor) {
+    if (!element) return;
+    const fontFamilies = window.FONT_FAMILIES || {};
+    if (fontStyle && fontFamilies[fontStyle]) {
+      element.style.fontFamily = fontFamilies[fontStyle];
+    } else if (fontStyle === '' || fontStyle === 'none') {
+      element.style.fontFamily = '';
+    }
+
+    const effects = Array.isArray(nameEffects) ? nameEffects : [];
+    let textShadows = [];
+    if (effects.includes('glow')) {
+      const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#00f2fe';
+      textShadows.push(`0 0 12px ${glowColor}`);
+    }
+    if (effects.includes('shadow')) {
+      textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
+    }
+    element.style.textShadow = textShadows.join(', ') || '';
+    element.style.letterSpacing = effects.includes('spaced') ? '2px' : '';
+
+    if (nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient')) {
+      element.style.backgroundImage = nameColor;
+      element.style.webkitBackgroundClip = 'text';
+      element.style.webkitTextFillColor = 'transparent';
+      element.style.color = 'transparent';
+    } else if (nameColor && nameColor !== 'none') {
+      element.style.backgroundImage = 'none';
+      element.style.webkitBackgroundClip = 'unset';
+      element.style.webkitTextFillColor = nameColor;
+      element.style.color = nameColor;
+    } else if (fallbackColor) {
+      element.style.backgroundImage = 'none';
+      element.style.webkitBackgroundClip = 'unset';
+      element.style.webkitTextFillColor = fallbackColor;
+      element.style.color = fallbackColor;
+    } else {
+      element.style.backgroundImage = 'none';
+      element.style.webkitBackgroundClip = 'unset';
+      element.style.webkitTextFillColor = '';
+      element.style.color = '';
+    }
+  }
+  window.applyUserNameStyling = applyUserNameStyling;
+
+  function applyAvatarFrameToContainer(container, frameSrc) {
+    if (!container) return;
+    const existingOverlay = container.querySelector('.global-avatar-frame-overlay');
+
+    if (!frameSrc || frameSrc === 'none') {
+      if (existingOverlay) existingOverlay.remove();
+      return;
+    }
+
+    let resolvedSrc = frameSrc;
+    if (!resolvedSrc.includes('/') && !resolvedSrc.startsWith('data:')) {
+      resolvedSrc = `assets/avatar-frames/${resolvedSrc}`;
+    }
+
+    container.style.position = 'relative';
+    container.style.overflow = 'visible';
+
+    const innerMedia = container.querySelector('img, video');
+    if (innerMedia) {
+      innerMedia.style.borderRadius = '50%';
+    }
+
+    if (existingOverlay) {
+      if (existingOverlay.src !== resolvedSrc) existingOverlay.src = resolvedSrc;
+      existingOverlay.style.display = 'block';
+    } else {
+      const frameImg = document.createElement('img');
+      frameImg.className = 'global-avatar-frame-overlay';
+      frameImg.src = resolvedSrc;
+      frameImg.alt = 'Frame';
+      frameImg.style.cssText = 'position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;';
+      container.appendChild(frameImg);
+    }
+  }
+  window.applyAvatarFrameToContainer = applyAvatarFrameToContainer;
+
+  function getAuthorNameStyleAttr(prof, highestRole) {
+    const fontFamilies = window.FONT_FAMILIES || {};
+    let styles = [];
+    if (prof?.fontStyle && fontFamilies[prof.fontStyle]) {
+      styles.push(`font-family:${fontFamilies[prof.fontStyle]}`);
+    }
+    const eff = Array.isArray(prof?.nameEffects) ? prof.nameEffects : [];
+    let shadows = [];
+    if (eff.includes('glow')) {
+      const gc = (prof?.nameColor && prof.nameColor.startsWith('#')) ? prof.nameColor : '#00f2fe';
+      shadows.push(`0 0 12px ${gc}`);
+    }
+    if (eff.includes('shadow')) {
+      shadows.push('2px 3px 5px rgba(0,0,0,0.8)');
+    }
+    if (shadows.length) styles.push(`text-shadow:${shadows.join(', ')}`);
+    if (eff.includes('spaced')) styles.push('letter-spacing:2px');
+
+    if (prof?.nameColor && prof.nameColor.startsWith('linear-gradient')) {
+      styles.push(`background-image:${prof.nameColor}`);
+      styles.push('-webkit-background-clip:text');
+      styles.push('-webkit-text-fill-color:transparent');
+      styles.push('color:transparent');
+    } else if (highestRole?.color) {
+      styles.push(`color:${highestRole.color}`);
+      styles.push('font-weight:600');
+    } else if (prof?.nameColor && prof.nameColor !== 'none') {
+      styles.push(`color:${prof.nameColor}`);
+    }
+    return styles.length ? `style="${styles.join('; ')}"` : '';
+  }
+  window.getAuthorNameStyleAttr = getAuthorNameStyleAttr;
+
   function applyAvatarToElement(imgOrContainer, avatarUrl) {
     if (!imgOrContainer) return;
     const rawUrl = normalizeMediaUrl(avatarUrl);
