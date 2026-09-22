@@ -139,7 +139,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
+        const frameScales = {
+          'Lord.png': 178,
+          'altin-tac.png': 134,
+          'ates-cemberi.png': 133,
+          'galaksi-mor.png': 133,
+          'sakura-cicegi.png': 131,
+          'siber-neon.png': 133
+        };
+        const cleanName = String(frameSrc).split('/').pop().split('?')[0];
+        const scale = (window.parent && window.parent.getFrameScale)
+          ? window.parent.getFrameScale(frameSrc)
+          : (frameScales[cleanName] || 132);
+
         elFrameOverlay.src = frameSrc;
+        elFrameOverlay.style.width = `${scale}%`;
+        elFrameOverlay.style.height = `${scale}%`;
         elFrameOverlay.style.display = 'block';
       } else {
         elFrameOverlay.style.display = 'none';
