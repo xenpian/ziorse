@@ -1058,12 +1058,47 @@ document.addEventListener('DOMContentLoaded', () => {
       hexInput.value = curColor.startsWith('#') ? curColor.slice(1).toUpperCase() : curColor.toUpperCase();
     }
 
-    document.querySelectorAll('.hesabim-font-chip').forEach(chip => {
-      chip.classList.toggle('active', chip.dataset.font === draftProfile.fontStyle);
+    // Active states for Font Cards (.gg-font-card)
+    document.querySelectorAll('.gg-font-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.font === draftProfile.fontStyle);
     });
-    document.querySelectorAll('.hesabim-effect-toggle').forEach(tgl => {
-      tgl.classList.toggle('active', (draftProfile.nameEffects || []).includes(tgl.dataset.effect));
+
+    // Active states for Effect Cards (.effect-card)
+    const activeEffects = draftProfile.nameEffects || [];
+    const isGradient = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
+    document.querySelectorAll('.effect-card').forEach(card => {
+      const eff = card.dataset.effect;
+      let isAct = false;
+      if (eff === 'sabit') {
+        isAct = activeEffects.length === 0 && !isGradient;
+      } else if (eff === 'gradyan') {
+        isAct = isGradient && !draftProfile.nameColor.includes('#ff007f') && !draftProfile.nameColor.includes('#f472b6');
+      } else if (eff === 'candy') {
+        isAct = isGradient && draftProfile.nameColor.includes('#f472b6');
+      } else if (eff === 'prizma') {
+        isAct = isGradient && draftProfile.nameColor.includes('#ff007f');
+      } else {
+        isAct = activeEffects.includes(eff);
+      }
+      card.classList.toggle('active', isAct);
     });
+
+    // Active states for Preset Gradient Pills (.preset-pill)
+    document.querySelectorAll('.preset-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.gradient === draftProfile.nameColor);
+    });
+
+    // Update Gradient Track Bar & Pin Colors
+    const trackBar = document.getElementById('gradient-track-bar');
+    if (trackBar) {
+      if (isGradient) {
+        trackBar.style.background = draftProfile.nameColor;
+      } else {
+        const c = draftProfile.nameColor || '#ffffff';
+        trackBar.style.background = `linear-gradient(90deg, ${c}, #06b6d4, #3b82f6, #ffffff)`;
+      }
+    }
+
     document.querySelectorAll('.hesabim-frame-item').forEach(item => {
       const fId = item.dataset.frameId;
       const isAct = (!draftProfile.avatarFrame || draftProfile.avatarFrame === 'none')
@@ -1085,54 +1120,102 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLiveStyleControlsAndPreview();
   });
 
-  // Font chips click in Hesabım
+  // 1. Font Cards Click (.gg-font-card)
   document.getElementById('hesabim-font-grid')?.addEventListener('click', (e) => {
-    const chip = e.target.closest('.hesabim-font-chip');
-    if (!chip) return;
-    draftProfile.fontStyle = chip.dataset.font;
+    const card = e.target.closest('.gg-font-card');
+    if (!card) return;
+    draftProfile.fontStyle = card.dataset.font;
     updateLiveStyleControlsAndPreview();
   });
 
-  // Tek Renk Seçme Alanı: Native Picker, Hex Girişi ve Sıfırlama Butonu
-  const customColorInput = document.getElementById('hesabim-custom-color-input');
-  const hexTextInput = document.getElementById('hesabim-color-hex-text');
-  const btnResetColor = document.getElementById('btn-reset-name-color');
-
-  customColorInput?.addEventListener('input', (e) => {
-    draftProfile.nameColor = e.target.value;
-    if (hexTextInput) hexTextInput.value = e.target.value.replace('#', '').toUpperCase();
+  // Reset Font Button
+  document.getElementById('btn-reset-font')?.addEventListener('click', () => {
+    draftProfile.fontStyle = 'outfit';
     updateLiveStyleControlsAndPreview();
   });
 
-  hexTextInput?.addEventListener('input', (e) => {
-    let val = e.target.value.replace(/[^0-9A-Fa-f]/g, '').slice(0, 6);
-    e.target.value = val.toUpperCase();
-    if (val.length === 6) {
-      draftProfile.nameColor = '#' + val;
-      if (customColorInput) customColorInput.value = '#' + val;
-      updateLiveStyleControlsAndPreview();
-    }
-  });
-
-  btnResetColor?.addEventListener('click', () => {
-    draftProfile.nameColor = '#ffffff';
-    if (customColorInput) customColorInput.value = '#ffffff';
-    if (hexTextInput) hexTextInput.value = 'FFFFFF';
-    updateLiveStyleControlsAndPreview();
-  });
-
-  // Effect toggles click in Hesabım
-  document.querySelectorAll('.hesabim-effect-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const eff = btn.dataset.effect;
-      if (!draftProfile.nameEffects) draftProfile.nameEffects = [];
-      if (draftProfile.nameEffects.includes(eff)) {
-        draftProfile.nameEffects = draftProfile.nameEffects.filter(x => x !== eff);
-      } else {
-        draftProfile.nameEffects.push(eff);
+  // 2. Effect Cards Click (.effect-card)
+  document.getElementById('hesabim-effects-grid')?.addEventListener('click', (e) => {
+    const card = e.target.closest('.effect-card');
+    if (!card) return;
+    const eff = card.dataset.effect;
+    if (eff === 'sabit') {
+      draftProfile.nameEffects = [];
+      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
+        draftProfile.nameColor = '#ffffff';
       }
+    } else if (eff === 'gradyan') {
+      draftProfile.nameEffects = [];
+      draftProfile.nameColor = buildCustomGradient();
+    } else if (eff === 'neon') {
+      draftProfile.nameEffects = ['neon'];
+    } else if (eff === 'cartoon') {
+      draftProfile.nameEffects = ['cartoon'];
+    } else if (eff === 'pop') {
+      draftProfile.nameEffects = ['pop'];
+    } else if (eff === 'candy') {
+      draftProfile.nameEffects = [];
+      draftProfile.nameColor = 'linear-gradient(90deg, #f472b6, #a78bfa, #38bdf8)';
+    } else if (eff === 'prizma') {
+      draftProfile.nameEffects = [];
+      draftProfile.nameColor = 'linear-gradient(90deg, #ff007f, #00f2fe, #facc15)';
+    }
+    updateLiveStyleControlsAndPreview();
+  });
+
+  // Reset Effect Button
+  document.getElementById('btn-reset-effect')?.addEventListener('click', () => {
+    draftProfile.nameEffects = [];
+    if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
+      draftProfile.nameColor = '#ffffff';
+    }
+    updateLiveStyleControlsAndPreview();
+  });
+
+  // 3. Gradient Slider & Preset Pills Handlers
+  function buildCustomGradient() {
+    const s = document.getElementById('input-grad-start')?.value || '#10b981';
+    const m1 = document.getElementById('input-grad-mid1')?.value || '#06b6d4';
+    const m2 = document.getElementById('input-grad-mid2')?.value || '#3b82f6';
+    const e = document.getElementById('input-grad-end')?.value || '#ffffff';
+    return `linear-gradient(90deg, ${s} 0%, ${m1} 33%, ${m2} 66%, ${e} 100%)`;
+  }
+
+  function syncPinHeads() {
+    const s = document.getElementById('input-grad-start')?.value || '#10b981';
+    const m1 = document.getElementById('input-grad-mid1')?.value || '#06b6d4';
+    const m2 = document.getElementById('input-grad-mid2')?.value || '#3b82f6';
+    const e = document.getElementById('input-grad-end')?.value || '#ffffff';
+    const ps = document.getElementById('grad-pin-start');
+    const pm1 = document.getElementById('grad-pin-mid1');
+    const pm2 = document.getElementById('grad-pin-mid2');
+    const pe = document.getElementById('grad-pin-end');
+    if (ps) ps.style.background = s;
+    if (pm1) pm1.style.background = m1;
+    if (pm2) pm2.style.background = m2;
+    if (pe) pe.style.background = e;
+  }
+
+  ['input-grad-start', 'input-grad-mid1', 'input-grad-mid2', 'input-grad-end'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', () => {
+      syncPinHeads();
+      draftProfile.nameColor = buildCustomGradient();
       updateLiveStyleControlsAndPreview();
     });
+  });
+
+  // Preset Gradient Pills Click
+  document.querySelectorAll('.preset-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      draftProfile.nameColor = pill.dataset.gradient;
+      updateLiveStyleControlsAndPreview();
+    });
+  });
+
+  // Reset Color Button
+  document.getElementById('btn-reset-name-color')?.addEventListener('click', () => {
+    draftProfile.nameColor = '#ffffff';
+    updateLiveStyleControlsAndPreview();
   });
 
   // Initial frames load & render
