@@ -8,9 +8,9 @@
   "loggedIn": true,
   "pronouns": "",
   "fontStyle": "cyber",
-  "nameColor": "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)",
+  "nameColor": "#0015ff",
   "nameEffects": [],
-  "avatarFrame": "assets/avatar-frames/siber-neon.png",
+  "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
   "customStatus": {
     "emoji": "💭",
