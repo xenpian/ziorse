@@ -6,7 +6,7 @@
     "fontStyle": "architect",
     "nameColor": "#808080",
     "nameEffects": [],
-    "avatarFrame": "assets/avatar-frames/Lord.png"
+    "avatarFrame": "assets/avatar-frames/Liaz.png"
   },
   {
     "handle": "@fafafa",

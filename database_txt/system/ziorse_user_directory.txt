@@ -21,7 +21,18 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "online",
+      "type": "idle",
+      "text": "porno"
+    },
+    "pronouns": "",
+    "fontStyle": "architect",
+    "nameColor": "#808080",
+    "nameEffects": [],
+    "avatarFrame": "assets/avatar-frames/Liaz.png",
+    "profileEffect": "none",
+    "widgets": [],
+    "customStatus": {
+      "emoji": "💭",
       "text": ""
     }
   },
