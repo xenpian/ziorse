@@ -356,17 +356,76 @@ function syncFramesDirs() {
   } catch (e) { }
 }
 
+const zlib = require('zlib');
+
+function getFrameHoleScale(filePath) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    const width = buf.readUInt32BE(16);
+    const height = buf.readUInt32BE(20);
+
+    let offset = 8;
+    const idatChunks = [];
+    while (offset < buf.length) {
+      const length = buf.readUInt32BE(offset);
+      const type = buf.toString('ascii', offset + 4, offset + 8);
+      if (type === 'IDAT') idatChunks.push(buf.slice(offset + 8, offset + 8 + length));
+      offset += 12 + length;
+    }
+
+    const decompressed = zlib.inflateSync(Buffer.concat(idatChunks));
+    const bytesPerPixel = 4;
+    const stride = width * bytesPerPixel + 1;
+    const centerX = Math.floor(width / 2);
+    const centerY = Math.floor(height / 2);
+
+    // Scan horizontal transparent radius from center
+    const centerRowOffset = centerY * stride + 1;
+    let innerLeft = centerX, innerRight = centerX;
+    while (innerLeft > 0 && decompressed[centerRowOffset + innerLeft * bytesPerPixel + 3] < 40) {
+      innerLeft--;
+    }
+    while (innerRight < width - 1 && decompressed[centerRowOffset + innerRight * bytesPerPixel + 3] < 40) {
+      innerRight++;
+    }
+    const innerDiameterX = innerRight - innerLeft;
+
+    // Scan vertical transparent radius from center
+    let innerTop = centerY, innerBottom = centerY;
+    while (innerTop > 0 && decompressed[innerTop * stride + 1 + centerX * bytesPerPixel + 3] < 40) {
+      innerTop--;
+    }
+    while (innerBottom < height - 1 && decompressed[innerBottom * stride + 1 + centerX * bytesPerPixel + 3] < 40) {
+      innerBottom++;
+    }
+    const innerDiameterY = innerBottom - innerTop;
+
+    const avgHole = (innerDiameterX + innerDiameterY) / 2;
+    const avgDim = (width + height) / 2;
+
+    if (avgHole > 20) {
+      const scalePct = Math.round((avgDim / avgHole) * 100);
+      return Math.min(Math.max(scalePct, 110), 195);
+    }
+  } catch (e) { }
+  return 130;
+}
+
 ipcMain.handle('get-avatar-frames', () => {
   syncFramesDirs();
   try {
     if (!fs.existsSync(AVATAR_FRAMES_DIR)) return [];
     const files = fs.readdirSync(AVATAR_FRAMES_DIR).filter(f => f.toLowerCase().endsWith('.png'));
-    return files.map(file => ({
-      id: file,
-      name: path.parse(file).name.replace(/[-_]/g, ' '),
-      url: `assets/avatar-frames/${file}`,
-      filename: file
-    }));
+    return files.map(file => {
+      const scale = getFrameHoleScale(path.join(AVATAR_FRAMES_DIR, file));
+      return {
+        id: file,
+        name: path.parse(file).name.replace(/[-_]/g, ' '),
+        url: `assets/avatar-frames/${file}`,
+        filename: file,
+        scale: scale
+      };
+    });
   } catch (e) {
     return [];
   }
@@ -388,7 +447,7 @@ function loadWindowBounds() {
   try {
     if (fs.existsSync(configPath)) {
       const b = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      if (b && b.width && b.height && b.width < 1920 && b.height < 1080) {
+      if (b && b.width && b.height && b.width <= 1600 && b.height <= 900 && b.width >= 1000 && b.height >= 680) {
         return b;
       }
     }
@@ -398,8 +457,10 @@ function loadWindowBounds() {
 
 function saveWindowBounds(bounds) {
   try {
-    if (bounds && bounds.width < 1920 && bounds.height < 1080) {
-      fs.writeFileSync(configPath, JSON.stringify(bounds));
+    if (mainWindow && !mainWindow.isMaximized() && !mainWindow.isFullScreen()) {
+      if (bounds && bounds.width <= 1600 && bounds.height <= 900 && bounds.width >= 1000 && bounds.height >= 680) {
+        fs.writeFileSync(configPath, JSON.stringify(bounds));
+      }
     }
   } catch (e) { }
 }
@@ -408,13 +469,13 @@ function createMainWindow() {
   const bounds = loadWindowBounds();
 
   mainWindow = new BrowserWindow({
-    width: 1320,
-    height: 760,
+    width: bounds.width || 1320,
+    height: bounds.height || 760,
     x: bounds.x,
     y: bounds.y,
     minWidth: 1000,
     minHeight: 680,
-    center: true,
+    center: bounds.x === undefined,
     frame: false,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
@@ -432,6 +493,11 @@ function createMainWindow() {
       webAudio: true
     }
   });
+
+  if (bounds.x === undefined) {
+    mainWindow.setSize(1320, 760);
+    mainWindow.center();
+  }
 
   mainWindow.loadFile(path.join(__dirname, 'src/index.html'));
   mainWindow.on('resize', () => saveWindowBounds(mainWindow.getBounds()));
