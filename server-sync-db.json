@@ -17,12 +17,13 @@
       "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
       "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
       "bio": "fdffa",
-      "fontStyle": "orbitron",
-      "nameColor": "#7c3aed",
+      "fontStyle": "cinzel",
+      "nameColor": "#18181b",
       "nameEffects": [
         "neon"
       ],
-      "avatarFrame": "assets/avatar-frames/Liaz.png"
+      "avatarFrame": "assets/avatar-frames/Liaz.png",
+      "fontWeight": "900"
     },
     {
       "name": "selam",
@@ -106,8 +107,8 @@
         "text": "porno"
       },
       "pronouns": "",
-      "fontStyle": "orbitron",
-      "nameColor": "#7c3aed",
+      "fontStyle": "cinzel",
+      "nameColor": "#18181b",
       "nameEffects": [
         "neon"
       ],
@@ -117,7 +118,8 @@
       "customStatus": {
         "emoji": "💭",
         "text": ""
-      }
+      },
+      "fontWeight": "900"
     },
     "@saf": {
       "name": "safsfdsvv",
@@ -1580,12 +1582,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       },
       {
         "handle": "@fafafa",
@@ -1603,12 +1606,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "91a1wwmu7z": [
@@ -1616,12 +1620,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "h6g6f3m5qe": [
@@ -1629,12 +1634,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       },
       {
         "handle": "@fas",
@@ -1647,12 +1653,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "dyecoc3t33": [
@@ -1660,12 +1667,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "u0au9h8xvh": [
@@ -1673,12 +1681,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "w9867ltw40": [
@@ -1686,12 +1695,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "0rstnp3gq1": [
@@ -1699,12 +1709,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "a5dv3nwp30": [
@@ -1726,12 +1737,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "7dit1n5mak": [
@@ -1739,12 +1751,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "o2czq80toh": [
@@ -1752,12 +1765,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "oihyrvdfwb": [
@@ -1765,12 +1779,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "5wvi4xjoc3": [
@@ -1778,12 +1793,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "3wl1ubi2xm": [
@@ -1791,12 +1807,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "snvoap0nbq": [
@@ -1804,12 +1821,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "ac5wb2scwu": [
@@ -1817,12 +1835,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "3k6oai9i0i": [
@@ -1830,12 +1849,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "l27xh2hy56": [
@@ -1843,12 +1863,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "8pn5fgp7ee": [
@@ -1856,12 +1877,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "lqbs5ylu1l": [
@@ -1869,12 +1891,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "hf5tmv367c": [
@@ -1882,12 +1905,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "dnbslhmdiz": [
@@ -1895,12 +1919,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "hjktp5ci3q": [
@@ -1908,12 +1933,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "3loo0g206i": [
@@ -1921,12 +1947,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "w3zoj98f4f": [
@@ -1934,12 +1961,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "o7m1y870hq": [
@@ -1947,12 +1975,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "28ufosbzg1": [
@@ -1960,12 +1989,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "d8h0c4j5oa": [
@@ -1973,12 +2003,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "vrqlh84i4z": [
@@ -1986,12 +2017,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "37xaf2hj6o": [
@@ -1999,12 +2031,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ],
     "c4b6m4pu46": [
@@ -2012,12 +2045,13 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "orbitron",
-        "nameColor": "#7c3aed",
+        "fontStyle": "cinzel",
+        "nameColor": "#18181b",
         "nameEffects": [
           "neon"
         ],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontWeight": "900"
       }
     ]
   },
