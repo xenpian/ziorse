@@ -1052,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       dropdown.querySelector('#pbd-edit')?.addEventListener('click', () => {
         dropdown.remove();
-        window.openModalView('settings.html');
+        window.openModalView('profile-edit.html');
       });
       dropdown.querySelector('#pbd-logout')?.addEventListener('click', () => {
         dropdown.remove();
