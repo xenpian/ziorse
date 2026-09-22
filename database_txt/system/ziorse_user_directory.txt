@@ -21,7 +21,18 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "online",
+      "type": "idle",
+      "text": "porno"
+    },
+    "pronouns": "",
+    "fontStyle": "terminal",
+    "nameColor": "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)",
+    "nameEffects": [],
+    "avatarFrame": "cyber",
+    "profileEffect": "none",
+    "widgets": [],
+    "customStatus": {
+      "emoji": "💭",
       "text": ""
     }
   },
