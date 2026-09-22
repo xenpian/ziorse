@@ -98,8 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = (p && p.email) ? String(p.email).trim() : `${handle.replace('@', '')}@ziorse.app`;
     const statusText = (status && status.text) ? String(status.text).trim() : '';
     const statusType = (status && status.type) ? String(status.type) : 'online';
+    const fontStyle = (p && p.fontStyle) ? String(p.fontStyle) : 'outfit';
+    const nameColor = (p && p.nameColor) ? String(p.nameColor) : '#ffffff';
+    const nameEffects = (p && Array.isArray(p.nameEffects)) ? [...p.nameEffects] : [];
+    const avatarFrame = (p && p.avatarFrame) ? String(p.avatarFrame) : 'none';
 
-    return { name, handle, avatar, banner, bio, email, statusText, statusType };
+    return { name, handle, avatar, banner, bio, email, statusText, statusType, fontStyle, nameColor, nameEffects, avatarFrame };
   }
 
   // Local state drafts
@@ -224,7 +228,45 @@ document.addEventListener('DOMContentLoaded', () => {
     setMediaAvatar(sideAvatarImg?.parentElement, sideAvatarImg, sideAvatarInitials, draftProfile.avatar, initials);
 
     // Account Tab
-    if (accPreviewName) accPreviewName.textContent = draftProfile.name;
+    if (accPreviewName) {
+      accPreviewName.textContent = draftProfile.name;
+      const fontFamilies = {
+        'outfit': "'Outfit', sans-serif",
+        'cyber': "'Russo One', sans-serif",
+        'cursive': "'Caveat', cursive",
+        'pixel': "'Press Start 2P', monospace",
+        'serif': "'Cinzel', serif",
+        'neon': "'Righteous', cursive",
+        'terminal': "'JetBrains Mono', monospace",
+        'inter': "'Inter', sans-serif"
+      };
+      accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
+
+      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
+        accPreviewName.style.background = draftProfile.nameColor;
+        accPreviewName.style.webkitBackgroundClip = 'text';
+        accPreviewName.style.webkitTextFillColor = 'transparent';
+        accPreviewName.style.color = 'transparent';
+      } else {
+        accPreviewName.style.background = 'none';
+        accPreviewName.style.webkitBackgroundClip = 'unset';
+        accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
+        accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
+      }
+
+      const effects = draftProfile.nameEffects || [];
+      let textShadows = [];
+      if (effects.includes('glow')) {
+        const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
+        textShadows.push(`0 0 12px ${glowColor}`);
+      }
+      if (effects.includes('shadow')) {
+        textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
+      }
+      accPreviewName.style.textShadow = textShadows.join(', ') || 'none';
+      accPreviewName.style.letterSpacing = effects.includes('spaced') ? '2px' : 'normal';
+    }
+
     if (accPreviewHandle) accPreviewHandle.textContent = draftProfile.handle;
     if (accInfoName) accInfoName.textContent = draftProfile.name;
     if (accInfoHandle) accInfoHandle.textContent = draftProfile.handle;
@@ -232,6 +274,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setMediaBanner(accBannerPreview, draftProfile.banner);
     setMediaAvatar(accAvatarImg?.parentElement, accAvatarImg, accAvatarInitials, draftProfile.avatar, initials);
+
+    // Dynamic Frame Overlay on Compact Preview
+    const frameOverlay = document.getElementById('acc-avatar-frame-overlay');
+    if (frameOverlay) {
+      if (draftProfile.avatarFrame && draftProfile.avatarFrame !== 'none') {
+        let frameSrc = draftProfile.avatarFrame;
+        if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
+          frameSrc = `assets/avatar-frames/${frameSrc}`;
+        }
+        frameOverlay.src = frameSrc;
+        frameOverlay.style.display = 'block';
+      } else {
+        frameOverlay.style.display = 'none';
+      }
+    }
+
+    // Active state sync in Hesabım tab controls
+    document.querySelectorAll('.hesabim-font-chip').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.font === draftProfile.fontStyle);
+    });
+    document.querySelectorAll('.hesabim-color-dot').forEach(dot => {
+      dot.classList.toggle('active', dot.dataset.color === draftProfile.nameColor);
+    });
+    document.querySelectorAll('.hesabim-effect-toggle').forEach(tgl => {
+      tgl.classList.toggle('active', (draftProfile.nameEffects || []).includes(tgl.dataset.effect));
+    });
+    document.querySelectorAll('.hesabim-frame-item').forEach(item => {
+      const fId = item.dataset.frameId;
+      const isAct = (!draftProfile.avatarFrame || draftProfile.avatarFrame === 'none')
+        ? (fId === 'none')
+        : (draftProfile.avatarFrame === fId || draftProfile.avatarFrame === item.dataset.frameUrl || (draftProfile.avatarFrame && draftProfile.avatarFrame.endsWith(fId)));
+      item.classList.toggle('active', isAct);
+    });
 
     // Profile Customize Tab Inputs
     if (profInputName && document.activeElement !== profInputName) profInputName.value = draftProfile.name;
@@ -300,7 +375,11 @@ document.addEventListener('DOMContentLoaded', () => {
       curBio !== origBio ||
       curStatus !== origStatus ||
       curAvatar !== origAvatar ||
-      curBanner !== origBanner;
+      curBanner !== origBanner ||
+      draftProfile.fontStyle !== originalProfile.fontStyle ||
+      draftProfile.nameColor !== originalProfile.nameColor ||
+      draftProfile.avatarFrame !== originalProfile.avatarFrame ||
+      JSON.stringify(draftProfile.nameEffects || []) !== JSON.stringify(originalProfile.nameEffects || []);
 
     if (saveBar) {
       if (hasChanges) {
@@ -326,7 +405,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (btnGoProfileTab) {
-    btnGoProfileTab.addEventListener('click', () => switchSection('profil'));
+    btnGoProfileTab.addEventListener('click', () => {
+      if (window.openModalView) {
+        window.openModalView('profile-edit.html');
+      } else {
+        switchSection('profil');
+      }
+    });
   }
   if (btnEditBannerQuick) {
     btnEditBannerQuick.addEventListener('click', () => {
@@ -456,10 +541,21 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.btn-edit-account-field').forEach(btn => {
     btn.addEventListener('click', () => {
       const f = btn.dataset.field;
-      if (f === 'name' || f === 'handle') {
-        switchSection('profil');
-        if (f === 'name' && profInputName) profInputName.focus();
-        if (f === 'handle' && profInputHandle) profInputHandle.focus();
+      if (f === 'name') {
+        const newName = prompt('Yeni görünen isminizi girin:', draftProfile.name);
+        if (newName && newName.trim()) {
+          draftProfile.name = newName.trim();
+          renderUserInfo();
+          checkChanges();
+        }
+      } else if (f === 'handle') {
+        let newHandle = prompt('Yeni kullanıcı adınızı girin:', draftProfile.handle);
+        if (newHandle && newHandle.trim()) {
+          if (!newHandle.startsWith('@')) newHandle = '@' + newHandle;
+          draftProfile.handle = newHandle.trim();
+          renderUserInfo();
+          checkChanges();
+        }
       } else if (f === 'email') {
         const newEmail = prompt('Yeni e-posta adresinizi girin:', draftProfile.email);
         if (newEmail && newEmail.includes('@')) {
@@ -497,7 +593,11 @@ document.addEventListener('DOMContentLoaded', () => {
       bio: draftProfile.bio || '',
       email: draftProfile.email || `${curHandle.replace('@', '')}@ziorse.app`,
       statusText: curStatus,
-      statusType: draftProfile.statusType || 'online'
+      statusType: draftProfile.statusType || 'online',
+      fontStyle: draftProfile.fontStyle || 'outfit',
+      nameColor: draftProfile.nameColor || '#ffffff',
+      nameEffects: draftProfile.nameEffects || [],
+      avatarFrame: draftProfile.avatarFrame || 'none'
     };
 
     // Save user to dataStore
@@ -529,6 +629,10 @@ document.addEventListener('DOMContentLoaded', () => {
         avatar: updateObj.avatar,
         banner: updateObj.banner,
         bio: updateObj.bio,
+        fontStyle: updateObj.fontStyle,
+        nameColor: updateObj.nameColor,
+        nameEffects: updateObj.nameEffects,
+        avatarFrame: updateObj.avatarFrame,
         status: { type: updateObj.statusType, text: updateObj.statusText }
       });
     }
