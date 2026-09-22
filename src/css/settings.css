@@ -691,10 +691,10 @@ input[type="range"]::-moz-range-thumb {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 122%;
-  height: 122%;
+  width: 132%;
+  height: 132%;
   pointer-events: none;
-  z-index: 10;
+  z-index: 15;
   object-fit: contain;
   display: block;
 }
