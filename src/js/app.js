@@ -4426,7 +4426,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="dm-msg-row ${mine ? 'mine' : 'theirs'}">
                   <div class="dm-msg-avatar-wrap" data-handle="${escapeHtml(senderHandle)}" style="width:36px; height:36px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" title="${escapeHtml(authorName)} - Profili gor">
                     ${renderMediaAvatarHtml(authorAvatar, 'dm-msg-avatar')}
-                    ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
+                    ${renderAvatarFrameHtml(authorFrame)}
                   </div>
                   <div class="dm-msg-body">
                     <div class="dm-msg-meta">
@@ -4470,7 +4470,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="dm-msg-row ${mine ? 'mine' : 'theirs'}">
                 <div class="dm-msg-avatar-wrap" data-handle="${escapeHtml(senderHandle)}" style="width:36px; height:36px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" title="${escapeHtml(authorName)} - Profili gor">
                   ${renderMediaAvatarHtml(authorAvatar, 'dm-msg-avatar')}
-                  ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
+                  ${renderAvatarFrameHtml(authorFrame)}
                 </div>
                 <div class="dm-msg-body">
                   <div class="dm-msg-meta">
@@ -5696,7 +5696,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div style="display:flex;align-items:center;gap:8px;min-width:0;">
             <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
               ${renderMediaAvatarHtml(avatar, 'user-avatar-sm')}
-              ${mFrame && mFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${mFrame.includes('/') || mFrame.startsWith('data:') ? mFrame : 'assets/avatar-frames/' + mFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
+              ${renderAvatarFrameHtml(mFrame)}
             </div>
             <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
               <div style="display:flex;align-items:center;gap:2px;">
@@ -6227,7 +6227,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${renderHoverPanelHtml(post.id, authorName, post.content, authorAvatar, post.handle)}
           <div class="post-avatar-wrap" style="width:38px; height:38px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" data-handle="${post.handle}">
             ${renderMediaAvatarHtml(authorAvatar, 'post-avatar')}
-            ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
+            ${renderAvatarFrameHtml(authorFrame)}
           </div>
           <div class="channel-chat-body">
             <div class="channel-chat-header">
@@ -6259,7 +6259,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${renderHoverPanelHtml(post.id, authorName, post.content, authorAvatar, post.handle)}
           <div class="post-avatar-wrap" style="width:42px; height:42px; border-radius:50%; overflow:visible; position:relative; flex-shrink:0; cursor:pointer;" data-handle="${post.handle}">
             ${renderMediaAvatarHtml(authorAvatar, 'post-avatar')}
-            ${authorFrame && authorFrame !== 'none' ? `<img class="global-avatar-frame-overlay" src="${authorFrame.includes('/') || authorFrame.startsWith('data:') ? authorFrame : 'assets/avatar-frames/' + authorFrame}" alt="" style="position:absolute; inset:-15%; width:130%; height:130%; pointer-events:none; z-index:6; object-fit:contain; display:block;">` : ''}
+            ${renderAvatarFrameHtml(authorFrame)}
           </div>
           <div class="post-content-area">
             <div class="post-header-line">
@@ -6889,11 +6889,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Re-render right sidebar members to keep everything completely synchronized
-    const rightSidebar = document.getElementById('right-sidebar');
-    if (rightSidebar && rightSidebar.style.display !== 'none' && window.dataStore.activeServerId && window.dataStore.activeServerId !== 'home') {
-      renderServerMembersSidebar(rightSidebar);
-    }
+    // Right sidebar member avatars and names are already updated in-place above without heavy re-renders
   };
 
   window.updateLiveServerMedia = function (serverId, newIcon, newBanner) {
