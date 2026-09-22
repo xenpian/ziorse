@@ -1024,23 +1024,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
       let textShadows = [];
       let extraLetterSpacing = '';
-      if (effects.includes('neon')) {
-        textShadows.push('0 0 6px rgba(124, 58, 237, 0.45), 0 0 14px rgba(168, 85, 247, 0.3)');
-      }
-      if (effects.includes('cartoon')) {
-        textShadows.push('1.5px 1.5px 0 #0f172a');
-        extraLetterSpacing = '0.5px';
-      }
-      if (effects.includes('pop')) {
-        textShadows.push('2px 2px 0 #134e4a');
-        extraLetterSpacing = '0.8px';
-      }
-      if (effects.includes('glow')) {
-        const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
-        textShadows.push(`0 0 10px ${glowColor}`);
-      }
-      if (effects.includes('shadow')) {
-        textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.6)');
+      const isGrad = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
+
+      if (!isGrad) {
+        if (effects.includes('neon')) {
+          const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#8b5cf6';
+          textShadows.push(`0 0 6px ${glowColor}99, 0 0 14px ${glowColor}4d`);
+          extraLetterSpacing = '0.4px';
+        }
+        if (effects.includes('cartoon')) {
+          textShadows.push('1.5px 1.5px 0 #0f172a');
+          extraLetterSpacing = '0.5px';
+        }
+        if (effects.includes('pop')) {
+          textShadows.push('2px 2px 0 #064e3b');
+          extraLetterSpacing = '0.8px';
+        }
+        if (effects.includes('shadow')) {
+          textShadows.push('0 2px 5px rgba(0, 0, 0, 0.3)');
+          extraLetterSpacing = '0.4px';
+        }
+        if (effects.includes('glow')) {
+          const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
+          textShadows.push(`0 0 10px ${glowColor}`);
+        }
       }
       if (effects.includes('spaced')) {
         extraLetterSpacing = '1.5px';
@@ -1093,11 +1100,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (eff === 'sabit') {
         isAct = activeEffects.length === 0 && !isGradient;
       } else if (eff === 'gradyan') {
-        isAct = isGradient && !draftProfile.nameColor.includes('#ff007f') && !draftProfile.nameColor.includes('#f472b6');
+        isAct = isGradient && !draftProfile.nameColor.includes('#ec4899') && !draftProfile.nameColor.includes('#ef4444') && !draftProfile.nameColor.includes('#e11d48');
       } else if (eff === 'candy') {
-        isAct = isGradient && draftProfile.nameColor.includes('#f472b6');
+        isAct = isGradient && (draftProfile.nameColor.includes('#ec4899') || draftProfile.nameColor.includes('#f472b6'));
       } else if (eff === 'prizma') {
-        isAct = isGradient && draftProfile.nameColor.includes('#ff007f');
+        isAct = isGradient && (draftProfile.nameColor.includes('#ef4444') || draftProfile.nameColor.includes('#ff007f') || draftProfile.nameColor.includes('#e11d48'));
       } else {
         isAct = activeEffects.includes(eff);
       }
