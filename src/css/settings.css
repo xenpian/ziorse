@@ -810,11 +810,49 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1;
 }
 
+/* =============================================================
+   Profil & Ayarlar: Normal Yazıların Hepsi Montserrat
+   ============================================================= */
+body,
+.ss-body,
+.ss-wrapper,
+.ss-container,
+.ss-sidebar,
+.ss-content,
+.ss-section,
+.ss-section-title,
+.ss-section-desc,
+.ss-card,
+.ss-nav-item,
+.ss-label,
+.ss-input,
+.ss-textarea,
+.ss-save-bar,
+.ss-save-msg,
+.ss-toggle-label,
+.ss-toggle-desc,
+.acc-info-row,
+.acc-info-label,
+.acc-info-value,
+.hesabim-compact-body,
+.hesabim-compact-handle,
+.hesabim-preview-badge,
+.style-section-title,
+.btn-ss-primary,
+.btn-ss-outline,
+.btn-ss-danger,
+button,
+input,
+select,
+textarea {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 /* 2. Etkiyi Seç Grid */
 .effect-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 @media (max-width: 650px) {
@@ -824,82 +862,102 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .effect-card {
-  background: #f4f4f5;
+  background: #ffffff;
   border: 1.5px solid #e4e4e7;
   border-radius: 10px;
-  height: 48px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.16s ease;
   user-select: none;
-  padding: 0 8px;
+  padding: 0 10px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .effect-card:hover {
-  background: #e4e4e7;
-  border-color: #d1d5db;
-  transform: translateY(-2px);
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1.5px);
 }
 
 .effect-card.active {
   background: #ffffff !important;
   border: 2px solid #18181b !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* Effect Labels */
+/* Crisp & Gorgeous Effect Labels */
 .effect-label-sabit {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #18181b;
+  letter-spacing: 0.2px;
 }
 
 .effect-label-gradyan {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);
+  background: linear-gradient(135deg, #059669, #0284c7, #6366f1);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  letter-spacing: 0.2px;
 }
 
 .effect-label-neon {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #a855f7;
-  text-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
+  color: #7c3aed;
+  text-shadow: 0 0 6px rgba(124, 58, 237, 0.45);
+  display: inline-block;
+  letter-spacing: 0.3px;
 }
 
 .effect-label-cartoon {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #ec4899;
-  text-shadow: 1px 1px 0 #18181b, -0.5px -0.5px 0 #18181b;
+  color: #db2777;
+  text-shadow: 1.5px 1.5px 0 #0f172a;
+  letter-spacing: 0.5px;
+  display: inline-block;
 }
 
 .effect-label-pop {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #10b981;
-  text-shadow: 1.5px 1.5px 0 #047857;
+  color: #0d9488;
+  text-shadow: 1.5px 1.5px 0 #134e4a;
+  letter-spacing: 0.8px;
+  display: inline-block;
 }
 
 .effect-label-candy {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #f472b6, #a78bfa, #38bdf8);
+  background: linear-gradient(135deg, #ec4899, #a855f7, #06b6d4);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  letter-spacing: 0.3px;
+  display: inline-block;
 }
 
 .effect-label-prizma {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #ff007f, #00f2fe, #facc15);
+  background: linear-gradient(135deg, #e11d48, #9333ea, #2563eb, #059669);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  letter-spacing: 0.2px;
 }
 
 /* 3. Renk & Gradyan Seçici Alanı */
