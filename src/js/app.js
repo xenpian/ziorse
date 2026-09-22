@@ -933,6 +933,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prof?.fontStyle && fontFamilies[prof.fontStyle]) {
       styles.push(`font-family:${fontFamilies[prof.fontStyle]}`);
     }
+    if (prof?.fontWeight) {
+      styles.push(`font-weight:${prof.fontWeight}`);
+    }
     const eff = Array.isArray(prof?.nameEffects) ? prof.nameEffects : (prof?.nameEffects ? [prof.nameEffects] : []);
     let shadows = [];
     let extraLetterSpacing = '';
@@ -941,19 +944,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isGradient) {
       if (eff.includes('neon')) {
         const gc = (prof?.nameColor && typeof prof.nameColor === 'string' && prof.nameColor.startsWith('#')) ? prof.nameColor : '#8b5cf6';
-        shadows.push(`0 0 6px ${gc}99, 0 0 14px ${gc}4d`);
+        shadows.push(`0 0 6px ${gc}cc, 0 0 16px ${gc}80, 0 0 26px ${gc}40`);
         extraLetterSpacing = '0.4px';
       }
       if (eff.includes('cartoon')) {
-        shadows.push('1.5px 1.5px 0 #0f172a');
+        shadows.push('1.5px 1.5px 0 #0f172a, -1px -1px 0 #0f172a');
         extraLetterSpacing = '0.5px';
       }
       if (eff.includes('pop')) {
-        shadows.push('2px 2px 0 #064e3b');
+        shadows.push('2px 2px 0 #0f172a');
         extraLetterSpacing = '0.8px';
       }
       if (eff.includes('shadow')) {
-        shadows.push('0 2px 5px rgba(0,0,0,0.3)');
+        shadows.push('0 2px 6px rgba(0,0,0,0.4)');
         extraLetterSpacing = '0.4px';
       }
       if (eff.includes('glow')) {
