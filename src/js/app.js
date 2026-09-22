@@ -6906,40 +6906,40 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // 4. Targeted In-Place Font Style, Color & Effect Updates
-    if (newFontStyle !== undefined || newNameColor !== undefined || newNameEffects !== undefined) {
+    // 4. Targeted In-Place Font Style, Color, Weight & Effect Updates
+    if (newFontStyle !== undefined || newNameColor !== undefined || newNameEffects !== undefined || newFontWeight !== undefined) {
       if (isSelf && userNameDisplay) {
-        applyUserNameStyling(userNameDisplay, newFontStyle, newNameColor, newNameEffects);
+        applyUserNameStyling(userNameDisplay, newFontStyle, newNameColor, newNameEffects, null, newFontWeight);
       }
 
       // Chat feed author names (both channel chat & home feed)
       document.querySelectorAll(`.post-author-name[data-handle="${fullH}"], .post-author-name[data-handle="${cleanH}"], .post-author-name[data-handle="@${cleanH}"], .post-author-info[data-handle="${fullH}"] .post-author-name, .post-author-info[data-handle="${cleanH}"] .post-author-name, .post-author-info[data-handle="@${cleanH}"] .post-author-name`).forEach(el => {
-        applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects);
+        applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects, null, newFontWeight);
       });
 
       // DM message author names
       document.querySelectorAll(`.dm-msg-name[data-handle="${fullH}"], .dm-msg-name[data-handle="${cleanH}"], .dm-msg-name[data-handle="@${cleanH}"]`).forEach(el => {
-        applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects);
+        applyUserNameStyling(el, newFontStyle, newNameColor, newNameEffects, null, newFontWeight);
       });
 
       // Right sidebar member names
       document.querySelectorAll(`.user-member-item[data-handle="${fullH}"], .user-member-item[data-handle="${cleanH}"], .user-member-item[data-handle="@${cleanH}"]`).forEach(item => {
         const nameEl = item.querySelector('.user-member-name');
-        if (nameEl) applyUserNameStyling(nameEl, newFontStyle, newNameColor, newNameEffects);
+        if (nameEl) applyUserNameStyling(nameEl, newFontStyle, newNameColor, newNameEffects, null, newFontWeight);
       });
 
       // Popover if open
       const popover = document.getElementById('user-profile-popover');
       if (popover && popover.style.display !== 'none' && popover.dataset.activeHandle && popover.dataset.activeHandle.toLowerCase().replace('@', '') === cleanH) {
         const popName = document.getElementById('popover-name');
-        if (popName) applyUserNameStyling(popName, newFontStyle, newNameColor, newNameEffects);
+        if (popName) applyUserNameStyling(popName, newFontStyle, newNameColor, newNameEffects, null, newFontWeight);
       }
 
       // Profile bar dropdown if open
       const pbd = document.getElementById('profile-bar-dropdown');
       if (pbd && isSelf) {
         const pbdName = pbd.querySelector('.pbd-name');
-        if (pbdName) applyUserNameStyling(pbdName, newFontStyle, newNameColor, newNameEffects);
+        if (pbdName) applyUserNameStyling(pbdName, newFontStyle, newNameColor, newNameEffects, null, newFontWeight);
       }
     }
 
