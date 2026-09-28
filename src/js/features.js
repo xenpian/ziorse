@@ -435,9 +435,8 @@ class FileUploadSystem {
         method: 'POST',
         body: formData
       });
-      const data = await res.json();
-      if (data.success) {
-        return `http://localhost:3000${data.url}`;
+      if (data && data.success && data.url) {
+        return data.url.startsWith('http') ? data.url : `http://localhost:3000${data.url.startsWith('/') ? '' : '/'}${data.url}`;
       }
     } catch (err) {
       console.error('Upload error:', err);
