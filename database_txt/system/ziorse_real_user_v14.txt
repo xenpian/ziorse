@@ -8,7 +8,7 @@
   "loggedIn": true,
   "pronouns": "",
   "fontStyle": "outfit",
-  "nameColor": "linear-gradient(90deg, #000000 0%, #7a0000 33%, #000000 66%, #000000 100%)",
+  "nameColor": "#18181b",
   "nameEffects": [],
   "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
