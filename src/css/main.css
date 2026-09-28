@@ -9499,3 +9499,187 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   DISCORD NITRO-GRADE ANIMATED NAME EFFECTS
+   ───────────────────────────────────────────────────────────── */
+
+/* Username container protection: prevents font or effects from expanding cards */
+.post-author-name,
+.comment-author-name,
+.user-name-display,
+.popover-user-name,
+.dm-header-title,
+.dm-friend-name,
+.pv-name,
+.hesabim-compact-name {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  line-height: 1.25 !important;
+  letter-spacing: normal !important;
+}
+
+@keyframes nitroShine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.name-fx-shine {
+  background: linear-gradient(110deg, currentColor 20%, #ffffff 48%, #ffffff 52%, currentColor 80%) !important;
+  background-size: 250% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroShine 3s ease-in-out infinite !important;
+  display: inline-block;
+  will-change: background-position;
+}
+
+@keyframes nitroRainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.name-fx-rainbow {
+  background: linear-gradient(90deg, #ff007f, #7928ca, #0070f3, #00dfd8, #7928ca, #ff007f) !important;
+  background-size: 300% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroRainbow 4.5s ease infinite !important;
+  display: inline-block;
+  will-change: background-position;
+}
+
+@keyframes nitroNeon {
+  0%, 100% {
+    text-shadow: 0 0 4px var(--neon-glow, #8b5cf6), 0 0 12px var(--neon-glow, #8b5cf6), 0 0 20px var(--neon-glow, #8b5cf6);
+  }
+  50% {
+    text-shadow: 0 0 2px var(--neon-glow, #8b5cf6), 0 0 6px var(--neon-glow, #8b5cf6), 0 0 12px var(--neon-glow, #8b5cf6);
+  }
+}
+.name-fx-neon {
+  animation: nitroNeon 2.4s ease-in-out infinite alternate !important;
+  display: inline-block;
+  will-change: text-shadow;
+}
+
+@keyframes nitroAurora {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.name-fx-aurora {
+  background: linear-gradient(135deg, #00f5d4, #00bbf9, #7209b7, #f72585, #00f5d4) !important;
+  background-size: 300% 200% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroAurora 5s ease infinite !important;
+  display: inline-block;
+  will-change: background-position;
+}
+
+@keyframes nitroFire {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 4px rgba(255, 75, 43, 0.5));
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: drop-shadow(0 0 8px rgba(255, 65, 108, 0.7));
+  }
+}
+.name-fx-fire {
+  background: linear-gradient(90deg, #ff416c, #ff4b2b, #f9d423, #ff416c) !important;
+  background-size: 250% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroFire 3s ease infinite !important;
+  display: inline-block;
+  will-change: background-position, filter;
+}
+
+@keyframes nitroGlitch {
+  0%, 100% {
+    text-shadow: -1px 0 #00ffff, 1px 0 #ff007f;
+  }
+  25% {
+    text-shadow: 1px -0.5px #00ffff, -1px 0.5px #ff007f;
+  }
+  50% {
+    text-shadow: -1.5px 0.5px #00ffff, 1.5px -0.5px #ff007f;
+  }
+  75% {
+    text-shadow: 0.5px 1px #00ffff, -0.5px -1px #ff007f;
+  }
+}
+.name-fx-glitch {
+  animation: nitroGlitch 2.5s infinite steps(2) !important;
+  display: inline-block;
+  will-change: text-shadow;
+}
+
+@keyframes nitroPrism {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.name-fx-prism {
+  background: linear-gradient(120deg, #a1c4fd, #c2e9fb, #fbc2eb, #a6c1ee, #c2e9fb) !important;
+  background-size: 300% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroPrism 4.5s ease infinite !important;
+  display: inline-block;
+  will-change: background-position;
+}
+
+@keyframes nitroCosmic {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.name-fx-cosmic {
+  background: linear-gradient(90deg, #8a2387, #e94057, #f27121, #8a2387) !important;
+  background-size: 300% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroCosmic 4s ease infinite !important;
+  display: inline-block;
+  will-change: background-position;
+}
