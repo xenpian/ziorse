@@ -22,5 +22,5 @@
   "statusText": "porno",
   "statusType": "idle",
   "fontWeight": "900",
-  "postCount": 2
+  "postCount": 3
 }
