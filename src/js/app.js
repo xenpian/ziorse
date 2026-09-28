@@ -831,34 +831,29 @@ document.addEventListener('DOMContentLoaded', () => {
     element.style.webkitTextStroke = '';
 
     const isGradient = nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient');
-        element.style.backgroundImage = nameColor;
-        element.style.webkitBackgroundClip = 'text';
-        element.style.backgroundClip = 'text';
-        element.style.webkitTextFillColor = 'transparent';
-        element.style.color = 'transparent';
-        element.style.display = 'inline-block';
-      } else if (nameColor && nameColor !== 'none') {
-        element.style.backgroundImage = 'none';
-        element.style.webkitBackgroundClip = 'unset';
-        element.style.backgroundClip = 'unset';
-        element.style.webkitTextFillColor = nameColor;
-        element.style.color = nameColor;
-        element.style.display = 'inline-block';
-      } else if (fallbackColor) {
-        element.style.backgroundImage = 'none';
-        element.style.webkitBackgroundClip = 'unset';
-        element.style.backgroundClip = 'unset';
-        element.style.webkitTextFillColor = fallbackColor;
-        element.style.color = fallbackColor;
-        element.style.display = 'inline-block';
-      } else {
-        element.style.backgroundImage = 'none';
-        element.style.webkitBackgroundClip = 'unset';
-        element.style.backgroundClip = 'unset';
-        element.style.webkitTextFillColor = '';
-        element.style.color = '';
-        element.style.display = 'inline-block';
-      }
+    const userColor = (!isGradient && nameColor && nameColor !== 'none') ? nameColor : (fallbackColor || null);
+
+    if (isGradient) {
+      element.style.backgroundImage = nameColor;
+      element.style.webkitBackgroundClip = 'text';
+      element.style.backgroundClip = 'text';
+      element.style.webkitTextFillColor = 'transparent';
+      element.style.color = 'transparent';
+      element.style.display = 'inline-block';
+    } else if (userColor) {
+      element.style.backgroundImage = 'none';
+      element.style.webkitBackgroundClip = 'unset';
+      element.style.backgroundClip = 'unset';
+      element.style.webkitTextFillColor = userColor;
+      element.style.color = userColor;
+      element.style.display = 'inline-block';
+    } else {
+      element.style.backgroundImage = 'none';
+      element.style.webkitBackgroundClip = 'unset';
+      element.style.backgroundClip = 'unset';
+      element.style.webkitTextFillColor = '';
+      element.style.color = '';
+      element.style.display = 'inline-block';
     }
   }
   window.applyUserNameStyling = applyUserNameStyling;
