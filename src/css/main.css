@@ -9587,8 +9587,6 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 
 .profile-modal-close-btn:hover {
   background: rgba(239, 68, 68, 0.85);
-  border-color: rgba(239, 68, 68, 0.85);
-  transform: scale(1.08);
 }
 
 .pvm-banner {
@@ -9661,9 +9659,17 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   z-index: 12;
 }
 
-.pvm-status-dot.idle { background: #f59e0b; }
-.pvm-status-dot.dnd { background: #ef4444; }
-.pvm-status-dot.offline { background: #6b7280; }
+.pvm-status-dot.idle {
+  background: #f59e0b;
+}
+
+.pvm-status-dot.dnd {
+  background: #ef4444;
+}
+
+.pvm-status-dot.offline {
+  background: #6b7280;
+}
 
 .pvm-actions {
   display: flex;
