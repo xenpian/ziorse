@@ -987,34 +987,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const targets = [accPreviewName, liveCardName].filter(Boolean);
     if (targets.length > 0) {
       const fontFamilies = {
-        'unbounded': "'Unbounded', sans-serif",
-        'syne': "'Syne', sans-serif",
-        'space': "'Space Grotesk', sans-serif",
-        'jakarta': "'Plus Jakarta Sans', sans-serif",
-        'audiowide': "'Audiowide', cursive",
-        'marker': "'Permanent Marker', cursive",
-        'bebas': "'Bebas Neue', cursive",
-        'cinzel': "'Cinzel', serif",
         'righteous': "'Righteous', cursive",
-        'orbitron': "'Orbitron', sans-serif",
-        'outfit': "'Outfit', sans-serif",
-        'pixel': "'Press Start 2P', monospace",
-        'inter': "'Inter', sans-serif",
-        'montserrat': "'Montserrat', sans-serif",
-        'poppins': "'Poppins', sans-serif",
-        'neon': "'Righteous', cursive",
-        'cyber': "'Russo One', sans-serif"
+        'outfit': "'Outfit', sans-serif"
       };
 
       targets.forEach(el => {
         el.textContent = draftProfile.name || 'Kullanıcı';
         el.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
         el.style.fontWeight = draftProfile.fontWeight || '700';
-        if (draftProfile.fontStyle === 'pixel') {
-          el.style.fontSize = '0.9em';
-        } else {
-          el.style.fontSize = ''; // Uses CSS 1.35rem prominent size
-        }
+        el.style.fontSize = ''; // Prominent size
         el.style.lineHeight = '1.25';
         el.style.letterSpacing = 'normal'; // Never stretch text or change shape
         el.style.maxWidth = '100%';
@@ -1026,10 +1007,9 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.zIndex = '2';
 
         el.classList.remove(
-          'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
-          'name-fx-sugar-sweet', 'name-fx-twenty-twenty', 'name-fx-snow-bros',
-          'name-fx-layered-shadow', 'name-fx-blazing-fire', 'name-fx-shaded',
-          'name-fx-second-shadow', 'name-fx-stroke'
+          'name-fx-sugar-sweet', 'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
+          'name-fx-twenty-twenty', 'name-fx-snow-bros', 'name-fx-layered-shadow',
+          'name-fx-blazing-fire', 'name-fx-shaded', 'name-fx-second-shadow', 'name-fx-stroke'
         );
         el.style.textShadow = 'none';
         el.style.filter = '';
@@ -1047,38 +1027,8 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
         el.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
 
-        if (eff === 'nabla') {
-          el.classList.add('name-fx-nabla');
-          el.style.display = 'inline-block';
-        } else if (eff === 'aurora') {
-          el.classList.add('name-fx-aurora');
-          el.style.display = 'inline-block';
-        } else if (eff === 'rainbow-spot') {
-          el.classList.add('name-fx-rainbow-spot');
-          el.style.display = 'inline-block';
-        } else if (eff === 'sugar-sweet') {
+        if (eff === 'sugar-sweet') {
           el.classList.add('name-fx-sugar-sweet');
-          el.style.display = 'inline-block';
-        } else if (eff === 'twenty-twenty') {
-          el.classList.add('name-fx-twenty-twenty');
-          el.style.display = 'inline-block';
-        } else if (eff === 'snow-bros') {
-          el.classList.add('name-fx-snow-bros');
-          el.style.display = 'inline-block';
-        } else if (eff === 'layered-shadow') {
-          el.classList.add('name-fx-layered-shadow');
-          el.style.display = 'inline-block';
-        } else if (eff === 'blazing-fire') {
-          el.classList.add('name-fx-blazing-fire');
-          el.style.display = 'inline-block';
-        } else if (eff === 'shaded') {
-          el.classList.add('name-fx-shaded');
-          el.style.display = 'inline-block';
-        } else if (eff === 'second-shadow') {
-          el.classList.add('name-fx-second-shadow');
-          el.style.display = 'inline-block';
-        } else if (eff === 'stroke') {
-          el.classList.add('name-fx-stroke');
           el.style.display = 'inline-block';
         } else {
           if (isGrad) {
