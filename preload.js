@@ -45,4 +45,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Avatar Frames Folder Bridge
   getAvatarFrames: () => ipcRenderer.invoke('get-avatar-frames'),
   openAvatarFramesFolder: () => ipcRenderer.invoke('open-avatar-frames-folder'),
+
+  // Native Window Theme Sync
+  setNativeTheme: (theme) => ipcRenderer.send('theme-changed', theme),
 });
