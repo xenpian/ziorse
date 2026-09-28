@@ -1771,12 +1771,17 @@ body.dark-mode .post-composer-card {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  margin-top: 8px;
 }
 
 .image-preview-bar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-height: 180px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .btn-remove-image {
