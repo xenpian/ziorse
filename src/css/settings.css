@@ -373,7 +373,7 @@ input[type="range"]::-moz-range-thumb {
   background: var(--bg-card, #ffffff);
   border: 1px solid var(--border-dark, #dfdfdf);
   border-radius: 14px;
-  overflow: hidden;
+  overflow: visible !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 10px;
@@ -385,6 +385,9 @@ input[type="range"]::-moz-range-thumb {
   background: #ebebeb;
   background-size: cover;
   background-position: center;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  overflow: hidden;
 }
 
 .settings-preview-avatar-wrapper {
@@ -437,6 +440,7 @@ input[type="range"]::-moz-range-thumb {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow: visible !important;
 }
 
 .settings-preview-name {
@@ -446,6 +450,10 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1.25 !important;
   letter-spacing: normal !important;
   word-break: break-word;
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 2 !important;
+  padding: 4px 0 !important;
 }
 
 .settings-preview-handle {
