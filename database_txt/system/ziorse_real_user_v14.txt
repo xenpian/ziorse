@@ -7,10 +7,10 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "marker",
-  "nameColor": "#ffffff",
+  "fontStyle": "righteous",
+  "nameColor": "#2b2b2b",
   "nameEffects": [
-    "nabla"
+    "sugar-sweet"
   ],
   "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",

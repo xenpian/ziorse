@@ -3,10 +3,10 @@
     "handle": "@sa",
     "name": "ziorse creator",
     "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
-    "fontStyle": "marker",
-    "nameColor": "#ffffff",
+    "fontStyle": "righteous",
+    "nameColor": "#2b2b2b",
     "nameEffects": [
-      "nabla"
+      "sugar-sweet"
     ],
     "avatarFrame": "assets/avatar-frames/Lord.png",
     "fontWeight": "900"
