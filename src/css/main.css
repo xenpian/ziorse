@@ -9522,89 +9522,28 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   letter-spacing: normal !important;
 }
 
-/* 1. Nitro Kristal Işıltısı (Diamond Gleam) */
-@keyframes nitroDiamondGleam {
-  0% {
-    background-position: 0% center;
-  }
-  100% {
-    background-position: 250% center;
-  }
-}
-.name-fx-shine {
-  background: linear-gradient(90deg, #818cf8 0%, #c084fc 25%, #ffffff 50%, #f472b6 75%, #818cf8 100%) !important;
-  background-size: 250% auto !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  animation: nitroDiamondGleam 2.8s linear infinite !important;
-  filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.65));
-  display: inline-block;
-  will-change: background-position;
-}
-
-/* 2. Krom Gökkuşağı (Chroma Wave) */
-@keyframes nitroChromaWave {
-  0% {
-    background-position: 0% center;
-  }
-  100% {
-    background-position: 300% center;
-  }
-}
-.name-fx-rainbow {
-  background: linear-gradient(90deg, #ff2a85, #ff7300, #ffec00, #00f2fe, #4facfe, #9b51e0, #ff2a85) !important;
-  background-size: 300% auto !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  animation: nitroChromaWave 3s linear infinite !important;
-  filter: drop-shadow(0 0 7px rgba(255, 42, 133, 0.5));
-  display: inline-block;
-  will-change: background-position;
-}
-
-/* 3. Cehennem Alevi (Inferno Fire) */
-@keyframes nitroInfernoPulse {
+/* 1. Nabla Color Font (Rengi Değişebilir) */
+@keyframes fxNablaBreathe {
   0%, 100% {
-    background-position: 0% 50%;
-    filter: drop-shadow(0 0 6px #ff3b00) drop-shadow(0 0 14px rgba(255, 106, 0, 0.6));
+    font-variation-settings: 'EDPT' 90, 'EHLT' 30;
+    transform: translateY(0);
   }
   50% {
-    background-position: 100% 50%;
-    filter: drop-shadow(0 0 10px #ff6a00) drop-shadow(0 0 20px rgba(255, 0, 80, 0.8));
+    font-variation-settings: 'EDPT' 180, 'EHLT' 70;
+    transform: translateY(-1.5px);
   }
 }
-.name-fx-fire {
-  background: linear-gradient(90deg, #ff0844, #ff4e50, #f9d423, #ff4e50, #ff0844) !important;
-  background-size: 250% auto !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  animation: nitroInfernoPulse 2s ease infinite !important;
+.name-fx-nabla {
+  font-family: 'Nabla', system-ui, sans-serif !important;
+  font-variation-settings: 'EDPT' 120, 'EHLT' 50 !important;
+  filter: hue-rotate(var(--fx-hue, 0deg)) drop-shadow(0 0 6px var(--fx-glow, rgba(139, 92, 246, 0.4))) !important;
+  animation: fxNablaBreathe 3s ease-in-out infinite alternate !important;
   display: inline-block;
-  will-change: background-position, filter;
+  will-change: transform, font-variation-settings;
 }
 
-/* 4. Siber Neon (Cyberpunk Pulse) */
-@keyframes nitroCyberPulse {
-  0%, 100% {
-    color: #38bdf8;
-    text-shadow: 0 0 4px #00f2fe, 0 0 12px #00f2fe, 0 0 22px rgba(0, 242, 254, 0.8), 0 0 32px #818cf8;
-  }
-  50% {
-    color: #e0f2fe;
-    text-shadow: 0 0 2px #00f2fe, 0 0 7px #00f2fe, 0 0 14px rgba(0, 242, 254, 0.5), 0 0 22px #818cf8;
-  }
-}
-.name-fx-neon {
-  animation: nitroCyberPulse 1.8s ease-in-out infinite alternate !important;
-  display: inline-block;
-  will-change: text-shadow, color;
-}
-
-/* 5. Kuzey Işıkları (Aurora Borealis) */
-@keyframes nitroAuroraWave {
+/* 2. The Aurora (Rengi Değişebilir) */
+@keyframes fxAuroraWave {
   0% {
     background-position: 0% 50%;
   }
@@ -9616,104 +9555,164 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   }
 }
 .name-fx-aurora {
-  background: linear-gradient(90deg, #05ffa1, #00eaff, #00a2ff, #7a00ff, #05ffa1) !important;
+  background: linear-gradient(90deg, var(--fx-color, #05ffa1), #00eaff, #7a00ff, #ff2a85, var(--fx-color, #05ffa1)) !important;
   background-size: 300% 100% !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroAuroraWave 3.5s ease infinite !important;
-  filter: drop-shadow(0 0 8px rgba(5, 255, 161, 0.55));
+  animation: fxAuroraWave 3.5s ease infinite !important;
+  filter: drop-shadow(0 0 8px var(--fx-glow, rgba(5, 255, 161, 0.6))) !important;
   display: inline-block;
   will-change: background-position;
 }
 
-/* 6. Süpernova 24K Altın (Prestige Gold) */
-@keyframes nitroGoldShine {
+/* 3. Rainbow Spotlight (Rengi Değişebilir) */
+@keyframes fxRainbowSpotlight {
   0% {
-    background-position: 0% center;
+    background-position: 0% 30%;
+  }
+  50% {
+    background-position: 100% 70%;
   }
   100% {
-    background-position: 250% center;
+    background-position: 0% 30%;
   }
 }
-.name-fx-gold {
-  background: linear-gradient(90deg, #d4af37 0%, #fff2a1 25%, #f59e0b 50%, #ffe259 75%, #ffffff 88%, #d4af37 100%) !important;
-  background-size: 250% auto !important;
+.name-fx-rainbow-spot {
+  background: radial-gradient(circle at center, var(--fx-color, #ffffff) 10%, #ff2a85 30%, #00f2fe 55%, #ffe600 75%, var(--fx-color, #ffffff) 100%) !important;
+  background-size: 250% 250% !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroGoldShine 2.5s linear infinite !important;
-  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+  animation: fxRainbowSpotlight 3.8s ease-in-out infinite alternate !important;
+  filter: drop-shadow(0 0 8px var(--fx-glow, rgba(0, 242, 254, 0.6))) !important;
   display: inline-block;
   will-change: background-position;
 }
 
-/* 7. Buz & Kristal (Glacial Frost) */
-@keyframes nitroGlacialGleam {
+/* 4. 3D Letters - Sugar Sweet (Rengi Değişebilir) */
+@keyframes fxSugarSweetFloat {
   0% {
-    background-position: 0% center;
+    transform: translateY(0);
   }
   100% {
-    background-position: 250% center;
+    transform: translateY(-2px);
   }
 }
-.name-fx-prism {
-  background: linear-gradient(90deg, #67e8f9 0%, #ffffff 25%, #a5f3fc 50%, #38bdf8 75%, #ffffff 90%, #67e8f9 100%) !important;
-  background-size: 250% auto !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  animation: nitroGlacialGleam 2.8s linear infinite !important;
-  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.65));
+.name-fx-sugar-sweet {
+  color: var(--fx-color, #ff6b8b) !important;
+  -webkit-text-fill-color: var(--fx-color, #ff6b8b) !important;
+  font-weight: 900 !important;
+  text-shadow: 
+    1px 1px 0 var(--fx-sugar-1, #e05270),
+    2px 2px 0 var(--fx-sugar-1, #e05270),
+    3px 3px 0 var(--fx-sugar-2, #c73857),
+    4px 4px 0 var(--fx-sugar-2, #c73857),
+    5px 5px 0 var(--fx-sugar-3, #9e233d),
+    6px 6px 0 var(--fx-sugar-3, #9e233d),
+    7px 7px 8px rgba(0,0,0,0.6) !important;
+  animation: fxSugarSweetFloat 2.6s ease-in-out infinite alternate !important;
   display: inline-block;
-  will-change: background-position;
+  will-change: transform;
 }
 
-/* 8. Kozmik Nebula (Cosmic Stardust) */
-@keyframes nitroCosmicWave {
+/* 5. Twenty Twenty & Multi-Color Gradients (Rengi Değişebilir) */
+@keyframes fxTwentyTwenty {
   0% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 7px rgba(138, 35, 135, 0.65));
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 12px rgba(242, 113, 33, 0.85));
   }
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 7px rgba(138, 35, 135, 0.65));
   }
 }
-.name-fx-cosmic {
-  background: linear-gradient(90deg, #8a2387, #e94057, #8b5cf6, #06b6d4, #8a2387) !important;
-  background-size: 300% 100% !important;
+.name-fx-twenty-twenty {
+  background: linear-gradient(135deg, var(--fx-color, #ff007f), #7928ca, #ff0080, #0070f3, #00dfd8, var(--fx-color, #ff007f)) !important;
+  background-size: 300% 300% !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroCosmicWave 3.5s ease infinite !important;
+  animation: fxTwentyTwenty 4.5s ease infinite !important;
+  filter: drop-shadow(0 0 8px var(--fx-glow, rgba(121, 40, 202, 0.5))) !important;
   display: inline-block;
   will-change: background-position;
 }
 
-/* 9. Siber Glitch (Chromatic Glitch) */
-@keyframes nitroGlitchFlicker {
-  0%, 100% {
-    text-shadow: -1.5px 0 #00ffff, 1.5px 0 #ff0055;
+/* 6. CSS Arcade Typography Snow Bros 1990 */
+.name-fx-snow-bros {
+  font-family: 'Press Start 2P', monospace !important;
+  background: linear-gradient(180deg, #ffffff 0%, #00ffff 45%, #0066ff 75%, #002299 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(2px 2px 0 #000000) drop-shadow(3px 3px 0 #000000) !important;
+  image-rendering: pixelated !important;
+  display: inline-block;
+}
+
+/* 7. Layered Text-shadow Effect CSS */
+.name-fx-layered-shadow {
+  color: var(--fx-color, #f8fafc) !important;
+  -webkit-text-fill-color: var(--fx-color, #f8fafc) !important;
+  text-shadow: 
+    1px 1px 0 #06b6d4,
+    2px 2px 0 #0891b2,
+    3px 3px 0 #0e7490,
+    4px 4px 0 #155e75,
+    5px 5px 0 #164e63,
+    6px 6px 12px rgba(0,0,0,0.7) !important;
+  display: inline-block;
+}
+
+/* 8. Blazing Fire */
+@keyframes fxBlazingFire {
+  0% {
+    text-shadow: 0 -1px 3px #ffffff, 0 -3px 8px #ffeb3b, 0 -6px 14px #ff9800, 0 -11px 22px #f44336, 0 -16px 30px #b71c1c;
   }
-  25% {
-    text-shadow: 1.5px -1px #00ffff, -1.5px 1px #ff0055;
-  }
-  50% {
-    text-shadow: -2px 0.5px #00ffff, 2px -0.5px #ff0055;
-  }
-  75% {
-    text-shadow: 1px 1px #00ffff, -1px -1px #ff0055;
+  100% {
+    text-shadow: 0 -1px 4px #ffffff, 0 -4px 10px #fff275, 0 -8px 18px #ff7700, 0 -14px 26px #d32f2f, 0 -20px 36px #880e4f;
   }
 }
-.name-fx-glitch {
-  color: #f8fafc !important;
-  -webkit-text-fill-color: #f8fafc !important;
-  animation: nitroGlitchFlicker 1.8s steps(2) infinite !important;
+.name-fx-blazing-fire {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-shadow: 0 -1px 3px #ffffff, 0 -3px 8px #ffeb3b, 0 -6px 14px #ff9800, 0 -11px 22px #f44336, 0 -16px 30px #b71c1c !important;
+  animation: fxBlazingFire 1.6s ease-in-out infinite alternate !important;
   display: inline-block;
   will-change: text-shadow;
+}
+
+/* 9. Shaded Text */
+.name-fx-shaded {
+  color: var(--fx-color, #ffffff) !important;
+  -webkit-text-fill-color: var(--fx-color, #ffffff) !important;
+  text-shadow: 
+    1px 1px 0 rgba(0,0,0,0.8),
+    2px 2px 0 rgba(0,0,0,0.7),
+    3px 3px 0 rgba(0,0,0,0.6),
+    4px 4px 0 rgba(0,0,0,0.5),
+    5px 5px 0 rgba(0,0,0,0.4),
+    6px 6px 0 rgba(0,0,0,0.3),
+    7px 7px 0 rgba(0,0,0,0.2),
+    8px 8px 10px rgba(0,0,0,0.6) !important;
+  display: inline-block;
+}
+
+/* 10. Second Shadow Text Effect */
+.name-fx-second-shadow {
+  color: var(--fx-color, #ffffff) !important;
+  -webkit-text-fill-color: var(--fx-color, #ffffff) !important;
+  text-shadow: 2px 2px 0 #000000, 0 0 16px var(--fx-color, #8b5cf6), 0 0 32px var(--fx-color, #8b5cf6) !important;
+  display: inline-block;
+}
+
+/* 11. Simple Text Stroke Effect */
+.name-fx-stroke {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke: 1.5px var(--fx-color, #38bdf8) !important;
+  filter: drop-shadow(0 0 6px var(--fx-color, #38bdf8)) !important;
+  display: inline-block;
 }
