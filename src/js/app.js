@@ -2059,7 +2059,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnRemoveImage) btnRemoveImage.addEventListener('click', () => {
     attachedImageDataUrl = null;
-    imagePreviewBar.style.display = 'none';
+    if (imagePreviewBar) imagePreviewBar.style.display = 'none';
+    if (imagePreviewImg) imagePreviewImg.src = '';
   });
 
   // Video
