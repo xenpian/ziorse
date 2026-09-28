@@ -1074,7 +1074,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Effect color chips active state
     const curColorLower = (draftProfile.nameColor || '').toLowerCase();
     document.querySelectorAll('.effect-color-chip').forEach(chip => {
-      chip.classList.toggle('active', chip.dataset.color.toLowerCase() === curColorLower);
+      const chipColor = (chip.dataset.color || '').toLowerCase();
+      chip.classList.toggle('active', Boolean(chipColor && chipColor === curColorLower));
     });
 
     const frameOverlay = document.getElementById('acc-avatar-frame-overlay');
@@ -1084,7 +1085,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
-        const scale = getFrameScale(frameSrc);
+        const scale = typeof getFrameScale === 'function' ? getFrameScale(frameSrc) : 128;
         frameOverlay.src = frameSrc;
         frameOverlay.style.width = `${scale}%`;
         frameOverlay.style.height = `${scale}%`;
@@ -1137,9 +1138,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Update Gradient Track Bar & Pin Colors
+    const isGradColor = draftProfile.nameColor && typeof draftProfile.nameColor === 'string' && draftProfile.nameColor.startsWith('linear-gradient');
     const trackBar = document.getElementById('gradient-track-bar');
     if (trackBar) {
-      if (isGradient) {
+      if (isGradColor) {
         trackBar.style.background = draftProfile.nameColor;
       } else {
         const c = draftProfile.nameColor || '#ffffff';
