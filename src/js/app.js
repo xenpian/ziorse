@@ -771,23 +771,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.FONT_FAMILIES = {
-    'unbounded': "'Unbounded', sans-serif",
-    'syne': "'Syne', sans-serif",
-    'space': "'Space Grotesk', sans-serif",
-    'jakarta': "'Plus Jakarta Sans', sans-serif",
-    'audiowide': "'Audiowide', cursive",
-    'marker': "'Permanent Marker', cursive",
-    'bebas': "'Bebas Neue', cursive",
-    'cinzel': "'Cinzel', serif",
     'righteous': "'Righteous', cursive",
-    'orbitron': "'Orbitron', sans-serif",
-    'outfit': "'Outfit', sans-serif",
-    'pixel': "'Press Start 2P', monospace",
-    'inter': "'Inter', sans-serif",
-    'montserrat': "'Montserrat', sans-serif",
-    'poppins': "'Poppins', sans-serif",
-    'neon': "'Righteous', cursive",
-    'cyber': "'Russo One', sans-serif"
+    'outfit': "'Outfit', sans-serif"
   };
 
   function hexToHue(hex) {
@@ -824,11 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.fontWeight = fontWeight;
     }
 
-    if (fontStyle === 'pixel') {
-      element.style.fontSize = '0.9em';
-    } else {
-      element.style.fontSize = ''; // Uses CSS font-size: 1.35rem in profile/settings, 1rem in chat
-    }
+    element.style.fontSize = ''; // Uses CSS font-size: 1.35rem in profile/settings, 1rem in chat
     element.style.lineHeight = '1.25';
     element.style.letterSpacing = 'normal'; // Always normal! Never distorted!
     element.style.maxWidth = '100%';
@@ -841,10 +822,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Remove all old animated classes
     element.classList.remove(
-      'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
-      'name-fx-sugar-sweet', 'name-fx-twenty-twenty', 'name-fx-snow-bros',
-      'name-fx-layered-shadow', 'name-fx-blazing-fire', 'name-fx-shaded',
-      'name-fx-second-shadow', 'name-fx-stroke'
+      'name-fx-sugar-sweet', 'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
+      'name-fx-twenty-twenty', 'name-fx-snow-bros', 'name-fx-layered-shadow',
+      'name-fx-blazing-fire', 'name-fx-shaded', 'name-fx-second-shadow', 'name-fx-stroke'
     );
     element.style.textShadow = 'none';
     element.style.filter = '';
@@ -862,38 +842,8 @@ document.addEventListener('DOMContentLoaded', () => {
     element.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
     element.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
 
-    if (eff === 'nabla') {
-      element.classList.add('name-fx-nabla');
-      element.style.display = 'inline-block';
-    } else if (eff === 'aurora') {
-      element.classList.add('name-fx-aurora');
-      element.style.display = 'inline-block';
-    } else if (eff === 'rainbow-spot') {
-      element.classList.add('name-fx-rainbow-spot');
-      element.style.display = 'inline-block';
-    } else if (eff === 'sugar-sweet') {
+    if (eff === 'sugar-sweet') {
       element.classList.add('name-fx-sugar-sweet');
-      element.style.display = 'inline-block';
-    } else if (eff === 'twenty-twenty') {
-      element.classList.add('name-fx-twenty-twenty');
-      element.style.display = 'inline-block';
-    } else if (eff === 'snow-bros') {
-      element.classList.add('name-fx-snow-bros');
-      element.style.display = 'inline-block';
-    } else if (eff === 'layered-shadow') {
-      element.classList.add('name-fx-layered-shadow');
-      element.style.display = 'inline-block';
-    } else if (eff === 'blazing-fire') {
-      element.classList.add('name-fx-blazing-fire');
-      element.style.display = 'inline-block';
-    } else if (eff === 'shaded') {
-      element.classList.add('name-fx-shaded');
-      element.style.display = 'inline-block';
-    } else if (eff === 'second-shadow') {
-      element.classList.add('name-fx-second-shadow');
-      element.style.display = 'inline-block';
-    } else if (eff === 'stroke') {
-      element.classList.add('name-fx-stroke');
       element.style.display = 'inline-block';
     } else {
       if (isGradient) {
