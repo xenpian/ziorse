@@ -321,11 +321,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function checkChanges() {
-    const curName = (profInputName ? profInputName.value.trim() : (draftProfile.name || '')) || (draftProfile.name || '');
-    let curHandle = (profInputHandle ? profInputHandle.value.trim() : draftProfile.handle) || draftProfile.handle;
+    const curName = (profInputName && typeof profInputName.value === 'string' ? profInputName.value : (draftProfile.name || '')).trim();
+    let curHandle = (profInputHandle && typeof profInputHandle.value === 'string' ? profInputHandle.value : (draftProfile.handle || '@kullanici')).trim();
     if (!curHandle.startsWith('@')) curHandle = '@' + curHandle;
-    const curBio = (profInputBio ? profInputBio.value.trim() : (draftProfile.bio || '')).trim();
-    const curStatus = (profInputStatus ? profInputStatus.value.trim() : (draftProfile.statusText || '')).trim();
+    const curBio = (profInputBio && typeof profInputBio.value === 'string' ? profInputBio.value : (draftProfile.bio || '')).trim();
+    const curStatus = (profInputStatus && typeof profInputStatus.value === 'string' ? profInputStatus.value : (draftProfile.statusText || '')).trim();
 
     const origName = (originalProfile.name || '').trim();
     const origHandle = (originalProfile.handle || '@kullanici').trim();
