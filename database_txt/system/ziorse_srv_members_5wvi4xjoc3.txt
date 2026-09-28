@@ -6,7 +6,7 @@
     "fontStyle": "outfit",
     "nameColor": "#18181b",
     "nameEffects": [],
-    "avatarFrame": "assets/avatar-frames/Lord.png",
+    "avatarFrame": "assets/avatar-frames/Liaz.png",
     "fontWeight": "900"
   }
 ]
