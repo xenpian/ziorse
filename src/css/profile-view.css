@@ -181,7 +181,7 @@ textarea {
 }
 
 .pv-name {
-  font-size: 1.15rem;
+  font-size: 1.35rem !important;
   font-weight: 800;
   color: var(--text-main);
   font-family: var(--font-montserrat);
