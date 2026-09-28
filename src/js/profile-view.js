@@ -165,43 +165,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.title = `Ziorse - ${profile.name || handle}`;
 
     const fontFamilies = {
+      'unbounded': "'Unbounded', sans-serif",
+      'syne': "'Syne', sans-serif",
+      'space': "'Space Grotesk', sans-serif",
+      'jakarta': "'Plus Jakarta Sans', sans-serif",
+      'audiowide': "'Audiowide', cursive",
+      'marker': "'Permanent Marker', cursive",
+      'bebas': "'Bebas Neue', cursive",
+      'cinzel': "'Cinzel', serif",
+      'righteous': "'Righteous', cursive",
+      'orbitron': "'Orbitron', sans-serif",
       'outfit': "'Outfit', sans-serif",
+      'pixel': "'Press Start 2P', monospace",
       'inter': "'Inter', sans-serif",
       'montserrat': "'Montserrat', sans-serif",
       'poppins': "'Poppins', sans-serif",
-      'cinzel': "'Cinzel', serif",
-      'playfair': "'Playfair Display', serif",
-      'caveat': "'Caveat', cursive",
-      'pacifico': "'Pacifico', cursive",
-      'pixel': "'Press Start 2P', monospace",
-      'cyber': "'Russo One', sans-serif",
-      'orbitron': "'Orbitron', sans-serif",
       'neon': "'Righteous', cursive",
-      'bebas': "'Bebas Neue', cursive",
-      'terminal': "'JetBrains Mono', monospace",
-      'fira': "'Fira Code', monospace",
-      'architect': "'Architects Daughter', cursive",
-      'cursive': "'Caveat', cursive",
-      'serif': "'Cinzel', serif"
-    };
-
-    const fontScales = {
-      'pixel': '0.70em',
-      'pacifico': '0.86em',
-      'bebas': '0.96em',
-      'orbitron': '0.90em',
-      'cyber': '0.92em',
-      'neon': '0.94em',
-      'cinzel': '0.95em',
-      'terminal': '0.92em',
-      'fira': '0.92em',
-      'playfair': '0.96em',
-      'montserrat': '0.98em',
-      'outfit': '1em',
-      'inter': '1em',
-      'poppins': '0.98em',
-      'caveat': '1.05em',
-      'architect': '0.98em'
+      'cyber': "'Russo One', sans-serif"
     };
 
     if (profile.fontStyle && fontFamilies[profile.fontStyle]) {
@@ -214,7 +194,11 @@ document.addEventListener('DOMContentLoaded', () => {
       elName.style.fontWeight = profile.fontWeight;
     }
 
-    elName.style.fontSize = fontScales[profile.fontStyle] || '1em';
+    if (profile.fontStyle === 'pixel') {
+      elName.style.fontSize = '0.9em';
+    } else {
+      elName.style.fontSize = ''; // CSS .pv-name: 1.35rem controls the prominent headline size
+    }
     elName.style.lineHeight = '1.25';
     elName.style.letterSpacing = 'normal'; // Always normal! Never distorted!
     elName.style.maxWidth = '100%';
@@ -226,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elName.classList.remove(
       'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
       'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
-      'name-fx-prism', 'name-fx-cosmic'
+      'name-fx-prism', 'name-fx-cosmic', 'name-fx-gold'
     );
     elName.style.textShadow = 'none';
     elName.style.filter = '';
@@ -237,43 +221,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (eff === 'shine') {
       elName.classList.add('name-fx-shine');
-      const c = (!isGrad && profile.nameColor) ? profile.nameColor : 'var(--text-main)';
-      elName.style.color = c;
-      elName.style.webkitTextFillColor = 'transparent';
       elName.style.display = 'inline-block';
-    } else if (eff === 'rainbow' || eff === 'prizma') {
+    } else if (eff === 'rainbow') {
       elName.classList.add('name-fx-rainbow');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'neon') {
-      elName.classList.add('name-fx-neon');
-      const glowColor = (!isGrad && profile.nameColor && profile.nameColor.startsWith('#')) ? profile.nameColor : '#8b5cf6';
-      elName.style.setProperty('--neon-glow', glowColor);
-      elName.style.color = glowColor;
-      elName.style.webkitTextFillColor = glowColor;
-      elName.style.backgroundImage = 'none';
-      elName.style.webkitBackgroundClip = 'unset';
-      elName.style.backgroundClip = 'unset';
-      elName.style.display = 'inline-block';
-    } else if (eff === 'aurora') {
-      elName.classList.add('name-fx-aurora');
       elName.style.display = 'inline-block';
     } else if (eff === 'fire') {
       elName.classList.add('name-fx-fire');
       elName.style.display = 'inline-block';
-    } else if (eff === 'glitch' || eff === 'cartoon') {
-      elName.classList.add('name-fx-glitch');
-      const c = (!isGrad && profile.nameColor) ? profile.nameColor : 'var(--text-main)';
-      elName.style.color = c;
-      elName.style.webkitTextFillColor = c;
-      elName.style.backgroundImage = 'none';
-      elName.style.webkitBackgroundClip = 'unset';
-      elName.style.backgroundClip = 'unset';
+    } else if (eff === 'neon') {
+      elName.classList.add('name-fx-neon');
       elName.style.display = 'inline-block';
-    } else if (eff === 'prism' || eff === 'candy') {
+    } else if (eff === 'aurora') {
+      elName.classList.add('name-fx-aurora');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'gold') {
+      elName.classList.add('name-fx-gold');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'prism') {
       elName.classList.add('name-fx-prism');
       elName.style.display = 'inline-block';
     } else if (eff === 'cosmic') {
       elName.classList.add('name-fx-cosmic');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'glitch') {
+      elName.classList.add('name-fx-glitch');
       elName.style.display = 'inline-block';
     } else {
       if (isGrad) {
