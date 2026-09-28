@@ -185,40 +185,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.title = `Ziorse - ${profile.name || handle}`;
 
     const fontFamilies = {
-      'unbounded': "'Unbounded', sans-serif",
-      'syne': "'Syne', sans-serif",
-      'space': "'Space Grotesk', sans-serif",
-      'jakarta': "'Plus Jakarta Sans', sans-serif",
-      'audiowide': "'Audiowide', cursive",
-      'marker': "'Permanent Marker', cursive",
-      'bebas': "'Bebas Neue', cursive",
-      'cinzel': "'Cinzel', serif",
       'righteous': "'Righteous', cursive",
-      'orbitron': "'Orbitron', sans-serif",
-      'outfit': "'Outfit', sans-serif",
-      'pixel': "'Press Start 2P', monospace",
-      'inter': "'Inter', sans-serif",
-      'montserrat': "'Montserrat', sans-serif",
-      'poppins': "'Poppins', sans-serif",
-      'neon': "'Righteous', cursive",
-      'cyber': "'Russo One', sans-serif"
+      'outfit': "'Outfit', sans-serif"
     };
 
     if (profile.fontStyle && fontFamilies[profile.fontStyle]) {
       elName.style.fontFamily = fontFamilies[profile.fontStyle];
     } else {
-      elName.style.fontFamily = '';
+      elName.style.fontFamily = fontFamilies['outfit'];
     }
 
     if (profile.fontWeight) {
       elName.style.fontWeight = profile.fontWeight;
     }
 
-    if (profile.fontStyle === 'pixel') {
-      elName.style.fontSize = '0.9em';
-    } else {
-      elName.style.fontSize = ''; // CSS .pv-name: 1.35rem controls the prominent headline size
-    }
+    elName.style.fontSize = ''; // CSS .pv-name: 1.35rem controls the prominent headline size
     elName.style.lineHeight = '1.25';
     elName.style.letterSpacing = 'normal'; // Always normal! Never distorted!
     elName.style.maxWidth = '100%';
@@ -230,10 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
     elName.style.zIndex = '2';
 
     elName.classList.remove(
-      'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
-      'name-fx-sugar-sweet', 'name-fx-twenty-twenty', 'name-fx-snow-bros',
-      'name-fx-layered-shadow', 'name-fx-blazing-fire', 'name-fx-shaded',
-      'name-fx-second-shadow', 'name-fx-stroke'
+      'name-fx-sugar-sweet', 'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
+      'name-fx-twenty-twenty', 'name-fx-snow-bros', 'name-fx-layered-shadow',
+      'name-fx-blazing-fire', 'name-fx-shaded', 'name-fx-second-shadow', 'name-fx-stroke'
     );
     elName.style.textShadow = 'none';
     elName.style.filter = '';
@@ -251,38 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
     elName.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
     elName.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
 
-    if (eff === 'nabla') {
-      elName.classList.add('name-fx-nabla');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'aurora') {
-      elName.classList.add('name-fx-aurora');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'rainbow-spot') {
-      elName.classList.add('name-fx-rainbow-spot');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'sugar-sweet') {
+    if (eff === 'sugar-sweet') {
       elName.classList.add('name-fx-sugar-sweet');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'twenty-twenty') {
-      elName.classList.add('name-fx-twenty-twenty');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'snow-bros') {
-      elName.classList.add('name-fx-snow-bros');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'layered-shadow') {
-      elName.classList.add('name-fx-layered-shadow');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'blazing-fire') {
-      elName.classList.add('name-fx-blazing-fire');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'shaded') {
-      elName.classList.add('name-fx-shaded');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'second-shadow') {
-      elName.classList.add('name-fx-second-shadow');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'stroke') {
-      elName.classList.add('name-fx-stroke');
       elName.style.display = 'inline-block';
     } else {
       if (isGrad) {
