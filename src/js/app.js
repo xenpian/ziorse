@@ -1030,27 +1030,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (primaryEff === 'nabla') {
       styles.push("font-family: 'Nabla', system-ui, sans-serif !important");
       styles.push("font-variation-settings: 'EDPT' 120, 'EHLT' 50 !important");
-      styles.push(`filter: hue-rotate(${hue}deg) drop-shadow(0 0 6px ${userColor}) !important`);
-      styles.push('animation: fxNablaBreathe 3s ease-in-out infinite alternate !important');
-      styles.push('display: inline-block');
+      styles.push(`filter: hue-rotate(${hue}deg) drop-shadow(0 2px 10px ${userColor}) !important`);
+      styles.push('animation: fxNablaBreathe 2.8s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'aurora') {
-      styles.push(`background: linear-gradient(90deg, ${userColor}, #00eaff, #7a00ff, #ff2a85, ${userColor}) !important`);
+      styles.push(`background: linear-gradient(90deg, ${userColor}, #00eaff, #7a00ff, #ff2a85, #00ffa3, ${userColor}) !important`);
       styles.push('background-size: 300% 100% !important');
       styles.push('-webkit-background-clip: text !important');
       styles.push('background-clip: text !important');
       styles.push('-webkit-text-fill-color: transparent !important');
-      styles.push('animation: fxAuroraWave 3.5s ease infinite !important');
-      styles.push(`filter: drop-shadow(0 0 8px ${userColor}) !important`);
-      styles.push('display: inline-block');
+      styles.push('animation: fxAuroraWave 3.2s ease infinite !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'rainbow-spot') {
       styles.push(`background: radial-gradient(circle at center, ${userColor} 10%, #ff2a85 30%, #00f2fe 55%, #ffe600 75%, ${userColor} 100%) !important`);
       styles.push('background-size: 250% 250% !important');
       styles.push('-webkit-background-clip: text !important');
       styles.push('background-clip: text !important');
       styles.push('-webkit-text-fill-color: transparent !important');
-      styles.push('animation: fxRainbowSpotlight 3.8s ease-in-out infinite alternate !important');
-      styles.push(`filter: drop-shadow(0 0 8px ${userColor}) !important`);
-      styles.push('display: inline-block');
+      styles.push('animation: fxRainbowSpotlight 3.4s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'sugar-sweet') {
       const s1 = `color-mix(in srgb, ${userColor} 80%, black)`;
       const s2 = `color-mix(in srgb, ${userColor} 60%, black)`;
@@ -1058,54 +1056,51 @@ document.addEventListener('DOMContentLoaded', () => {
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
       styles.push('font-weight: 900 !important');
-      styles.push(`text-shadow: 1px 1px 0 ${s1}, 2px 2px 0 ${s1}, 3px 3px 0 ${s2}, 4px 4px 0 ${s2}, 5px 5px 0 ${s3}, 6px 6px 0 ${s3}, 7px 7px 8px rgba(0,0,0,0.6) !important`);
-      styles.push('animation: fxSugarSweetFloat 2.6s ease-in-out infinite alternate !important');
-      styles.push('display: inline-block');
+      styles.push(`text-shadow: 1px 1px 0 ${s1}, 2px 2px 0 ${s1}, 3px 3px 0 ${s2}, 4px 4px 0 ${s2}, 5px 5px 0 ${s3}, 6px 6px 0 ${s3}, 7px 7px 10px rgba(0,0,0,0.65) !important`);
+      styles.push('animation: fxSugarSweetFloat 2.4s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'twenty-twenty') {
       styles.push(`background: linear-gradient(135deg, ${userColor}, #7928ca, #ff0080, #0070f3, #00dfd8, ${userColor}) !important`);
       styles.push('background-size: 300% 300% !important');
       styles.push('-webkit-background-clip: text !important');
       styles.push('background-clip: text !important');
       styles.push('-webkit-text-fill-color: transparent !important');
-      styles.push('animation: fxTwentyTwenty 4.5s ease infinite !important');
-      styles.push(`filter: drop-shadow(0 0 8px ${userColor}) !important`);
-      styles.push('display: inline-block');
+      styles.push('animation: fxTwentyTwenty 3.8s ease infinite !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'snow-bros') {
       styles.push("font-family: 'Press Start 2P', monospace !important");
-      styles.push('background: linear-gradient(180deg, #ffffff 0%, #00ffff 45%, #0066ff 75%, #002299 100%) !important');
+      styles.push('background: linear-gradient(180deg, #ffffff 0%, #00ffff 42%, #0088ff 72%, #002288 100%) !important');
       styles.push('background-clip: text !important');
       styles.push('-webkit-background-clip: text !important');
       styles.push('-webkit-text-fill-color: transparent !important');
-      styles.push('filter: drop-shadow(2px 2px 0 #000000) drop-shadow(3px 3px 0 #000000) !important');
       styles.push('image-rendering: pixelated !important');
-      styles.push('display: inline-block');
+      styles.push('animation: fxSnowBrosArcade 2s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'layered-shadow') {
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
-      styles.push('text-shadow: 1px 1px 0 #06b6d4, 2px 2px 0 #0891b2, 3px 3px 0 #0e7490, 4px 4px 0 #155e75, 5px 5px 0 #164e63, 6px 6px 12px rgba(0,0,0,0.7) !important');
-      styles.push('display: inline-block');
+      styles.push('animation: fxLayeredShadowFloat 2.6s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'blazing-fire') {
       styles.push('color: #ffffff !important');
       styles.push('-webkit-text-fill-color: #ffffff !important');
-      styles.push('text-shadow: 0 -1px 3px #ffffff, 0 -3px 8px #ffeb3b, 0 -6px 14px #ff9800, 0 -11px 22px #f44336, 0 -16px 30px #b71c1c !important');
-      styles.push('animation: fxBlazingFire 1.6s ease-in-out infinite alternate !important');
-      styles.push('display: inline-block');
+      styles.push('animation: fxBlazingFire 1.4s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'shaded') {
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
-      styles.push('text-shadow: 1px 1px 0 rgba(0,0,0,0.8), 2px 2px 0 rgba(0,0,0,0.7), 3px 3px 0 rgba(0,0,0,0.6), 4px 4px 0 rgba(0,0,0,0.5), 5px 5px 0 rgba(0,0,0,0.4), 6px 6px 0 rgba(0,0,0,0.3), 7px 7px 0 rgba(0,0,0,0.2), 8px 8px 10px rgba(0,0,0,0.6) !important');
-      styles.push('display: inline-block');
+      styles.push('animation: fxShadedPulse 2.8s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'second-shadow') {
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
-      styles.push(`text-shadow: 2px 2px 0 #000000, 0 0 16px ${userColor}, 0 0 32px ${userColor} !important`);
-      styles.push('display: inline-block');
+      styles.push('animation: fxSecondShadowPulse 2.2s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'stroke') {
       styles.push('color: transparent !important');
       styles.push('-webkit-text-fill-color: transparent !important');
-      styles.push(`-webkit-text-stroke: 1.5px ${userColor} !important`);
-      styles.push(`filter: drop-shadow(0 0 6px ${userColor}) !important`);
-      styles.push('display: inline-block');
+      styles.push('animation: fxStrokeGlow 2.5s ease-in-out infinite alternate !important');
+      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else {
       if (isGradient) {
         styles.push(`background-image:${prof.nameColor}`);
