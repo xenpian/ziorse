@@ -1727,6 +1727,108 @@ html.ultra-screen {
   margin-bottom: 16px;
 }
 
+/* =============================================================
+   DARK MODE OVERRIDES FOR SERVER SETTINGS & CHANNELS
+   ============================================================= */
+body.dark-mode,
+.dark-mode {
+  --bg-app: #000000;
+  --bg-servers: #000000;
+  --bg-sidebar: #000000;
+  --bg-card: #000000;
+  --bg-card-hover: #0a0a0a;
+  --bg-input: #09090b;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
+  --border-color: #27272a;
+  --border-dark: #3f3f46;
+}
+
+body.dark-mode .btn-ss-primary,
+body.dark-mode .ss-btn-primary {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+}
+
+body.dark-mode .btn-ss-primary:hover,
+body.dark-mode .ss-btn-primary:hover {
+  background: #27272a !important;
+  border-color: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .btn-ss-outline {
+  background: #121214 !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+}
+
+body.dark-mode .btn-ss-outline:hover {
+  background: #18181b !important;
+  border-color: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .ss-input,
+body.dark-mode .ss-textarea {
+  background: #09090b !important;
+  border: 1.5px solid #27272a !important;
+  color: #f4f4f5 !important;
+}
+
+body.dark-mode .ss-input:focus,
+body.dark-mode .ss-textarea:focus {
+  background: #121214 !important;
+  border-color: #52525b !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .ss-input::placeholder,
+body.dark-mode .ss-textarea::placeholder {
+  color: #52525b !important;
+}
+
+body.dark-mode select.ss-input option {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+}
+
+body.dark-mode .ss-member-row {
+  border-color: #222222;
+}
+
+body.dark-mode .ss-channel-row {
+  border-color: #222222;
+}
+
+body.dark-mode .ss-invite-box {
+  background: #09090b;
+  border-color: #27272a;
+}
+
+body.dark-mode .ss-confirm-box {
+  background: #121214;
+  border-color: #27272a;
+}
+
+body.dark-mode .ss-confirm-input {
+  background: #09090b;
+  color: #f4f4f5;
+}
+
+body.dark-mode .ss-save-bar {
+  background: #121214;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+body.dark-mode .ss-toast {
+  background: #ffffff;
+  color: #000000;
+}
+
 *,
 *::before,
 *::after {
