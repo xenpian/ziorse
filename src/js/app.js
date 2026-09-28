@@ -978,14 +978,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const hue = hexToHue(userColor);
 
     if (primaryEff === 'sugar-sweet') {
-      const s1 = `color-mix(in srgb, ${userColor} 80%, black)`;
-      const s2 = `color-mix(in srgb, ${userColor} 60%, black)`;
-      const s3 = `color-mix(in srgb, ${userColor} 40%, black)`;
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
-      styles.push('font-weight: 900 !important');
-      styles.push(`text-shadow: 1px 1px 0 ${s1}, 2px 2px 0 ${s1}, 3px 3px 0 ${s2}, 4px 4px 0 ${s2}, 5px 5px 0 ${s3}, 6px 6px 0 ${s3}, 7px 7px 10px rgba(0,0,0,0.65) !important`);
-      styles.push('animation: fxSugarSweetFloat 2.4s ease-in-out infinite alternate !important');
+      styles.push('font-weight: 800 !important');
+      styles.push('text-shadow: none !important');
+      styles.push('animation: none !important');
       styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else {
       if (isGradient) {
