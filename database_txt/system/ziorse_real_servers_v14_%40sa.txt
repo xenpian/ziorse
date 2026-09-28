@@ -91,7 +91,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -191,7 +191,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -243,7 +243,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -295,7 +295,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -412,7 +412,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -464,7 +464,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -516,7 +516,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -567,7 +567,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -618,7 +618,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -670,7 +670,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -721,7 +721,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -772,7 +772,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -823,7 +823,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -874,7 +874,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -925,7 +925,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -976,7 +976,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1027,7 +1027,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1078,7 +1078,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1129,7 +1129,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1180,7 +1180,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1231,7 +1231,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1282,7 +1282,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1333,7 +1333,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1384,7 +1384,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1435,7 +1435,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1486,7 +1486,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1537,7 +1537,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1588,7 +1588,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1636,7 +1636,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1687,7 +1687,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1738,7 +1738,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
@@ -1789,7 +1789,7 @@
     "members": [
       {
         "handle": "@sa",
-        "name": "ziorse creatorf",
+        "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
         "fontStyle": "outfit",
         "nameColor": "#18181b",
