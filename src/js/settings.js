@@ -1018,10 +1018,12 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.lineHeight = '1.25';
         el.style.letterSpacing = 'normal'; // Never stretch text or change shape
         el.style.maxWidth = '100%';
-        el.style.overflow = 'hidden';
-        el.style.textOverflow = 'ellipsis';
+        el.style.overflow = 'visible';
+        el.style.textOverflow = 'clip';
         el.style.whiteSpace = 'nowrap';
         el.style.verticalAlign = 'middle';
+        el.style.position = 'relative';
+        el.style.zIndex = '2';
 
         el.classList.remove(
           'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
