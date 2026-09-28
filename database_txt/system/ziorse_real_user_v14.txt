@@ -7,10 +7,10 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "bebas",
-  "nameColor": "#db2777",
+  "fontStyle": "outfit",
+  "nameColor": "#18181b",
   "nameEffects": [
-    "pop"
+    "shadow"
   ],
   "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
