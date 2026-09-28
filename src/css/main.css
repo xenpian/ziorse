@@ -9562,29 +9562,13 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   z-index: 2 !important;
 }
 
-/* 3D Letters - Sugar Sweet (Rengi Değişebilir) */
-@keyframes fxSugarSweetFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
+/* Sugar Sweet - Renkli kalın isim efekti */
 .name-fx-sugar-sweet {
   color: var(--fx-color, #ff6b8b) !important;
   -webkit-text-fill-color: var(--fx-color, #ff6b8b) !important;
-  font-weight: 900 !important;
-  text-shadow: 
-    1px 1px 0 var(--fx-sugar-1, #e05270),
-    2px 2px 0 var(--fx-sugar-1, #e05270),
-    3px 3px 0 var(--fx-sugar-2, #c73857),
-    4px 4px 0 var(--fx-sugar-2, #c73857),
-    5px 5px 0 var(--fx-sugar-3, #9e233d),
-    6px 6px 0 var(--fx-sugar-3, #9e233d),
-    7px 7px 10px rgba(0,0,0,0.65) !important;
-  animation: fxSugarSweetFloat 2.4s ease-in-out infinite alternate !important;
-  will-change: transform;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+  animation: none !important;
 }
 
 /* =========================================================
