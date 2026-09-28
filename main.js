@@ -522,6 +522,21 @@ function createMainWindow() {
   });
 }
 
+// IPC listener to dynamically sync native title bar overlay and background with app theme
+ipcMain.on('theme-changed', (event, theme) => {
+  const isDark = theme === 'dark';
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    try {
+      mainWindow.setTitleBarOverlay({
+        color: '#ffffff00',
+        symbolColor: isDark ? '#ffffff' : '#0f172a',
+        height: 40
+      });
+      mainWindow.setBackgroundColor(isDark ? '#000000' : '#fafafa');
+    } catch (e) { }
+  }
+});
+
 // System Tray Configuration
 function createSystemTray() {
   try {
