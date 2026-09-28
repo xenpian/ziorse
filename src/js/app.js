@@ -790,6 +790,27 @@ document.addEventListener('DOMContentLoaded', () => {
     'cyber': "'Russo One', sans-serif"
   };
 
+  function hexToHue(hex) {
+    if (!hex || typeof hex !== 'string' || !hex.startsWith('#')) return 0;
+    let c = hex.slice(1);
+    if (c.length === 3) c = c.split('').map(x => x + x).join('');
+    if (c.length !== 6) return 0;
+    const r = parseInt(c.slice(0, 2), 16) / 255;
+    const g = parseInt(c.slice(2, 4), 16) / 255;
+    const b = parseInt(c.slice(4, 6), 16) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0;
+    if (max !== min) {
+      const d = max - min;
+      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    return Math.round(h);
+  }
+  window.hexToHue = hexToHue;
+
   function applyUserNameStyling(element, fontStyle, nameColor, nameEffects, fallbackColor, fontWeight) {
     if (!element) return;
     const fontFamilies = window.FONT_FAMILIES || {};
@@ -818,43 +839,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Remove all old animated classes
     element.classList.remove(
-      'name-fx-shine', 'name-fx-rainbow', 'name-fx-fire',
-      'name-fx-neon', 'name-fx-aurora', 'name-fx-gold',
-      'name-fx-prism', 'name-fx-cosmic', 'name-fx-glitch'
+      'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
+      'name-fx-sugar-sweet', 'name-fx-twenty-twenty', 'name-fx-snow-bros',
+      'name-fx-layered-shadow', 'name-fx-blazing-fire', 'name-fx-shaded',
+      'name-fx-second-shadow', 'name-fx-stroke'
     );
     element.style.textShadow = 'none';
     element.style.filter = '';
+    element.style.webkitTextStroke = '';
 
     const effects = Array.isArray(nameEffects) ? nameEffects : (nameEffects ? [nameEffects] : []);
     const isGradient = nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient');
     const eff = effects[0] || null;
 
-    if (eff === 'shine') {
-      element.classList.add('name-fx-shine');
-      element.style.display = 'inline-block';
-    } else if (eff === 'rainbow') {
-      element.classList.add('name-fx-rainbow');
-      element.style.display = 'inline-block';
-    } else if (eff === 'fire') {
-      element.classList.add('name-fx-fire');
-      element.style.display = 'inline-block';
-    } else if (eff === 'neon') {
-      element.classList.add('name-fx-neon');
+    const userColor = (!isGradient && nameColor && nameColor !== 'none') ? nameColor : (fallbackColor || '#8b5cf6');
+    element.style.setProperty('--fx-color', userColor);
+    element.style.setProperty('--fx-glow', userColor);
+    element.style.setProperty('--fx-hue', hexToHue(userColor) + 'deg');
+    element.style.setProperty('--fx-sugar-1', `color-mix(in srgb, ${userColor} 80%, black)`);
+    element.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
+    element.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
+
+    if (eff === 'nabla') {
+      element.classList.add('name-fx-nabla');
       element.style.display = 'inline-block';
     } else if (eff === 'aurora') {
       element.classList.add('name-fx-aurora');
       element.style.display = 'inline-block';
-    } else if (eff === 'gold') {
-      element.classList.add('name-fx-gold');
+    } else if (eff === 'rainbow-spot') {
+      element.classList.add('name-fx-rainbow-spot');
       element.style.display = 'inline-block';
-    } else if (eff === 'prism') {
-      element.classList.add('name-fx-prism');
+    } else if (eff === 'sugar-sweet') {
+      element.classList.add('name-fx-sugar-sweet');
       element.style.display = 'inline-block';
-    } else if (eff === 'cosmic') {
-      element.classList.add('name-fx-cosmic');
+    } else if (eff === 'twenty-twenty') {
+      element.classList.add('name-fx-twenty-twenty');
       element.style.display = 'inline-block';
-    } else if (eff === 'glitch') {
-      element.classList.add('name-fx-glitch');
+    } else if (eff === 'snow-bros') {
+      element.classList.add('name-fx-snow-bros');
+      element.style.display = 'inline-block';
+    } else if (eff === 'layered-shadow') {
+      element.classList.add('name-fx-layered-shadow');
+      element.style.display = 'inline-block';
+    } else if (eff === 'blazing-fire') {
+      element.classList.add('name-fx-blazing-fire');
+      element.style.display = 'inline-block';
+    } else if (eff === 'shaded') {
+      element.classList.add('name-fx-shaded');
+      element.style.display = 'inline-block';
+    } else if (eff === 'second-shadow') {
+      element.classList.add('name-fx-second-shadow');
+      element.style.display = 'inline-block';
+    } else if (eff === 'stroke') {
+      element.classList.add('name-fx-stroke');
       element.style.display = 'inline-block';
     } else {
       if (isGradient) {
