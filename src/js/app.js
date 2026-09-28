@@ -4725,9 +4725,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await resp.json();
         if (data && data.success && data.url) {
           clearDmAttachment();
-          dmAttachedImage = 'http://localhost:3000' + data.url;
+          dmAttachedImage = data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url);
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
-            dmAttachPreviewContent.innerHTML = `🖼️ Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
+            dmAttachPreviewContent.innerHTML = `<img src="${escapeHtml(dmAttachedImage)}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;margin-right:6px;"> <span>Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})</span>`;
             dmAttachPreviewBar.style.display = 'flex';
           }
           showToast('Fotoğraf seçildi');
@@ -4744,7 +4744,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearDmAttachment();
             dmAttachedImage = croppedDataUrl;
             if (dmAttachPreviewBar && dmAttachPreviewContent) {
-              dmAttachPreviewContent.innerHTML = `🖼️ Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
+              dmAttachPreviewContent.innerHTML = `<img src="${croppedDataUrl}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;margin-right:6px;"> <span>Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})</span>`;
               dmAttachPreviewBar.style.display = 'flex';
             }
             showToast('Fotoğraf hazırlandı');
@@ -4756,7 +4756,7 @@ document.addEventListener('DOMContentLoaded', () => {
           clearDmAttachment();
           dmAttachedImage = ev.target.result;
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
-            dmAttachPreviewContent.innerHTML = `🖼️ Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
+            dmAttachPreviewContent.innerHTML = `<img src="${ev.target.result}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;margin-right:6px;"> <span>Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})</span>`;
             dmAttachPreviewBar.style.display = 'flex';
           }
           showToast('Fotoğraf seçildi');
@@ -4780,7 +4780,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await resp.json();
         if (data && data.success && data.url) {
           clearDmAttachment();
-          dmAttachedVideo = 'http://localhost:3000' + data.url;
+          dmAttachedVideo = data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url);
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
             dmAttachPreviewContent.innerHTML = `🎬 Video: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
             dmAttachPreviewBar.style.display = 'flex';
@@ -4818,7 +4818,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await resp.json();
         if (data && data.success && data.url) {
           clearDmAttachment();
-          dmAttachedFile = { name: file.name, size: file.size, url: 'http://localhost:3000' + data.url };
+          dmAttachedFile = { name: file.name, size: file.size, url: (data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url)) };
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
             dmAttachPreviewContent.innerHTML = `📎 Dosya: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
             dmAttachPreviewBar.style.display = 'flex';
