@@ -464,6 +464,12 @@ function saveWindowBounds(bounds) {
 
 function createMainWindow() {
   const bounds = loadWindowBounds();
+  let isDark = false;
+  try {
+    const store = readPersistentStore();
+    const initialTheme = store['ziorse_theme_v14'] || store['ziorse_theme'] || store['ziorse_theme_preference'] || 'light';
+    isDark = initialTheme === 'dark';
+  } catch (e) { }
 
   mainWindow = new BrowserWindow({
     width: bounds.width || 1320,
@@ -477,10 +483,10 @@ function createMainWindow() {
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: '#ffffff00',
-      symbolColor: '#0f172a',
-      height: 58
+      symbolColor: isDark ? '#ffffff' : '#0f172a',
+      height: 40
     },
-    backgroundColor: '#ffffff',
+    backgroundColor: isDark ? '#000000' : '#fafafa',
     title: 'Ziorse Social',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
