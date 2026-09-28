@@ -832,10 +832,12 @@ document.addEventListener('DOMContentLoaded', () => {
     element.style.lineHeight = '1.25';
     element.style.letterSpacing = 'normal'; // Always normal! Never distorted!
     element.style.maxWidth = '100%';
-    element.style.overflow = 'hidden';
-    element.style.textOverflow = 'ellipsis';
+    element.style.overflow = 'visible';
+    element.style.textOverflow = 'clip';
     element.style.whiteSpace = 'nowrap';
     element.style.verticalAlign = 'middle';
+    element.style.position = 'relative';
+    element.style.zIndex = '2';
 
     // Remove all old animated classes
     element.classList.remove(
