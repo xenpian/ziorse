@@ -141,30 +141,33 @@ textarea {
 /* Avatar */
 .pv-avatar-wrap {
   position: relative;
-  width: 72px;
-  margin: -36px 0 0 16px;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 16px;
   flex-shrink: 0;
 }
 
 .pv-avatar {
-  width: 72px;
-  height: 72px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--bg-card);
   background: var(--bg-sidebar);
   display: block;
+  box-sizing: border-box;
 }
 
 .pv-status-dot {
   position: absolute;
-  bottom: 3px;
-  right: 1px;
-  width: 13px;
-  height: 13px;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: var(--accent-emerald);
   border: 2px solid var(--bg-card);
+  z-index: 20;
 }
 
 /* Kimlik */
@@ -173,20 +176,31 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .pv-name {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-main);
   font-family: var(--font-montserrat);
   margin: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25 !important;
+  letter-spacing: normal !important;
 }
 
 .pv-handle {
   font-size: 0.8rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Bio */
