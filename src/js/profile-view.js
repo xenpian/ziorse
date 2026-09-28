@@ -11,9 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     : window.dataStore;
 
   // --- Tema ---
-  if (ds && ds.theme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
+  const curTh = (ds && ds.theme) || localStorage.getItem('ziorse_theme') || localStorage.getItem('ziorse_theme_v14') || localStorage.getItem('ziorse_theme_preference') || 'light';
+  const isDarkInitial = curTh === 'dark';
+  document.documentElement.classList.toggle('dark-mode', isDarkInitial);
+  document.body.classList.toggle('dark-mode', isDarkInitial);
 
   // --- Lucide ---
   function refreshIcons() {
