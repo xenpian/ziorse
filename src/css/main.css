@@ -9522,62 +9522,89 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   letter-spacing: normal !important;
 }
 
-@keyframes nitroShine {
+/* 1. Nitro Kristal Işıltısı (Diamond Gleam) */
+@keyframes nitroDiamondGleam {
   0% {
-    background-position: -200% 0;
+    background-position: 0% center;
   }
   100% {
-    background-position: 200% 0;
+    background-position: 250% center;
   }
 }
 .name-fx-shine {
-  background: linear-gradient(110deg, currentColor 20%, #ffffff 48%, #ffffff 52%, currentColor 80%) !important;
-  background-size: 250% 100% !important;
+  background: linear-gradient(90deg, #818cf8 0%, #c084fc 25%, #ffffff 50%, #f472b6 75%, #818cf8 100%) !important;
+  background-size: 250% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroShine 3s ease-in-out infinite !important;
+  animation: nitroDiamondGleam 2.8s linear infinite !important;
+  filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.65));
   display: inline-block;
   will-change: background-position;
 }
 
-@keyframes nitroRainbow {
+/* 2. Krom Gökkuşağı (Chroma Wave) */
+@keyframes nitroChromaWave {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    background-position: 0% center;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 300% center;
   }
 }
 .name-fx-rainbow {
-  background: linear-gradient(90deg, #ff007f, #7928ca, #0070f3, #00dfd8, #7928ca, #ff007f) !important;
-  background-size: 300% 100% !important;
+  background: linear-gradient(90deg, #ff2a85, #ff7300, #ffec00, #00f2fe, #4facfe, #9b51e0, #ff2a85) !important;
+  background-size: 300% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroRainbow 4.5s ease infinite !important;
+  animation: nitroChromaWave 3s linear infinite !important;
+  filter: drop-shadow(0 0 7px rgba(255, 42, 133, 0.5));
   display: inline-block;
   will-change: background-position;
 }
 
-@keyframes nitroNeon {
+/* 3. Cehennem Alevi (Inferno Fire) */
+@keyframes nitroInfernoPulse {
   0%, 100% {
-    text-shadow: 0 0 4px var(--neon-glow, #8b5cf6), 0 0 12px var(--neon-glow, #8b5cf6), 0 0 20px var(--neon-glow, #8b5cf6);
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 6px #ff3b00) drop-shadow(0 0 14px rgba(255, 106, 0, 0.6));
   }
   50% {
-    text-shadow: 0 0 2px var(--neon-glow, #8b5cf6), 0 0 6px var(--neon-glow, #8b5cf6), 0 0 12px var(--neon-glow, #8b5cf6);
+    background-position: 100% 50%;
+    filter: drop-shadow(0 0 10px #ff6a00) drop-shadow(0 0 20px rgba(255, 0, 80, 0.8));
+  }
+}
+.name-fx-fire {
+  background: linear-gradient(90deg, #ff0844, #ff4e50, #f9d423, #ff4e50, #ff0844) !important;
+  background-size: 250% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: nitroInfernoPulse 2s ease infinite !important;
+  display: inline-block;
+  will-change: background-position, filter;
+}
+
+/* 4. Siber Neon (Cyberpunk Pulse) */
+@keyframes nitroCyberPulse {
+  0%, 100% {
+    color: #38bdf8;
+    text-shadow: 0 0 4px #00f2fe, 0 0 12px #00f2fe, 0 0 22px rgba(0, 242, 254, 0.8), 0 0 32px #818cf8;
+  }
+  50% {
+    color: #e0f2fe;
+    text-shadow: 0 0 2px #00f2fe, 0 0 7px #00f2fe, 0 0 14px rgba(0, 242, 254, 0.5), 0 0 22px #818cf8;
   }
 }
 .name-fx-neon {
-  animation: nitroNeon 2.4s ease-in-out infinite alternate !important;
+  animation: nitroCyberPulse 1.8s ease-in-out infinite alternate !important;
   display: inline-block;
-  will-change: text-shadow;
+  will-change: text-shadow, color;
 }
 
-@keyframes nitroAurora {
+/* 5. Kuzey Işıkları (Aurora Borealis) */
+@keyframes nitroAuroraWave {
   0% {
     background-position: 0% 50%;
   }
@@ -9589,97 +9616,104 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   }
 }
 .name-fx-aurora {
-  background: linear-gradient(135deg, #00f5d4, #00bbf9, #7209b7, #f72585, #00f5d4) !important;
-  background-size: 300% 200% !important;
+  background: linear-gradient(90deg, #05ffa1, #00eaff, #00a2ff, #7a00ff, #05ffa1) !important;
+  background-size: 300% 100% !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroAurora 5s ease infinite !important;
+  animation: nitroAuroraWave 3.5s ease infinite !important;
+  filter: drop-shadow(0 0 8px rgba(5, 255, 161, 0.55));
   display: inline-block;
   will-change: background-position;
 }
 
-@keyframes nitroFire {
-  0%, 100% {
-    background-position: 0% 50%;
-    filter: drop-shadow(0 0 4px rgba(255, 75, 43, 0.5));
+/* 6. Süpernova 24K Altın (Prestige Gold) */
+@keyframes nitroGoldShine {
+  0% {
+    background-position: 0% center;
   }
-  50% {
-    background-position: 100% 50%;
-    filter: drop-shadow(0 0 8px rgba(255, 65, 108, 0.7));
+  100% {
+    background-position: 250% center;
   }
 }
-.name-fx-fire {
-  background: linear-gradient(90deg, #ff416c, #ff4b2b, #f9d423, #ff416c) !important;
-  background-size: 250% 100% !important;
+.name-fx-gold {
+  background: linear-gradient(90deg, #d4af37 0%, #fff2a1 25%, #f59e0b 50%, #ffe259 75%, #ffffff 88%, #d4af37 100%) !important;
+  background-size: 250% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroFire 3s ease infinite !important;
+  animation: nitroGoldShine 2.5s linear infinite !important;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
   display: inline-block;
-  will-change: background-position, filter;
+  will-change: background-position;
 }
 
-@keyframes nitroGlitch {
-  0%, 100% {
-    text-shadow: -1px 0 #00ffff, 1px 0 #ff007f;
-  }
-  25% {
-    text-shadow: 1px -0.5px #00ffff, -1px 0.5px #ff007f;
-  }
-  50% {
-    text-shadow: -1.5px 0.5px #00ffff, 1.5px -0.5px #ff007f;
-  }
-  75% {
-    text-shadow: 0.5px 1px #00ffff, -0.5px -1px #ff007f;
-  }
-}
-.name-fx-glitch {
-  animation: nitroGlitch 2.5s infinite steps(2) !important;
-  display: inline-block;
-  will-change: text-shadow;
-}
-
-@keyframes nitroPrism {
+/* 7. Buz & Kristal (Glacial Frost) */
+@keyframes nitroGlacialGleam {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    background-position: 0% center;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 250% center;
   }
 }
 .name-fx-prism {
-  background: linear-gradient(120deg, #a1c4fd, #c2e9fb, #fbc2eb, #a6c1ee, #c2e9fb) !important;
-  background-size: 300% 100% !important;
+  background: linear-gradient(90deg, #67e8f9 0%, #ffffff 25%, #a5f3fc 50%, #38bdf8 75%, #ffffff 90%, #67e8f9 100%) !important;
+  background-size: 250% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroPrism 4.5s ease infinite !important;
+  animation: nitroGlacialGleam 2.8s linear infinite !important;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.65));
   display: inline-block;
   will-change: background-position;
 }
 
-@keyframes nitroCosmic {
+/* 8. Kozmik Nebula (Cosmic Stardust) */
+@keyframes nitroCosmicWave {
   0% {
     background-position: 0% 50%;
+    filter: drop-shadow(0 0 7px rgba(138, 35, 135, 0.65));
   }
   50% {
     background-position: 100% 50%;
+    filter: drop-shadow(0 0 12px rgba(242, 113, 33, 0.85));
   }
   100% {
     background-position: 0% 50%;
+    filter: drop-shadow(0 0 7px rgba(138, 35, 135, 0.65));
   }
 }
 .name-fx-cosmic {
-  background: linear-gradient(90deg, #8a2387, #e94057, #f27121, #8a2387) !important;
+  background: linear-gradient(90deg, #8a2387, #e94057, #8b5cf6, #06b6d4, #8a2387) !important;
   background-size: 300% 100% !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  animation: nitroCosmic 4s ease infinite !important;
+  animation: nitroCosmicWave 3.5s ease infinite !important;
   display: inline-block;
   will-change: background-position;
+}
+
+/* 9. Siber Glitch (Chromatic Glitch) */
+@keyframes nitroGlitchFlicker {
+  0%, 100% {
+    text-shadow: -1.5px 0 #00ffff, 1.5px 0 #ff0055;
+  }
+  25% {
+    text-shadow: 1.5px -1px #00ffff, -1.5px 1px #ff0055;
+  }
+  50% {
+    text-shadow: -2px 0.5px #00ffff, 2px -0.5px #ff0055;
+  }
+  75% {
+    text-shadow: 1px 1px #00ffff, -1px -1px #ff0055;
+  }
+}
+.name-fx-glitch {
+  color: #f8fafc !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  animation: nitroGlitchFlicker 1.8s steps(2) infinite !important;
+  display: inline-block;
+  will-change: text-shadow;
 }
