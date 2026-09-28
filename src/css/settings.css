@@ -902,82 +902,61 @@ textarea {
 
 /* Crisp & Gorgeous Effect Labels */
 .effect-label-sabit {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  color: #1e293b;
-  letter-spacing: 0.2px;
+  color: var(--text-main);
+  letter-spacing: normal;
 }
 
-.effect-label-gradyan {
-  font-size: 0.92rem;
+.effect-label-shine {
+  font-size: 0.88rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #10b981, #06b6d4, #6366f1);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  display: inline-block;
-  letter-spacing: 0.3px;
+  color: #8b5cf6;
+  letter-spacing: normal;
+}
+
+.effect-label-rainbow {
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: normal;
 }
 
 .effect-label-neon {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #8b5cf6;
-  text-shadow: 0 0 5px rgba(139, 92, 246, 0.65), 0 0 12px rgba(139, 92, 246, 0.35);
-  display: inline-block;
-  letter-spacing: 0.4px;
+  color: #a855f7;
+  letter-spacing: normal;
 }
 
-.effect-label-cartoon {
-  font-size: 0.92rem;
+.effect-label-aurora {
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #f43f5e;
-  text-shadow: 1.5px 1.5px 0 #0f172a;
-  letter-spacing: 0.5px;
-  display: inline-block;
+  letter-spacing: normal;
 }
 
-.effect-label-pop {
-  font-size: 0.92rem;
+.effect-label-fire {
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #059669;
-  text-shadow: 1.5px 1.5px 0 #064e3b;
-  letter-spacing: 1.2px;
-  display: inline-block;
+  letter-spacing: normal;
 }
 
-.effect-label-shadow {
-  font-size: 0.92rem;
+.effect-label-glitch {
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #334155;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  letter-spacing: 0.4px;
-  display: inline-block;
+  color: #06b6d4;
+  letter-spacing: normal;
 }
 
-.effect-label-candy {
-  font-size: 0.92rem;
+.effect-label-prism {
+  font-size: 0.88rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ec4899, #d946ef, #06b6d4);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  letter-spacing: 0.3px;
-  display: inline-block;
+  letter-spacing: normal;
 }
 
-.effect-label-prizma {
-  font-size: 0.92rem;
+.effect-label-cosmic {
+  font-size: 0.88rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ef4444, #f59e0b, #10b981, #06b6d4, #8b5cf6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  display: inline-block;
-  letter-spacing: 0.3px;
+  letter-spacing: normal;
 }
 
 /* Font Weight Selector */
