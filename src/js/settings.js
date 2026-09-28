@@ -962,6 +962,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function hexToHue(hex) {
+    if (!hex || typeof hex !== 'string' || !hex.startsWith('#')) return 0;
+    let c = hex.slice(1);
+    if (c.length === 3) c = c.split('').map(x => x + x).join('');
+    if (c.length !== 6) return 0;
+    const r = parseInt(c.slice(0, 2), 16) / 255;
+    const g = parseInt(c.slice(2, 4), 16) / 255;
+    const b = parseInt(c.slice(4, 6), 16) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0;
+    if (max !== min) {
+      const d = max - min;
+      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    return Math.round(h);
+  }
+
   // Ultra-lightweight in-place style updater (no video reloads, zero lag)
   function updateLiveStyleControlsAndPreview() {
     const targets = [accPreviewName, liveCardName].filter(Boolean);
