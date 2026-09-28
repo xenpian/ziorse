@@ -747,6 +747,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function normalizeMediaUrl(url) {
     if (!url || typeof url !== 'string') return '';
+    while (url.includes('http://localhost:3000http://localhost:3000/')) {
+      url = url.replace('http://localhost:3000http://localhost:3000/', 'http://localhost:3000/');
+    }
     if (url.startsWith('/uploads/')) return 'http://localhost:3000' + url;
     if (url.startsWith('uploads/')) return 'http://localhost:3000/' + url;
     return url;
@@ -788,6 +791,25 @@ document.addEventListener('DOMContentLoaded', () => {
     'serif': "'Cinzel', serif"
   };
 
+  window.FONT_SCALES = {
+    'pixel': '0.70em',
+    'pacifico': '0.86em',
+    'bebas': '0.96em',
+    'orbitron': '0.90em',
+    'cyber': '0.92em',
+    'neon': '0.94em',
+    'cinzel': '0.95em',
+    'terminal': '0.92em',
+    'fira': '0.92em',
+    'playfair': '0.96em',
+    'montserrat': '0.98em',
+    'outfit': '1em',
+    'inter': '1em',
+    'poppins': '0.98em',
+    'caveat': '1.05em',
+    'architect': '0.98em'
+  };
+
   function applyUserNameStyling(element, fontStyle, nameColor, nameEffects, fallbackColor, fontWeight) {
     if (!element) return;
     const fontFamilies = window.FONT_FAMILIES || {};
@@ -801,75 +823,106 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.fontWeight = fontWeight;
     }
 
+    // Font size normalization and rigid dimensions (never expand or stretch cards)
+    element.style.fontSize = (window.FONT_SCALES && window.FONT_SCALES[fontStyle]) || '1em';
+    element.style.lineHeight = '1.25';
+    element.style.letterSpacing = 'normal'; // Always normal! Never distorted!
+    element.style.maxWidth = '100%';
+    element.style.overflow = 'hidden';
+    element.style.textOverflow = 'ellipsis';
+    element.style.whiteSpace = 'nowrap';
+    element.style.verticalAlign = 'middle';
+
+    // Remove all old animated classes
+    element.classList.remove(
+      'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
+      'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
+      'name-fx-prism', 'name-fx-cosmic'
+    );
+    element.style.textShadow = 'none';
+    element.style.filter = '';
+
     const effects = Array.isArray(nameEffects) ? nameEffects : (nameEffects ? [nameEffects] : []);
-    let textShadows = [];
-    let extraLetterSpacing = '';
     const isGradient = nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient');
+    const eff = effects[0] || null;
 
-    if (!isGradient) {
-      if (effects.includes('neon')) {
-        const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#8b5cf6';
-        textShadows.push(`0 0 6px ${glowColor}cc, 0 0 16px ${glowColor}80, 0 0 26px ${glowColor}40`);
-        extraLetterSpacing = '0.4px';
-      }
-      if (effects.includes('cartoon')) {
-        textShadows.push('1.5px 1.5px 0 #0f172a, -1px -1px 0 #0f172a');
-        extraLetterSpacing = '0.5px';
-      }
-      if (effects.includes('pop')) {
-        textShadows.push('2px 2px 0 #0f172a');
-        extraLetterSpacing = '0.8px';
-      }
-      if (effects.includes('shadow')) {
-        textShadows.push('0 2px 6px rgba(0, 0, 0, 0.4)');
-        extraLetterSpacing = '0.4px';
-      }
-      if (effects.includes('glow')) {
-        const glowColor = (nameColor && typeof nameColor === 'string' && nameColor.startsWith('#')) ? nameColor : '#00f2fe';
-        textShadows.push(`0 0 10px ${glowColor}`);
-      }
-    }
-    if (effects.includes('spaced')) {
-      extraLetterSpacing = '1.5px';
-    }
-    element.style.textShadow = textShadows.join(', ') || 'none';
-    element.style.letterSpacing = extraLetterSpacing || 'normal';
-
-    if (isGradient) {
-      element.style.backgroundImage = nameColor;
-      element.style.webkitBackgroundClip = 'text';
-      element.style.backgroundClip = 'text';
+    if (eff === 'shine') {
+      element.classList.add('name-fx-shine');
+      const c = (!isGradient && nameColor) ? nameColor : (fallbackColor || 'var(--text-main)');
+      element.style.color = c;
       element.style.webkitTextFillColor = 'transparent';
-      element.style.color = 'transparent';
       element.style.display = 'inline-block';
-    } else if (nameColor && nameColor !== 'none') {
+    } else if (eff === 'rainbow' || eff === 'prizma') {
+      element.classList.add('name-fx-rainbow');
+      element.style.display = 'inline-block';
+    } else if (eff === 'neon') {
+      element.classList.add('name-fx-neon');
+      const glowColor = (!isGradient && nameColor && nameColor.startsWith('#')) ? nameColor : '#8b5cf6';
+      element.style.setProperty('--neon-glow', glowColor);
+      element.style.color = glowColor;
+      element.style.webkitTextFillColor = glowColor;
       element.style.backgroundImage = 'none';
       element.style.webkitBackgroundClip = 'unset';
       element.style.backgroundClip = 'unset';
-      element.style.webkitTextFillColor = nameColor;
-      element.style.color = nameColor;
       element.style.display = 'inline-block';
-    } else if (fallbackColor) {
+    } else if (eff === 'aurora') {
+      element.classList.add('name-fx-aurora');
+      element.style.display = 'inline-block';
+    } else if (eff === 'fire') {
+      element.classList.add('name-fx-fire');
+      element.style.display = 'inline-block';
+    } else if (eff === 'glitch' || eff === 'cartoon') {
+      element.classList.add('name-fx-glitch');
+      const c = (!isGradient && nameColor) ? nameColor : (fallbackColor || 'var(--text-main)');
+      element.style.color = c;
+      element.style.webkitTextFillColor = c;
       element.style.backgroundImage = 'none';
       element.style.webkitBackgroundClip = 'unset';
       element.style.backgroundClip = 'unset';
-      element.style.webkitTextFillColor = fallbackColor;
-      element.style.color = fallbackColor;
-      element.style.display = '';
+      element.style.display = 'inline-block';
+    } else if (eff === 'prism' || eff === 'candy') {
+      element.classList.add('name-fx-prism');
+      element.style.display = 'inline-block';
+    } else if (eff === 'cosmic') {
+      element.classList.add('name-fx-cosmic');
+      element.style.display = 'inline-block';
     } else {
-      element.style.backgroundImage = 'none';
-      element.style.webkitBackgroundClip = 'unset';
-      element.style.backgroundClip = 'unset';
-      element.style.webkitTextFillColor = '';
-      element.style.color = '';
-      element.style.display = '';
+      if (isGradient) {
+        element.style.backgroundImage = nameColor;
+        element.style.webkitBackgroundClip = 'text';
+        element.style.backgroundClip = 'text';
+        element.style.webkitTextFillColor = 'transparent';
+        element.style.color = 'transparent';
+        element.style.display = 'inline-block';
+      } else if (nameColor && nameColor !== 'none') {
+        element.style.backgroundImage = 'none';
+        element.style.webkitBackgroundClip = 'unset';
+        element.style.backgroundClip = 'unset';
+        element.style.webkitTextFillColor = nameColor;
+        element.style.color = nameColor;
+        element.style.display = 'inline-block';
+      } else if (fallbackColor) {
+        element.style.backgroundImage = 'none';
+        element.style.webkitBackgroundClip = 'unset';
+        element.style.backgroundClip = 'unset';
+        element.style.webkitTextFillColor = fallbackColor;
+        element.style.color = fallbackColor;
+        element.style.display = 'inline-block';
+      } else {
+        element.style.backgroundImage = 'none';
+        element.style.webkitBackgroundClip = 'unset';
+        element.style.backgroundClip = 'unset';
+        element.style.webkitTextFillColor = '';
+        element.style.color = '';
+        element.style.display = 'inline-block';
+      }
     }
   }
   window.applyUserNameStyling = applyUserNameStyling;
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 156,
-    'Liaz.png': 139
+    'Lord.png': 128,
+    'Liaz.png': 122
   };
 
   async function initAppAvatarFrames() {
@@ -891,9 +944,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initAppAvatarFrames();
 
   function getFrameScale(frameSrc) {
-    if (!frameSrc || frameSrc === 'none') return 140;
+    if (!frameSrc || frameSrc === 'none') return 126;
     const cleanName = String(frameSrc).split('/').pop().split('?')[0];
-    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 140;
+    let sc = (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 126;
+    if (sc > 132) sc = 128;
+    return sc;
   }
   window.getFrameScale = getFrameScale;
 
