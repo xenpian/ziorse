@@ -26,7 +26,7 @@
     },
     "pronouns": "",
     "fontStyle": "outfit",
-    "nameColor": "#000000",
+    "nameColor": "linear-gradient(90deg, #000000 0%, #7a0000 33%, #000000 66%, #000000 100%)",
     "nameEffects": [],
     "avatarFrame": "assets/avatar-frames/Lord.png",
     "profileEffect": "none",
