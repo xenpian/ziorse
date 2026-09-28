@@ -1231,34 +1231,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const eff = card.dataset.effect;
     if (eff === 'sabit') {
       draftProfile.nameEffects = [];
-      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
-        draftProfile.nameColor = '#8b5cf6';
-      }
     } else if (eff === 'shine') {
       draftProfile.nameEffects = ['shine'];
-      if (!draftProfile.nameColor || draftProfile.nameColor.startsWith('linear-gradient')) {
-        draftProfile.nameColor = '#8b5cf6';
-      }
     } else if (eff === 'rainbow') {
       draftProfile.nameEffects = ['rainbow'];
-    } else if (eff === 'neon') {
-      draftProfile.nameEffects = ['neon'];
-      if (!draftProfile.nameColor || draftProfile.nameColor.startsWith('linear-gradient')) {
-        draftProfile.nameColor = '#8b5cf6';
-      }
-    } else if (eff === 'aurora') {
-      draftProfile.nameEffects = ['aurora'];
     } else if (eff === 'fire') {
       draftProfile.nameEffects = ['fire'];
-    } else if (eff === 'glitch') {
-      draftProfile.nameEffects = ['glitch'];
-      if (!draftProfile.nameColor || draftProfile.nameColor.startsWith('linear-gradient')) {
-        draftProfile.nameColor = '#06b6d4';
-      }
+    } else if (eff === 'neon') {
+      draftProfile.nameEffects = ['neon'];
+    } else if (eff === 'aurora') {
+      draftProfile.nameEffects = ['aurora'];
+    } else if (eff === 'gold') {
+      draftProfile.nameEffects = ['gold'];
     } else if (eff === 'prism') {
       draftProfile.nameEffects = ['prism'];
     } else if (eff === 'cosmic') {
       draftProfile.nameEffects = ['cosmic'];
+    } else if (eff === 'glitch') {
+      draftProfile.nameEffects = ['glitch'];
     }
     updateLiveStyleControlsAndPreview();
   });
