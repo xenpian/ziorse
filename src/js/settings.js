@@ -1261,37 +1261,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (eff === 'sabit') {
       draftProfile.nameEffects = [];
       if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
-        draftProfile.nameColor = '#18181b';
+        draftProfile.nameColor = '#8b5cf6';
       }
-    } else if (eff === 'gradyan') {
-      draftProfile.nameEffects = [];
-      draftProfile.nameColor = buildCustomGradient();
+    } else if (eff === 'shine') {
+      draftProfile.nameEffects = ['shine'];
+      if (!draftProfile.nameColor || draftProfile.nameColor.startsWith('linear-gradient')) {
+        draftProfile.nameColor = '#8b5cf6';
+      }
+    } else if (eff === 'rainbow') {
+      draftProfile.nameEffects = ['rainbow'];
     } else if (eff === 'neon') {
       draftProfile.nameEffects = ['neon'];
-      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
-        draftProfile.nameColor = '#7c3aed';
+      if (!draftProfile.nameColor || draftProfile.nameColor.startsWith('linear-gradient')) {
+        draftProfile.nameColor = '#8b5cf6';
       }
-    } else if (eff === 'cartoon') {
-      draftProfile.nameEffects = ['cartoon'];
-      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
-        draftProfile.nameColor = '#db2777';
+    } else if (eff === 'aurora') {
+      draftProfile.nameEffects = ['aurora'];
+    } else if (eff === 'fire') {
+      draftProfile.nameEffects = ['fire'];
+    } else if (eff === 'glitch') {
+      draftProfile.nameEffects = ['glitch'];
+      if (!draftProfile.nameColor || draftProfile.nameColor.startsWith('linear-gradient')) {
+        draftProfile.nameColor = '#06b6d4';
       }
-    } else if (eff === 'pop') {
-      draftProfile.nameEffects = ['pop'];
-      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff' || draftProfile.nameColor === '#18181b') {
-        draftProfile.nameColor = '#059669';
-      }
-    } else if (eff === 'shadow') {
-      draftProfile.nameEffects = ['shadow'];
-      if (!draftProfile.nameColor || !draftProfile.nameColor.startsWith('#') || draftProfile.nameColor === '#ffffff') {
-        draftProfile.nameColor = '#334155';
-      }
-    } else if (eff === 'candy') {
-      draftProfile.nameEffects = ['spaced'];
-      draftProfile.nameColor = 'linear-gradient(135deg, #ec4899, #d946ef, #06b6d4)';
-    } else if (eff === 'prizma') {
-      draftProfile.nameEffects = ['spaced'];
-      draftProfile.nameColor = 'linear-gradient(135deg, #ef4444, #f59e0b, #10b981, #06b6d4, #8b5cf6)';
+    } else if (eff === 'prism') {
+      draftProfile.nameEffects = ['prism'];
+    } else if (eff === 'cosmic') {
+      draftProfile.nameEffects = ['cosmic'];
     }
     updateLiveStyleControlsAndPreview();
   });
