@@ -896,14 +896,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let availableFrames = [];
 
   window.FRAME_SCALES = window.FRAME_SCALES || {
-    'Lord.png': 156,
-    'Liaz.png': 139
+    'Lord.png': 128,
+    'Liaz.png': 122
   };
 
   function getFrameScale(frameSrc) {
-    if (!frameSrc || frameSrc === 'none') return 140;
+    if (!frameSrc || frameSrc === 'none') return 126;
     const cleanName = String(frameSrc).split('/').pop().split('?')[0];
-    return (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 140;
+    let sc = (window.FRAME_SCALES && window.FRAME_SCALES[cleanName]) || 126;
+    if (sc > 132) sc = 128;
+    return sc;
   }
   window.getFrameScale = getFrameScale;
 
