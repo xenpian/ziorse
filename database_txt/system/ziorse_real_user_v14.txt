@@ -8,9 +8,9 @@
   "loggedIn": true,
   "pronouns": "",
   "fontStyle": "outfit",
-  "nameColor": "#18181b",
+  "nameColor": "#7c3aed",
   "nameEffects": [
-    "shadow"
+    "cartoon"
   ],
   "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
@@ -21,6 +21,6 @@
   "widgets": [],
   "statusText": "porno",
   "statusType": "idle",
-  "fontWeight": "900",
+  "fontWeight": "600",
   "postCount": 3
 }
