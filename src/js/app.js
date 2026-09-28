@@ -1333,7 +1333,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       dropdown.querySelector('#pbd-view')?.addEventListener('click', () => {
         dropdown.remove();
-        window.openModalView(`profile-view.html?handle=${encodeURIComponent(u.handle)}`);
+        window.openProfileView(u.handle);
       });
       dropdown.querySelector('#pbd-edit')?.addEventListener('click', () => {
         dropdown.remove();
@@ -5100,7 +5100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ev.stopPropagation();
         userPopover.style.display = 'none';
         delete userPopover.dataset.activeHandle;
-        window.location.href = `profile-view.html?handle=${encodeURIComponent(profile.handle)}`;
+        window.openProfileView(profile.handle);
       };
     }
 
@@ -5663,7 +5663,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="dm-btn-action secondary btn-start-dm-voice" data-name="${escapeHtml(fp.name)}"><i data-lucide="phone-call" style="width:14px;height:14px;"></i> Sesli Arama</button>
         </div>
       </div>`;
-    container.querySelector('.btn-view-full-profile')?.addEventListener('click', (e) => { window.location.href = `profile-view.html?handle=${encodeURIComponent(e.currentTarget.dataset.handle)}`; });
+    container.querySelector('.btn-view-full-profile')?.addEventListener('click', (e) => { window.openProfileView(e.currentTarget.dataset.handle); });
     container.querySelector('.btn-start-dm-voice')?.addEventListener('click', (e) => { showToast(e.currentTarget.dataset.name + ' ile sesli arama başlatılıyor...'); });
     refreshIcons(container);
   }
@@ -6132,7 +6132,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="comment-body">
             <div class="comment-header">
               <span class="comment-author-name" data-handle="${escapeHtml(cmt.handle)}">${escapeHtml(cmt.author)}</span>
-              <span class="comment-author-handle">${escapeHtml(cmt.handle)}</span>
               <span class="comment-time">${formatDateTime(cmt.timestamp)}</span>
             </div>
             <div class="comment-text">${parseContentFormatting(cmt.text)}</div>
@@ -6376,7 +6375,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="post-content-area">
             <div class="post-header-line">
-              <div class="post-author-info" data-handle="${post.handle}"><span class="post-author-name" data-handle="${post.handle}" ${authorNameStyle}>${escapeHtml(authorName)}</span><span class="post-author-handle">${escapeHtml(post.handle)}</span></div>
+              <div class="post-author-info" data-handle="${post.handle}"><span class="post-author-name" data-handle="${post.handle}" ${authorNameStyle}>${escapeHtml(authorName)}</span></div>
               <div style="display:flex;align-items:center;gap:6px;">
                 ${post.isPinned ? '<span class="pin-badge">📌 Sabitlendi</span>' : ''}
                 <span class="post-time" title="${post.timestamp}">${formatDateTime(post.timestamp)}</span>
@@ -6735,7 +6734,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.querySelectorAll('.post-media-image').forEach(img => { img.addEventListener('click', (e) => { e.stopPropagation(); openLightbox(img.src); }); });
     document.querySelectorAll('.post-avatar-wrap[data-handle], .post-avatar[data-handle]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); const handle = el.dataset.handle || el.closest('[data-handle]')?.dataset.handle; if (handle) showUserProfilePopover(e, handle); }); });
-    document.querySelectorAll('.post-author-name, .mention').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); const h = el.dataset.handle || el.dataset.user; if (h) window.openModalView(`profile-view.html?handle=${encodeURIComponent(h)}`); }); });
+    document.querySelectorAll('.post-author-name, .mention').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); const h = el.dataset.handle || el.dataset.user; if (h) window.openProfileView(h); }); });
     document.querySelectorAll('.dm-invite-copy').forEach(btn => {
       btn.addEventListener('click', () => { navigator.clipboard.writeText(btn.dataset.url || '').then(() => showToast('Kopyalandı')).catch(() => showToast('Kopyalanamadı')); });
     });
@@ -6782,8 +6781,266 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+  // ── DIRECT MESSAGE QUICK STARTER ──
+  function openDmWithUser(handle) {
+    if (!handle) return;
+    const profile = window.dataStore.getUserProfile(handle);
+    let thread = (window.dataStore.dmThreads || []).find(t => t.user && (t.user.handle || '').toLowerCase().replace('@', '') === (handle || '').toLowerCase().replace('@', ''));
+    if (!thread) {
+      thread = window.dataStore.createDMThread(profile.name, profile.handle);
+    }
+    if (thread) {
+      activeDmThreadId = thread.id;
+      activeDmTab = 'friends';
+
+      if (mainFeedView) mainFeedView.style.display = 'none';
+      if (dmView) dmView.style.display = 'grid';
+      const feedHeaderRight = document.querySelector('.feed-header-right');
+      if (feedHeaderRight) feedHeaderRight.style.display = 'none';
+
+      if (appLayoutEl) {
+        appLayoutEl.classList.add('hide-channels-sidebar');
+        appLayoutEl.classList.add('dm-active');
+        appLayoutEl.classList.remove('hide-right-sidebar');
+      }
+
+      if (typeof switchNavHubTo === 'function') {
+        switchNavHubTo('messages', true);
+      }
+
+      renderDMs();
+      updateRightSidebar();
+      window.closeProfileView();
+    } else {
+      showToast('Mesaj başlatılamadı');
+    }
+  }
+
+  // ── IN-APP PROFILE VIEW POPUP MODAL (Seamless, animated, no user posts) ──
+  window.openProfileView = function (handle) {
+    if (!handle) return;
+    const modal = document.getElementById('profile-view-modal');
+    if (!modal) return;
+
+    // Close any open popovers
+    const userPopover = document.getElementById('user-profile-popover');
+    if (userPopover) {
+      userPopover.style.display = 'none';
+      delete userPopover.dataset.activeHandle;
+    }
+
+    const ds = window.dataStore;
+    const profile = ds.getUserProfile(handle);
+    const cleanRaw = (handle || '').replace('@', '').toLowerCase();
+    const isSelf = profile.isSelf || (ds.currentUser && (ds.currentUser.handle || '').replace('@', '').toLowerCase() === cleanRaw);
+
+    function isVideo(url) {
+      if (!url || typeof url !== 'string') return false;
+      return url.startsWith('data:video') || url.match(/\.(mp4|webm|mov|mkv)(\?.*)?$/i);
+    }
+
+    // 1. Banner
+    const elBanner = document.getElementById('pvm-banner');
+    if (elBanner) {
+      elBanner.innerHTML = '';
+      elBanner.style.backgroundImage = 'none';
+      elBanner.style.backgroundColor = '#2a2a2a';
+      if (profile.banner) {
+        if (isVideo(profile.banner)) {
+          const v = document.createElement('video');
+          v.className = 'pvm-media-banner';
+          v.src = profile.banner;
+          v.autoplay = true;
+          v.loop = true;
+          v.muted = true;
+          v.playsInline = true;
+          elBanner.appendChild(v);
+        } else if (profile.banner.startsWith('#') || profile.banner.startsWith('rgb')) {
+          elBanner.style.backgroundColor = profile.banner;
+        } else if (profile.banner.startsWith('linear-gradient')) {
+          elBanner.style.backgroundImage = profile.banner;
+        } else {
+          elBanner.style.backgroundImage = `url('${profile.banner}')`;
+        }
+      }
+    }
+
+    // 2. Avatar
+    const elAvatarWrap = document.getElementById('pvm-avatar-wrap');
+    const elAvatar = document.getElementById('pvm-avatar');
+    if (elAvatarWrap && elAvatar) {
+      const existingVid = elAvatarWrap.querySelector('video.pvm-media-avatar');
+      if (existingVid) existingVid.remove();
+
+      if (profile.avatar && isVideo(profile.avatar)) {
+        elAvatar.style.display = 'none';
+        const avVid = document.createElement('video');
+        avVid.className = 'pvm-media-avatar';
+        avVid.src = profile.avatar;
+        avVid.autoplay = true;
+        avVid.loop = true;
+        avVid.muted = true;
+        avVid.playsInline = true;
+        elAvatarWrap.appendChild(avVid);
+      } else {
+        elAvatar.style.display = 'block';
+        let avUrl = profile.avatar;
+        if (avUrl && avUrl.startsWith('/uploads/')) avUrl = 'http://localhost:3000' + avUrl;
+        elAvatar.src = (avUrl && avUrl !== 'https://i.imgur.com/w3OhOmW.jpeg') ? avUrl : window.DEFAULT_AVATAR;
+        elAvatar.onerror = () => { elAvatar.src = window.DEFAULT_AVATAR; };
+      }
+    }
+
+    // 3. Avatar Frame Overlay
+    const elFrameOverlay = document.getElementById('pvm-avatar-frame-overlay');
+    if (elFrameOverlay) {
+      if (profile.avatarFrame && profile.avatarFrame !== 'none') {
+        let frameSrc = profile.avatarFrame;
+        if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
+          frameSrc = `assets/avatar-frames/${frameSrc}`;
+        }
+        const scale = typeof getFrameScale === 'function' ? getFrameScale(frameSrc) : 126;
+        elFrameOverlay.src = frameSrc;
+        elFrameOverlay.style.width = `${scale}%`;
+        elFrameOverlay.style.height = `${scale}%`;
+        elFrameOverlay.style.display = 'block';
+      } else {
+        elFrameOverlay.style.display = 'none';
+      }
+    }
+
+    // 4. Status Dot
+    const elStatusDot = document.getElementById('pvm-status-dot');
+    if (elStatusDot) {
+      const sType = (profile.status && profile.status.type) ? profile.status.type : 'offline';
+      elStatusDot.className = 'pvm-status-dot ' + sType;
+    }
+
+    // 5. Identity: Name (with effect/font styling) & Handle & Custom Status
+    const elName = document.getElementById('pvm-name');
+    if (elName) {
+      elName.textContent = profile.name || handle;
+      applyUserNameStyling(elName, profile.fontStyle, profile.nameColor, profile.nameEffects, '#8b5cf6', profile.fontWeight);
+    }
+
+    const elHandle = document.getElementById('pvm-handle');
+    if (elHandle) {
+      const cleanH = (profile.handle || handle).replace('@', '');
+      elHandle.textContent = '@' + cleanH;
+    }
+
+    const elCustomStatus = document.getElementById('pvm-custom-status');
+    if (elCustomStatus) {
+      const customTxt = (profile.status && profile.status.text) ? profile.status.text : '';
+      if (customTxt) {
+        elCustomStatus.innerHTML = `<i data-lucide="smile" style="width:13px; height:13px;"></i> <span>${escapeHtml(customTxt)}</span>`;
+        elCustomStatus.style.display = 'inline-flex';
+      } else {
+        elCustomStatus.style.display = 'none';
+      }
+    }
+
+    // 6. Bio
+    const elBio = document.getElementById('pvm-bio');
+    if (elBio) {
+      elBio.textContent = profile.bio || 'Henüz bir biyografi eklenmemiş.';
+    }
+
+    // 7. Stats (Only Takipçi & Takip Edilen - NO posts!)
+    const elFollowers = document.getElementById('pvm-stat-followers');
+    const elFollowing = document.getElementById('pvm-stat-following');
+    if (elFollowers) elFollowers.textContent = profile.followers || 0;
+    if (elFollowing) elFollowing.textContent = profile.following || 0;
+
+    // 8. Actions (Follow/Unfollow, Send DM or Edit Profile)
+    const elActions = document.getElementById('pvm-actions');
+    if (elActions) {
+      elActions.innerHTML = '';
+      if (isSelf) {
+        const btnEdit = document.createElement('button');
+        btnEdit.className = 'pvm-btn pvm-btn-secondary';
+        btnEdit.innerHTML = '<i data-lucide="edit-3" style="width:14px; height:14px;"></i> Profili Düzenle';
+        btnEdit.onclick = () => {
+          window.closeProfileView();
+          window.openModalView('settings.html');
+        };
+        elActions.appendChild(btnEdit);
+      } else {
+        const isFollowing = Array.isArray(ds.followedHandles) && ds.followedHandles.includes(profile.handle);
+        const btnFollow = document.createElement('button');
+        btnFollow.className = `pvm-btn ${isFollowing ? 'pvm-btn-secondary' : 'pvm-btn-primary'}`;
+        btnFollow.innerHTML = isFollowing
+          ? '<i data-lucide="user-check" style="width:14px; height:14px;"></i> Takibi Bırak'
+          : '<i data-lucide="user-plus" style="width:14px; height:14px;"></i> Takip Et';
+        btnFollow.onclick = () => {
+          ds.toggleFollowUser(profile.handle);
+          window.openProfileView(profile.handle);
+        };
+        elActions.appendChild(btnFollow);
+
+        const btnMsg = document.createElement('button');
+        btnMsg.className = 'pvm-btn pvm-btn-secondary';
+        btnMsg.innerHTML = '<i data-lucide="message-square" style="width:14px; height:14px;"></i> Mesaj';
+        btnMsg.onclick = () => {
+          openDmWithUser(profile.handle);
+        };
+        elActions.appendChild(btnMsg);
+      }
+    }
+
+    if (window.lucide) window.lucide.createIcons();
+
+    // Show modal
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+      modal.classList.add('active');
+    });
+  };
+
+  window.closeProfileView = function () {
+    const modal = document.getElementById('profile-view-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    setTimeout(() => {
+      modal.style.display = 'none';
+      const elBanner = document.getElementById('pvm-banner');
+      if (elBanner) {
+        const v = elBanner.querySelector('video');
+        if (v) v.remove();
+      }
+    }, 220);
+  };
+
+  // Close triggers for Profile View Modal
+  document.getElementById('btn-close-profile-modal')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.closeProfileView();
+  });
+  document.getElementById('profile-view-modal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'profile-view-modal') {
+      window.closeProfileView();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('profile-view-modal');
+      if (modal && modal.classList.contains('active')) {
+        window.closeProfileView();
+      }
+    }
+  });
+
   // ── IN-APP MODAL VIEW SYSTEM (Seamless, targeted, zero page refresh) ──
   window.openModalView = function (url) {
+    if (typeof url === 'string' && url.startsWith('profile-view.html')) {
+      const q = url.includes('?') ? url.split('?')[1] : '';
+      const params = new URLSearchParams(q);
+      const h = params.get('handle');
+      if (h) {
+        window.openProfileView(h);
+        return;
+      }
+    }
     const modalLayer = document.getElementById('ziorse-modal-layer');
     const iframe = document.getElementById('ziorse-modal-iframe');
     if (!modalLayer || !iframe) {
@@ -7324,7 +7581,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <div class="post-content-area">
                 <div class="post-header-line">
-                  <div class="post-author-info"><span class="post-author-name">${escapeHtml(authorName)}</span><span class="post-author-handle">${escapeHtml(post.handle)}</span></div>
+                  <div class="post-author-info"><span class="post-author-name">${escapeHtml(authorName)}</span></div>
                   <span class="post-time">${formatDateTime(post.timestamp)}</span>
                 </div>
                 <div class="post-body-text">${parseContentFormatting(post.content)}</div>
@@ -7955,6 +8212,6 @@ function showUserProfilePopover(e, handle) {
   }
   if (e && e.stopPropagation) e.stopPropagation();
   if (!handle) return;
-  window.location.href = `profile-view.html?handle=${encodeURIComponent(handle)}`;
+  window.openProfileView(handle);
 }
 window.showUserProfilePopover = showUserProfilePopover;
