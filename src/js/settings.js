@@ -1003,48 +1003,32 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateLiveStyleControlsAndPreview() {
     if (accPreviewName) {
       const fontFamilies = {
+        'unbounded': "'Unbounded', sans-serif",
+        'syne': "'Syne', sans-serif",
+        'space': "'Space Grotesk', sans-serif",
+        'jakarta': "'Plus Jakarta Sans', sans-serif",
+        'audiowide': "'Audiowide', cursive",
+        'marker': "'Permanent Marker', cursive",
+        'bebas': "'Bebas Neue', cursive",
+        'cinzel': "'Cinzel', serif",
+        'righteous': "'Righteous', cursive",
+        'orbitron': "'Orbitron', sans-serif",
         'outfit': "'Outfit', sans-serif",
+        'pixel': "'Press Start 2P', monospace",
         'inter': "'Inter', sans-serif",
         'montserrat': "'Montserrat', sans-serif",
         'poppins': "'Poppins', sans-serif",
-        'cinzel': "'Cinzel', serif",
-        'playfair': "'Playfair Display', serif",
-        'caveat': "'Caveat', cursive",
-        'cursive': "'Caveat', cursive",
-        'pacifico': "'Pacifico', cursive",
-        'pixel': "'Press Start 2P', monospace",
-        'cyber': "'Russo One', sans-serif",
-        'orbitron': "'Orbitron', sans-serif",
         'neon': "'Righteous', cursive",
-        'bebas': "'Bebas Neue', cursive",
-        'terminal': "'JetBrains Mono', monospace",
-        'fira': "'Fira Code', monospace",
-        'architect': "'Architects Daughter', cursive",
-        'serif': "'Cinzel', serif"
-      };
-
-      const fontScales = {
-        'pixel': '0.70em',
-        'pacifico': '0.86em',
-        'bebas': '0.96em',
-        'orbitron': '0.90em',
-        'cyber': '0.92em',
-        'neon': '0.94em',
-        'cinzel': '0.95em',
-        'terminal': '0.92em',
-        'fira': '0.92em',
-        'playfair': '0.96em',
-        'montserrat': '0.98em',
-        'outfit': '1em',
-        'inter': '1em',
-        'poppins': '0.98em',
-        'caveat': '1.05em',
-        'architect': '0.98em'
+        'cyber': "'Russo One', sans-serif"
       };
 
       accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
       accPreviewName.style.fontWeight = draftProfile.fontWeight || '700';
-      accPreviewName.style.fontSize = fontScales[draftProfile.fontStyle] || '1em';
+      if (draftProfile.fontStyle === 'pixel') {
+        accPreviewName.style.fontSize = '0.9em';
+      } else {
+        accPreviewName.style.fontSize = ''; // Full 1.35rem prominent size
+      }
       accPreviewName.style.lineHeight = '1.25';
       accPreviewName.style.letterSpacing = 'normal'; // Never stretch text or change shape
       accPreviewName.style.maxWidth = '100%';
@@ -1054,9 +1038,9 @@ document.addEventListener('DOMContentLoaded', () => {
       accPreviewName.style.verticalAlign = 'middle';
 
       accPreviewName.classList.remove(
-        'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
-        'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
-        'name-fx-prism', 'name-fx-cosmic'
+        'name-fx-shine', 'name-fx-rainbow', 'name-fx-fire',
+        'name-fx-neon', 'name-fx-aurora', 'name-fx-gold',
+        'name-fx-prism', 'name-fx-cosmic', 'name-fx-glitch'
       );
       accPreviewName.style.textShadow = 'none';
       accPreviewName.style.filter = '';
@@ -1067,43 +1051,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (eff === 'shine') {
         accPreviewName.classList.add('name-fx-shine');
-        const c = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : 'var(--text-main)';
-        accPreviewName.style.color = c;
-        accPreviewName.style.webkitTextFillColor = 'transparent';
         accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'rainbow' || eff === 'prizma') {
+      } else if (eff === 'rainbow') {
         accPreviewName.classList.add('name-fx-rainbow');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'neon') {
-        accPreviewName.classList.add('name-fx-neon');
-        const glowColor = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : '#8b5cf6';
-        accPreviewName.style.setProperty('--neon-glow', glowColor);
-        accPreviewName.style.color = glowColor;
-        accPreviewName.style.webkitTextFillColor = glowColor;
-        accPreviewName.style.backgroundImage = 'none';
-        accPreviewName.style.webkitBackgroundClip = 'unset';
-        accPreviewName.style.backgroundClip = 'unset';
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'aurora') {
-        accPreviewName.classList.add('name-fx-aurora');
         accPreviewName.style.display = 'inline-block';
       } else if (eff === 'fire') {
         accPreviewName.classList.add('name-fx-fire');
         accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'glitch' || eff === 'cartoon') {
-        accPreviewName.classList.add('name-fx-glitch');
-        const c = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : 'var(--text-main)';
-        accPreviewName.style.color = c;
-        accPreviewName.style.webkitTextFillColor = c;
-        accPreviewName.style.backgroundImage = 'none';
-        accPreviewName.style.webkitBackgroundClip = 'unset';
-        accPreviewName.style.backgroundClip = 'unset';
+      } else if (eff === 'neon') {
+        accPreviewName.classList.add('name-fx-neon');
         accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'prism' || eff === 'candy') {
+      } else if (eff === 'aurora') {
+        accPreviewName.classList.add('name-fx-aurora');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'gold') {
+        accPreviewName.classList.add('name-fx-gold');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'prism') {
         accPreviewName.classList.add('name-fx-prism');
         accPreviewName.style.display = 'inline-block';
       } else if (eff === 'cosmic') {
         accPreviewName.classList.add('name-fx-cosmic');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'glitch') {
+        accPreviewName.classList.add('name-fx-glitch');
         accPreviewName.style.display = 'inline-block';
       } else {
         if (isGrad) {
