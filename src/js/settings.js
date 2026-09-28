@@ -1234,27 +1234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = e.target.closest('.effect-card');
     if (!card) return;
     const eff = card.dataset.effect;
-    if (eff === 'sabit') {
-      draftProfile.nameEffects = [];
-    } else if (eff === 'shine') {
-      draftProfile.nameEffects = ['shine'];
-    } else if (eff === 'rainbow') {
-      draftProfile.nameEffects = ['rainbow'];
-    } else if (eff === 'fire') {
-      draftProfile.nameEffects = ['fire'];
-    } else if (eff === 'neon') {
-      draftProfile.nameEffects = ['neon'];
-    } else if (eff === 'aurora') {
-      draftProfile.nameEffects = ['aurora'];
-    } else if (eff === 'gold') {
-      draftProfile.nameEffects = ['gold'];
-    } else if (eff === 'prism') {
-      draftProfile.nameEffects = ['prism'];
-    } else if (eff === 'cosmic') {
-      draftProfile.nameEffects = ['cosmic'];
-    } else if (eff === 'glitch') {
-      draftProfile.nameEffects = ['glitch'];
-    }
+    draftProfile.nameEffects = (eff && eff !== 'sabit') ? [eff] : [];
     updateLiveStyleControlsAndPreview();
   });
 
