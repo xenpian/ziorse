@@ -103,8 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fontStyle !== 'righteous' && fontStyle !== 'outfit') fontStyle = 'outfit';
     const fontWeight = (p && p.fontWeight) ? String(p.fontWeight) : '700';
     const nameColor = (p && p.nameColor) ? String(p.nameColor) : '#ffffff';
-    let nameEffects = (p && Array.isArray(p.nameEffects)) ? [...p.nameEffects] : [];
-    nameEffects = nameEffects.includes('sugar-sweet') ? ['sugar-sweet'] : [];
+    let nameEffects = [];
     const avatarFrame = (p && p.avatarFrame) ? String(p.avatarFrame) : 'none';
 
     return { name, handle, avatar, banner, bio, email, statusText, statusType, fontStyle, fontWeight, nameColor, nameEffects, avatarFrame };
@@ -1017,23 +1016,9 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.filter = '';
         el.style.webkitTextStroke = '';
 
-        const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
         const isGrad = draftProfile.nameColor && typeof draftProfile.nameColor === 'string' && draftProfile.nameColor.startsWith('linear-gradient');
-        const eff = effects[0] || null;
 
-        const userColor = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : '#8b5cf6';
-        el.style.setProperty('--fx-color', userColor);
-        el.style.setProperty('--fx-glow', userColor);
-        el.style.setProperty('--fx-hue', hexToHue(userColor) + 'deg');
-        el.style.setProperty('--fx-sugar-1', `color-mix(in srgb, ${userColor} 80%, black)`);
-        el.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
-        el.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
-
-        if (eff === 'sugar-sweet') {
-          el.classList.add('name-fx-sugar-sweet');
-          el.style.display = 'inline-block';
-        } else {
-          if (isGrad) {
+        if (isGrad) {
             el.style.background = draftProfile.nameColor;
             el.style.webkitBackgroundClip = 'text';
             el.style.backgroundClip = 'text';
@@ -1048,7 +1033,6 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.color = draftProfile.nameColor || 'var(--text-main)';
             el.style.display = 'inline-block';
           }
-        }
       });
     }
 
@@ -1183,13 +1167,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLiveStyleControlsAndPreview();
   });
 
-  // 2. Effect Cards Click (.effect-card)
+  // 2. Effect Cards Click (.effect-card) - devre dışı
   document.getElementById('hesabim-effects-grid')?.addEventListener('click', (e) => {
-    const card = e.target.closest('.effect-card');
-    if (!card) return;
-    const eff = card.dataset.effect;
-    draftProfile.nameEffects = (eff === 'sugar-sweet') ? ['sugar-sweet'] : [];
-    updateLiveStyleControlsAndPreview();
+    // Efektler kaldırıldı
   });
 
   // Reset Effect Button
