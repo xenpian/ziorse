@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Set theme on body if dark
-  if (ds.theme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
+  // Set theme on html and body
+  const curTh = (ds && ds.theme) || localStorage.getItem('ziorse_theme') || localStorage.getItem('ziorse_theme_v14') || localStorage.getItem('ziorse_theme_preference') || 'light';
+  const isDarkInitial = curTh === 'dark';
+  document.documentElement.classList.toggle('dark-mode', isDarkInitial);
+  document.body.classList.toggle('dark-mode', isDarkInitial);
 
   const cu = ds.currentUser || { handle: '@kullanici', name: 'Kullanıcı', avatar: '' };
   const prof = ds.getUserProfile(cu.handle) || {};
@@ -712,14 +713,23 @@ document.addEventListener('DOMContentLoaded', () => {
       tc.style.borderColor = '#dbdbdb';
       const th = tc.dataset.theme;
       ds.setTheme(th);
+      localStorage.setItem('ziorse_theme', th);
+      localStorage.setItem('ziorse_theme_v14', th);
       localStorage.setItem('ziorse_theme_preference', th);
+      document.documentElement.classList.toggle('dark-mode', th === 'dark');
       document.body.classList.toggle('dark-mode', th === 'dark');
 
       const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
       if (targetParent) {
         if (targetParent.dataStore) targetParent.dataStore.setTheme(th);
-        if (targetParent.document && targetParent.document.body) {
-          targetParent.document.body.classList.toggle('dark-mode', th === 'dark');
+        if (targetParent.document) {
+          targetParent.document.documentElement.classList.toggle('dark-mode', th === 'dark');
+          if (targetParent.document.body) {
+            targetParent.document.body.classList.toggle('dark-mode', th === 'dark');
+          }
+        }
+        if (targetParent.electronAPI && typeof targetParent.electronAPI.setNativeTheme === 'function') {
+          targetParent.electronAPI.setNativeTheme(th);
         }
       }
       showToast(`Tema ${tc.querySelector('span').textContent} olarak ayarlandı`);
@@ -738,6 +748,7 @@ document.addEventListener('DOMContentLoaded', () => {
       labelFontSize.textContent = e.target.value + 'px';
       localStorage.setItem('ziorse_chat_font_size', e.target.value);
       ziorseSetStorage('ziorse_chat_font_size', e.target.value);
+      document.documentElement.style.setProperty('--chat-font-size', e.target.value + 'px');
       const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
       if (targetParent && targetParent.document) {
         targetParent.document.documentElement.style.setProperty('--chat-font-size', e.target.value + 'px');
