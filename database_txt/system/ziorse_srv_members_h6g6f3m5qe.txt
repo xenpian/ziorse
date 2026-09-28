@@ -2,14 +2,7 @@
   {
     "handle": "@sa",
     "name": "ziorse creator",
-    "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
-    "fontStyle": "marker",
-    "nameColor": "#ffffff",
-    "nameEffects": [
-      "nabla"
-    ],
-    "avatarFrame": "assets/avatar-frames/Lord.png",
-    "fontWeight": "900"
+    "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png"
   },
   {
     "handle": "@fas",
