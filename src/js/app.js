@@ -4602,14 +4602,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let mediaHtml = '';
             if (m.image) {
-              mediaHtml += `<img class="dm-attach-media" src="${escapeHtml(m.image)}" alt="Görsel" style="max-width:320px;max-height:280px;border-radius:8px;margin-top:6px;display:block;cursor:pointer;" onclick="window.open('${escapeHtml(m.image)}')">`;
+              const safeImg = normalizeMediaUrl(m.image);
+              mediaHtml += `<img class="dm-attach-media" src="${escapeHtml(safeImg)}" alt="Görsel" style="max-width:320px;max-height:280px;border-radius:8px;margin-top:6px;display:block;cursor:pointer;" onclick="window.open('${escapeHtml(safeImg)}')">`;
             }
             if (m.video) {
-              mediaHtml += `<video class="dm-attach-media" controls playsinline src="${escapeHtml(m.video)}" style="max-width:320px;max-height:280px;border-radius:8px;margin-top:6px;display:block;background:#000;"></video>`;
+              const safeVid = normalizeMediaUrl(m.video);
+              mediaHtml += `<video class="dm-attach-media" controls playsinline src="${escapeHtml(safeVid)}" style="max-width:320px;max-height:280px;border-radius:8px;margin-top:6px;display:block;background:#000;"></video>`;
             }
             if (m.file) {
+              const safeFileUrl = normalizeMediaUrl(m.file.url);
               mediaHtml += `
-                <a class="dm-attach-file-card" href="${escapeHtml(m.file.url)}" download="${escapeHtml(m.file.name)}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:8px;margin-top:6px;text-decoration:none;color:var(--text-main);max-width:280px;">
+                <a class="dm-attach-file-card" href="${escapeHtml(safeFileUrl)}" download="${escapeHtml(m.file.name)}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:8px;margin-top:6px;text-decoration:none;color:var(--text-main);max-width:280px;">
                   <i data-lucide="file-text" style="width:18px;height:18px;flex-shrink:0;"></i>
                   <div style="display:flex;flex-direction:column;overflow:hidden;flex:1;">
                     <span style="font-size:0.8rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(m.file.name)}</span>
