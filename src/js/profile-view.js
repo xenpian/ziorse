@@ -210,53 +210,33 @@ document.addEventListener('DOMContentLoaded', () => {
     elName.style.position = 'relative';
     elName.style.zIndex = '2';
 
-    elName.classList.remove(
-      'name-fx-sugar-sweet', 'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
-      'name-fx-twenty-twenty', 'name-fx-snow-bros', 'name-fx-layered-shadow',
-      'name-fx-blazing-fire', 'name-fx-shaded', 'name-fx-second-shadow', 'name-fx-stroke'
-    );
     elName.style.textShadow = 'none';
     elName.style.filter = '';
     elName.style.webkitTextStroke = '';
 
-    const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : (profile.nameEffects ? [profile.nameEffects] : []);
     const isGrad = profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('linear-gradient');
-    const eff = effects[0] || null;
 
-    const userColor = (!isGrad && profile.nameColor && profile.nameColor !== 'none') ? profile.nameColor : '#8b5cf6';
-    elName.style.setProperty('--fx-color', userColor);
-    elName.style.setProperty('--fx-glow', userColor);
-    elName.style.setProperty('--fx-hue', hexToHue(userColor) + 'deg');
-    elName.style.setProperty('--fx-sugar-1', `color-mix(in srgb, ${userColor} 80%, black)`);
-    elName.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
-    elName.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
-
-    if (eff === 'sugar-sweet') {
-      elName.classList.add('name-fx-sugar-sweet');
+    if (isGrad) {
+      elName.style.backgroundImage = profile.nameColor;
+      elName.style.webkitBackgroundClip = 'text';
+      elName.style.backgroundClip = 'text';
+      elName.style.webkitTextFillColor = 'transparent';
+      elName.style.color = 'transparent';
+      elName.style.display = 'inline-block';
+    } else if (profile.nameColor && profile.nameColor !== 'none') {
+      elName.style.backgroundImage = 'none';
+      elName.style.webkitBackgroundClip = 'unset';
+      elName.style.backgroundClip = 'unset';
+      elName.style.webkitTextFillColor = profile.nameColor;
+      elName.style.color = profile.nameColor;
       elName.style.display = 'inline-block';
     } else {
-      if (isGrad) {
-        elName.style.backgroundImage = profile.nameColor;
-        elName.style.webkitBackgroundClip = 'text';
-        elName.style.backgroundClip = 'text';
-        elName.style.webkitTextFillColor = 'transparent';
-        elName.style.color = 'transparent';
-        elName.style.display = 'inline-block';
-      } else if (profile.nameColor && profile.nameColor !== 'none') {
-        elName.style.backgroundImage = 'none';
-        elName.style.webkitBackgroundClip = 'unset';
-        elName.style.backgroundClip = 'unset';
-        elName.style.webkitTextFillColor = profile.nameColor;
-        elName.style.color = profile.nameColor;
-        elName.style.display = 'inline-block';
-      } else {
-        elName.style.backgroundImage = 'none';
-        elName.style.webkitBackgroundClip = 'unset';
-        elName.style.backgroundClip = 'unset';
-        elName.style.webkitTextFillColor = '';
-        elName.style.color = '';
-        elName.style.display = 'inline-block';
-      }
+      elName.style.backgroundImage = 'none';
+      elName.style.webkitBackgroundClip = 'unset';
+      elName.style.backgroundClip = 'unset';
+      elName.style.webkitTextFillColor = '';
+      elName.style.color = '';
+      elName.style.display = 'inline-block';
     }
 
     const titleBreadcrumb = document.getElementById('pv-titlebar-breadcrumb');
