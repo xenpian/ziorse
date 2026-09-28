@@ -2446,6 +2446,11 @@ class DataStore {
   setTheme(themeName) {
     this.theme = themeName;
     ziorseSetStorage(this.storageKeyTheme, themeName);
+    try {
+      localStorage.setItem('ziorse_theme', themeName);
+      localStorage.setItem('ziorse_theme_v14', themeName);
+      localStorage.setItem('ziorse_theme_preference', themeName);
+    } catch (e) { }
     this.notify();
   }
 
