@@ -105,11 +105,11 @@ function getFrameHoleScale(filePath) {
     const holeDiameter = innerR * 2;
     const avgDim = (width + height) / 2;
     if (holeDiameter > 20) {
-      const scale = Math.round((avgDim / holeDiameter) * 96);
-      return Math.min(Math.max(scale, 115), 180);
+      const scale = Math.round((avgDim / holeDiameter) * 80);
+      return Math.min(Math.max(scale, 115), 132);
     }
   } catch (e) { }
-  return 140;
+  return 126;
 }
 
 app.use('/assets/avatar-frames', express.static(framesDir));
