@@ -7,11 +7,9 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "righteous",
-  "nameColor": "#8b5cf6",
-  "nameEffects": [
-    "sugar-sweet"
-  ],
+  "fontStyle": "outfit",
+  "nameColor": "#000000",
+  "nameEffects": [],
   "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
   "customStatus": {

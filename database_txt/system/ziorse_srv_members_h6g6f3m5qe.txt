@@ -3,11 +3,9 @@
     "handle": "@sa",
     "name": "ziorse creator",
     "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
-    "fontStyle": "righteous",
-    "nameColor": "#8b5cf6",
-    "nameEffects": [
-      "sugar-sweet"
-    ],
+    "fontStyle": "outfit",
+    "nameColor": "#000000",
+    "nameEffects": [],
     "avatarFrame": "assets/avatar-frames/Lord.png",
     "fontWeight": "900"
   },
