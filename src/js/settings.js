@@ -1022,58 +1022,106 @@ document.addEventListener('DOMContentLoaded', () => {
         'architect': "'Architects Daughter', cursive",
         'serif': "'Cinzel', serif"
       };
+
+      const fontScales = {
+        'pixel': '0.70em',
+        'pacifico': '0.86em',
+        'bebas': '0.96em',
+        'orbitron': '0.90em',
+        'cyber': '0.92em',
+        'neon': '0.94em',
+        'cinzel': '0.95em',
+        'terminal': '0.92em',
+        'fira': '0.92em',
+        'playfair': '0.96em',
+        'montserrat': '0.98em',
+        'outfit': '1em',
+        'inter': '1em',
+        'poppins': '0.98em',
+        'caveat': '1.05em',
+        'architect': '0.98em'
+      };
+
       accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
       accPreviewName.style.fontWeight = draftProfile.fontWeight || '700';
+      accPreviewName.style.fontSize = fontScales[draftProfile.fontStyle] || '1em';
+      accPreviewName.style.lineHeight = '1.25';
+      accPreviewName.style.letterSpacing = 'normal'; // Never stretch text or change shape
+      accPreviewName.style.maxWidth = '100%';
+      accPreviewName.style.overflow = 'hidden';
+      accPreviewName.style.textOverflow = 'ellipsis';
+      accPreviewName.style.whiteSpace = 'nowrap';
+      accPreviewName.style.verticalAlign = 'middle';
 
-      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
-        accPreviewName.style.background = draftProfile.nameColor;
-        accPreviewName.style.webkitBackgroundClip = 'text';
-        accPreviewName.style.backgroundClip = 'text';
-        accPreviewName.style.webkitTextFillColor = 'transparent';
-        accPreviewName.style.color = 'transparent';
-        accPreviewName.style.display = 'inline-block';
-      } else {
-        accPreviewName.style.background = 'none';
-        accPreviewName.style.webkitBackgroundClip = 'unset';
-        accPreviewName.style.backgroundClip = 'unset';
-        accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
-        accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
-        accPreviewName.style.display = 'inline-block';
-      }
+      accPreviewName.classList.remove(
+        'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
+        'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
+        'name-fx-prism', 'name-fx-cosmic'
+      );
+      accPreviewName.style.textShadow = 'none';
+      accPreviewName.style.filter = '';
 
       const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
-      let textShadows = [];
-      let extraLetterSpacing = '';
       const isGrad = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
+      const eff = effects[0] || null;
 
-      if (!isGrad) {
-        if (effects.includes('neon')) {
-          const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#8b5cf6';
-          textShadows.push(`0 0 6px ${glowColor}cc, 0 0 16px ${glowColor}80, 0 0 26px ${glowColor}40`);
-          extraLetterSpacing = '0.4px';
-        }
-        if (effects.includes('cartoon')) {
-          textShadows.push('1.5px 1.5px 0 #0f172a, -1px -1px 0 #0f172a');
-          extraLetterSpacing = '0.5px';
-        }
-        if (effects.includes('pop')) {
-          textShadows.push('2px 2px 0 #0f172a');
-          extraLetterSpacing = '0.8px';
-        }
-        if (effects.includes('shadow')) {
-          textShadows.push('0 2px 6px rgba(0, 0, 0, 0.4)');
-          extraLetterSpacing = '0.4px';
-        }
-        if (effects.includes('glow')) {
-          const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
-          textShadows.push(`0 0 10px ${glowColor}`);
+      if (eff === 'shine') {
+        accPreviewName.classList.add('name-fx-shine');
+        const c = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : 'var(--text-main)';
+        accPreviewName.style.color = c;
+        accPreviewName.style.webkitTextFillColor = 'transparent';
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'rainbow' || eff === 'prizma') {
+        accPreviewName.classList.add('name-fx-rainbow');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'neon') {
+        accPreviewName.classList.add('name-fx-neon');
+        const glowColor = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : '#8b5cf6';
+        accPreviewName.style.setProperty('--neon-glow', glowColor);
+        accPreviewName.style.color = glowColor;
+        accPreviewName.style.webkitTextFillColor = glowColor;
+        accPreviewName.style.backgroundImage = 'none';
+        accPreviewName.style.webkitBackgroundClip = 'unset';
+        accPreviewName.style.backgroundClip = 'unset';
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'aurora') {
+        accPreviewName.classList.add('name-fx-aurora');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'fire') {
+        accPreviewName.classList.add('name-fx-fire');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'glitch' || eff === 'cartoon') {
+        accPreviewName.classList.add('name-fx-glitch');
+        const c = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : 'var(--text-main)';
+        accPreviewName.style.color = c;
+        accPreviewName.style.webkitTextFillColor = c;
+        accPreviewName.style.backgroundImage = 'none';
+        accPreviewName.style.webkitBackgroundClip = 'unset';
+        accPreviewName.style.backgroundClip = 'unset';
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'prism' || eff === 'candy') {
+        accPreviewName.classList.add('name-fx-prism');
+        accPreviewName.style.display = 'inline-block';
+      } else if (eff === 'cosmic') {
+        accPreviewName.classList.add('name-fx-cosmic');
+        accPreviewName.style.display = 'inline-block';
+      } else {
+        if (isGrad) {
+          accPreviewName.style.background = draftProfile.nameColor;
+          accPreviewName.style.webkitBackgroundClip = 'text';
+          accPreviewName.style.backgroundClip = 'text';
+          accPreviewName.style.webkitTextFillColor = 'transparent';
+          accPreviewName.style.color = 'transparent';
+          accPreviewName.style.display = 'inline-block';
+        } else {
+          accPreviewName.style.background = 'none';
+          accPreviewName.style.webkitBackgroundClip = 'unset';
+          accPreviewName.style.backgroundClip = 'unset';
+          accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
+          accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
+          accPreviewName.style.display = 'inline-block';
         }
       }
-      if (effects.includes('spaced')) {
-        extraLetterSpacing = '1.5px';
-      }
-      accPreviewName.style.textShadow = textShadows.length > 0 ? textShadows.join(', ') : 'none';
-      accPreviewName.style.letterSpacing = extraLetterSpacing || 'normal';
     }
 
     // Weight label and active pills
