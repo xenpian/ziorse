@@ -706,19 +706,29 @@ input[type="range"]::-moz-range-thumb {
   flex-direction: column;
   margin-top: 6px;
   gap: 4px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .hesabim-compact-name {
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-main);
-  word-break: break-word;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25 !important;
+  letter-spacing: normal !important;
   transition: all 0.2s ease;
 }
 
 .hesabim-compact-handle {
   font-size: 0.8rem;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hesabim-compact-divider {
