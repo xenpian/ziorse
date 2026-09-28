@@ -1079,11 +1079,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (primaryEff === 'layered-shadow') {
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
+      styles.push('text-shadow: none !important');
       styles.push('animation: fxLayeredShadowFloat 2.6s ease-in-out infinite alternate !important');
       styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'blazing-fire') {
-      styles.push('color: #ffffff !important');
-      styles.push('-webkit-text-fill-color: #ffffff !important');
+      styles.push('background: linear-gradient(180deg, #ffffff 0%, #ffeb3b 30%, #ff9800 60%, #f44336 90%, #b71c1c 100%) !important');
+      styles.push('background-clip: text !important');
+      styles.push('-webkit-background-clip: text !important');
+      styles.push('-webkit-text-fill-color: transparent !important');
+      styles.push('color: transparent !important');
+      styles.push('text-shadow: none !important');
       styles.push('animation: fxBlazingFire 1.4s ease-in-out infinite alternate !important');
       styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'shaded') {
@@ -1094,11 +1099,13 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (primaryEff === 'second-shadow') {
       styles.push(`color: ${userColor} !important`);
       styles.push(`-webkit-text-fill-color: ${userColor} !important`);
+      styles.push('text-shadow: none !important');
       styles.push('animation: fxSecondShadowPulse 2.2s ease-in-out infinite alternate !important');
       styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else if (primaryEff === 'stroke') {
       styles.push('color: transparent !important');
       styles.push('-webkit-text-fill-color: transparent !important');
+      styles.push('text-shadow: none !important');
       styles.push('animation: fxStrokeGlow 2.5s ease-in-out infinite alternate !important');
       styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
     } else {
