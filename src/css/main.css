@@ -2249,10 +2249,9 @@ body.dark-mode .post-composer-card {
   color: var(--text-main);
 }
 
-.post-author-handle {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
+.post-author-handle,
+.comment-author-handle {
+  display: none !important;
 }
 
 .post-time {
@@ -9586,4 +9585,293 @@ body:not(.dark-mode) .sidebar-msg-search-count {
     7px 7px 10px rgba(0,0,0,0.65) !important;
   animation: fxSugarSweetFloat 2.4s ease-in-out infinite alternate !important;
   will-change: transform;
+}
+
+/* =========================================================
+   IN-APP PROFILE VIEW MODAL (Seamless Popup)
+   ========================================================= */
+.profile-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.profile-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  transform: scale(0.93) translateY(12px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-modal-overlay.active .profile-modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.profile-modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 30;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.profile-modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.85);
+  border-color: rgba(239, 68, 68, 0.85);
+  transform: scale(1.08);
+}
+
+.pvm-banner {
+  width: 100%;
+  height: 140px;
+  background: #2a2a2a;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.pvm-banner video.pvm-media-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.pvm-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-top: -46px;
+  position: relative;
+  z-index: 10;
+}
+
+.pvm-avatar-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  position: relative;
+  overflow: visible;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.pvm-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.pvm-avatar-wrap video.pvm-media-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.pvm-status-dot {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 3px solid var(--bg-card);
+  z-index: 12;
+}
+
+.pvm-status-dot.idle { background: #f59e0b; }
+.pvm-status-dot.dnd { background: #ef4444; }
+.pvm-status-dot.offline { background: #6b7280; }
+
+.pvm-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-bottom: 4px;
+}
+
+.pvm-btn {
+  padding: 7px 15px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  border: 1px solid var(--border-dark);
+  font-family: inherit;
+}
+
+.pvm-btn-primary {
+  background: var(--accent-primary, #646464);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.pvm-btn-primary:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.pvm-btn-secondary {
+  background: var(--bg-card-hover);
+  color: var(--text-main);
+}
+
+.pvm-btn-secondary:hover {
+  background: var(--bg-input);
+  transform: translateY(-1px);
+}
+
+.pvm-body {
+  padding: 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pvm-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pvm-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.pvm-handle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.pvm-custom-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: var(--text-main);
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.pvm-bio {
+  font-size: 0.84rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
+}
+
+.pvm-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.pvm-stat-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.pvm-stat-num {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.pvm-stat-lbl {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.pvm-stat-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border-dark);
+}
+
+.pvm-roles-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pvm-section-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.pvm-roles-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
