@@ -8,9 +8,10 @@
 // --- Ortak yardimcilar ---
 
 function authTheme() {
-  if (window.dataStore && window.dataStore.theme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
+  const curTh = (window.dataStore && window.dataStore.theme) || localStorage.getItem('ziorse_theme') || localStorage.getItem('ziorse_theme_v14') || localStorage.getItem('ziorse_theme_preference') || 'light';
+  const isDarkInitial = curTh === 'dark';
+  document.documentElement.classList.toggle('dark-mode', isDarkInitial);
+  document.body.classList.toggle('dark-mode', isDarkInitial);
   if (window.lucide) window.lucide.createIcons();
 }
 
