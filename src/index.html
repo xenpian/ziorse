@@ -936,6 +936,53 @@
     </div>
   </div>
 
+  <!-- IN-APP PROFILE VIEW MODAL (Seamless Popup, no separate page) -->
+  <div id="profile-view-modal" class="profile-modal-overlay" style="display:none;">
+    <div class="profile-modal-dialog" id="profile-modal-dialog">
+      <button id="btn-close-profile-modal" class="profile-modal-close-btn" title="Kapat (ESC)">
+        <i data-lucide="x" style="width:16px; height:16px;"></i>
+      </button>
+
+      <div id="pvm-banner" class="pvm-banner"></div>
+
+      <div class="pvm-header-row">
+        <div class="pvm-avatar-wrap" id="pvm-avatar-wrap">
+          <img id="pvm-avatar" class="pvm-avatar" src="" alt="Avatar">
+          <img id="pvm-avatar-frame-overlay" class="global-avatar-frame-overlay" src="" alt="Frame" style="display:none;">
+          <div class="pvm-status-dot" id="pvm-status-dot"></div>
+        </div>
+        <div class="pvm-actions" id="pvm-actions"></div>
+      </div>
+
+      <div class="pvm-body">
+        <div class="pvm-identity">
+          <h2 id="pvm-name" class="pvm-name"></h2>
+          <span id="pvm-handle" class="pvm-handle"></span>
+          <span id="pvm-custom-status" class="pvm-custom-status-badge" style="display:none;"></span>
+        </div>
+
+        <p id="pvm-bio" class="pvm-bio"></p>
+
+        <div id="pvm-roles-section" class="pvm-roles-section" style="display:none;">
+          <span class="pvm-section-title">ROLLER</span>
+          <div id="pvm-roles-container" class="pvm-roles-container"></div>
+        </div>
+
+        <div class="pvm-stats">
+          <div class="pvm-stat-item">
+            <span id="pvm-stat-followers" class="pvm-stat-num">0</span>
+            <span class="pvm-stat-lbl">Takipçi</span>
+          </div>
+          <div class="pvm-stat-divider"></div>
+          <div class="pvm-stat-item">
+            <span id="pvm-stat-following" class="pvm-stat-num">0</span>
+            <span class="pvm-stat-lbl">Takip Edilen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- IN-APP MODAL LAYER (Eliminates full page reloads on settings/edit) -->
   <div id="ziorse-modal-layer" class="ziorse-modal-layer"
     style="display:none; position:fixed; inset:0; z-index:999999; background:rgba(12, 12, 16, 0.85); opacity:0; transition:opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);">
