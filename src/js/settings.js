@@ -964,7 +964,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Ultra-lightweight in-place style updater (no video reloads, zero lag)
   function updateLiveStyleControlsAndPreview() {
-    if (accPreviewName) {
+    const targets = [accPreviewName, liveCardName].filter(Boolean);
+    if (targets.length > 0) {
       const fontFamilies = {
         'unbounded': "'Unbounded', sans-serif",
         'syne': "'Syne', sans-serif",
@@ -985,77 +986,80 @@ document.addEventListener('DOMContentLoaded', () => {
         'cyber': "'Russo One', sans-serif"
       };
 
-      accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
-      accPreviewName.style.fontWeight = draftProfile.fontWeight || '700';
-      if (draftProfile.fontStyle === 'pixel') {
-        accPreviewName.style.fontSize = '0.9em';
-      } else {
-        accPreviewName.style.fontSize = ''; // Full 1.35rem prominent size
-      }
-      accPreviewName.style.lineHeight = '1.25';
-      accPreviewName.style.letterSpacing = 'normal'; // Never stretch text or change shape
-      accPreviewName.style.maxWidth = '100%';
-      accPreviewName.style.overflow = 'hidden';
-      accPreviewName.style.textOverflow = 'ellipsis';
-      accPreviewName.style.whiteSpace = 'nowrap';
-      accPreviewName.style.verticalAlign = 'middle';
-
-      accPreviewName.classList.remove(
-        'name-fx-shine', 'name-fx-rainbow', 'name-fx-fire',
-        'name-fx-neon', 'name-fx-aurora', 'name-fx-gold',
-        'name-fx-prism', 'name-fx-cosmic', 'name-fx-glitch'
-      );
-      accPreviewName.style.textShadow = 'none';
-      accPreviewName.style.filter = '';
-
-      const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
-      const isGrad = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
-      const eff = effects[0] || null;
-
-      if (eff === 'shine') {
-        accPreviewName.classList.add('name-fx-shine');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'rainbow') {
-        accPreviewName.classList.add('name-fx-rainbow');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'fire') {
-        accPreviewName.classList.add('name-fx-fire');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'neon') {
-        accPreviewName.classList.add('name-fx-neon');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'aurora') {
-        accPreviewName.classList.add('name-fx-aurora');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'gold') {
-        accPreviewName.classList.add('name-fx-gold');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'prism') {
-        accPreviewName.classList.add('name-fx-prism');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'cosmic') {
-        accPreviewName.classList.add('name-fx-cosmic');
-        accPreviewName.style.display = 'inline-block';
-      } else if (eff === 'glitch') {
-        accPreviewName.classList.add('name-fx-glitch');
-        accPreviewName.style.display = 'inline-block';
-      } else {
-        if (isGrad) {
-          accPreviewName.style.background = draftProfile.nameColor;
-          accPreviewName.style.webkitBackgroundClip = 'text';
-          accPreviewName.style.backgroundClip = 'text';
-          accPreviewName.style.webkitTextFillColor = 'transparent';
-          accPreviewName.style.color = 'transparent';
-          accPreviewName.style.display = 'inline-block';
+      targets.forEach(el => {
+        el.textContent = draftProfile.name || 'Kullanıcı';
+        el.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
+        el.style.fontWeight = draftProfile.fontWeight || '700';
+        if (draftProfile.fontStyle === 'pixel') {
+          el.style.fontSize = '0.9em';
         } else {
-          accPreviewName.style.background = 'none';
-          accPreviewName.style.webkitBackgroundClip = 'unset';
-          accPreviewName.style.backgroundClip = 'unset';
-          accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
-          accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
-          accPreviewName.style.display = 'inline-block';
+          el.style.fontSize = ''; // Uses CSS 1.35rem prominent size
         }
-      }
+        el.style.lineHeight = '1.25';
+        el.style.letterSpacing = 'normal'; // Never stretch text or change shape
+        el.style.maxWidth = '100%';
+        el.style.overflow = 'hidden';
+        el.style.textOverflow = 'ellipsis';
+        el.style.whiteSpace = 'nowrap';
+        el.style.verticalAlign = 'middle';
+
+        el.classList.remove(
+          'name-fx-shine', 'name-fx-rainbow', 'name-fx-fire',
+          'name-fx-neon', 'name-fx-aurora', 'name-fx-gold',
+          'name-fx-prism', 'name-fx-cosmic', 'name-fx-glitch'
+        );
+        el.style.textShadow = 'none';
+        el.style.filter = '';
+
+        const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
+        const isGrad = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
+        const eff = effects[0] || null;
+
+        if (eff === 'shine') {
+          el.classList.add('name-fx-shine');
+          el.style.display = 'inline-block';
+        } else if (eff === 'rainbow') {
+          el.classList.add('name-fx-rainbow');
+          el.style.display = 'inline-block';
+        } else if (eff === 'fire') {
+          el.classList.add('name-fx-fire');
+          el.style.display = 'inline-block';
+        } else if (eff === 'neon') {
+          el.classList.add('name-fx-neon');
+          el.style.display = 'inline-block';
+        } else if (eff === 'aurora') {
+          el.classList.add('name-fx-aurora');
+          el.style.display = 'inline-block';
+        } else if (eff === 'gold') {
+          el.classList.add('name-fx-gold');
+          el.style.display = 'inline-block';
+        } else if (eff === 'prism') {
+          el.classList.add('name-fx-prism');
+          el.style.display = 'inline-block';
+        } else if (eff === 'cosmic') {
+          el.classList.add('name-fx-cosmic');
+          el.style.display = 'inline-block';
+        } else if (eff === 'glitch') {
+          el.classList.add('name-fx-glitch');
+          el.style.display = 'inline-block';
+        } else {
+          if (isGrad) {
+            el.style.background = draftProfile.nameColor;
+            el.style.webkitBackgroundClip = 'text';
+            el.style.backgroundClip = 'text';
+            el.style.webkitTextFillColor = 'transparent';
+            el.style.color = 'transparent';
+            el.style.display = 'inline-block';
+          } else {
+            el.style.background = 'none';
+            el.style.webkitBackgroundClip = 'unset';
+            el.style.backgroundClip = 'unset';
+            el.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
+            el.style.color = draftProfile.nameColor || 'var(--text-main)';
+            el.style.display = 'inline-block';
+          }
+        }
+      });
     }
 
     // Weight label and active pills
