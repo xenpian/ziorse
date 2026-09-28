@@ -21,9 +21,23 @@
     "followers": 0,
     "following": 0,
     "status": {
-      "type": "online",
+      "type": "idle",
+      "text": "porno"
+    },
+    "pronouns": "",
+    "fontStyle": "outfit",
+    "nameColor": "#18181b",
+    "nameEffects": [
+      "shadow"
+    ],
+    "avatarFrame": "assets/avatar-frames/Lord.png",
+    "profileEffect": "none",
+    "widgets": [],
+    "customStatus": {
+      "emoji": "💭",
       "text": ""
-    }
+    },
+    "fontWeight": "900"
   },
   "@saf": {
     "name": "safsfdsvv",
