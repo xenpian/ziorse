@@ -17,10 +17,12 @@
       "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
       "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
       "bio": "fdffa",
-      "fontStyle": "playfair",
-      "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-      "nameEffects": [],
-      "avatarFrame": "assets/avatar-frames/Liaz.png",
+      "fontStyle": "bebas",
+      "nameColor": "#db2777",
+      "nameEffects": [
+        "pop"
+      ],
+      "avatarFrame": "assets/avatar-frames/Lord.png",
       "fontWeight": "900"
     },
     {
@@ -105,10 +107,12 @@
         "text": "porno"
       },
       "pronouns": "",
-      "fontStyle": "playfair",
-      "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-      "nameEffects": [],
-      "avatarFrame": "assets/avatar-frames/Liaz.png",
+      "fontStyle": "bebas",
+      "nameColor": "#db2777",
+      "nameEffects": [
+        "pop"
+      ],
+      "avatarFrame": "assets/avatar-frames/Lord.png",
       "profileEffect": "none",
       "widgets": [],
       "customStatus": {
@@ -1578,10 +1582,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       },
       {
@@ -1600,10 +1606,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1612,10 +1620,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1624,10 +1634,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       },
       {
@@ -1641,10 +1653,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1653,10 +1667,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1665,10 +1681,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1677,10 +1695,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1689,10 +1709,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1715,10 +1737,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1727,10 +1751,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1739,10 +1765,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1751,10 +1779,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1763,10 +1793,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1775,10 +1807,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1787,10 +1821,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1799,10 +1835,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1811,10 +1849,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1823,10 +1863,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1835,10 +1877,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1847,10 +1891,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1859,10 +1905,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1871,10 +1919,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1883,10 +1933,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1895,10 +1947,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1907,10 +1961,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1919,10 +1975,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1931,10 +1989,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1943,10 +2003,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1955,10 +2017,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1967,10 +2031,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ],
@@ -1979,10 +2045,12 @@
         "handle": "@sa",
         "name": "ziorse creatorf",
         "avatar": "http://localhost:3000/uploads/avatar_1790099762008_flysf.png",
-        "fontStyle": "playfair",
-        "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
+        "fontStyle": "bebas",
+        "nameColor": "#db2777",
+        "nameEffects": [
+          "pop"
+        ],
+        "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
       }
     ]

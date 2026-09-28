@@ -471,6 +471,55 @@ html.ultra-screen {
   }
 }
 
+/* =============================================================
+   DARK MODE OVERRIDES FOR PROFILE VIEW
+   ============================================================= */
+body.dark-mode,
+.dark-mode {
+  --bg-app: #000000;
+  --bg-sidebar: #000000;
+  --bg-card: #000000;
+  --bg-card-hover: #0a0a0a;
+  --bg-input: #09090b;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
+  --border-color: #27272a;
+  --border-dark: #3f3f46;
+}
+
+body.dark-mode .pv-action-btn,
+body.dark-mode .pv-action-btn.following,
+body.dark-mode .pv-action-btn.self {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+}
+
+body.dark-mode .pv-action-btn:hover,
+body.dark-mode .pv-action-btn.following:hover,
+body.dark-mode .pv-action-btn.self:hover {
+  background: #27272a !important;
+  border-color: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .pv-banner {
+  background: #121214;
+}
+
+body.dark-mode .pv-post-card {
+  border-color: #222222;
+}
+
+body.dark-mode .pv-posts-header {
+  border-color: #222222;
+}
+
+body.dark-mode .pv-empty {
+  color: #71717a;
+}
+
 *,
 *::before,
 *::after {

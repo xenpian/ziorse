@@ -7,10 +7,12 @@
   "email": "sa@sa.s",
   "loggedIn": true,
   "pronouns": "",
-  "fontStyle": "playfair",
-  "nameColor": "linear-gradient(90deg, #ff0000 0%, #000000 33%, #750000 66%, #ff8585 100%)",
-  "nameEffects": [],
-  "avatarFrame": "assets/avatar-frames/Liaz.png",
+  "fontStyle": "bebas",
+  "nameColor": "#db2777",
+  "nameEffects": [
+    "pop"
+  ],
+  "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
   "customStatus": {
     "emoji": "💭",
