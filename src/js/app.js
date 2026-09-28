@@ -2275,6 +2275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnToggleExtraTools) btnToggleExtraTools.classList.remove('active');
       }
       if (imagePreviewBar) imagePreviewBar.style.display = 'none';
+      if (imagePreviewImg) imagePreviewImg.src = '';
       if (filePreviewBar) filePreviewBar.style.display = 'none';
 
       // Yanıtlanan mesaj hedefini sakla ve barı temizle
