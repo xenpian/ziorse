@@ -644,16 +644,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── TEMA YÖNETİMİ (Koyu / Açık Mod Desteği) ───────────────────
-  const savedTheme = localStorage.getItem('ziorse_theme') || (window.dataStore && window.dataStore.theme) || 'light';
-  if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
-  } else {
-    body.classList.remove('dark-mode');
-  }
+  // ── TEMA YÖNETİMİ (Koyu / Açık Mod Desteği & Yerel Senkronizasyon) ──
+  const savedTheme = localStorage.getItem('ziorse_theme') || localStorage.getItem('ziorse_theme_v14') || localStorage.getItem('ziorse_theme_preference') || (window.dataStore && window.dataStore.theme) || 'light';
+  const isInitialDark = savedTheme === 'dark';
+  document.documentElement.classList.toggle('dark-mode', isInitialDark);
+  body.classList.toggle('dark-mode', isInitialDark);
   if (window.dataStore) {
     window.dataStore.theme = savedTheme;
   }
+  if (window.electronAPI && typeof window.electronAPI.setNativeTheme === 'function') {
+    window.electronAPI.setNativeTheme(savedTheme);
+  }
+
+  // Sohbet Yazı Boyutu Senkronizasyonu
+  const savedChatFontSize = localStorage.getItem('ziorse_chat_font_size') || (window.dataStore && typeof window.dataStore.get === 'function' && window.dataStore.get('ziorse_chat_font_size')) || '14.5';
+  document.documentElement.style.setProperty('--chat-font-size', savedChatFontSize + 'px');
 
   if (btnToggleTheme) {
     const iconMoon = btnToggleTheme.querySelector('.theme-icon-moon');
@@ -667,23 +672,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnToggleTheme.addEventListener('click', () => {
       const isDark = body.classList.toggle('dark-mode');
+      document.documentElement.classList.toggle('dark-mode', isDark);
       const nextTheme = isDark ? 'dark' : 'light';
       localStorage.setItem('ziorse_theme', nextTheme);
-      if (window.dataStore) window.dataStore.theme = nextTheme;
+      localStorage.setItem('ziorse_theme_v14', nextTheme);
+      localStorage.setItem('ziorse_theme_preference', nextTheme);
+      if (window.dataStore) {
+        window.dataStore.theme = nextTheme;
+        if (typeof window.dataStore.setTheme === 'function') {
+          window.dataStore.setTheme(nextTheme);
+        }
+      }
+      if (window.electronAPI && typeof window.electronAPI.setNativeTheme === 'function') {
+        window.electronAPI.setNativeTheme(nextTheme);
+      }
       updateThemeIconState(isDark);
       showToast(isDark ? 'Karanlık tema aktif' : 'Aydınlık tema aktif');
     });
   }
 
-  // ── RESPONSIVE & FULLSCREEN RESIZE ENGINE ────────────────────
+  // ── RESPONSIVE & FULLSCREEN RESIZE ENGINE (Debounced with rAF for Zero Lag) ──
+  let _screenResizeRaf = null;
   function updateScreenMode() {
-    const w = window.innerWidth;
-    const isLarge = w >= 1400 || (window.screen && w >= window.screen.availWidth - 40);
-    const isUltra = w >= 1800;
-    document.documentElement.classList.toggle('large-screen', isLarge);
-    document.documentElement.classList.toggle('ultra-screen', isUltra);
+    if (_screenResizeRaf) return;
+    _screenResizeRaf = requestAnimationFrame(() => {
+      _screenResizeRaf = null;
+      const w = window.innerWidth;
+      const isLarge = w >= 1400 || (window.screen && w >= window.screen.availWidth - 40);
+      const isUltra = w >= 1800;
+      document.documentElement.classList.toggle('large-screen', isLarge);
+      document.documentElement.classList.toggle('ultra-screen', isUltra);
+    });
   }
-  window.addEventListener('resize', updateScreenMode);
+  window.addEventListener('resize', updateScreenMode, { passive: true });
   if (window.electronAPI?.onMaximizedChange) {
     window.electronAPI.onMaximizedChange((isMax) => {
       document.documentElement.classList.toggle('app-maximized', isMax);
