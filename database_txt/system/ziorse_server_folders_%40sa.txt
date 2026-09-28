@@ -2,7 +2,7 @@
   {
     "id": "folder_1787397747404_8lex",
     "name": "Klasör",
-    "isExpanded": false,
+    "isExpanded": true,
     "serverIds": [
       "srv-1787397259393",
       "srv-1787397261579",
