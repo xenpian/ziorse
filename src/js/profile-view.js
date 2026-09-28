@@ -141,13 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
         const frameScales = {
-          'Lord.png': 156,
-          'Liaz.png': 139
+          'Lord.png': 128,
+          'Liaz.png': 122
         };
         const cleanName = String(frameSrc).split('/').pop().split('?')[0];
-        const scale = (window.parent && window.parent.getFrameScale)
+        let scale = (window.parent && window.parent.getFrameScale)
           ? window.parent.getFrameScale(frameSrc)
-          : (frameScales[cleanName] || 140);
+          : (frameScales[cleanName] || 126);
+        if (scale > 132) scale = 128;
 
         elFrameOverlay.src = frameSrc;
         elFrameOverlay.style.width = `${scale}%`;
@@ -183,6 +184,26 @@ document.addEventListener('DOMContentLoaded', () => {
       'cursive': "'Caveat', cursive",
       'serif': "'Cinzel', serif"
     };
+
+    const fontScales = {
+      'pixel': '0.70em',
+      'pacifico': '0.86em',
+      'bebas': '0.96em',
+      'orbitron': '0.90em',
+      'cyber': '0.92em',
+      'neon': '0.94em',
+      'cinzel': '0.95em',
+      'terminal': '0.92em',
+      'fira': '0.92em',
+      'playfair': '0.96em',
+      'montserrat': '0.98em',
+      'outfit': '1em',
+      'inter': '1em',
+      'poppins': '0.98em',
+      'caveat': '1.05em',
+      'architect': '0.98em'
+    };
+
     if (profile.fontStyle && fontFamilies[profile.fontStyle]) {
       elName.style.fontFamily = fontFamilies[profile.fontStyle];
     } else {
@@ -193,61 +214,90 @@ document.addEventListener('DOMContentLoaded', () => {
       elName.style.fontWeight = profile.fontWeight;
     }
 
+    elName.style.fontSize = fontScales[profile.fontStyle] || '1em';
+    elName.style.lineHeight = '1.25';
+    elName.style.letterSpacing = 'normal'; // Always normal! Never distorted!
+    elName.style.maxWidth = '100%';
+    elName.style.overflow = 'hidden';
+    elName.style.textOverflow = 'ellipsis';
+    elName.style.whiteSpace = 'nowrap';
+    elName.style.verticalAlign = 'middle';
+
+    elName.classList.remove(
+      'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
+      'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
+      'name-fx-prism', 'name-fx-cosmic'
+    );
+    elName.style.textShadow = 'none';
+    elName.style.filter = '';
+
     const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : (profile.nameEffects ? [profile.nameEffects] : []);
-    let textShadows = [];
-    let extraLetterSpacing = '';
     const isGrad = profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('linear-gradient');
+    const eff = effects[0] || null;
 
-    if (!isGrad) {
-      if (effects.includes('neon')) {
-        const glowColor = (profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('#')) ? profile.nameColor : '#8b5cf6';
-        textShadows.push(`0 0 6px ${glowColor}cc, 0 0 16px ${glowColor}80, 0 0 26px ${glowColor}40`);
-        extraLetterSpacing = '0.4px';
-      }
-      if (effects.includes('cartoon')) {
-        textShadows.push('1.5px 1.5px 0 #0f172a, -1px -1px 0 #0f172a');
-        extraLetterSpacing = '0.5px';
-      }
-      if (effects.includes('pop')) {
-        textShadows.push('2px 2px 0 #0f172a');
-        extraLetterSpacing = '0.8px';
-      }
-      if (effects.includes('shadow')) {
-        textShadows.push('0 2px 6px rgba(0, 0, 0, 0.4)');
-        extraLetterSpacing = '0.4px';
-      }
-      if (effects.includes('glow')) {
-        const glowColor = (profile.nameColor && profile.nameColor.startsWith('#')) ? profile.nameColor : '#00f2fe';
-        textShadows.push(`0 0 10px ${glowColor}`);
-      }
-    }
-    if (effects.includes('spaced')) {
-      extraLetterSpacing = '1.5px';
-    }
-    elName.style.textShadow = textShadows.join(', ') || 'none';
-    elName.style.letterSpacing = extraLetterSpacing || 'normal';
-
-    if (isGrad) {
-      elName.style.backgroundImage = profile.nameColor;
-      elName.style.webkitBackgroundClip = 'text';
-      elName.style.backgroundClip = 'text';
+    if (eff === 'shine') {
+      elName.classList.add('name-fx-shine');
+      const c = (!isGrad && profile.nameColor) ? profile.nameColor : 'var(--text-main)';
+      elName.style.color = c;
       elName.style.webkitTextFillColor = 'transparent';
-      elName.style.color = 'transparent';
       elName.style.display = 'inline-block';
-    } else if (profile.nameColor && profile.nameColor !== 'none') {
+    } else if (eff === 'rainbow' || eff === 'prizma') {
+      elName.classList.add('name-fx-rainbow');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'neon') {
+      elName.classList.add('name-fx-neon');
+      const glowColor = (!isGrad && profile.nameColor && profile.nameColor.startsWith('#')) ? profile.nameColor : '#8b5cf6';
+      elName.style.setProperty('--neon-glow', glowColor);
+      elName.style.color = glowColor;
+      elName.style.webkitTextFillColor = glowColor;
       elName.style.backgroundImage = 'none';
       elName.style.webkitBackgroundClip = 'unset';
       elName.style.backgroundClip = 'unset';
-      elName.style.webkitTextFillColor = profile.nameColor;
-      elName.style.color = profile.nameColor;
+      elName.style.display = 'inline-block';
+    } else if (eff === 'aurora') {
+      elName.classList.add('name-fx-aurora');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'fire') {
+      elName.classList.add('name-fx-fire');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'glitch' || eff === 'cartoon') {
+      elName.classList.add('name-fx-glitch');
+      const c = (!isGrad && profile.nameColor) ? profile.nameColor : 'var(--text-main)';
+      elName.style.color = c;
+      elName.style.webkitTextFillColor = c;
+      elName.style.backgroundImage = 'none';
+      elName.style.webkitBackgroundClip = 'unset';
+      elName.style.backgroundClip = 'unset';
+      elName.style.display = 'inline-block';
+    } else if (eff === 'prism' || eff === 'candy') {
+      elName.classList.add('name-fx-prism');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'cosmic') {
+      elName.classList.add('name-fx-cosmic');
       elName.style.display = 'inline-block';
     } else {
-      elName.style.backgroundImage = 'none';
-      elName.style.webkitBackgroundClip = 'unset';
-      elName.style.backgroundClip = 'unset';
-      elName.style.webkitTextFillColor = '';
-      elName.style.color = '';
-      elName.style.display = '';
+      if (isGrad) {
+        elName.style.backgroundImage = profile.nameColor;
+        elName.style.webkitBackgroundClip = 'text';
+        elName.style.backgroundClip = 'text';
+        elName.style.webkitTextFillColor = 'transparent';
+        elName.style.color = 'transparent';
+        elName.style.display = 'inline-block';
+      } else if (profile.nameColor && profile.nameColor !== 'none') {
+        elName.style.backgroundImage = 'none';
+        elName.style.webkitBackgroundClip = 'unset';
+        elName.style.backgroundClip = 'unset';
+        elName.style.webkitTextFillColor = profile.nameColor;
+        elName.style.color = profile.nameColor;
+        elName.style.display = 'inline-block';
+      } else {
+        elName.style.backgroundImage = 'none';
+        elName.style.webkitBackgroundClip = 'unset';
+        elName.style.backgroundClip = 'unset';
+        elName.style.webkitTextFillColor = '';
+        elName.style.color = '';
+        elName.style.display = 'inline-block';
+      }
     }
 
     const titleBreadcrumb = document.getElementById('pv-titlebar-breadcrumb');
