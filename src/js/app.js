@@ -771,43 +771,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.FONT_FAMILIES = {
+    'unbounded': "'Unbounded', sans-serif",
+    'syne': "'Syne', sans-serif",
+    'space': "'Space Grotesk', sans-serif",
+    'jakarta': "'Plus Jakarta Sans', sans-serif",
+    'audiowide': "'Audiowide', cursive",
+    'marker': "'Permanent Marker', cursive",
+    'bebas': "'Bebas Neue', cursive",
+    'cinzel': "'Cinzel', serif",
+    'righteous': "'Righteous', cursive",
+    'orbitron': "'Orbitron', sans-serif",
     'outfit': "'Outfit', sans-serif",
+    'pixel': "'Press Start 2P', monospace",
     'inter': "'Inter', sans-serif",
     'montserrat': "'Montserrat', sans-serif",
     'poppins': "'Poppins', sans-serif",
-    'cinzel': "'Cinzel', serif",
-    'playfair': "'Playfair Display', serif",
-    'caveat': "'Caveat', cursive",
-    'pacifico': "'Pacifico', cursive",
-    'pixel': "'Press Start 2P', monospace",
-    'cyber': "'Russo One', sans-serif",
-    'orbitron': "'Orbitron', sans-serif",
     'neon': "'Righteous', cursive",
-    'bebas': "'Bebas Neue', cursive",
-    'terminal': "'JetBrains Mono', monospace",
-    'fira': "'Fira Code', monospace",
-    'architect': "'Architects Daughter', cursive",
-    'cursive': "'Caveat', cursive",
-    'serif': "'Cinzel', serif"
-  };
-
-  window.FONT_SCALES = {
-    'pixel': '0.70em',
-    'pacifico': '0.86em',
-    'bebas': '0.96em',
-    'orbitron': '0.90em',
-    'cyber': '0.92em',
-    'neon': '0.94em',
-    'cinzel': '0.95em',
-    'terminal': '0.92em',
-    'fira': '0.92em',
-    'playfair': '0.96em',
-    'montserrat': '0.98em',
-    'outfit': '1em',
-    'inter': '1em',
-    'poppins': '0.98em',
-    'caveat': '1.05em',
-    'architect': '0.98em'
+    'cyber': "'Russo One', sans-serif"
   };
 
   function applyUserNameStyling(element, fontStyle, nameColor, nameEffects, fallbackColor, fontWeight) {
@@ -823,8 +803,11 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.fontWeight = fontWeight;
     }
 
-    // Font size normalization and rigid dimensions (never expand or stretch cards)
-    element.style.fontSize = (window.FONT_SCALES && window.FONT_SCALES[fontStyle]) || '1em';
+    if (fontStyle === 'pixel') {
+      element.style.fontSize = '0.9em';
+    } else {
+      element.style.fontSize = ''; // Uses CSS font-size: 1.35rem in profile/settings, 1rem in chat
+    }
     element.style.lineHeight = '1.25';
     element.style.letterSpacing = 'normal'; // Always normal! Never distorted!
     element.style.maxWidth = '100%';
@@ -835,9 +818,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Remove all old animated classes
     element.classList.remove(
-      'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
-      'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
-      'name-fx-prism', 'name-fx-cosmic'
+      'name-fx-shine', 'name-fx-rainbow', 'name-fx-fire',
+      'name-fx-neon', 'name-fx-aurora', 'name-fx-gold',
+      'name-fx-prism', 'name-fx-cosmic', 'name-fx-glitch'
     );
     element.style.textShadow = 'none';
     element.style.filter = '';
@@ -848,43 +831,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (eff === 'shine') {
       element.classList.add('name-fx-shine');
-      const c = (!isGradient && nameColor) ? nameColor : (fallbackColor || 'var(--text-main)');
-      element.style.color = c;
-      element.style.webkitTextFillColor = 'transparent';
       element.style.display = 'inline-block';
-    } else if (eff === 'rainbow' || eff === 'prizma') {
+    } else if (eff === 'rainbow') {
       element.classList.add('name-fx-rainbow');
-      element.style.display = 'inline-block';
-    } else if (eff === 'neon') {
-      element.classList.add('name-fx-neon');
-      const glowColor = (!isGradient && nameColor && nameColor.startsWith('#')) ? nameColor : '#8b5cf6';
-      element.style.setProperty('--neon-glow', glowColor);
-      element.style.color = glowColor;
-      element.style.webkitTextFillColor = glowColor;
-      element.style.backgroundImage = 'none';
-      element.style.webkitBackgroundClip = 'unset';
-      element.style.backgroundClip = 'unset';
-      element.style.display = 'inline-block';
-    } else if (eff === 'aurora') {
-      element.classList.add('name-fx-aurora');
       element.style.display = 'inline-block';
     } else if (eff === 'fire') {
       element.classList.add('name-fx-fire');
       element.style.display = 'inline-block';
-    } else if (eff === 'glitch' || eff === 'cartoon') {
-      element.classList.add('name-fx-glitch');
-      const c = (!isGradient && nameColor) ? nameColor : (fallbackColor || 'var(--text-main)');
-      element.style.color = c;
-      element.style.webkitTextFillColor = c;
-      element.style.backgroundImage = 'none';
-      element.style.webkitBackgroundClip = 'unset';
-      element.style.backgroundClip = 'unset';
+    } else if (eff === 'neon') {
+      element.classList.add('name-fx-neon');
       element.style.display = 'inline-block';
-    } else if (eff === 'prism' || eff === 'candy') {
+    } else if (eff === 'aurora') {
+      element.classList.add('name-fx-aurora');
+      element.style.display = 'inline-block';
+    } else if (eff === 'gold') {
+      element.classList.add('name-fx-gold');
+      element.style.display = 'inline-block';
+    } else if (eff === 'prism') {
       element.classList.add('name-fx-prism');
       element.style.display = 'inline-block';
     } else if (eff === 'cosmic') {
       element.classList.add('name-fx-cosmic');
+      element.style.display = 'inline-block';
+    } else if (eff === 'glitch') {
+      element.classList.add('name-fx-glitch');
       element.style.display = 'inline-block';
     } else {
       if (isGradient) {
