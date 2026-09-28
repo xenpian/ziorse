@@ -440,10 +440,11 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .settings-preview-name {
-  font-size: 1.05rem;
+  font-size: 1.35rem !important;
   font-weight: 800;
-  font-family: var(--font-montserrat);
   color: var(--text-main, #121212);
+  line-height: 1.25 !important;
+  letter-spacing: normal !important;
   word-break: break-word;
 }
 
