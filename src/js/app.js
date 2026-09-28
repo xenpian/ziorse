@@ -954,20 +954,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const userColor = (!isGradient && prof?.nameColor && prof.nameColor !== 'none') ? prof.nameColor : '#8b5cf6';
 
     if (isGradient) {
-        styles.push(`background-image:${prof.nameColor}`);
-        styles.push('-webkit-background-clip:text');
-        styles.push('background-clip:text');
-        styles.push('-webkit-text-fill-color:transparent');
-        styles.push('color:transparent');
-        styles.push('display:inline-block');
-      } else if (prof?.nameColor && prof.nameColor !== 'none') {
-        styles.push(`color:${prof.nameColor}`);
-        styles.push(`-webkit-text-fill-color:${prof.nameColor}`);
-        styles.push('display:inline-block');
-      } else if (highestRole?.color) {
-        styles.push(`color:${highestRole.color}`);
-        styles.push('font-weight:600');
-      }
+      styles.push(`background-image:${prof.nameColor}`);
+      styles.push('-webkit-background-clip:text');
+      styles.push('background-clip:text');
+      styles.push('-webkit-text-fill-color:transparent');
+      styles.push('color:transparent');
+      styles.push('display:inline-block');
+    } else if (prof?.nameColor && prof.nameColor !== 'none') {
+      styles.push(`color:${prof.nameColor}`);
+      styles.push(`-webkit-text-fill-color:${prof.nameColor}`);
+      styles.push('display:inline-block');
+    } else if (highestRole?.color) {
+      styles.push(`color:${highestRole.color}`);
+      styles.push('font-weight:600');
     }
     return styles.length ? `style="${styles.join('; ')}"` : '';
   }
