@@ -820,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
     element.style.position = 'relative';
     element.style.zIndex = '2';
 
-    // Remove all old animated classes
+    // Remove any old effect classes (cleanup)
     element.classList.remove(
       'name-fx-sugar-sweet', 'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
       'name-fx-twenty-twenty', 'name-fx-snow-bros', 'name-fx-layered-shadow',
@@ -830,23 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
     element.style.filter = '';
     element.style.webkitTextStroke = '';
 
-    const effects = Array.isArray(nameEffects) ? nameEffects : (nameEffects ? [nameEffects] : []);
     const isGradient = nameColor && typeof nameColor === 'string' && nameColor.startsWith('linear-gradient');
-    const eff = effects[0] || null;
-
-    const userColor = (!isGradient && nameColor && nameColor !== 'none') ? nameColor : (fallbackColor || '#8b5cf6');
-    element.style.setProperty('--fx-color', userColor);
-    element.style.setProperty('--fx-glow', userColor);
-    element.style.setProperty('--fx-hue', hexToHue(userColor) + 'deg');
-    element.style.setProperty('--fx-sugar-1', `color-mix(in srgb, ${userColor} 80%, black)`);
-    element.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
-    element.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
-
-    if (eff === 'sugar-sweet') {
-      element.classList.add('name-fx-sugar-sweet');
-      element.style.display = 'inline-block';
-    } else {
-      if (isGradient) {
         element.style.backgroundImage = nameColor;
         element.style.webkitBackgroundClip = 'text';
         element.style.backgroundClip = 'text';
@@ -971,21 +955,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prof?.fontWeight) {
       styles.push(`font-weight:${prof.fontWeight}`);
     }
-    const eff = Array.isArray(prof?.nameEffects) ? prof.nameEffects : (prof?.nameEffects ? [prof.nameEffects] : []);
     const isGradient = prof?.nameColor && typeof prof.nameColor === 'string' && prof.nameColor.startsWith('linear-gradient');
-    const primaryEff = eff[0] || null;
     const userColor = (!isGradient && prof?.nameColor && prof.nameColor !== 'none') ? prof.nameColor : '#8b5cf6';
-    const hue = hexToHue(userColor);
 
-    if (primaryEff === 'sugar-sweet') {
-      styles.push(`color: ${userColor} !important`);
-      styles.push(`-webkit-text-fill-color: ${userColor} !important`);
-      styles.push('font-weight: 800 !important');
-      styles.push('text-shadow: none !important');
-      styles.push('animation: none !important');
-      styles.push('display: inline-block; overflow: visible !important; position: relative !important; z-index: 2 !important');
-    } else {
-      if (isGradient) {
+    if (isGradient) {
         styles.push(`background-image:${prof.nameColor}`);
         styles.push('-webkit-background-clip:text');
         styles.push('background-clip:text');
