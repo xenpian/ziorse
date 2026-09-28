@@ -2257,8 +2257,8 @@ body.dark-mode .post-composer-card {
 }
 
 .post-body-text {
-  font-family: var(--font-nunito);
-  font-size: 0.95rem;
+  font-family: var(--font-nunito), var(--font-sans);
+  font-size: var(--chat-font-size, 0.95rem);
   line-height: 1.55;
   color: var(--text-main);
   word-break: break-word !important;
