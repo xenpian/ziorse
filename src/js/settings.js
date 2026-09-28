@@ -1188,7 +1188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = e.target.closest('.effect-card');
     if (!card) return;
     const eff = card.dataset.effect;
-    draftProfile.nameEffects = (eff && eff !== 'sabit') ? [eff] : [];
+    draftProfile.nameEffects = (eff === 'sugar-sweet') ? ['sugar-sweet'] : [];
     updateLiveStyleControlsAndPreview();
   });
 
