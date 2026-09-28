@@ -9521,55 +9521,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   letter-spacing: normal !important;
 }
 
-/* ==========================================================================
-   11 HIGH-PRECISION ANIMATED TEXT EFFECTS (INTERNET & CODEPEN ACCURATE)
-   Zero box-clipping, full overflow freedom, high-fidelity animations
-   ========================================================================== */
 
-/* Universal Overflow & Z-Index for all name effects & name elements */
-[class*="name-fx-"],
-.name-fx-nabla,
-.name-fx-aurora,
-.name-fx-rainbow-spot,
-.name-fx-sugar-sweet,
-.name-fx-twenty-twenty,
-.name-fx-snow-bros,
-.name-fx-layered-shadow,
-.name-fx-blazing-fire,
-.name-fx-shaded,
-.name-fx-second-shadow,
-.name-fx-stroke {
-  display: inline-block !important;
-  position: relative !important;
-  z-index: 2 !important;
-  overflow: visible !important;
-  contain: none !important;
-  clip-path: none !important;
-  vertical-align: middle !important;
-  margin: 1px 0 !important;
-  padding: 2px 4px !important;
-  box-sizing: border-box !important;
-}
-
-.settings-preview-name,
-.hesabim-compact-name,
-.pv-name,
-#popover-name,
-.chat-author-name,
-.member-name {
-  overflow: visible !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-/* Sugar Sweet - Renkli kalın isim efekti */
-.name-fx-sugar-sweet {
-  color: var(--fx-color, #ff6b8b) !important;
-  -webkit-text-fill-color: var(--fx-color, #ff6b8b) !important;
-  font-weight: 800 !important;
-  text-shadow: none !important;
-  animation: none !important;
-}
 
 /* =========================================================
    IN-APP PROFILE VIEW MODAL (Seamless Popup)
