@@ -1004,43 +1004,59 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.verticalAlign = 'middle';
 
         el.classList.remove(
-          'name-fx-shine', 'name-fx-rainbow', 'name-fx-fire',
-          'name-fx-neon', 'name-fx-aurora', 'name-fx-gold',
-          'name-fx-prism', 'name-fx-cosmic', 'name-fx-glitch'
+          'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
+          'name-fx-sugar-sweet', 'name-fx-twenty-twenty', 'name-fx-snow-bros',
+          'name-fx-layered-shadow', 'name-fx-blazing-fire', 'name-fx-shaded',
+          'name-fx-second-shadow', 'name-fx-stroke'
         );
         el.style.textShadow = 'none';
         el.style.filter = '';
+        el.style.webkitTextStroke = '';
 
         const effects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
-        const isGrad = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
+        const isGrad = draftProfile.nameColor && typeof draftProfile.nameColor === 'string' && draftProfile.nameColor.startsWith('linear-gradient');
         const eff = effects[0] || null;
 
-        if (eff === 'shine') {
-          el.classList.add('name-fx-shine');
-          el.style.display = 'inline-block';
-        } else if (eff === 'rainbow') {
-          el.classList.add('name-fx-rainbow');
-          el.style.display = 'inline-block';
-        } else if (eff === 'fire') {
-          el.classList.add('name-fx-fire');
-          el.style.display = 'inline-block';
-        } else if (eff === 'neon') {
-          el.classList.add('name-fx-neon');
+        const userColor = (!isGrad && draftProfile.nameColor) ? draftProfile.nameColor : '#8b5cf6';
+        el.style.setProperty('--fx-color', userColor);
+        el.style.setProperty('--fx-glow', userColor);
+        el.style.setProperty('--fx-hue', hexToHue(userColor) + 'deg');
+        el.style.setProperty('--fx-sugar-1', `color-mix(in srgb, ${userColor} 80%, black)`);
+        el.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
+        el.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
+
+        if (eff === 'nabla') {
+          el.classList.add('name-fx-nabla');
           el.style.display = 'inline-block';
         } else if (eff === 'aurora') {
           el.classList.add('name-fx-aurora');
           el.style.display = 'inline-block';
-        } else if (eff === 'gold') {
-          el.classList.add('name-fx-gold');
+        } else if (eff === 'rainbow-spot') {
+          el.classList.add('name-fx-rainbow-spot');
           el.style.display = 'inline-block';
-        } else if (eff === 'prism') {
-          el.classList.add('name-fx-prism');
+        } else if (eff === 'sugar-sweet') {
+          el.classList.add('name-fx-sugar-sweet');
           el.style.display = 'inline-block';
-        } else if (eff === 'cosmic') {
-          el.classList.add('name-fx-cosmic');
+        } else if (eff === 'twenty-twenty') {
+          el.classList.add('name-fx-twenty-twenty');
           el.style.display = 'inline-block';
-        } else if (eff === 'glitch') {
-          el.classList.add('name-fx-glitch');
+        } else if (eff === 'snow-bros') {
+          el.classList.add('name-fx-snow-bros');
+          el.style.display = 'inline-block';
+        } else if (eff === 'layered-shadow') {
+          el.classList.add('name-fx-layered-shadow');
+          el.style.display = 'inline-block';
+        } else if (eff === 'blazing-fire') {
+          el.classList.add('name-fx-blazing-fire');
+          el.style.display = 'inline-block';
+        } else if (eff === 'shaded') {
+          el.classList.add('name-fx-shaded');
+          el.style.display = 'inline-block';
+        } else if (eff === 'second-shadow') {
+          el.classList.add('name-fx-second-shadow');
+          el.style.display = 'inline-block';
+        } else if (eff === 'stroke') {
+          el.classList.add('name-fx-stroke');
           el.style.display = 'inline-block';
         } else {
           if (isGrad) {
