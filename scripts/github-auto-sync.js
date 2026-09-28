@@ -14,6 +14,7 @@ const IGNORED_PATHS = [
   '.git',
   'node_modules',
   'uploads',
+  'database_txt',
   'scratch',
   '.system_generated',
   'window-bounds.json',
