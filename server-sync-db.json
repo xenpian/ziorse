@@ -14,7 +14,7 @@
       "handle": "@sa",
       "email": "sa@sa.s",
       "password": "sas",
-      "avatar": "http://localhost:3000/uploads/avatar_1790622627093_y8esx.png",
+      "avatar": "http://localhost:3000/uploads/avatar_1790622628305_rhpjf.png",
       "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
       "bio": "fdffa",
       "fontStyle": "outfit",
@@ -95,7 +95,7 @@
     "@sa": {
       "name": "ziorse creator",
       "handle": "@sa",
-      "avatar": "http://localhost:3000/uploads/avatar_1790622627093_y8esx.png",
+      "avatar": "http://localhost:3000/uploads/avatar_1790622628305_rhpjf.png",
       "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
       "bio": "fdffa",
       "followers": 0,
