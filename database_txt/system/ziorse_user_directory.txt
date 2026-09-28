@@ -15,7 +15,7 @@
   "@sa": {
     "name": "ziorse creator",
     "handle": "@sa",
-    "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
+    "avatar": "http://localhost:3000/uploads/avatar_1790622588292_u4acr.png",
     "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
     "bio": "fdffa",
     "followers": 0,
