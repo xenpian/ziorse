@@ -9709,97 +9709,56 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   will-change: transform, filter;
 }
 
-/* 7. Layered Text-shadow Effect CSS */
+/* 7. Layered Text-shadow Effect CSS (Filter Drop-Shadow Edition - No text-shadow) */
 @keyframes fxLayeredShadowFloat {
   0%, 100% {
     transform: translate(0, 0);
-    text-shadow: 
-      1px 1px 0 #06b6d4,
-      2px 2px 0 #0891b2,
-      3px 3px 0 #0e7490,
-      4px 4px 0 #155e75,
-      5px 5px 0 #164e63,
-      6px 6px 12px rgba(0,0,0,0.7);
+    filter: drop-shadow(1px 1px 0 #06b6d4) drop-shadow(2px 2px 0 #0891b2) drop-shadow(3px 3px 0 #0e7490) drop-shadow(5px 5px 8px rgba(0,0,0,0.65));
   }
   50% {
     transform: translate(-2px, -2px);
-    text-shadow: 
-      2px 2px 0 #06b6d4,
-      3px 3px 0 #0891b2,
-      5px 5px 0 #0e7490,
-      6px 6px 0 #155e75,
-      8px 8px 0 #164e63,
-      10px 10px 18px rgba(0,0,0,0.85);
+    filter: drop-shadow(2px 2px 0 #06b6d4) drop-shadow(3px 3px 0 #0891b2) drop-shadow(5px 5px 0 #0e7490) drop-shadow(8px 8px 14px rgba(0,0,0,0.8));
   }
 }
 .name-fx-layered-shadow {
   color: var(--fx-color, #f8fafc) !important;
   -webkit-text-fill-color: var(--fx-color, #f8fafc) !important;
+  text-shadow: none !important;
   animation: fxLayeredShadowFloat 2.6s ease-in-out infinite alternate !important;
-  will-change: transform, text-shadow;
+  will-change: transform, filter;
 }
 
-/* 8. Blazing Fire */
+/* 8. Blazing Fire (Fiery Gradient & Ember Aura - No text-shadow) */
 @keyframes fxBlazingFire {
-  0% {
-    text-shadow:
-      0 -1px 3px #ffffff,
-      0 -3px 8px #ffeb3b,
-      0 -6px 14px #ff9800,
-      0 -11px 22px #f44336,
-      0 -16px 30px #b71c1c,
-      0 0 10px rgba(255, 152, 0, 0.6);
+  0%, 100% {
+    filter: drop-shadow(0 -2px 4px #ffeb3b) drop-shadow(0 -5px 10px #ff9800) drop-shadow(0 -10px 20px #f44336) drop-shadow(0 -16px 30px #b71c1c);
     transform: translateY(0) skewX(0deg);
   }
   25% {
-    text-shadow:
-      0 -2px 4px #ffffff,
-      0 -4px 9px #fff275,
-      0 -8px 16px #ff7700,
-      0 -13px 24px #d32f2f,
-      0 -18px 32px #880e4f,
-      0 0 14px rgba(255, 87, 34, 0.7);
+    filter: drop-shadow(0 -3px 5px #fff275) drop-shadow(0 -7px 12px #ff7700) drop-shadow(0 -12px 24px #d32f2f) drop-shadow(0 -18px 32px #880e4f);
     transform: translateY(-0.5px) skewX(-1deg);
   }
   50% {
-    text-shadow:
-      0 -1px 3px #ffffff,
-      0 -5px 12px #ffee55,
-      0 -10px 20px #ff6d00,
-      0 -15px 28px #c62828,
-      0 -22px 38px #bf360c,
-      0 0 18px rgba(255, 110, 0, 0.8);
+    filter: drop-shadow(0 -2px 4px #ffee55) drop-shadow(0 -9px 16px #ff6d00) drop-shadow(0 -14px 28px #c62828) drop-shadow(0 -22px 38px #bf360c);
     transform: translateY(-1.5px) skewX(1deg);
   }
   75% {
-    text-shadow:
-      0 -2px 5px #ffffff,
-      0 -3px 8px #ffeb3b,
-      0 -7px 15px #ff9100,
-      0 -12px 23px #e53935,
-      0 -17px 31px #b71c1c,
-      0 0 12px rgba(255, 152, 0, 0.65);
+    filter: drop-shadow(0 -3px 6px #ffeb3b) drop-shadow(0 -6px 13px #ff9100) drop-shadow(0 -11px 22px #e53935) drop-shadow(0 -17px 30px #b71c1c);
     transform: translateY(-0.5px) skewX(-0.5deg);
-  }
-  100% {
-    text-shadow:
-      0 -1px 3px #ffffff,
-      0 -3px 8px #ffeb3b,
-      0 -6px 14px #ff9800,
-      0 -11px 22px #f44336,
-      0 -16px 30px #b71c1c,
-      0 0 10px rgba(255, 152, 0, 0.6);
-    transform: translateY(0) skewX(0deg);
   }
 }
 .name-fx-blazing-fire {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  background: linear-gradient(180deg, #ffffff 0%, #ffeb3b 30%, #ff9800 60%, #f44336 90%, #b71c1c 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  text-shadow: none !important;
   animation: fxBlazingFire 1.4s ease-in-out infinite alternate !important;
-  will-change: text-shadow, transform;
+  will-change: filter, transform;
 }
 
-/* 9. Shaded Text */
+/* 9. Shaded Text (Kept as requested) */
 @keyframes fxShadedPulse {
   0%, 100% {
     transform: translateY(0);
@@ -9833,34 +9792,26 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   will-change: transform, text-shadow;
 }
 
-/* 10. Second Shadow Text Effect */
+/* 10. Second Shadow Text Effect (Drop-Shadow Aura Edition - No text-shadow) */
 @keyframes fxSecondShadowPulse {
   0%, 100% {
-    text-shadow: 
-      2px 2px 0 #000000,
-      0 0 10px var(--fx-color, #8b5cf6),
-      0 0 22px var(--fx-color, #8b5cf6);
-    filter: drop-shadow(0 0 4px var(--fx-color, #8b5cf6));
+    filter: drop-shadow(2px 2px 0 #000000) drop-shadow(0 0 10px var(--fx-color, #8b5cf6)) drop-shadow(0 0 22px var(--fx-color, #8b5cf6));
     transform: scale(1);
   }
   50% {
-    text-shadow: 
-      2px 2px 0 #000000,
-      0 0 18px var(--fx-color, #8b5cf6),
-      0 0 35px var(--fx-color, #8b5cf6),
-      0 0 50px var(--fx-color, #8b5cf6);
-    filter: drop-shadow(0 0 12px var(--fx-color, #8b5cf6));
+    filter: drop-shadow(2px 2px 0 #000000) drop-shadow(0 0 18px var(--fx-color, #8b5cf6)) drop-shadow(0 0 38px var(--fx-color, #8b5cf6));
     transform: scale(1.02);
   }
 }
 .name-fx-second-shadow {
   color: var(--fx-color, #ffffff) !important;
   -webkit-text-fill-color: var(--fx-color, #ffffff) !important;
+  text-shadow: none !important;
   animation: fxSecondShadowPulse 2.2s ease-in-out infinite alternate !important;
-  will-change: text-shadow, filter, transform;
+  will-change: filter, transform;
 }
 
-/* 11. Simple Text Stroke Effect */
+/* 11. Simple Text Stroke Effect (No text-shadow) */
 @keyframes fxStrokeGlow {
   0%, 100% {
     -webkit-text-stroke: 1.5px var(--fx-color, #38bdf8);
@@ -9876,6 +9827,20 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 .name-fx-stroke {
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
   animation: fxStrokeGlow 2.5s ease-in-out infinite alternate !important;
   will-change: filter, transform, -webkit-text-stroke;
+}
+
+/* Enforce NO text-shadow on all effects except sugar-sweet and shaded */
+.name-fx-nabla,
+.name-fx-aurora,
+.name-fx-rainbow-spot,
+.name-fx-twenty-twenty,
+.name-fx-snow-bros,
+.name-fx-layered-shadow,
+.name-fx-blazing-fire,
+.name-fx-second-shadow,
+.name-fx-stroke {
+  text-shadow: none !important;
 }
