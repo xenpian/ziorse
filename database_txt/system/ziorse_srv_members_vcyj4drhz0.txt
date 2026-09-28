@@ -2,7 +2,7 @@
   {
     "handle": "@sa",
     "name": "ziorse creator",
-    "avatar": "http://localhost:3000/uploads/avatar_1790622588292_u4acr.png",
+    "avatar": "http://localhost:3000/uploads/avatar_1790622598145_j726e.png",
     "fontStyle": "outfit",
     "nameColor": "#18181b",
     "nameEffects": [],
