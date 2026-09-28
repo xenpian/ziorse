@@ -1191,6 +1191,306 @@ textarea {
   max-width: 72px;
 }
 
+/* =============================================================
+   DARK MODE OVERRIDES FOR SETTINGS (Tam Tema Uyumu & Sıfır Hata)
+   ============================================================= */
+body.dark-mode,
+.dark-mode {
+  --bg-app: #000000;
+  --bg-servers: #000000;
+  --bg-sidebar: #000000;
+  --bg-card: #000000;
+  --bg-card-hover: #0a0a0a;
+  --bg-input: #09090b;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
+  --border-color: #27272a;
+  --border-dark: #3f3f46;
+}
+
+body.dark-mode .btn-ss-primary,
+body.dark-mode .btn-ss-outline,
+body.dark-mode .ss-btn-upload-icon,
+body.dark-mode .btn-edit-account-field,
+body.dark-mode #btn-test-mic,
+body.dark-mode #btn-change-password,
+body.dark-mode #btn-settings-save,
+body.dark-mode #btn-settings-discard,
+body.dark-mode #btn-go-profile-tab,
+body.dark-mode #btn-edit-banner-quick {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+}
+
+body.dark-mode .btn-ss-primary:hover,
+body.dark-mode .btn-ss-outline:hover,
+body.dark-mode .ss-btn-upload-icon:hover,
+body.dark-mode .btn-edit-account-field:hover,
+body.dark-mode #btn-test-mic:hover,
+body.dark-mode #btn-change-password:hover,
+body.dark-mode #btn-settings-save:hover,
+body.dark-mode #btn-settings-discard:hover,
+body.dark-mode #btn-go-profile-tab:hover,
+body.dark-mode #btn-edit-banner-quick:hover {
+  background: #27272a !important;
+  border-color: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .btn-ss-danger,
+body.dark-mode .ss-nav-item.danger,
+body.dark-mode .ss-btn-remove-icon {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #f87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+body.dark-mode .btn-ss-danger:hover,
+body.dark-mode .ss-nav-item.danger:hover,
+body.dark-mode .ss-btn-remove-icon:hover {
+  background: rgba(239, 68, 68, 0.24) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+body.dark-mode .ss-input,
+body.dark-mode .ss-textarea {
+  background: #09090b !important;
+  border: 1.5px solid #27272a !important;
+  color: #f4f4f5 !important;
+}
+
+body.dark-mode .ss-input:focus,
+body.dark-mode .ss-textarea:focus {
+  background: #121214 !important;
+  border-color: #52525b !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .ss-input::placeholder,
+body.dark-mode .ss-textarea::placeholder {
+  color: #52525b !important;
+}
+
+body.dark-mode select.ss-input option {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+}
+
+body.dark-mode input[type="range"] {
+  background: #27272a;
+}
+
+body.dark-mode input[type="range"]:hover {
+  background: #3f3f46;
+}
+
+body.dark-mode input[type="range"]::-webkit-slider-thumb {
+  background: #ffffff;
+  border-color: #52525b;
+}
+
+body.dark-mode input[type="range"]::-moz-range-thumb {
+  background: #ffffff;
+  border-color: #52525b;
+}
+
+body.dark-mode .ss-toggle-slider {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+body.dark-mode .ss-toggle-label input[type="checkbox"]:checked + .ss-toggle-slider {
+  background: #f4f4f5 !important;
+  border-color: #f4f4f5 !important;
+}
+
+body.dark-mode .ss-toggle-label input[type="checkbox"]:checked + .ss-toggle-slider::after {
+  background: #09090b !important;
+}
+
+body.dark-mode .theme-card {
+  background: #121214;
+  border-color: #27272a;
+}
+
+body.dark-mode .theme-card:hover {
+  border-color: #52525b;
+}
+
+body.dark-mode .theme-card.active {
+  background: #18181b;
+  border-color: #ffffff !important;
+}
+
+body.dark-mode .theme-card-icon {
+  background: #18181b;
+  color: #f4f4f5;
+}
+
+body.dark-mode .mic-bar-wrap {
+  background: #18181b;
+  border-color: #27272a;
+}
+
+body.dark-mode #mic-test-bar {
+  background: #10b981;
+}
+
+body.dark-mode .keybind-badge {
+  background: #18181b;
+  border-color: #27272a;
+  color: #e4e4e7;
+}
+
+body.dark-mode .settings-profile-preview-card {
+  background: var(--bg-card);
+  border-color: #27272a;
+}
+
+body.dark-mode .settings-preview-banner {
+  background: #18181b;
+}
+
+body.dark-mode .settings-preview-avatar-wrapper {
+  background: var(--bg-card);
+  border-color: var(--bg-card);
+}
+
+body.dark-mode .settings-preview-avatar-initials {
+  background: #18181b;
+  color: #f4f4f5;
+}
+
+body.dark-mode .settings-preview-status-pill {
+  background: #121214;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+body.dark-mode .settings-preview-bio-box {
+  background: #121214;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+body.dark-mode .ss-save-bar {
+  background: #121214;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+body.dark-mode .ss-save-msg {
+  color: #f4f4f5;
+}
+
+body.dark-mode .acc-info-row {
+  border-color: #27272a;
+}
+
+body.dark-mode .acc-info-value {
+  color: #f4f4f5;
+}
+
+body.dark-mode .btn-style-reset {
+  background: #18181b;
+  border-color: #27272a;
+  color: #a1a1aa;
+}
+
+body.dark-mode .btn-style-reset:hover {
+  background: #27272a;
+  color: #ffffff;
+}
+
+body.dark-mode .gg-font-card {
+  background: #121214;
+  border-color: #27272a;
+}
+
+body.dark-mode .gg-font-card:hover {
+  background: #18181b;
+  border-color: #3f3f46;
+}
+
+body.dark-mode .gg-font-card.active {
+  background: #1c1c20 !important;
+  border-color: #ffffff !important;
+}
+
+body.dark-mode .gg-font-card span {
+  color: #f4f4f5;
+}
+
+body.dark-mode .effect-card {
+  background: #121214;
+  border-color: #27272a;
+}
+
+body.dark-mode .effect-card:hover {
+  background: #18181b;
+  border-color: #3f3f46;
+}
+
+body.dark-mode .effect-card.active {
+  background: #1c1c20 !important;
+  border-color: #ffffff !important;
+}
+
+body.dark-mode .effect-label-sabit {
+  color: #f1f5f9;
+}
+
+body.dark-mode .effect-label-shadow {
+  color: #cbd5e1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+body.dark-mode .btn-weight-pill {
+  background: #121214;
+  border-color: #27272a;
+  color: #a1a1aa;
+}
+
+body.dark-mode .btn-weight-pill:hover {
+  background: #18181b;
+  border-color: #3f3f46;
+  color: #f4f4f5;
+}
+
+body.dark-mode .btn-weight-pill.active {
+  background: #ffffff !important;
+  color: #09090b !important;
+  border-color: #ffffff !important;
+}
+
+body.dark-mode .gradient-slider-container {
+  background: #121214;
+  border-color: #27272a;
+}
+
+body.dark-mode .hesabim-frame-item {
+  background: #121214;
+  border-color: #27272a;
+}
+
+body.dark-mode .hesabim-frame-item:hover {
+  background: #18181b;
+  border-color: #3f3f46;
+}
+
+body.dark-mode .hesabim-frame-item.active {
+  background: #1c1c20 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 1.5px #ffffff !important;
+}
+
+body.dark-mode .hesabim-frame-name {
+  color: #a1a1aa;
+}
+
 *,
 *::before,
 *::after {
