@@ -94,9 +94,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -194,9 +194,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -246,9 +246,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -298,9 +298,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -415,9 +415,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -467,9 +467,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -519,9 +519,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -570,9 +570,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -621,9 +621,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -673,9 +673,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -724,9 +724,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -775,9 +775,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -826,9 +826,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -877,9 +877,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -928,9 +928,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -979,9 +979,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1030,9 +1030,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1081,9 +1081,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1132,9 +1132,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1183,9 +1183,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1234,9 +1234,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1285,9 +1285,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1336,9 +1336,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1387,9 +1387,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1438,9 +1438,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1489,9 +1489,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1540,9 +1540,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1591,9 +1591,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1639,9 +1639,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1690,9 +1690,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1741,9 +1741,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
@@ -1792,9 +1792,9 @@
         "name": "ziorse creator",
         "avatar": "http://localhost:3000/uploads/avatar_1790614829767_p1xs9.png",
         "fontStyle": "marker",
-        "nameColor": "#8b5cf6",
+        "nameColor": "#ffffff",
         "nameEffects": [
-          "sugar-sweet"
+          "nabla"
         ],
         "avatarFrame": "assets/avatar-frames/Lord.png",
         "fontWeight": "900"
