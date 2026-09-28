@@ -229,45 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setMediaAvatar(sideAvatarImg?.parentElement, sideAvatarImg, sideAvatarInitials, draftProfile.avatar, initials);
 
-    // Account Tab
-    if (accPreviewName) {
-      accPreviewName.textContent = draftProfile.name;
-      const fontFamilies = {
-        'outfit': "'Outfit', sans-serif",
-        'cyber': "'Russo One', sans-serif",
-        'cursive': "'Caveat', cursive",
-        'pixel': "'Press Start 2P', monospace",
-        'serif': "'Cinzel', serif",
-        'neon': "'Righteous', cursive",
-        'terminal': "'JetBrains Mono', monospace",
-        'inter': "'Inter', sans-serif"
-      };
-      accPreviewName.style.fontFamily = fontFamilies[draftProfile.fontStyle] || fontFamilies['outfit'];
-
-      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
-        accPreviewName.style.background = draftProfile.nameColor;
-        accPreviewName.style.webkitBackgroundClip = 'text';
-        accPreviewName.style.webkitTextFillColor = 'transparent';
-        accPreviewName.style.color = 'transparent';
-      } else {
-        accPreviewName.style.background = 'none';
-        accPreviewName.style.webkitBackgroundClip = 'unset';
-        accPreviewName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
-        accPreviewName.style.color = draftProfile.nameColor || 'var(--text-main)';
-      }
-
-      const effects = draftProfile.nameEffects || [];
-      let textShadows = [];
-      if (effects.includes('glow')) {
-        const glowColor = (draftProfile.nameColor && draftProfile.nameColor.startsWith('#')) ? draftProfile.nameColor : '#00f2fe';
-        textShadows.push(`0 0 12px ${glowColor}`);
-      }
-      if (effects.includes('shadow')) {
-        textShadows.push('2px 3px 5px rgba(0, 0, 0, 0.8)');
-      }
-      accPreviewName.style.textShadow = textShadows.join(', ') || 'none';
-      accPreviewName.style.letterSpacing = effects.includes('spaced') ? '2px' : 'normal';
-    }
+    // Account Tab & Live Previews Styling
+    updateLiveStyleControlsAndPreview();
 
     if (accPreviewHandle) accPreviewHandle.textContent = draftProfile.handle;
     if (accInfoName) accInfoName.textContent = draftProfile.name;
