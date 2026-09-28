@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 
   // Dark mode
-  if (ds.theme === 'dark') document.body.classList.add('dark-mode');
+  const curTh = (ds && ds.theme) || localStorage.getItem('ziorse_theme') || localStorage.getItem('ziorse_theme_v14') || localStorage.getItem('ziorse_theme_preference') || 'light';
+  const isDarkInitial = curTh === 'dark';
+  document.documentElement.classList.toggle('dark-mode', isDarkInitial);
+  document.body.classList.toggle('dark-mode', isDarkInitial);
 
   // URL params
   const params = new URLSearchParams(window.location.search);
