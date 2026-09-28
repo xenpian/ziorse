@@ -1181,19 +1181,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Active states for Effect Cards (.effect-card)
-    const activeEffects = draftProfile.nameEffects || [];
-    const isGradient = draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient');
+    const activeEffects = Array.isArray(draftProfile.nameEffects) ? draftProfile.nameEffects : [];
     document.querySelectorAll('.effect-card').forEach(card => {
       const eff = card.dataset.effect;
       let isAct = false;
       if (eff === 'sabit') {
-        isAct = activeEffects.length === 0 && !isGradient;
-      } else if (eff === 'gradyan') {
-        isAct = isGradient && !draftProfile.nameColor.includes('#ec4899') && !draftProfile.nameColor.includes('#ef4444') && !draftProfile.nameColor.includes('#e11d48');
-      } else if (eff === 'candy') {
-        isAct = isGradient && (draftProfile.nameColor.includes('#ec4899') || draftProfile.nameColor.includes('#f472b6'));
-      } else if (eff === 'prizma') {
-        isAct = isGradient && (draftProfile.nameColor.includes('#ef4444') || draftProfile.nameColor.includes('#ff007f') || draftProfile.nameColor.includes('#e11d48'));
+        isAct = activeEffects.length === 0;
       } else {
         isAct = activeEffects.includes(eff);
       }
