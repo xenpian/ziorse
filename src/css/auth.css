@@ -137,15 +137,31 @@
   border-color: rgb(160, 160, 160);
 }
 
+body.dark-mode .auth-card {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .auth-input {
+  background: #09090b;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+body.dark-mode .auth-input:focus {
+  border-color: #52525b;
+}
+
 body.dark-mode .auth-submit-btn {
-  background: #000000;
-  border-color: #2a2a2a;
-  color: var(--text-main);
+  background: #18181b;
+  border-color: #27272a;
+  color: #f4f4f5;
 }
 
 body.dark-mode .auth-submit-btn:hover {
-  background: #0a0a0a;
-  border-color: #444444;
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #ffffff;
 }
 
 /* Alt link */
