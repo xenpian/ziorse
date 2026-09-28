@@ -228,43 +228,59 @@ document.addEventListener('DOMContentLoaded', () => {
     elName.style.verticalAlign = 'middle';
 
     elName.classList.remove(
-      'name-fx-shine', 'name-fx-rainbow', 'name-fx-neon',
-      'name-fx-aurora', 'name-fx-fire', 'name-fx-glitch',
-      'name-fx-prism', 'name-fx-cosmic', 'name-fx-gold'
+      'name-fx-nabla', 'name-fx-aurora', 'name-fx-rainbow-spot',
+      'name-fx-sugar-sweet', 'name-fx-twenty-twenty', 'name-fx-snow-bros',
+      'name-fx-layered-shadow', 'name-fx-blazing-fire', 'name-fx-shaded',
+      'name-fx-second-shadow', 'name-fx-stroke'
     );
     elName.style.textShadow = 'none';
     elName.style.filter = '';
+    elName.style.webkitTextStroke = '';
 
     const effects = Array.isArray(profile.nameEffects) ? profile.nameEffects : (profile.nameEffects ? [profile.nameEffects] : []);
     const isGrad = profile.nameColor && typeof profile.nameColor === 'string' && profile.nameColor.startsWith('linear-gradient');
     const eff = effects[0] || null;
 
-    if (eff === 'shine') {
-      elName.classList.add('name-fx-shine');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'rainbow') {
-      elName.classList.add('name-fx-rainbow');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'fire') {
-      elName.classList.add('name-fx-fire');
-      elName.style.display = 'inline-block';
-    } else if (eff === 'neon') {
-      elName.classList.add('name-fx-neon');
+    const userColor = (!isGrad && profile.nameColor && profile.nameColor !== 'none') ? profile.nameColor : '#8b5cf6';
+    elName.style.setProperty('--fx-color', userColor);
+    elName.style.setProperty('--fx-glow', userColor);
+    elName.style.setProperty('--fx-hue', hexToHue(userColor) + 'deg');
+    elName.style.setProperty('--fx-sugar-1', `color-mix(in srgb, ${userColor} 80%, black)`);
+    elName.style.setProperty('--fx-sugar-2', `color-mix(in srgb, ${userColor} 60%, black)`);
+    elName.style.setProperty('--fx-sugar-3', `color-mix(in srgb, ${userColor} 40%, black)`);
+
+    if (eff === 'nabla') {
+      elName.classList.add('name-fx-nabla');
       elName.style.display = 'inline-block';
     } else if (eff === 'aurora') {
       elName.classList.add('name-fx-aurora');
       elName.style.display = 'inline-block';
-    } else if (eff === 'gold') {
-      elName.classList.add('name-fx-gold');
+    } else if (eff === 'rainbow-spot') {
+      elName.classList.add('name-fx-rainbow-spot');
       elName.style.display = 'inline-block';
-    } else if (eff === 'prism') {
-      elName.classList.add('name-fx-prism');
+    } else if (eff === 'sugar-sweet') {
+      elName.classList.add('name-fx-sugar-sweet');
       elName.style.display = 'inline-block';
-    } else if (eff === 'cosmic') {
-      elName.classList.add('name-fx-cosmic');
+    } else if (eff === 'twenty-twenty') {
+      elName.classList.add('name-fx-twenty-twenty');
       elName.style.display = 'inline-block';
-    } else if (eff === 'glitch') {
-      elName.classList.add('name-fx-glitch');
+    } else if (eff === 'snow-bros') {
+      elName.classList.add('name-fx-snow-bros');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'layered-shadow') {
+      elName.classList.add('name-fx-layered-shadow');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'blazing-fire') {
+      elName.classList.add('name-fx-blazing-fire');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'shaded') {
+      elName.classList.add('name-fx-shaded');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'second-shadow') {
+      elName.classList.add('name-fx-second-shadow');
+      elName.style.display = 'inline-block';
+    } else if (eff === 'stroke') {
+      elName.classList.add('name-fx-stroke');
       elName.style.display = 'inline-block';
     } else {
       if (isGrad) {

@@ -10,7 +10,7 @@
   "fontStyle": "marker",
   "nameColor": "#8b5cf6",
   "nameEffects": [
-    "glitch"
+    "sugar-sweet"
   ],
   "avatarFrame": "assets/avatar-frames/Lord.png",
   "profileEffect": "none",
