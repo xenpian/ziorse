@@ -9397,6 +9397,95 @@ body:not(.dark-mode) .mention-popup-item.selected {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   GLOBAL THEME HARMONY & FIXES FOR ACTION BUTTONS & PANELS
+   ───────────────────────────────────────────────────────────── */
+body.dark-mode .dm-req-accept,
+body.dark-mode .dm-req-reject,
+body.dark-mode .btn-copy-invite,
+body.dark-mode .dm-invite-join,
+body.dark-mode .afd-btn {
+  background: #18181b !important;
+  border-color: #27272a !important;
+  color: var(--text-main) !important;
+}
+
+body.dark-mode .dm-req-reject {
+  color: #f87171 !important;
+}
+
+body.dark-mode .dm-req-accept:hover,
+body.dark-mode .btn-copy-invite:hover,
+body.dark-mode .dm-invite-join:hover,
+body.dark-mode .afd-btn:hover {
+  background: #27272a !important;
+  border-color: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .dm-req-reject:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Image Cropper Dark Mode Support */
+body.dark-mode .cropper-viewport-wrap,
+body.dark-mode .cropper-viewport {
+  background: #09090b !important;
+  border-color: #222222 !important;
+}
+
+body.dark-mode .cropper-btn-apply {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.dark-mode .cropper-btn-apply:hover {
+  background: #e4e4e7 !important;
+}
+
+/* Light Mode Overrides for Sidebar Message Search */
+body:not(.dark-mode) .sidebar-msg-search-results {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-search-box {
+  background: #f4f4f5 !important;
+  border-color: #e4e4e7 !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-search-input {
+  color: #111827 !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-search-input::placeholder {
+  color: #9ca3af !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-result-card {
+  background: #f9fafb !important;
+  border-color: #f3f4f6 !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-result-card:hover {
+  background: #f3f4f6 !important;
+  border-color: #e5e7eb !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-result-author {
+  color: #111827 !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-result-snippet {
+  color: #374151 !important;
+}
+
+body:not(.dark-mode) .sidebar-msg-search-count {
+  color: #111827 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
    ABSOLUTE ZERO BOX-SHADOW ENFORCEMENT
    ───────────────────────────────────────────────────────────── */
 *,
