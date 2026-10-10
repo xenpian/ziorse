@@ -20,15 +20,16 @@
     "bio": "fdffa",
     "followers": 0,
     "following": 0,
-    "status": {
-      "type": "idle",
-      "text": "porno"
-    },
     "fontStyle": "righteous",
     "fontWeight": "900",
     "nameColor": "#18181b",
     "nameEffects": [],
-    "avatarFrame": "assets/avatar-frames/Liaz.png"
+    "avatarFrame": "assets/avatar-frames/Liaz.png",
+    "memberTheme": "",
+    "status": {
+      "type": "online",
+      "text": ""
+    }
   },
   "@saf": {
     "name": "safsfdsvv",
