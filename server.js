@@ -979,6 +979,7 @@ io.on('connection', (socket) => {
         if (data.nameColor) acc.nameColor = data.nameColor;
         if (data.nameEffects) acc.nameEffects = data.nameEffects;
         if (data.avatarFrame) acc.avatarFrame = data.avatarFrame;
+        if (data.memberTheme) acc.memberTheme = data.memberTheme;
       }
 
       // Üyenin profil fotoğrafı/adı değiştiğinde tüm sunucu üye listelerini güncelle
@@ -992,6 +993,7 @@ io.on('connection', (socket) => {
           if (data.nameColor) globalServerMembers[invCode][mIdx].nameColor = data.nameColor;
           if (data.nameEffects) globalServerMembers[invCode][mIdx].nameEffects = data.nameEffects;
           if (data.avatarFrame) globalServerMembers[invCode][mIdx].avatarFrame = data.avatarFrame;
+          if (data.memberTheme) globalServerMembers[invCode][mIdx].memberTheme = data.memberTheme;
         }
       });
 
