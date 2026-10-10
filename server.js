@@ -859,6 +859,7 @@ io.on('connection', (socket) => {
 
   // Yeni bağlanan istemciye güncel verileri ilet
   socket.emit('invite-registry-updated', globalInviteRegistry);
+  socket.emit('public-servers-updated', globalInviteRegistry);
   socket.emit('user-directory-updated', globalUserDirectory);
   socket.emit('server-members-updated', globalServerMembers);
   socket.emit('voice-users-updated', globalVoiceRooms);
