@@ -2100,13 +2100,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Ana Hub butonuna tıklandığında menüyü aç / kapat
+  // Ana Hub butonuna tıklandığında menüyü aç / kapat veya sayfaya dön
   if (navHubMainBtn) {
     navHubMainBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (flyoutCloseTimer) clearTimeout(flyoutCloseTimer);
-      if (navHubFlyout) {
-        navHubFlyout.classList.toggle('open');
+      const isHubActive = navHubMainBtn.classList.contains('active');
+      if (!isHubActive) {
+        const activeMini = document.querySelector('.hub-mini-btn.active');
+        const targetNav = activeMini ? activeMini.dataset.nav : 'public-servers';
+        switchNavHubTo(targetNav, true);
+      } else {
+        if (navHubFlyout) {
+          navHubFlyout.classList.toggle('open');
+        }
       }
     });
   }
