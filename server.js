@@ -910,10 +910,43 @@ io.on('connection', (socket) => {
           if (data.avatarFrame) globalServerMembers[invCode][mIdx].avatarFrame = data.avatarFrame;
         }
       });
+
+      // Sunucu davet listesindeki sahip bilgilerini güncelle
+      Object.keys(globalInviteRegistry).forEach(code => {
+        const reg = globalInviteRegistry[code];
+        if (reg && (reg.ownerHandle || '').toLowerCase().replace('@', '') === cleanH.replace('@', '')) {
+          if (data.avatar) reg.ownerAvatar = data.avatar;
+          if (data.name) reg.ownerName = data.name;
+        }
+      });
+
+      // serverPosts içindeki gönderi ve yorumların yazar ve avatar bilgilerini güncelle
+      if (Array.isArray(serverPosts)) {
+        serverPosts.forEach(p => {
+          if (p && (p.handle || '').toLowerCase().replace('@', '') === cleanH.replace('@', '')) {
+            if (data.avatar) p.avatar = data.avatar;
+            if (data.name) p.author = data.name;
+          }
+          if (Array.isArray(p.comments)) {
+            p.comments.forEach(c => {
+              if (c && (c.handle || '').toLowerCase().replace('@', '') === cleanH.replace('@', '')) {
+                if (data.avatar) c.avatar = data.avatar;
+                if (data.name) c.author = data.name;
+              }
+            });
+          }
+        });
+      }
+
       saveSyncDb();
       io.emit('user-directory-updated', globalUserDirectory);
       io.emit('server-members-updated', globalServerMembers);
       io.emit('online-users-updated', Array.from(activeOnlineHandles));
+      io.emit('profile-updated', {
+        handle: h,
+        ...globalUserDirectory[h]
+      });
+      io.emit('public-servers-updated', globalInviteRegistry);
     }
   });
 
