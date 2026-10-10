@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         parent.appendChild(vid);
       }
       if (vid.src !== url) vid.src = url;
-      vid.play().catch(() => {});
+      vid.play().catch(() => { });
     } else {
       if (vid) vid.remove();
       if (url && url !== 'https://i.imgur.com/w3OhOmW.jpeg') {
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bannerEl.appendChild(vid);
       }
       if (vid.src !== url) vid.src = url;
-      vid.play().catch(() => {});
+      vid.play().catch(() => { });
     } else {
       if (vid) vid.remove();
       if (url) {
@@ -647,14 +647,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save user to dataStore
     ds.saveUser(updateObj);
     if (window.dataStore && window.dataStore !== ds && typeof window.dataStore.saveUser === 'function') {
-      try { window.dataStore.saveUser(updateObj); } catch (e) {}
+      try { window.dataStore.saveUser(updateObj); } catch (e) { }
     }
 
     // Instant In-Place Live Media & Display Update on Parent Window (Zero Reload!)
     const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
     if (targetParent) {
       if (targetParent.dataStore && targetParent.dataStore !== ds && typeof targetParent.dataStore.saveUser === 'function') {
-        try { targetParent.dataStore.saveUser(updateObj); } catch (e) {}
+        try { targetParent.dataStore.saveUser(updateObj); } catch (e) { }
       }
       if (typeof targetParent.updateLiveUserMedia === 'function') {
         targetParent.updateLiveUserMedia(
@@ -1091,20 +1091,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const isGrad = draftProfile.nameColor && typeof draftProfile.nameColor === 'string' && draftProfile.nameColor.startsWith('linear-gradient');
 
         if (isGrad) {
-            el.style.background = draftProfile.nameColor;
-            el.style.webkitBackgroundClip = 'text';
-            el.style.backgroundClip = 'text';
-            el.style.webkitTextFillColor = 'transparent';
-            el.style.color = 'transparent';
-            el.style.display = 'inline-block';
-          } else {
-            el.style.background = 'none';
-            el.style.webkitBackgroundClip = 'unset';
-            el.style.backgroundClip = 'unset';
-            el.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
-            el.style.color = draftProfile.nameColor || 'var(--text-main)';
-            el.style.display = 'inline-block';
-          }
+          el.style.background = draftProfile.nameColor;
+          el.style.webkitBackgroundClip = 'text';
+          el.style.backgroundClip = 'text';
+          el.style.webkitTextFillColor = 'transparent';
+          el.style.color = 'transparent';
+          el.style.display = 'inline-block';
+        } else {
+          el.style.background = 'none';
+          el.style.webkitBackgroundClip = 'unset';
+          el.style.backgroundClip = 'unset';
+          el.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
+          el.style.color = draftProfile.nameColor || 'var(--text-main)';
+          el.style.display = 'inline-block';
+        }
       });
     }
 
@@ -1357,11 +1357,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderMemberThemesGrid(themes);
     } catch (err) {
       console.warn('Member themes load failed, using fallback:', err);
-      loadedMemberThemes = [
-        { id: 'Cyber-Motion.gif', name: 'Cyber Motion', url: 'assets/member-themes/Cyber-Motion.gif', filename: 'Cyber-Motion.gif', isGif: true },
-        { id: 'Dark-Aura.png', name: 'Dark Aura', url: 'assets/member-themes/Dark-Aura.png', filename: 'Dark-Aura.png', isGif: false },
-        { id: 'Silver-Mist.png', name: 'Silver Mist', url: 'assets/member-themes/Silver-Mist.png', filename: 'Silver-Mist.png', isGif: false }
-      ];
+
       renderMemberThemesGrid(loadedMemberThemes);
     }
   }
