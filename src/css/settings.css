@@ -350,19 +350,33 @@ input[type="range"]::-moz-range-thumb {
    ────────────────────────────────────────── */
 .profile-editor-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 16px;
   align-items: start;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-@media (max-width: 900px) {
+.profile-editor-layout > * {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 880px) {
   .profile-editor-layout {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
 .settings-profile-preview-card {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: var(--bg-card, #ffffff);
   border: 1px solid var(--border-dark, #dfdfdf);
   border-radius: 14px;
