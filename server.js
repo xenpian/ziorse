@@ -548,7 +548,129 @@ app.post('/api/invite/register', (req, res) => {
   }
   globalInviteRegistry[code] = info;
   io.emit('invite-registry-updated', globalInviteRegistry);
+  io.emit('public-servers-updated', globalInviteRegistry);
   res.json({ success: true, registry: globalInviteRegistry });
+});
+
+// ── HERKESE AÇIK SUNUCULAR (PUBLIC SERVERS) API ───────────────
+app.get('/api/public-servers', (req, res) => {
+  const publicList = [];
+  Object.keys(globalInviteRegistry).forEach(code => {
+    const info = globalInviteRegistry[code];
+    if (info && info.isPublic !== false) {
+      const members = globalServerMembers[code] || [];
+      const memberCount = Math.max(members.length, info.memberCount || 1);
+
+      let onlineCount = 0;
+      members.forEach(m => {
+        if (!m || !m.handle) return;
+        const cleanH = m.handle.toLowerCase().replace('@', '');
+        const fullH = '@' + cleanH;
+        if (activeOnlineHandles.has(cleanH) || activeOnlineHandles.has(fullH)) {
+          onlineCount++;
+        }
+      });
+      const offlineCount = Math.max(0, memberCount - onlineCount);
+
+      publicList.push({
+        inviteCode: code,
+        serverId: info.serverId || code,
+        name: info.serverName || 'Sunucu',
+        description: info.serverDescription || info.description || 'Topluluk ve sohbet sunucusu.',
+        icon: info.serverIcon || 'Z',
+        banner: info.serverBanner || '',
+        memberCount: memberCount,
+        onlineCount: onlineCount,
+        offlineCount: offlineCount,
+        ownerHandle: info.ownerHandle || '',
+        ownerName: info.ownerName || '',
+        ownerAvatar: info.ownerAvatar || '',
+        categories: info.categories || [],
+        isPublic: true
+      });
+    }
+  });
+  res.json({ servers: publicList });
+});
+
+// ── BROWSER / DESKTOP DATA PARITY STORAGE API ─────────────────
+const DB_TXT_DIR = path.join(__dirname, 'database_txt');
+const SYSTEM_TXT_DIR = path.join(DB_TXT_DIR, 'system');
+const POSTS_TXT_DIR = path.join(DB_TXT_DIR, 'posts');
+const DMS_TXT_DIR = path.join(DB_TXT_DIR, 'dms');
+
+function ensureDbTxtDirs() {
+  [DB_TXT_DIR, SYSTEM_TXT_DIR, POSTS_TXT_DIR, DMS_TXT_DIR].forEach(dir => {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  });
+}
+
+function readAllStoreData() {
+  ensureDbTxtDirs();
+  const store = {};
+
+  try {
+    const sysFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.endsWith('.txt'));
+    for (const file of sysFiles) {
+      const key = decodeURIComponent(file.replace(/\.txt$/, ''));
+      const content = fs.readFileSync(path.join(SYSTEM_TXT_DIR, file), 'utf8');
+      try {
+        store[key] = JSON.parse(content);
+      } catch {
+        store[key] = content;
+      }
+    }
+  } catch (e) { }
+
+  if (serverPosts && serverPosts.length > 0) {
+    store['ziorse_real_posts_v14'] = serverPosts;
+  }
+  store['ziorse_invite_registry'] = globalInviteRegistry;
+  store['ziorse_user_directory'] = globalUserDirectory;
+  store['ziorse_accounts'] = globalAccounts;
+
+  return store;
+}
+
+app.get('/api/store/all', (req, res) => {
+  res.json(readAllStoreData());
+});
+
+app.get('/api/store/get/:key', (req, res) => {
+  const key = req.params.key;
+  const store = readAllStoreData();
+  res.json({ key, value: store[key] !== undefined ? store[key] : null });
+});
+
+app.post('/api/store/set', (req, res) => {
+  const { key, val } = req.body;
+  if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
+  ensureDbTxtDirs();
+
+  try {
+    const safeKey = encodeURIComponent(key);
+    const filename = `${safeKey}.txt`;
+    const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
+    fs.writeFileSync(path.join(SYSTEM_TXT_DIR, filename), strVal, 'utf8');
+
+    if (key === 'ziorse_invite_registry' && typeof val === 'object') {
+      globalInviteRegistry = Object.assign(globalInviteRegistry, val);
+      io.emit('invite-registry-updated', globalInviteRegistry);
+      io.emit('public-servers-updated', globalInviteRegistry);
+    } else if (key === 'ziorse_user_directory' && typeof val === 'object') {
+      globalUserDirectory = Object.assign(globalUserDirectory, val);
+      io.emit('user-directory-updated', globalUserDirectory);
+    } else if (key.startsWith('ziorse_srv_members_') && Array.isArray(val)) {
+      const code = key.replace('ziorse_srv_members_', '');
+      globalServerMembers[code] = val;
+      io.emit('server-members-updated', globalServerMembers);
+    }
+
+    io.emit('store-synced', { key, val });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ── FILE UPLOAD ENDPOINT ──────────────────────────────────────
