@@ -281,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       renderFeed();
       renderDMs();
+      if (typeof renderPublicServers === 'function') renderPublicServers();
     });
 
     socket.on('user-directory-updated', (dir) => {
@@ -298,7 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
               uData.fontStyle,
               uData.nameColor,
               uData.nameEffects,
-              uData.avatarFrame
+              uData.avatarFrame,
+              uData.fontWeight
             );
           }
         });
@@ -308,6 +310,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       renderOnlineMembers();
       updateRightSidebar();
+      if (typeof renderPublicServers === 'function') renderPublicServers();
+    });
+
+    socket.on('public-servers-updated', (registry) => {
+      if (registry && typeof registry === 'object') {
+        window.__globalInviteRegistry = registry;
+      }
+      if (typeof renderPublicServers === 'function') renderPublicServers();
+    });
+
+    socket.on('profile-updated', (data) => {
+      if (data && data.handle && typeof window.updateLiveUserMedia === 'function') {
+        window.updateLiveUserMedia(
+          data.handle,
+          data.avatar,
+          data.banner,
+          data.fontStyle,
+          data.nameColor,
+          data.nameEffects,
+          data.avatarFrame,
+          data.fontWeight
+        );
+      }
+      if (typeof renderPublicServers === 'function') renderPublicServers();
+    });
+
+    socket.on('store-synced', (data) => {
+      if (data && data.key) {
+        try {
+          if (window._ziorseMemCache) window._ziorseMemCache.set(data.key, typeof data.val === 'object' ? JSON.stringify(data.val) : String(data.val));
+          if (window._ziorseParsedCache && typeof data.val === 'object') window._ziorseParsedCache.set(data.key, data.val);
+        } catch(e) {}
+        if (data.key === 'ziorse_invite_registry' && typeof renderPublicServers === 'function') {
+          renderPublicServers();
+        }
+      }
     });
 
     socket.on('user-status-updated', (data) => {
