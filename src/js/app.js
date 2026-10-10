@@ -1462,8 +1462,8 @@ document.addEventListener('DOMContentLoaded', () => {
         newServerNameInput.focus();
       }
       if (newServerDescInput) newServerDescInput.value = '';
-      if (optPrivacyPublic) optPrivacyPublic.classList.add('active');
-      if (optPrivacyPrivate) optPrivacyPrivate.classList.remove('active');
+      if (optPrivacyPrivate) optPrivacyPrivate.classList.add('active');
+      if (optPrivacyPublic) optPrivacyPublic.classList.remove('active');
     }
   }
 
