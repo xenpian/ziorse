@@ -1805,13 +1805,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const hubMiniBtns = document.querySelectorAll('.hub-mini-btn');
 
   const navIconMap = {
+    'public-servers': 'compass',
     'for-you': 'home',
     'messages': 'message-square',
     'saved': 'bookmark'
   };
 
   function switchNavHubTo(navType, animate = true) {
-    const iconName = navIconMap[navType] || 'home';
+    const iconName = navIconMap[navType] || 'compass';
 
     // 1. Mini butonların aktifliğini güncelle
     hubMiniBtns.forEach(btn => {
@@ -1846,22 +1847,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentServerName) currentServerName.textContent = 'Sunucular';
     const feedHeaderRight = document.querySelector('.feed-header-right');
 
-    if (navType === 'messages') {
+    if (navType === 'public-servers') {
+      if (mainFeedView) mainFeedView.style.display = 'none';
+      if (dmView) dmView.style.display = 'none';
+      if (publicServersView) publicServersView.style.display = 'flex';
+      if (feedHeaderRight) feedHeaderRight.style.display = 'none';
+      if (headerLocationBreadcrumb) headerLocationBreadcrumb.textContent = '# Herkese Açık Sunucular';
+      if (appLayoutEl) {
+        appLayoutEl.classList.add('hide-channels-sidebar');
+        appLayoutEl.classList.add('hide-right-sidebar');
+        appLayoutEl.classList.remove('dm-active');
+      }
+      renderPublicServers();
+    } else if (navType === 'messages') {
+      if (publicServersView) publicServersView.style.display = 'none';
       if (mainFeedView) mainFeedView.style.display = 'none';
       if (dmView) dmView.style.display = 'grid';
       if (feedHeaderRight) feedHeaderRight.style.display = 'none';
+      if (headerLocationBreadcrumb) headerLocationBreadcrumb.textContent = '# Direkt Mesajlar';
       if (appLayoutEl) {
         appLayoutEl.classList.add('hide-channels-sidebar');
         appLayoutEl.classList.add('dm-active');
       }
       triggerDmWithSkeleton(150);
     } else {
+      if (publicServersView) publicServersView.style.display = 'none';
       if (dmView) dmView.style.display = 'none';
       if (mainFeedView) mainFeedView.style.display = 'flex';
       if (composerCard) composerCard.style.display = navType === 'saved' ? 'none' : 'flex';
       if (feedPostsContainer) feedPostsContainer.style.display = '';
-      const pageTitles = { 'for-you': '# Ana Akis', 'saved': '# Kaydedilenler' };
-      if (feedTitleText) feedTitleText.textContent = pageTitles[navType] || '# Ana Akis';
+      const pageTitles = { 'for-you': '# Ana Akış', 'saved': '# Kaydedilenler' };
+      if (feedTitleText) feedTitleText.textContent = pageTitles[navType] || '# Ana Akış';
+      if (headerLocationBreadcrumb) headerLocationBreadcrumb.textContent = pageTitles[navType] || '# Ana Akış';
       window.dataStore.activeFilter = navType;
       if (feedHeaderRight) feedHeaderRight.style.display = navType === 'saved' ? 'none' : '';
       if (appLayoutEl) {
@@ -1874,6 +1891,138 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.switchNavHubTo = switchNavHubTo;
+
+  function renderPublicServers(filterQuery = '') {
+    const grid = document.getElementById('public-servers-grid');
+    if (!grid) return;
+
+    const allPublic = (window.dataStore?.getPublicServers() || []);
+    const myServers = window.dataStore?.servers || [];
+    const onlineHandles = window.__activeOnlineHandles || new Set();
+
+    const q = (filterQuery || '').toLowerCase().trim();
+    const filtered = allPublic.filter(s => {
+      if (!q) return true;
+      return (s.name || '').toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q);
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--text-muted);">
+          <div style="width:64px; height:64px; border-radius:20px; background:rgba(99,102,241,0.1); display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#818cf8;">
+            <i data-lucide="compass" style="width:32px; height:32px;"></i>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:700; color:var(--text-main); margin-bottom:6px;">${q ? 'Eşleşen sunucu bulunamadı' : 'Henüz herkese açık sunucu yok'}</h3>
+          <p style="font-size:0.86rem; max-width:360px; line-height:1.45; margin-bottom:18px;">${q ? 'Farklı bir arama terimi deneyin.' : 'İlk herkese açık sunucuyu sen oluştur ve topluluğunu kur!'}</p>
+          <button id="btn-empty-create-server" class="btn-ps-create-trigger">
+            <i data-lucide="plus" style="width:16px; height:16px;"></i> Sunucu Oluştur
+          </button>
+        </div>
+      `;
+      refreshIcons(grid);
+      const emptyBtn = document.getElementById('btn-empty-create-server');
+      if (emptyBtn && typeof openCreateServerModal === 'function') {
+        emptyBtn.addEventListener('click', openCreateServerModal);
+      }
+      return;
+    }
+
+    grid.innerHTML = filtered.map(srv => {
+      const isMember = myServers.some(ms => ms.inviteCode === srv.inviteCode || ms.id === srv.inviteCode || ms.id === srv.serverId);
+      const members = window.dataStore?.getServerMembers(srv.inviteCode) || [];
+      const totalMembers = Math.max(members.length, srv.memberCount || 1);
+
+      // Canlı çevrim içi / çevrim dışı üye hesaplama
+      let onlineCount = 0;
+      members.forEach(m => {
+        if (!m || !m.handle) return;
+        const cleanH = m.handle.toLowerCase().replace('@', '');
+        const fullH = '@' + cleanH;
+        const dirUser = window.__globalUserDirectory && (window.__globalUserDirectory[fullH] || window.__globalUserDirectory[cleanH]);
+        const isOnline = onlineHandles.has(cleanH) || onlineHandles.has(fullH) || (dirUser && dirUser.status && dirUser.status.type !== 'offline');
+        if (isOnline) onlineCount++;
+      });
+      if (onlineCount === 0 && totalMembers > 0) onlineCount = 1;
+      const offlineCount = Math.max(0, totalMembers - onlineCount);
+
+      // Sunucu ikonu
+      let avatarHtml = '';
+      if (srv.icon && (srv.icon.startsWith('http') || srv.icon.startsWith('/uploads') || srv.icon.startsWith('data:image/'))) {
+        avatarHtml = `<img src="${escapeHtml(normalizeMediaUrl(srv.icon))}" class="ps-card-avatar-img" alt="${escapeHtml(srv.name)}">`;
+      } else {
+        const initials = (srv.icon || srv.name.substring(0, 2)).toUpperCase();
+        avatarHtml = `<div class="ps-card-avatar-text">${escapeHtml(initials)}</div>`;
+      }
+
+      // Banner
+      const bannerStyle = srv.banner && (srv.banner.startsWith('http') || srv.banner.startsWith('/uploads') || srv.banner.startsWith('data:image/'))
+        ? `background-image: url('${escapeHtml(normalizeMediaUrl(srv.banner))}');`
+        : '';
+
+      const actionBtnHtml = isMember
+        ? `<button class="btn-ps-joined" disabled title="Bu sunucunun zaten üyesisiniz"><i data-lucide="check" style="width:15px; height:15px;"></i> Katıldın.</button>`
+        : `<button class="btn-ps-join" data-invite="${escapeHtml(srv.inviteCode)}" data-name="${escapeHtml(srv.name)}"><i data-lucide="user-plus" style="width:15px; height:15px;"></i> Katıl</button>`;
+
+      return `
+        <div class="ps-server-card" data-invite="${escapeHtml(srv.inviteCode)}">
+          <div class="ps-card-banner" style="${bannerStyle}">
+            <div class="ps-card-banner-overlay"></div>
+          </div>
+          <div class="ps-card-body">
+            <div class="ps-card-avatar-wrap">
+              ${avatarHtml}
+            </div>
+            <h3 class="ps-card-name" title="${escapeHtml(srv.name)}">${escapeHtml(srv.name)}</h3>
+            <p class="ps-card-desc" title="${escapeHtml(srv.description)}">${escapeHtml(srv.description || 'Topluluk ve sohbet sunucusu.')}</p>
+            <div class="ps-card-stats">
+              <span class="ps-stat-pill"><i data-lucide="users" style="width:13px; height:13px;"></i> ${totalMembers} üye</span>
+              <span class="ps-stat-pill"><span class="ps-dot ps-dot-online"></span> ${onlineCount} Çevrim İçi</span>
+              <span class="ps-stat-pill"><span class="ps-dot ps-dot-offline"></span> ${offlineCount} Çevrim Dışı</span>
+            </div>
+            <div class="ps-card-footer">
+              ${actionBtnHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    refreshIcons(grid);
+
+    // Join button listeners
+    grid.querySelectorAll('.btn-ps-join').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const inviteCode = btn.dataset.invite;
+        const serverName = btn.dataset.name;
+        if (!inviteCode) return;
+
+        btn.disabled = true;
+        btn.innerHTML = 'Katılınıyor...';
+
+        const res = window.dataStore.joinByInviteCode(inviteCode);
+        if (res && res.success) {
+          showToast(`🎉 ${serverName || 'Sunucu'} sunucusuna başarıyla katıldın!`);
+          btn.className = 'btn-ps-joined';
+          btn.innerHTML = '<i data-lucide="check" style="width:15px; height:15px;"></i> Katıldın.';
+          refreshIcons(btn);
+          renderServers();
+        } else if (res && res.error) {
+          showToast(res.error);
+          btn.disabled = false;
+          btn.innerHTML = '<i data-lucide="user-plus" style="width:15px; height:15px;"></i> Katıl';
+          refreshIcons(btn);
+        }
+      });
+    });
+  }
+  window.renderPublicServers = renderPublicServers;
+
+  if (publicServersSearch) {
+    publicServersSearch.addEventListener('input', (e) => {
+      renderPublicServers(e.target.value);
+    });
+  }
 
   // Mini simgelere tıklanınca o sayfaya git ve ikonu ana butona geçir
   hubMiniBtns.forEach(btn => {
