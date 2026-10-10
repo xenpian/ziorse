@@ -26,11 +26,31 @@ function _initMemCacheOnce() {
       if (all && typeof all === 'object') {
         for (const [k, v] of Object.entries(all)) {
           if (typeof v === 'object' && v !== null) {
-            // Store both stringified (for compat) and parsed
             _ziorseMemCache.set(k, JSON.stringify(v));
             _ziorseParsedCache.set(k, v);
           } else {
             _ziorseMemCache.set(k, typeof v === 'string' ? v : JSON.stringify(v));
+          }
+        }
+      }
+    } catch (e) { }
+  } else {
+    // Browser Parity: Synchronously hydrate memory cache from server DB API
+    try {
+      const xhr = new XMLHttpRequest();
+      const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
+      xhr.open('GET', srvUrl + '/api/store/all', false);
+      xhr.send();
+      if (xhr.status === 200) {
+        const all = JSON.parse(xhr.responseText);
+        if (all && typeof all === 'object') {
+          for (const [k, v] of Object.entries(all)) {
+            if (typeof v === 'object' && v !== null) {
+              _ziorseMemCache.set(k, JSON.stringify(v));
+              _ziorseParsedCache.set(k, v);
+            } else {
+              _ziorseMemCache.set(k, typeof v === 'string' ? v : JSON.stringify(v));
+            }
           }
         }
       }
