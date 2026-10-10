@@ -86,8 +86,8 @@
     ],
     "description": "",
     "banner": "http://localhost:3000/uploads/migrated_1789652001735_vpjjl.jpg",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "members": [
       {
         "handle": "@sa",
