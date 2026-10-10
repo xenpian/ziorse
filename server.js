@@ -1333,12 +1333,17 @@ io.on('connection', (socket) => {
       if (Array.isArray(data.roles)) {
         globalInviteRegistry[data.inviteCode].roles = data.roles;
       }
-      if (data.memberRoles && typeof data.memberRoles === 'object') {
-        globalInviteRegistry[data.inviteCode].memberRoles = data.memberRoles;
+      if (data.isPublic !== undefined) {
+        globalInviteRegistry[data.inviteCode].isPublic = data.isPublic === true;
+      }
+      if (data.description !== undefined) {
+        globalInviteRegistry[data.inviteCode].description = data.description;
+        globalInviteRegistry[data.inviteCode].serverDescription = data.description;
       }
       saveSyncDb();
       io.emit('server-structure-updated', data);
       io.emit('invite-registry-updated', globalInviteRegistry);
+      io.emit('public-servers-updated', globalInviteRegistry);
     }
   });
 
