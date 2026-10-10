@@ -1485,12 +1485,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1534,12 +1529,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1583,12 +1573,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "banner": "",
