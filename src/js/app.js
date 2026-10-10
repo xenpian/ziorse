@@ -300,7 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
               uData.nameColor,
               uData.nameEffects,
               uData.avatarFrame,
-              uData.fontWeight
+              uData.fontWeight,
+              uData.name
             );
           }
         });
@@ -316,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('public-servers-updated', (registry) => {
       if (registry && typeof registry === 'object') {
         window.__globalInviteRegistry = registry;
+        ziorseSetStorage('ziorse_invite_registry', registry);
       }
       if (typeof renderPublicServers === 'function') renderPublicServers();
     });
@@ -330,7 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
           data.nameColor,
           data.nameEffects,
           data.avatarFrame,
-          data.fontWeight
+          data.fontWeight,
+          data.name
         );
       }
       if (typeof renderPublicServers === 'function') renderPublicServers();
