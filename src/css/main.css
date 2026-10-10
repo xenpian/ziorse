@@ -3362,10 +3362,41 @@ body.dark-mode .draw-color-picker-btn:hover {
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: background 0.15s;
+  position: relative;
+  overflow: hidden;
 }
 
 .user-member-item:hover {
   background: var(--bg-app);
+}
+
+.user-member-item .avatar-wrapper-status,
+.user-member-item > div:not(.user-member-theme-bg),
+.user-member-item .user-member-name,
+.user-member-item .user-member-status {
+  position: relative;
+  z-index: 1;
+}
+
+.user-member-theme-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 65%;
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0) 100%);
+}
+
+.user-member-item:hover .user-member-theme-bg {
+  opacity: 1;
 }
 
 .user-member-name {
