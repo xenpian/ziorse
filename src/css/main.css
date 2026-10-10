@@ -9952,7 +9952,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 
 .public-servers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   width: 100%;
 }
