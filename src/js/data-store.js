@@ -1257,7 +1257,7 @@ class DataStore {
     // 1. From Invite Registry
     Object.keys(registry).forEach(code => {
       const reg = registry[code];
-      if (reg && reg.isPublic !== false) {
+      if (reg && reg.isPublic === true) {
         mergedMap.set(code, {
           inviteCode: code,
           serverId: reg.serverId || code,
@@ -1277,7 +1277,7 @@ class DataStore {
 
     // 2. From user's servers
     (this.servers || []).forEach(s => {
-      if (s && s.isPublic !== false && s.inviteCode) {
+      if (s && s.isPublic === true && s.inviteCode) {
         const existing = mergedMap.get(s.inviteCode) || {};
         mergedMap.set(s.inviteCode, {
           ...existing,
