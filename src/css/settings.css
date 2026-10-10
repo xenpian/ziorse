@@ -511,13 +511,14 @@ input[type="range"]::-moz-range-thumb {
    ────────────────────────────────────────── */
 .ss-save-bar {
   display: none !important;
-  position: fixed;
-  bottom: 24px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: fit-content;
-  max-width: 90vw;
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+  width: max-content !important;
+  max-width: calc(100vw - 48px) !important;
   background: #ffffff;
   border: 1px solid #dbdbdb;
   border-radius: 14px;
@@ -528,6 +529,7 @@ input[type="range"]::-moz-range-thumb {
   font-family: var(--font-nunito);
   font-size: 0.88rem;
   color: #121212;
+  box-sizing: border-box !important;
   animation: saveBarSlideIn 0.2s ease forwards;
 }
 
@@ -550,10 +552,12 @@ input[type="range"]::-moz-range-thumb {
 @keyframes saveBarSlideIn {
   from {
     opacity: 0;
+    transform: translateX(-50%) translateY(14px);
   }
 
   to {
     opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
