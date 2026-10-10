@@ -697,10 +697,14 @@ body.dark-mode .ss-btn:hover {
 /* Save bar */
 .ss-save-bar {
   display: none;
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  margin: 0 !important;
+  width: max-content !important;
+  max-width: calc(100vw - 48px) !important;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 14px;
@@ -708,14 +712,15 @@ body.dark-mode .ss-btn:hover {
   gap: 12px;
   align-items: center;
   z-index: 100;
-  animation: saveBarIn 0.18s ease;
+  animation: saveBarIn 0.18s ease forwards;
   font-family: var(--font-nunito);
   font-size: 0.88rem;
   color: var(--text-muted);
+  box-sizing: border-box !important;
 }
 
 .ss-save-bar.visible {
-  display: flex;
+  display: flex !important;
 }
 
 @keyframes saveBarIn {
