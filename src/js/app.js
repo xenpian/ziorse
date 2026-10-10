@@ -3797,6 +3797,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (feedPostsContainer) feedPostsContainer.style.display = '';
     if (composerCard) composerCard.style.display = 'flex';
     if (dmView) dmView.style.display = 'none';
+    if (publicServersView) publicServersView.style.display = 'none';
     if (mainFeedView) mainFeedView.style.display = 'flex';
     const feedHeaderRight = document.querySelector('.feed-header-right');
     if (feedHeaderRight) feedHeaderRight.style.display = 'none';
