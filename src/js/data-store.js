@@ -1209,7 +1209,7 @@ class DataStore {
       id: 'srv-' + Date.now(),
       name: name.trim(),
       description: (description || '').trim(),
-      isPublic: isPublic !== false,
+      isPublic: isPublic === true,
       icon: initials,
       inviteCode: inviteCode,
       ownerHandle: this.currentUser.handle,
