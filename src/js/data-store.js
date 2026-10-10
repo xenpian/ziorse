@@ -138,6 +138,15 @@ function ziorseSetStorage(key, val) {
     try { window.electronAPI.storeSetSync(key, isObj ? val : strVal); } catch (e) { }
   } else if (window.electronAPI?.storeSet) {
     window.electronAPI.storeSet(key, isObj ? val : strVal).catch(() => { });
+  } else {
+    try {
+      const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
+      fetch(srvUrl + '/api/store/set', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, val: isObj ? val : strVal })
+      }).catch(() => { });
+    } catch (e) { }
   }
 
   // Cross-frame sync: If inside an iframe/modal, sync directly to parent window's in-memory store
