@@ -10133,9 +10133,9 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   width: 100%;
   padding: 10px 16px;
   border-radius: 12px;
-  background: rgba(100, 116, 139, 0.14);
-  color: #94a3b8;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(141, 141, 141, 0.14);
+  color: #b6b6b6;
+  border: 1px solid rgba(187, 187, 187, 0.2);
   font-size: 0.88rem;
   font-weight: 700;
   cursor: default;
