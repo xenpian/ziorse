@@ -151,6 +151,30 @@
                 placeholder="Sunucunuzdan kısaca bahsedin..."></textarea>
             </div>
           </div>
+
+          <!-- Sunucu Görünürlüğü (Gizlilik) -->
+          <div class="ss-card">
+            <span class="ss-card-title">Sunucu Görünürlüğü</span>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 12px 0;">Sunucunuzun Herkese Açık Sunucular listesinde görünüp görünmeyeceğini belirleyin.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div id="ss-opt-privacy-private" class="privacy-option-card" style="cursor: pointer;">
+                <div class="poc-header">
+                  <i data-lucide="lock" style="width:16px; height:16px; color:#94a3b8;"></i>
+                  <span class="poc-badge">ÖZEL</span>
+                </div>
+                <div class="poc-title">Gizli Sunucu</div>
+                <div class="poc-desc">Yalnızca davet bağlantısına sahip kullanıcılar katılabilir. Keşfet sayfasında listelenmez.</div>
+              </div>
+              <div id="ss-opt-privacy-public" class="privacy-option-card" style="cursor: pointer;">
+                <div class="poc-header">
+                  <i data-lucide="globe" style="width:16px; height:16px; color:#94a3b8;"></i>
+                  <span class="poc-badge">HERKESE AÇIK</span>
+                </div>
+                <div class="poc-title">Herkese Açık</div>
+                <div class="poc-desc">Tüm Ziorse kullanıcıları Herkese Açık Sunucular sayfasından bulup katılabilir.</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- ── ROLLER ── -->
