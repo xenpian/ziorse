@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           if (window._ziorseMemCache) window._ziorseMemCache.set(data.key, typeof data.val === 'object' ? JSON.stringify(data.val) : String(data.val));
           if (window._ziorseParsedCache && typeof data.val === 'object') window._ziorseParsedCache.set(data.key, data.val);
-        } catch(e) {}
+        } catch (e) { }
         if (data.key === 'ziorse_invite_registry' && typeof renderPublicServers === 'function') {
           renderPublicServers();
         }
@@ -1481,7 +1481,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnOpenCreateServer) btnOpenCreateServer.addEventListener('click', openCreateServerModal);
   if (btnOpenCreateServerPs) btnOpenCreateServerPs.addEventListener('click', openCreateServerModal);
   if (btnCloseModalServer) btnCloseModalServer.addEventListener('click', () => modalCreateServer.classList.remove('active'));
-  
+
   if (btnSubmitCreateServer) {
     btnSubmitCreateServer.addEventListener('click', () => {
       const name = newServerNameInput?.value.trim();
@@ -1964,7 +1964,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filtered.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--text-muted);">
-          <div style="width:64px; height:64px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#94a3b8;">
+          <div style="width:64px; height:64px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; ">
             <i data-lucide="compass" style="width:32px; height:32px;"></i>
           </div>
           <h3 style="font-size:1.15rem; font-weight:700; color:var(--text-main); margin-bottom:6px;">${q ? 'Eşleşen sunucu bulunamadı' : 'Henüz herkese açık sunucu yok'}</h3>
