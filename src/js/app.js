@@ -7840,22 +7840,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (initServerId && initServerId !== 'home' && window.dataStore.servers.some(s => s.id === initServerId)) {
     switchToServer(initServerId, initChannelId);
   } else {
-    window.dataStore.activeServerId = 'home';
-    window.dataStore.activeFilter = 'for-you';
-    if (composerCard) composerCard.style.display = 'flex';
-    if (feedPostsContainer) feedPostsContainer.style.display = '';
-    if (mainFeedView) mainFeedView.style.display = 'flex';
-    if (dmView) dmView.style.display = 'none';
-    if (appLayoutEl) {
-      appLayoutEl.classList.add('hide-channels-sidebar');
-      appLayoutEl.classList.remove('hide-right-sidebar');
-      appLayoutEl.classList.remove('dm-active');
-    }
     renderServers();
     renderOnlineMembers();
     renderVoiceChannels();
-    renderFeed(true);
-    updateRightSidebar();
+    switchNavHubTo('public-servers', false);
+    if (typeof fetchLivePublicServers === 'function') fetchLivePublicServers();
   }
   refreshIcons();
 
