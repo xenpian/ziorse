@@ -142,6 +142,78 @@ app.get('/api/avatar-frames', (req, res) => {
   }
 });
 
+// ── MEMBER ITEM THEMES (.user-member-item themes) ─────────────
+const memberThemesDir = path.join(__dirname, 'src', 'assets', 'member-themes');
+const rootMemberThemesDir = path.join(__dirname, 'assets', 'member-themes');
+
+function syncMemberThemesDirs() {
+  try {
+    if (!fs.existsSync(memberThemesDir)) fs.mkdirSync(memberThemesDir, { recursive: true });
+    if (!fs.existsSync(rootMemberThemesDir)) fs.mkdirSync(rootMemberThemesDir, { recursive: true });
+    const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
+    const isThemeFile = f => allowed.includes(path.extname(f).toLowerCase());
+    if (fs.existsSync(rootMemberThemesDir)) {
+      fs.readdirSync(rootMemberThemesDir).filter(isThemeFile).forEach(file => {
+        const dest = path.join(memberThemesDir, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(rootMemberThemesDir, file), dest);
+      });
+    }
+    if (fs.existsSync(memberThemesDir)) {
+      fs.readdirSync(memberThemesDir).filter(isThemeFile).forEach(file => {
+        const dest = path.join(rootMemberThemesDir, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(memberThemesDir, file), dest);
+      });
+    }
+  } catch (e) { }
+}
+syncMemberThemesDirs();
+
+app.use('/assets/member-themes', express.static(memberThemesDir));
+app.use('/assets/member-themes', express.static(rootMemberThemesDir));
+
+app.get('/api/member-themes', (req, res) => {
+  try {
+    syncMemberThemesDirs();
+    const list = new Set();
+    const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
+    [memberThemesDir, rootMemberThemesDir].forEach(dir => {
+      if (fs.existsSync(dir)) {
+        fs.readdirSync(dir).filter(f => allowed.includes(path.extname(f).toLowerCase())).forEach(f => list.add(f));
+      }
+    });
+    const result = Array.from(list).map(file => {
+      const ext = path.extname(file).toLowerCase();
+      return {
+        id: file,
+        name: path.parse(file).name.replace(/[-_]/g, ' '),
+        url: `assets/member-themes/${file}`,
+        filename: file,
+        isGif: ext === '.gif'
+      };
+    });
+    res.json({ themes: result });
+  } catch (e) {
+    res.json({ themes: [] });
+  }
+});
+
+app.post('/api/open-member-themes-folder', (req, res) => {
+  try {
+    syncMemberThemesDirs();
+    const { exec } = require('child_process');
+    if (process.platform === 'win32') {
+      exec(`start "" "${memberThemesDir}"`);
+    } else if (process.platform === 'darwin') {
+      exec(`open "${memberThemesDir}"`);
+    } else {
+      exec(`xdg-open "${memberThemesDir}"`);
+    }
+    res.json({ success: true, path: memberThemesDir });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // CORS middleware
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
