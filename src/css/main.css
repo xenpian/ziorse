@@ -10053,7 +10053,6 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-bottom: 14px;
 }
 
 .ps-card-stats {
