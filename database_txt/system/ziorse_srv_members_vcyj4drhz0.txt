@@ -8,7 +8,7 @@
     "nameColor": "#18181b",
     "nameEffects": [],
     "avatarFrame": "assets/avatar-frames/Liaz.png",
-    "memberTheme": "none"
+    "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
   },
   {
     "handle": "@fafafa",

@@ -20,7 +20,8 @@
     "nameColor": "#18181b",
     "nameEffects": [],
     "avatarFrame": "assets/avatar-frames/Liaz.png",
-    "fontWeight": "900"
+    "fontWeight": "900",
+    "memberTheme": "none"
   },
   {
     "name": "selam",

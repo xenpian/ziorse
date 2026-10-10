@@ -21,5 +21,5 @@
   "statusType": "idle",
   "fontWeight": "900",
   "postCount": 3,
-  "memberTheme": "none"
+  "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
 }
