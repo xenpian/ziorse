@@ -232,6 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnResetBanner) btnResetBanner.style.display = 'none';
       const btnRegen = document.getElementById('btn-ss-regen-invite');
       if (btnRegen) btnRegen.style.display = 'none';
+      if (optPrivacyPrivate) { optPrivacyPrivate.style.pointerEvents = 'none'; optPrivacyPrivate.style.opacity = '0.6'; }
+      if (optPrivacyPublic) { optPrivacyPublic.style.pointerEvents = 'none'; optPrivacyPublic.style.opacity = '0.6'; }
     } else {
       if (sectionGenel) {
         sectionGenel.classList.remove('ss-readonly-mode');
@@ -254,6 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnResetBanner) btnResetBanner.style.display = '';
       const btnRegen = document.getElementById('btn-ss-regen-invite');
       if (btnRegen) btnRegen.style.display = '';
+      if (optPrivacyPrivate) { optPrivacyPrivate.style.pointerEvents = ''; optPrivacyPrivate.style.opacity = ''; }
+      if (optPrivacyPublic) { optPrivacyPublic.style.pointerEvents = ''; optPrivacyPublic.style.opacity = ''; }
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
