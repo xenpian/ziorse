@@ -6,8 +6,8 @@
     "memberCount": 3,
     "serverId": "srv-1786999944719",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "storageKey": "ziorse_real_servers_v14_@sa",
     "categories": [
       {
@@ -138,8 +138,8 @@
     "memberCount": 1,
     "serverId": "srv-1787393085774",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808383_bcmtl4btsmq.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787393085775",
@@ -173,8 +173,8 @@
     "memberCount": 1,
     "serverId": "srv-1787397261579",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808385_4fi4g9eim55.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787397261579",
@@ -209,8 +209,8 @@
     "memberCount": 2,
     "serverId": "srv-1787397255223",
     "ownerHandle": "@sa",
-    "ownerName": "zsnin anasını siktim",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789670193170_oinyg.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "storageKey": "ziorse_real_servers_v14_@sa",
     "categories": [
       {
@@ -305,8 +305,8 @@
     "memberCount": 1,
     "serverId": "srv-1787397257516",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808393_rbvumhnm5pg.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787397257516",
@@ -340,8 +340,8 @@
     "memberCount": 1,
     "serverId": "srv-1787397259393",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808396_bvxsosu3onq.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787397259393",
@@ -375,8 +375,8 @@
     "memberCount": 1,
     "serverId": "srv-1787398053441",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808398_wp4gj871tq.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787398053441",
@@ -410,8 +410,8 @@
     "memberCount": 1,
     "serverId": "srv-1787398055468",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808399_hoddjxm2sme.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787398055468",
@@ -445,8 +445,8 @@
     "memberCount": 1,
     "serverId": "srv-1787398051318",
     "ownerHandle": "@sa",
-    "ownerName": "sa",
-    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808404_vvei0w7be2o.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787398051318",
@@ -548,8 +548,8 @@
     "memberCount": 1,
     "serverId": "srv-1787429613421",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787429613421",
@@ -583,8 +583,8 @@
     "memberCount": 1,
     "serverId": "srv-1787429789318",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787429789318",
@@ -618,8 +618,8 @@
     "memberCount": 1,
     "serverId": "srv-1787429791131",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787429791131",
@@ -653,8 +653,8 @@
     "memberCount": 1,
     "serverId": "srv-1787429793357",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787429793357",
@@ -688,8 +688,8 @@
     "memberCount": 1,
     "serverId": "srv-1787429795124",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787429795124",
@@ -723,8 +723,8 @@
     "memberCount": 1,
     "serverId": "srv-1787429797593",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1787429797593",
@@ -758,8 +758,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587862199",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587862199",
@@ -793,8 +793,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587864303",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587864303",
@@ -828,8 +828,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587866119",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587866119",
@@ -863,8 +863,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587867741",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587867741",
@@ -898,8 +898,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587870043",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587870043",
@@ -933,8 +933,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587871741",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587871741",
@@ -968,8 +968,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587873670",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587873670",
@@ -1003,8 +1003,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587876108",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587876108",
@@ -1038,8 +1038,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587877712",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587877712",
@@ -1073,8 +1073,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587879173",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587879173",
@@ -1108,8 +1108,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587881094",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587881094",
@@ -1143,8 +1143,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587883087",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587883087",
@@ -1178,8 +1178,8 @@
     "memberCount": 1,
     "serverId": "srv-1789587889390",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789587889390",
@@ -1213,8 +1213,8 @@
     "memberCount": 1,
     "serverId": "srv-1789588695965",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789588695965",
@@ -1248,8 +1248,8 @@
     "memberCount": 1,
     "serverId": "srv-1789588699573",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789588699573",
@@ -1283,8 +1283,8 @@
     "memberCount": 1,
     "serverId": "srv-1789588701720",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789588701720",
@@ -1318,8 +1318,8 @@
     "memberCount": 1,
     "serverId": "srv-1789588704409",
     "ownerHandle": "@sa",
-    "ownerName": "fasfsad",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "categories": [
       {
         "id": "cat-1789588704410",
