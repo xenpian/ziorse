@@ -1374,7 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
     noneCard.dataset.themeId = 'none';
     noneCard.dataset.themeUrl = 'none';
     noneCard.innerHTML = `
-      <div class="member-theme-card-preview-box" style="background:#18181b; border:1px dashed rgba(255,255,255,0.14);">
+      <div class="member-theme-card-preview-box" style="background:#f4f4f5; border:1px dashed #d4d4d8;">
         <i data-lucide="ban" style="width:22px; height:22px; color:#71717a;"></i>
       </div>
       <div class="member-theme-card-info">
