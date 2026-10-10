@@ -1460,6 +1460,8 @@ class DataStore {
         registry[srv.inviteCode].serverName = srv.name;
         registry[srv.inviteCode].serverIcon = srv.icon;
         registry[srv.inviteCode].serverBanner = srv.banner || '';
+        registry[srv.inviteCode].isPublic = srv.isPublic === true;
+        registry[srv.inviteCode].description = srv.description || '';
         registry[srv.inviteCode].roles = JSON.parse(JSON.stringify(srv.roles || []));
         registry[srv.inviteCode].memberRoles = JSON.parse(JSON.stringify(srv.memberRoles || {}));
       }
@@ -1473,6 +1475,8 @@ class DataStore {
           serverName: srv.name,
           serverIcon: srv.icon,
           serverBanner: srv.banner || '',
+          isPublic: srv.isPublic === true,
+          description: srv.description || '',
           roles: srv.roles || [],
           memberRoles: srv.memberRoles || {}
         });
