@@ -230,6 +230,17 @@ function loadSyncDb() {
         } catch (e) { }
       }
 
+      // Merge invite registry from txt database
+      const txtInvitePath = path.join(__dirname, 'database_txt', 'system', 'ziorse_invite_registry.txt');
+      if (fs.existsSync(txtInvitePath)) {
+        try {
+          const rawInvite = JSON.parse(fs.readFileSync(txtInvitePath, 'utf8'));
+          if (rawInvite && typeof rawInvite === 'object') {
+            globalInviteRegistry = Object.assign({}, globalInviteRegistry, rawInvite);
+          }
+        } catch (e) { }
+      }
+
       // Reconcile and ensure all server members (owners, past posters, registry members) are preserved in globalServerMembers
       Object.keys(globalInviteRegistry).forEach(code => {
         if (!globalServerMembers[code]) globalServerMembers[code] = [];
