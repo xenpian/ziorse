@@ -318,7 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const descChanged = (ssInputDesc ? ssInputDesc.value.trim() : '') !== originalDesc;
     const iconChanged = newIconDataUrl !== null;
     const bannerChanged = newBannerDataUrl !== null;
-    const generalChanged = canManageServer && (nameChanged || descChanged || iconChanged || bannerChanged);
+    const privacyChanged = currentIsPublic !== originalIsPublic;
+    const generalChanged = canManageServer && (nameChanged || descChanged || iconChanged || bannerChanged || privacyChanged);
 
     let roleChanged = false;
     let roleNameEmpty = false;
