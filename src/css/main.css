@@ -9946,7 +9946,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 .public-servers-grid-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 0px;
+  padding: 12px 0px;
   scroll-behavior: smooth;
 }
 
