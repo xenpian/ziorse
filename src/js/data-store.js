@@ -394,6 +394,12 @@ class DataStore {
       bio: user.bio || '',
       followers: user.followers || 0,
       following: user.following || 0,
+      fontStyle: user.fontStyle || '',
+      fontWeight: user.fontWeight || '',
+      nameColor: user.nameColor || '',
+      nameEffects: user.nameEffects || '',
+      avatarFrame: user.avatarFrame || '',
+      memberTheme: user.memberTheme || '',
       status: user.status || this.userStatus || { type: 'online', text: '' }
     };
     dir[user.handle] = userObj;
