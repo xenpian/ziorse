@@ -1306,12 +1306,12 @@ body.dark-mode .ss-toggle-slider {
   border-color: #3f3f46;
 }
 
-body.dark-mode .ss-toggle-label input[type="checkbox"]:checked + .ss-toggle-slider {
+body.dark-mode .ss-toggle-label input[type="checkbox"]:checked+.ss-toggle-slider {
   background: #f4f4f5 !important;
   border-color: #f4f4f5 !important;
 }
 
-body.dark-mode .ss-toggle-label input[type="checkbox"]:checked + .ss-toggle-slider::after {
+body.dark-mode .ss-toggle-label input[type="checkbox"]:checked+.ss-toggle-slider::after {
   background: #09090b !important;
 }
 
@@ -1444,7 +1444,7 @@ body.dark-mode .effect-card.active {
 }
 
 body.dark-mode .effect-label-sabit {
-  color: #f1f5f9;
+  color: #e9e9e9;
 }
 
 body.dark-mode .effect-label-shadow {

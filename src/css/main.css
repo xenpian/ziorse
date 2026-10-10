@@ -9022,7 +9022,7 @@ body.dark-mode .chat-mention-badge.mention-me {
 body.dark-mode .mention.mention-everyone,
 body.dark-mode .chat-mention-badge.mention-everyone {
   background: rgba(255, 255, 255, 0.12) !important;
-  color: #f1f5f9 !important;
+  color: #e9e9e9 !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
   box-shadow: none !important;
 }
@@ -10022,7 +10022,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 .ps-card-avatar-text {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #f1f5f9;
+  color: #e9e9e9;
   background: linear-gradient(135deg, #3f3f46, #27272a);
   border: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
@@ -10184,7 +10184,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .privacy-option-card.active .poc-badge {
-  color: #f1f5f9;
+  color: #e9e9e9;
 }
 
 .poc-title {
