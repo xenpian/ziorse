@@ -812,10 +812,13 @@ body.dark-mode .header-server-badge {
   display: none !important;
 }
 
+.app-layout.hide-channels-sidebar.hide-right-sidebar,
 .app-layout.hide-both-sidebars {
   grid-template-columns: 1fr;
 }
 
+.app-layout.hide-channels-sidebar.hide-right-sidebar .left-sidebar,
+.app-layout.hide-channels-sidebar.hide-right-sidebar .right-sidebar,
 .app-layout.hide-both-sidebars .left-sidebar,
 .app-layout.hide-both-sidebars .right-sidebar {
   display: none !important;
