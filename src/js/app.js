@@ -1486,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSubmitCreateServer.addEventListener('click', () => {
       const name = newServerNameInput?.value.trim();
       const desc = newServerDescInput?.value.trim() || '';
-      const isPublic = optPrivacyPublic ? optPrivacyPublic.classList.contains('active') : true;
+      const isPublic = optPrivacyPublic ? optPrivacyPublic.classList.contains('active') : false;
 
       if (name) {
         const srv = window.dataStore.addServer(name, isPublic, desc);
