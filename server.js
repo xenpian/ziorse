@@ -557,7 +557,7 @@ app.get('/api/public-servers', (req, res) => {
   const publicList = [];
   Object.keys(globalInviteRegistry).forEach(code => {
     const info = globalInviteRegistry[code];
-    if (info && info.isPublic !== false) {
+    if (info && info.isPublic === true) {
       const members = globalServerMembers[code] || [];
       const memberCount = Math.max(members.length, info.memberCount || 1);
 
