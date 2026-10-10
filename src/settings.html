@@ -7,18 +7,20 @@
   <title>Ziorse - Uygulama Ayarları</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Audiowide&family=Bebas+Neue&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800&family=Fira+Code:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Modak&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Nabla:EDPT,EHLT@0..200,0..100&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Orbitron:wght@600;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Poppins:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Russo+One&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Audiowide&family=Bebas+Neue&family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800&family=Fira+Code:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Modak&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Nabla:EDPT,EHLT@0..200,0..100&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Orbitron:wght@600;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Poppins:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Russo+One&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800&family=Unbounded:wght@600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/server-settings.css">
   <link rel="stylesheet" href="css/settings.css">
   <script>
-    (function() {
+    (function () {
       try {
         var t = localStorage.getItem('ziorse_theme') || localStorage.getItem('ziorse_theme_v14') || localStorage.getItem('ziorse_theme_preference');
         if (t === 'dark') {
           document.documentElement.classList.add('dark-mode');
         }
-      } catch(e) {}
+      } catch (e) { }
     })();
   </script>
   <script src="js/lib/lucide.min.js"></script>
@@ -150,7 +152,8 @@
 
               <!-- 2. GÖRÜNEN AD YAZI TİPİ (FONT) VE RENK STİLİ -->
               <div class="ss-card" style="margin-top:16px;">
-                <div style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin-bottom:16px;">Görünen Ad Stilini Değiştir</div>
+                <div style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin-bottom:16px;">Görünen Ad
+                  Stilini Değiştir</div>
 
                 <!-- 1. FONT SEÇ BÖLÜMÜ -->
                 <div class="style-section-header">
@@ -162,7 +165,8 @@
 
                 <div class="gg-font-grid" id="hesabim-font-grid" style="grid-template-columns: repeat(2, 1fr);">
                   <div class="gg-font-card active" data-font="outfit" title="Dinamik Modern (Outfit)">
-                    <span style="font-family:'Outfit', sans-serif; font-size:1.15rem; font-weight:700;">Dinamik Modern</span>
+                    <span style="font-family:'Outfit', sans-serif; font-size:1.15rem; font-weight:700;">Dinamik
+                      Modern</span>
                   </div>
                   <div class="gg-font-card" data-font="righteous" title="Retro Synthwave (Righteous)">
                     <span style="font-family:'Righteous', cursive; font-size:1.15rem;">Retro Synthwave</span>
@@ -172,8 +176,10 @@
                 <!-- Font Kalınlığı (Weight) Seçimi -->
                 <div class="font-weight-control-row" style="margin-top:14px;">
                   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-                    <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Yazı Kalınlığı (Font Weight)</span>
-                    <span id="label-current-weight" style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">700 (Kalın)</span>
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Yazı Kalınlığı (Font
+                      Weight)</span>
+                    <span id="label-current-weight"
+                      style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">700 (Kalın)</span>
                   </div>
                   <div class="weight-pills-row" id="hesabim-weight-pills">
                     <button type="button" class="btn-weight-pill" data-weight="400">İnce (400)</button>
@@ -191,7 +197,8 @@
                 <div class="style-section-header" style="margin-top:20px;">
                   <div>
                     <span class="style-section-title">Renk & Efekt Rengi</span>
-                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">İsim rengini değiştirin</div>
+                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">İsim rengini değiştirin
+                    </div>
                   </div>
                   <button type="button" class="btn-style-reset" id="btn-reset-name-color" title="Rengi Sıfırla">
                     <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i>
@@ -199,35 +206,52 @@
                 </div>
 
                 <!-- A. Efekt & Tek Renk Seçim Çubuğu -->
-                <div class="solid-color-row" style="margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px; padding:10px 14px;">
+                <div class="solid-color-row"
+                  style="margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px; padding:10px 14px;">
                   <div style="display:flex; align-items:center; gap:8px;">
-                    <label class="color-swatch-btn" title="Özel Renk Seç (Tıkla)" style="position:relative; width:34px; height:34px; border-radius:8px; border:2px solid #cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                    <label class="color-swatch-btn" title="Özel Renk Seç (Tıkla)"
+                      style="position:relative; width:34px; height:34px; border-radius:8px; border:2px solid #cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; overflow:hidden;">
                       <div id="hesabim-color-swatch-preview" style="width:100%; height:100%; background:#8b5cf6;"></div>
-                      <input type="color" id="hesabim-custom-color-input" value="#8b5cf6" style="position:absolute; opacity:0; width:100%; height:100%; cursor:pointer;">
+                      <input type="color" id="hesabim-custom-color-input" value="#8b5cf6"
+                        style="position:absolute; opacity:0; width:100%; height:100%; cursor:pointer;">
                     </label>
-                    <div style="display:flex; align-items:center; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; padding:0 8px; height:34px;">
-                      <span style="font-size:0.8rem; font-weight:700; color:#94a3b8; margin-right:2px;">#</span>
-                      <input type="text" id="hesabim-color-hex-text" value="8B5CF6" maxlength="7" style="border:none; outline:none; background:transparent; font-size:0.82rem; font-weight:700; width:70px; color:#0f172a; text-transform:uppercase;">
+                    <div
+                      style="display:flex; align-items:center; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; padding:0 8px; height:34px;">
+                      <span style="font-size:0.8rem; font-weight:700; color:#afafaf; margin-right:2px;">#</span>
+                      <input type="text" id="hesabim-color-hex-text" value="8B5CF6" maxlength="7"
+                        style="border:none; outline:none; background:transparent; font-size:0.82rem; font-weight:700; width:70px; color:#0f172a; text-transform:uppercase;">
                     </div>
                   </div>
 
                   <!-- Hızlı Efekt Renk Çipleri (Neon & Efektler için popüler tonlar) -->
-                  <div class="color-chips-row" id="hesabim-color-chips" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; flex:1;">
-                    <button type="button" class="effect-color-chip active" data-color="#8b5cf6" style="background:#8b5cf6;" title="Neon Mor"></button>
-                    <button type="button" class="effect-color-chip" data-color="#06b6d4" style="background:#06b6d4;" title="Siber Camgöbeği"></button>
-                    <button type="button" class="effect-color-chip" data-color="#10b981" style="background:#10b981;" title="Zümrüt Yeşil"></button>
-                    <button type="button" class="effect-color-chip" data-color="#ec4899" style="background:#ec4899;" title="Neon Pembe"></button>
-                    <button type="button" class="effect-color-chip" data-color="#f97316" style="background:#f97316;" title="Ateş Turuncu"></button>
-                    <button type="button" class="effect-color-chip" data-color="#ef4444" style="background:#ef4444;" title="Akkor Kırmızı"></button>
-                    <button type="button" class="effect-color-chip" data-color="#eab308" style="background:#eab308;" title="Altın Sarı"></button>
-                    <button type="button" class="effect-color-chip" data-color="#3b82f6" style="background:#3b82f6;" title="Kraliyet Mavi"></button>
-                    <button type="button" class="effect-color-chip" data-color="#ffffff" style="background:#ffffff; border:1px solid #cbd5e1;" title="Saf Beyaz"></button>
-                    <button type="button" class="effect-color-chip" data-color="#18181b" style="background:#18181b;" title="Gece Siyahı"></button>
+                  <div class="color-chips-row" id="hesabim-color-chips"
+                    style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; flex:1;">
+                    <button type="button" class="effect-color-chip active" data-color="#8b5cf6"
+                      style="background:#8b5cf6;" title="Neon Mor"></button>
+                    <button type="button" class="effect-color-chip" data-color="#06b6d4" style="background:#06b6d4;"
+                      title="Siber Camgöbeği"></button>
+                    <button type="button" class="effect-color-chip" data-color="#10b981" style="background:#10b981;"
+                      title="Zümrüt Yeşil"></button>
+                    <button type="button" class="effect-color-chip" data-color="#ec4899" style="background:#ec4899;"
+                      title="Neon Pembe"></button>
+                    <button type="button" class="effect-color-chip" data-color="#f97316" style="background:#f97316;"
+                      title="Ateş Turuncu"></button>
+                    <button type="button" class="effect-color-chip" data-color="#ef4444" style="background:#ef4444;"
+                      title="Akkor Kırmızı"></button>
+                    <button type="button" class="effect-color-chip" data-color="#eab308" style="background:#eab308;"
+                      title="Altın Sarı"></button>
+                    <button type="button" class="effect-color-chip" data-color="#3b82f6" style="background:#3b82f6;"
+                      title="Kraliyet Mavi"></button>
+                    <button type="button" class="effect-color-chip" data-color="#ffffff"
+                      style="background:#ffffff; border:1px solid #cbd5e1;" title="Saf Beyaz"></button>
+                    <button type="button" class="effect-color-chip" data-color="#18181b" style="background:#18181b;"
+                      title="Gece Siyahı"></button>
                   </div>
                 </div>
 
                 <!-- B. Çoklu Gradyan Kontrolü -->
-                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Çoklu Gradyan Renkleri (4 Nokta Geçiş)</div>
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Çoklu
+                  Gradyan Renkleri (4 Nokta Geçiş)</div>
                 <div class="color-picker-row">
                   <!-- İnteraktif Gradyan Kontrol Çubuğu -->
                   <div class="gradient-slider-container">
@@ -262,21 +286,31 @@
 
                   <!-- Hazır Gradyan Hapları (Görseldeki 6 Gradyan) -->
                   <div class="preset-gradients-grid">
-                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #eab308)" style="background:linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #eab308);" title="Gökkuşağı"></div>
-                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #f97316, #ec4899, #8b5cf6)" style="background:linear-gradient(90deg, #f97316, #ec4899, #8b5cf6);" title="Gün Batımı"></div>
-                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #ef4444, #f97316, #eab308)" style="background:linear-gradient(90deg, #ef4444, #f97316, #eab308);" title="Ateş"></div>
-                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #a855f7, #60a5fa, #38bdf8)" style="background:linear-gradient(90deg, #a855f7, #60a5fa, #38bdf8);" title="Pastel"></div>
-                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #10b981, #06b6d4, #3b82f6)" style="background:linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);" title="Siber Okyanus"></div>
-                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #fb7185, #f43f5e, #fde047)" style="background:linear-gradient(90deg, #fb7185, #f43f5e, #fde047);" title="Güneş"></div>
+                    <div class="preset-pill"
+                      data-gradient="linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #eab308)"
+                      style="background:linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #10b981, #eab308);"
+                      title="Gökkuşağı"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #f97316, #ec4899, #8b5cf6)"
+                      style="background:linear-gradient(90deg, #f97316, #ec4899, #8b5cf6);" title="Gün Batımı"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #ef4444, #f97316, #eab308)"
+                      style="background:linear-gradient(90deg, #ef4444, #f97316, #eab308);" title="Ateş"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #a855f7, #60a5fa, #38bdf8)"
+                      style="background:linear-gradient(90deg, #a855f7, #60a5fa, #38bdf8);" title="Pastel"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #10b981, #06b6d4, #3b82f6)"
+                      style="background:linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);" title="Siber Okyanus"></div>
+                    <div class="preset-pill" data-gradient="linear-gradient(90deg, #fb7185, #f43f5e, #fde047)"
+                      style="background:linear-gradient(90deg, #fb7185, #f43f5e, #fde047);" title="Güneş"></div>
                   </div>
                 </div>
               </div>
 
               <!-- 3. OTOMATİK DİNAMİK PROFİL ÇERÇEVESİ KARTI -->
               <div class="ss-card" style="margin-top:16px;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+                <div
+                  style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
                   <div>
-                    <div style="font-size:0.92rem; font-weight:700; color:var(--text-main);">Profil Çerçevesi (Avatar Frame)</div>
+                    <div style="font-size:0.92rem; font-weight:700; color:var(--text-main);">Profil Çerçevesi (Avatar
+                      Frame)</div>
                     <div style="font-size:0.75rem; color:var(--text-muted);">
                       Klasöre attığınız her <code>.png</code> dosyası burada otomatik olarak çerçeve olarak gözükür.
                     </div>
@@ -307,8 +341,10 @@
               <div class="ss-card"
                 style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
                 <div>
-                  <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:3px;">Şifre ve Kimlik Doğrulama</div>
-                  <div style="font-size:0.78rem; color:var(--text-muted);">Hesabınızı güvende tutmak için şifrenizi düzenli güncelleyin.</div>
+                  <div style="font-size:0.92rem; font-weight:700; color:var(--text-main); margin-bottom:3px;">Şifre ve
+                    Kimlik Doğrulama</div>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Hesabınızı güvende tutmak için şifrenizi
+                    düzenli güncelleyin.</div>
                 </div>
                 <button class="btn-ss-outline" id="btn-change-password">
                   <i data-lucide="key" style="width:14px;height:14px;"></i> Şifreyi Değiştir
@@ -337,7 +373,8 @@
                       <img id="acc-avatar-img" src="" alt="Avatar" style="display:none;">
                       <span id="acc-avatar-initials">U</span>
                       <!-- Dynamic Frame Overlay PNG -->
-                      <img id="acc-avatar-frame-overlay" class="hesabim-avatar-frame-overlay" src="" alt="Frame" style="display:none;">
+                      <img id="acc-avatar-frame-overlay" class="hesabim-avatar-frame-overlay" src="" alt="Frame"
+                        style="display:none;">
                     </div>
 
                     <button class="btn-ss-primary" id="btn-go-profile-tab" style="padding:6px 12px; font-size:0.75rem;">
@@ -466,7 +503,8 @@
                 </div>
                 <div class="settings-preview-body">
                   <div style="overflow:visible; position:relative; z-index:2; padding:2px 0;">
-                    <div class="settings-preview-name" id="live-card-name" style="overflow:visible; position:relative; z-index:2;">Kullanıcı</div>
+                    <div class="settings-preview-name" id="live-card-name"
+                      style="overflow:visible; position:relative; z-index:2;">Kullanıcı</div>
                     <div class="settings-preview-handle" id="live-card-handle">@kullanici</div>
                   </div>
 
