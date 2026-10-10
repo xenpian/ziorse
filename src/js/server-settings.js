@@ -465,8 +465,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const descChanged = (ssInputDesc ? ssInputDesc.value.trim() : '') !== originalDesc;
       const iconChanged = newIconDataUrl !== null;
       const bannerChanged = newBannerDataUrl !== null;
+      const privacyChanged = currentIsPublic !== originalIsPublic;
 
-      if ((nameChanged || descChanged || iconChanged || bannerChanged) && canManageServer) {
+      if ((nameChanged || descChanged || iconChanged || bannerChanged || privacyChanged) && canManageServer) {
         const newName = ssInputName.value.trim();
         if (!newName) {
           showToast('Sunucu adı boş olamaz');
@@ -475,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         server.name = newName;
         server.description = ssInputDesc ? ssInputDesc.value.trim() : '';
+        server.isPublic = currentIsPublic === true;
         if (newIconDataUrl !== null) {
           server.icon = newIconDataUrl || newName.substring(0, 2).toUpperCase();
         }
@@ -483,6 +485,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         ds.saveServers();
+
+        // Also update local invite registry storage if present
+        const registry = ziorseGetStorage('ziorse_invite_registry') || {};
+        if (server.inviteCode && registry[server.inviteCode]) {
+          registry[server.inviteCode].isPublic = server.isPublic;
+          registry[server.inviteCode].description = server.description;
+          ziorseSetStorage('ziorse_invite_registry', registry);
+        }
 
         // Instant In-Place Live Server Media Update on Parent Window (Zero Reload!)
         const targetParent = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
@@ -498,6 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
         originalDesc = server.description;
         originalIcon = server.icon;
         originalBanner = server.banner || '';
+        originalIsPublic = server.isPublic === true;
         newIconDataUrl = null;
         newBannerDataUrl = null;
         anySaved = true;
@@ -524,6 +535,8 @@ document.addEventListener('DOMContentLoaded', () => {
       newBannerDataUrl = null;
       if (ssInputName) ssInputName.value = originalName;
       if (ssInputDesc) ssInputDesc.value = originalDesc;
+      currentIsPublic = originalIsPublic;
+      updatePrivacyUI();
       updateIconPreview(originalIcon);
       updateBannerPreview(originalBanner);
 
