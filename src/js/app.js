@@ -1893,13 +1893,55 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRightSidebar();
   }
 
-  window.switchNavHubTo = switchNavHubTo;
+  async function fetchLivePublicServers() {
+    try {
+      const res = await fetch('/api/public-servers');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.servers)) {
+          window.__livePublicServers = data.servers;
+          const reg = window.dataStore?._loadInviteRegistry() || {};
+          data.servers.forEach(srv => {
+            if (srv.inviteCode) {
+              reg[srv.inviteCode] = {
+                ...(reg[srv.inviteCode] || {}),
+                serverName: srv.name,
+                serverDescription: srv.description,
+                serverIcon: srv.icon,
+                serverBanner: srv.banner,
+                memberCount: srv.memberCount,
+                serverId: srv.serverId,
+                ownerHandle: srv.ownerHandle,
+                ownerName: srv.ownerName,
+                ownerAvatar: srv.ownerAvatar,
+                categories: srv.categories || [],
+                isPublic: true
+              };
+            }
+          });
+          ziorseSetStorage('ziorse_invite_registry', reg);
+          renderPublicServers();
+        }
+      }
+    } catch (e) { }
+  }
+  window.fetchLivePublicServers = fetchLivePublicServers;
 
   function renderPublicServers(filterQuery = '') {
     const grid = document.getElementById('public-servers-grid');
     if (!grid) return;
 
-    const allPublic = (window.dataStore?.getPublicServers() || []);
+    let allPublic = (window.dataStore?.getPublicServers() || []);
+    if (Array.isArray(window.__livePublicServers) && window.__livePublicServers.length > 0) {
+      const map = new Map();
+      allPublic.forEach(s => map.set(s.inviteCode, s));
+      window.__livePublicServers.forEach(s => {
+        const existing = map.get(s.inviteCode) || {};
+        map.set(s.inviteCode, { ...existing, ...s });
+      });
+      allPublic = Array.from(map.values());
+    }
+
     const myServers = window.dataStore?.servers || [];
     const onlineHandles = window.__activeOnlineHandles || new Set();
 
