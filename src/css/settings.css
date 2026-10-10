@@ -958,7 +958,7 @@ textarea {
 .effect-label-glitch {
   font-size: 0.88rem;
   font-weight: 800;
-  color: #06b6d4;
+  color: #71717a;
   letter-spacing: normal;
 }
 
@@ -997,14 +997,12 @@ textarea {
 .btn-weight-pill:hover {
   background: #e4e4e7;
   border-color: #d1d5db;
-  transform: translateY(-1px);
 }
 
 .btn-weight-pill.active {
   background: #0f172a !important;
   color: #ffffff !important;
   border-color: #0f172a !important;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2) !important;
 }
 
 /* Effect Color Chips */
@@ -1021,14 +1019,11 @@ textarea {
 }
 
 .effect-color-chip:hover {
-  transform: scale(1.18);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #71717a;
 }
 
 .effect-color-chip.active {
   border-color: #0f172a !important;
-  transform: scale(1.22);
-  box-shadow: 0 0 0 2px #ffffff, 0 2px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* 3. Renk & Gradyan Seçici Alanı */
@@ -1057,7 +1052,7 @@ textarea {
   border-radius: 7px;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: linear-gradient(90deg, #10b981 0%, #06b6d4 35%, #3b82f6 70%, #ffffff 100%);
+  background: linear-gradient(90deg, #10b981 0%, #94a3b8 35%, #64748b 70%, #ffffff 100%);
   transition: background 0.15s ease;
 }
 
@@ -1089,17 +1084,16 @@ textarea {
   height: 24px;
   border-radius: 50%;
   border: 2px solid #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 .gradient-pin-head:hover {
-  transform: scale(1.18);
+  border-color: #18181b;
 }
 
 .preset-gradients-grid {
@@ -1115,17 +1109,15 @@ textarea {
   border-radius: 6px;
   cursor: pointer;
   border: 1.5px solid rgba(0, 0, 0, 0.1);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 .preset-pill:hover {
-  transform: scale(1.1);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  border-color: #18181b;
 }
 
 .preset-pill.active {
   border: 2px solid #18181b !important;
-  transform: scale(1.06);
 }
 
 /* Dynamic Frames Grid */
@@ -1156,13 +1148,11 @@ textarea {
 .hesabim-frame-item:hover {
   background: var(--bg-card);
   border-color: var(--border-dark);
-  transform: translateY(-2px);
 }
 
 .hesabim-frame-item.active {
   background: #f4f4f5 !important;
   border-color: #18181b !important;
-  box-shadow: 0 0 0 1.5px #18181b !important;
 }
 
 .hesabim-frame-preview-box {
