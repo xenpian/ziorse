@@ -9009,21 +9009,21 @@ body.dark-mode .chat-mention-badge.mention-me {
   box-shadow: none !important;
 }
 
-/* @everyone Etiketi için mor/indigo özel vurgu */
+/* @everyone Etiketi için gri/slate özel vurgu */
 .mention.mention-everyone,
 .chat-mention-badge.mention-everyone {
-  background: rgba(99, 102, 241, 0.16) !important;
-  color: #4f46e5 !important;
-  border-color: rgba(99, 102, 241, 0.35) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
   font-weight: 800 !important;
   box-shadow: none !important;
 }
 
 body.dark-mode .mention.mention-everyone,
 body.dark-mode .chat-mention-badge.mention-everyone {
-  background: rgba(99, 102, 241, 0.22) !important;
-  color: #a5b4fc !important;
-  border-color: rgba(99, 102, 241, 0.45) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
   box-shadow: none !important;
 }
 
