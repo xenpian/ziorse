@@ -835,6 +835,56 @@
     </div>
   </div>
 
+  <!-- ==================== MEMBER ITEM THEMES MODAL ==================== -->
+  <div id="modal-member-themes" class="member-themes-modal-overlay" style="display:none;">
+    <div class="member-themes-modal-dialog">
+      <!-- MODAL HEADER -->
+      <div class="member-themes-modal-header">
+        <div class="member-themes-modal-title-group">
+          <div class="member-themes-modal-icon-badge">
+            <i data-lucide="palette" style="width:18px;height:18px;"></i>
+          </div>
+          <div>
+            <h3 class="member-themes-modal-title">.user-member-item Themes</h3>
+            <p class="member-themes-modal-desc">Üye listesinde adınızın arkasında sağdan sola doğru süzülecek temayı seçin.</p>
+          </div>
+        </div>
+        <div class="member-themes-modal-actions">
+          <button type="button" class="btn-theme-action" id="btn-open-member-themes-folder" title="Temalar Klasörünü Aç">
+            <i data-lucide="folder-open" style="width:14px;height:14px;"></i>
+            <span>Klasörü Aç</span>
+          </button>
+          <button type="button" class="btn-theme-action" id="btn-refresh-member-themes" title="Listeyi Yenile">
+            <i data-lucide="rotate-cw" style="width:14px;height:14px;"></i>
+            <span>Yenile</span>
+          </button>
+          <button type="button" class="btn-theme-close" id="btn-close-member-themes" title="Kapat (ESC)">
+            <i data-lucide="x" style="width:16px;height:16px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- INFO HINT BAR -->
+      <div class="member-themes-hint-bar">
+        <i data-lucide="info" style="width:14px; height:14px; flex-shrink:0;"></i>
+        <span>Klasöre attığınız tüm <strong>PNG</strong>, <strong>JPG</strong> ve <strong>GIF</strong> görselleri burada anında listelenir. GIF'ler fareyle üzerine gelindiğinde hareket eder.</span>
+      </div>
+
+      <!-- GRID LIST OF THEMES -->
+      <div class="member-themes-modal-body">
+        <div class="member-themes-grid" id="member-themes-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="member-themes-modal-footer">
+        <span id="member-themes-count-label" class="member-themes-count-text">0 tema bulundu</span>
+        <button type="button" class="btn-theme-modal-done" id="btn-done-member-themes">Tamam</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/image-cropper.js"></script>
   <script src="js/settings.js"></script>
 </body>
