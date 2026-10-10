@@ -6373,7 +6373,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const children = comments.filter(c => c.parentCommentId === cmt.id);
       return `
         <div class="comment-item ${nested ? 'nested' : ''}">
-          <div class="comment-avatar-wrap" style="width:28px; height:28px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0;">
+          <div class="comment-avatar-wrap" data-handle="${escapeHtml(cmt.handle)}" style="width:28px; height:28px; border-radius:50%; overflow:hidden; position:relative; flex-shrink:0;">
             ${renderMediaAvatarHtml(cmt.avatar, 'comment-avatar', `data-handle="${escapeHtml(cmt.handle)}"`)}
           </div>
           <div class="comment-body">
