@@ -2,11 +2,25 @@
   {
     "name": "Kurtv",
     "handle": "@kurtv_dev",
-    "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
-    "banner": "",
-    "bio": "Fullstack Developer & Ziorse Creator",
     "email": "kurtv@ziorse.dev",
-    "password": "123"
+    "password": "123",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
+    "banner": "#999999",
+    "bio": "Ziorse Creator"
+  },
+  {
+    "name": "ziorse creator",
+    "handle": "@sa",
+    "email": "sa@sa.s",
+    "password": "sas",
+    "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
+    "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
+    "bio": "fdffa",
+    "fontStyle": "righteous",
+    "nameColor": "#18181b",
+    "nameEffects": [],
+    "avatarFrame": "assets/avatar-frames/Liaz.png",
+    "fontWeight": "900"
   },
   {
     "name": "selam",
@@ -22,7 +36,7 @@
     "handle": "@sasasa",
     "email": "sasasa@s.s",
     "password": "sasasa",
-    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80",
+    "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E",
     "banner": "#999999",
     "bio": ""
   },
@@ -61,14 +75,5 @@
     "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
     "banner": "",
     "bio": ""
-  },
-  {
-    "name": "ziorse creator",
-    "handle": "@sa",
-    "email": "sa@sa.s",
-    "password": "sas",
-    "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
-    "bio": "fdffa"
   }
 ]

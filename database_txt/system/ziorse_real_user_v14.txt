@@ -20,5 +20,6 @@
   "statusText": "porno",
   "statusType": "idle",
   "fontWeight": "900",
-  "postCount": 3
+  "postCount": 3,
+  "memberTheme": "assets/member-themes/842086292_1126018506778143_8096418817486797724_n.jpg"
 }
