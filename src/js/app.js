@@ -7327,7 +7327,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ── INSTANT IN-PLACE LIVE MEDIA & STYLING UPDATER (Zero App Reload) ──
-  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame, newFontWeight) {
+  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame, newFontWeight, newName) {
     if (!handle) return;
     const cleanH = handle.toLowerCase().replace('@', '');
     const fullH = '@' + cleanH;
@@ -7337,6 +7337,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.dataStore.currentUser && (window.dataStore.currentUser.handle || '').toLowerCase().replace('@', '') === cleanH) {
         if (newAvatar !== undefined) window.dataStore.currentUser.avatar = newAvatar;
         if (newBanner !== undefined) window.dataStore.currentUser.banner = newBanner;
+        if (newName !== undefined) window.dataStore.currentUser.name = newName;
         if (newFontStyle !== undefined) window.dataStore.currentUser.fontStyle = newFontStyle;
         if (newFontWeight !== undefined) window.dataStore.currentUser.fontWeight = newFontWeight;
         if (newNameColor !== undefined) window.dataStore.currentUser.nameColor = newNameColor;
@@ -7349,12 +7350,43 @@ document.addEventListener('DOMContentLoaded', () => {
         if (entry) {
           if (newAvatar !== undefined) entry.avatar = newAvatar;
           if (newBanner !== undefined) entry.banner = newBanner;
+          if (newName !== undefined) entry.name = newName;
           if (newFontStyle !== undefined) entry.fontStyle = newFontStyle;
           if (newFontWeight !== undefined) entry.fontWeight = newFontWeight;
           if (newNameColor !== undefined) entry.nameColor = newNameColor;
           if (newNameEffects !== undefined) entry.nameEffects = newNameEffects;
           if (newAvatarFrame !== undefined) entry.avatarFrame = newAvatarFrame;
+        } else {
+          dir[fullH] = {
+            handle: fullH,
+            avatar: newAvatar,
+            banner: newBanner,
+            name: newName,
+            fontStyle: newFontStyle,
+            fontWeight: newFontWeight,
+            nameColor: newNameColor,
+            nameEffects: newNameEffects,
+            avatarFrame: newAvatarFrame
+          };
         }
+      }
+
+      // Live update posts and comments in memory
+      if (Array.isArray(window.dataStore.posts)) {
+        window.dataStore.posts.forEach(p => {
+          if ((p.handle || '').toLowerCase().replace('@', '') === cleanH) {
+            if (newAvatar) p.avatar = newAvatar;
+            if (newName) p.author = newName;
+          }
+          if (Array.isArray(p.comments)) {
+            p.comments.forEach(c => {
+              if ((c.handle || '').toLowerCase().replace('@', '') === cleanH) {
+                if (newAvatar) c.avatar = newAvatar;
+                if (newName) c.author = newName;
+              }
+            });
+          }
+        });
       }
     }
 
@@ -7372,7 +7404,15 @@ document.addEventListener('DOMContentLoaded', () => {
         applyAvatarToElement(wrap, resolvedAvatar);
       });
 
-      // DM messages
+      // Comment avatars
+      document.querySelectorAll(`.comment-avatar-wrap[data-handle="${fullH}"], .comment-avatar-wrap[data-handle="${cleanH}"], .comment-avatar-wrap[data-handle="@${cleanH}"]`).forEach(wrap => {
+        applyAvatarToElement(wrap, resolvedAvatar);
+      });
+
+      // DM messages (all messages from this sender)
+      document.querySelectorAll(`.dm-msg-avatar-wrap[data-handle="${fullH}"], .dm-msg-avatar-wrap[data-handle="${cleanH}"], .dm-msg-avatar-wrap[data-handle="@${cleanH}"]`).forEach(el => {
+        applyAvatarToElement(el, resolvedAvatar);
+      });
       if (isSelf) {
         document.querySelectorAll('.dm-msg-row.mine .dm-msg-avatar-wrap, .dm-msg-row.mine .dm-msg-avatar').forEach(el => {
           applyAvatarToElement(el, resolvedAvatar);
@@ -7387,11 +7427,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img) img.src = resolvedAvatar;
       });
 
+      // DM contacts list
+      document.querySelectorAll(`.dm-friend-item[data-handle="${fullH}"], .dm-friend-item[data-handle="${cleanH}"], .dm-friend-item[data-handle="@${cleanH}"]`).forEach(item => {
+        const wrap = item.querySelector('.dm-friend-avatar-wrap');
+        if (wrap) applyAvatarToElement(wrap, resolvedAvatar);
+      });
+
       // Profile popover if currently open
       const popover = document.getElementById('user-profile-popover');
       if (popover && popover.style.display !== 'none' && popover.dataset.activeHandle && popover.dataset.activeHandle.toLowerCase().replace('@', '') === cleanH) {
         const popoverAvatar = document.getElementById('popover-avatar-wrap') || document.getElementById('popover-avatar');
         if (popoverAvatar) applyAvatarToElement(popoverAvatar, resolvedAvatar);
+      }
+    }
+
+    // 2.5 In-Place Name Updates
+    if (newName) {
+      if (isSelf && userNameDisplay) userNameDisplay.textContent = newName;
+      document.querySelectorAll(`.post-author-name[data-handle="${fullH}"], .post-author-name[data-handle="${cleanH}"], .post-author-name[data-handle="@${cleanH}"]`).forEach(el => {
+        el.textContent = newName;
+      });
+      document.querySelectorAll(`.comment-author-name[data-handle="${fullH}"], .comment-author-name[data-handle="${cleanH}"], .comment-author-name[data-handle="@${cleanH}"]`).forEach(el => {
+        el.textContent = newName;
+      });
+      document.querySelectorAll(`.dm-msg-name[data-handle="${fullH}"], .dm-msg-name[data-handle="${cleanH}"], .dm-msg-name[data-handle="@${cleanH}"]`).forEach(el => {
+        el.textContent = newName;
+      });
+      document.querySelectorAll(`.dm-friend-item[data-handle="${fullH}"], .dm-friend-item[data-handle="${cleanH}"], .dm-friend-item[data-handle="@${cleanH}"]`).forEach(item => {
+        const nameEl = item.querySelector('.dm-friend-name');
+        if (nameEl) nameEl.textContent = newName;
+      });
+      document.querySelectorAll(`.user-member-item[data-handle="${fullH}"], .user-member-item[data-handle="${cleanH}"], .user-member-item[data-handle="@${cleanH}"]`).forEach(item => {
+        const nameEl = item.querySelector('.user-member-name');
+        if (nameEl) nameEl.textContent = newName;
+      });
+      const popover = document.getElementById('user-profile-popover');
+      if (popover && popover.style.display !== 'none' && popover.dataset.activeHandle && popover.dataset.activeHandle.toLowerCase().replace('@', '') === cleanH) {
+        const popName = document.getElementById('popover-name');
+        if (popName) popName.textContent = newName;
       }
     }
 
