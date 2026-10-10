@@ -46,6 +46,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAvatarFrames: () => ipcRenderer.invoke('get-avatar-frames'),
   openAvatarFramesFolder: () => ipcRenderer.invoke('open-avatar-frames-folder'),
 
+  // Member Themes Folder Bridge
+  getMemberThemes: () => ipcRenderer.invoke('get-member-themes'),
+  openMemberThemesFolder: () => ipcRenderer.invoke('open-member-themes-folder'),
+
   // Native Window Theme Sync
   setNativeTheme: (theme) => ipcRenderer.send('theme-changed', theme),
 });

@@ -10164,7 +10164,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 
 .privacy-option-card.active {
   background: rgb(255, 255, 255);
-  border-color: rgb(255, 255, 255);
+  border-color: rgb(109, 109, 109);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
 }
 
