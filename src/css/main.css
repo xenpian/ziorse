@@ -9969,11 +9969,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   position: relative;
 }
 
-.ps-server-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-}
+
 
 .ps-card-banner {
   height: 95px;
