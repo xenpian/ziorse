@@ -153,7 +153,8 @@
       "@fas": [
         "role_1787396024739_d1d0"
       ]
-    }
+    },
+    "isPublic": false
   },
   {
     "id": "srv-1787393085774",
@@ -203,7 +204,8 @@
     "roles": [],
     "description": "",
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787397255223",
@@ -318,7 +320,8 @@
         "role_1789671647047_3dsy"
       ]
     },
-    "banner": ""
+    "banner": "",
+    "isPublic": false
   },
   {
     "id": "srv-1787397257516",
@@ -368,7 +371,8 @@
     "roles": [],
     "description": "",
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787397261579",
@@ -418,7 +422,8 @@
     "roles": [],
     "description": "",
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787397259393",
@@ -468,7 +473,8 @@
     "roles": [],
     "description": "",
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787398053441",
@@ -517,7 +523,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418809712_pmrwk9a09w.jpg",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787398055468",
@@ -566,7 +573,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418809715_wkrhc4nwgfr.jpg",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787398051318",
@@ -616,7 +624,8 @@
     "roles": [],
     "description": "",
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787429613421",
@@ -665,7 +674,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787429789318",
@@ -714,7 +724,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787429791131",
@@ -763,7 +774,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787429793357",
@@ -812,7 +824,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787429795124",
@@ -861,7 +874,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1787429797593",
@@ -910,7 +924,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587862199",
@@ -959,7 +974,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587864303",
@@ -1008,7 +1024,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587866119",
@@ -1057,7 +1074,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587867741",
@@ -1106,7 +1124,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587870043",
@@ -1155,7 +1174,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587871741",
@@ -1204,7 +1224,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587873670",
@@ -1253,7 +1274,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587876108",
@@ -1302,7 +1324,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587877712",
@@ -1351,7 +1374,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587879173",
@@ -1400,7 +1424,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587881094",
@@ -1449,7 +1474,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587883087",
@@ -1498,7 +1524,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789587889390",
@@ -1544,7 +1571,8 @@
       }
     ],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789588695965",
@@ -1593,7 +1621,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789588699573",
@@ -1642,7 +1671,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789588701720",
@@ -1691,7 +1721,8 @@
     "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   },
   {
     "id": "srv-1789588704409",
@@ -1737,6 +1768,7 @@
       }
     ],
     "banner": "",
-    "memberRoles": {}
+    "memberRoles": {},
+    "isPublic": false
   }
 ]
