@@ -10090,7 +10090,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .ps-dot-offline {
-  background: #64748b;
+  background: #919191;
 }
 
 .ps-card-footer {
@@ -10134,8 +10134,8 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   padding: 10px 16px;
   border-radius: 12px;
   background: rgba(141, 141, 141, 0.14);
-  color: #b6b6b6;
-  border: 1px solid rgba(187, 187, 187, 0.2);
+  color: #bebebe;
+  border: 1px solid rgba(192, 192, 192, 0.2);
   font-size: 0.88rem;
   font-weight: 700;
   cursor: default;
