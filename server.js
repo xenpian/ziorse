@@ -1166,6 +1166,7 @@ io.on('connection', (socket) => {
       );
       saveSyncDb();
       io.emit('invite-registry-updated', globalInviteRegistry);
+      io.emit('public-servers-updated', globalInviteRegistry);
       io.emit('server-members-updated', globalServerMembers);
     }
   });
