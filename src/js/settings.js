@@ -105,8 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameColor = (p && p.nameColor) ? String(p.nameColor) : '#ffffff';
     let nameEffects = [];
     const avatarFrame = (p && p.avatarFrame) ? String(p.avatarFrame) : 'none';
+    const memberTheme = (p && p.memberTheme) ? String(p.memberTheme) : 'none';
 
-    return { name, handle, avatar, banner, bio, email, statusText, statusType, fontStyle, fontWeight, nameColor, nameEffects, avatarFrame };
+    return { name, handle, avatar, banner, bio, email, statusText, statusType, fontStyle, fontWeight, nameColor, nameEffects, avatarFrame, memberTheme };
   }
 
   // Local state drafts
@@ -319,6 +320,72 @@ document.addEventListener('DOMContentLoaded', () => {
     if (liveCardStatusDot) {
       liveCardStatusDot.style.background = statusColors[draftProfile.statusType] || '#22c55e';
     }
+
+    // Üye Kartı Teması (.user-member-item) Mini Önizleme & Canlı Kart Önizlemesi
+    const profThemeMini = document.getElementById('prof-member-theme-mini-preview');
+    const profThemeName = document.getElementById('prof-member-theme-name');
+    const livePreviewMemberThemeBg = document.getElementById('settings-preview-member-theme-bg');
+    const livePreviewMemberAvatar = document.getElementById('settings-preview-member-avatar');
+    const livePreviewMemberName = document.getElementById('settings-preview-member-name');
+    const livePreviewMemberStatus = document.getElementById('settings-preview-member-status');
+
+    const curTheme = draftProfile.memberTheme || 'none';
+    const hasTheme = curTheme && curTheme !== 'none';
+
+    if (profThemeMini) {
+      if (hasTheme) {
+        profThemeMini.style.backgroundImage = `url("${curTheme}")`;
+        profThemeMini.innerHTML = '';
+      } else {
+        profThemeMini.style.backgroundImage = 'none';
+        profThemeMini.innerHTML = '<span class="member-theme-none-tag">Varsayılan</span>';
+      }
+    }
+
+    if (profThemeName) {
+      if (hasTheme) {
+        const filename = curTheme.split('/').pop().split('?')[0];
+        const rawName = filename.substring(0, filename.lastIndexOf('.')) || filename;
+        profThemeName.textContent = decodeURIComponent(rawName).replace(/[-_]/g, ' ');
+      } else {
+        profThemeName.textContent = 'Varsayılan (Temasız)';
+      }
+    }
+
+    if (livePreviewMemberAvatar) {
+      livePreviewMemberAvatar.src = draftProfile.avatar || window.DEFAULT_AVATAR || 'assets/avatar.png';
+    }
+
+    if (livePreviewMemberName) {
+      livePreviewMemberName.textContent = draftProfile.name || 'Kullanıcı';
+      livePreviewMemberName.style.fontFamily = (draftProfile.fontStyle === 'righteous') ? "'Righteous', cursive" : "'Outfit', sans-serif";
+      livePreviewMemberName.style.fontWeight = draftProfile.fontWeight || '700';
+      if (draftProfile.nameColor && draftProfile.nameColor.startsWith('linear-gradient')) {
+        livePreviewMemberName.style.background = draftProfile.nameColor;
+        livePreviewMemberName.style.webkitBackgroundClip = 'text';
+        livePreviewMemberName.style.backgroundClip = 'text';
+        livePreviewMemberName.style.webkitTextFillColor = 'transparent';
+        livePreviewMemberName.style.color = 'transparent';
+      } else {
+        livePreviewMemberName.style.background = 'none';
+        livePreviewMemberName.style.webkitTextFillColor = draftProfile.nameColor || 'var(--text-main)';
+        livePreviewMemberName.style.color = draftProfile.nameColor || 'var(--text-main)';
+      }
+    }
+
+    if (livePreviewMemberStatus) {
+      livePreviewMemberStatus.textContent = draftProfile.statusText || 'Çevrimiçi';
+    }
+
+    if (livePreviewMemberThemeBg) {
+      if (hasTheme) {
+        livePreviewMemberThemeBg.style.backgroundImage = `url("${curTheme}")`;
+        livePreviewMemberThemeBg.style.display = 'block';
+      } else {
+        livePreviewMemberThemeBg.style.backgroundImage = 'none';
+        livePreviewMemberThemeBg.style.display = 'none';
+      }
+    }
   }
 
   function checkChanges() {
@@ -349,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
       draftProfile.fontWeight !== originalProfile.fontWeight ||
       draftProfile.nameColor !== originalProfile.nameColor ||
       draftProfile.avatarFrame !== originalProfile.avatarFrame ||
+      draftProfile.memberTheme !== originalProfile.memberTheme ||
       JSON.stringify(draftProfile.nameEffects || []) !== JSON.stringify(originalProfile.nameEffects || []);
 
     if (saveBar) {
@@ -572,7 +640,8 @@ document.addEventListener('DOMContentLoaded', () => {
       fontWeight: draftProfile.fontWeight || '700',
       nameColor: draftProfile.nameColor || '#ffffff',
       nameEffects: draftProfile.nameEffects || [],
-      avatarFrame: draftProfile.avatarFrame || 'none'
+      avatarFrame: draftProfile.avatarFrame || 'none',
+      memberTheme: draftProfile.memberTheme || 'none'
     };
 
     // Save user to dataStore
@@ -596,7 +665,9 @@ document.addEventListener('DOMContentLoaded', () => {
           updateObj.nameColor,
           updateObj.nameEffects,
           updateObj.avatarFrame,
-          updateObj.fontWeight
+          updateObj.fontWeight,
+          updateObj.name,
+          updateObj.memberTheme
         );
       }
       if (typeof targetParent.syncUserDisplay === 'function') {
@@ -618,6 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nameColor: updateObj.nameColor,
         nameEffects: updateObj.nameEffects,
         avatarFrame: updateObj.avatarFrame,
+        memberTheme: updateObj.memberTheme,
         status: { type: updateObj.statusType, text: updateObj.statusText }
       });
     }
@@ -1249,6 +1321,236 @@ document.addEventListener('DOMContentLoaded', () => {
     draftProfile.nameColor = '#ffffff';
     updateLiveStyleControlsAndPreview();
   });
+
+  // ── .USER-MEMBER-ITEM THEMES MODAL & GIF PLAY-ON-HOVER LOGIC ──
+  const modalMemberThemes = document.getElementById('modal-member-themes');
+  const btnOpenMemberThemesModal = document.getElementById('btn-open-member-themes-modal');
+  const btnCloseMemberThemes = document.getElementById('btn-close-member-themes');
+  const btnDoneMemberThemes = document.getElementById('btn-done-member-themes');
+  const btnOpenThemesFolder = document.getElementById('btn-open-member-themes-folder');
+  const btnRefreshThemes = document.getElementById('btn-refresh-member-themes');
+  const memberThemesGrid = document.getElementById('member-themes-grid');
+  const themesCountLabel = document.getElementById('member-themes-count-label');
+
+  let loadedMemberThemes = [];
+
+  async function loadMemberThemes() {
+    if (!memberThemesGrid) return;
+    memberThemesGrid.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:36px; color:#71717a; font-size:0.85rem; display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <i data-lucide="loader-2" style="width:22px; height:22px; animation:spin 1s linear infinite;"></i>
+        <span>Temalar yükleniyor...</span>
+      </div>`;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    try {
+      let themes = [];
+      if (window.electronAPI && typeof window.electronAPI.getMemberThemes === 'function') {
+        const res = await window.electronAPI.getMemberThemes();
+        themes = (res && res.themes) || [];
+      } else {
+        const res = await fetch('http://localhost:3000/api/member-themes').catch(() => fetch('/api/member-themes'));
+        const data = await res.json();
+        themes = (data && data.themes) || [];
+      }
+
+      loadedMemberThemes = themes;
+      renderMemberThemesGrid(themes);
+    } catch (err) {
+      console.warn('Member themes load failed, using fallback:', err);
+      loadedMemberThemes = [
+        { id: 'Cyber-Motion.gif', name: 'Cyber Motion', url: 'assets/member-themes/Cyber-Motion.gif', filename: 'Cyber-Motion.gif', isGif: true },
+        { id: 'Dark-Aura.png', name: 'Dark Aura', url: 'assets/member-themes/Dark-Aura.png', filename: 'Dark-Aura.png', isGif: false },
+        { id: 'Silver-Mist.png', name: 'Silver Mist', url: 'assets/member-themes/Silver-Mist.png', filename: 'Silver-Mist.png', isGif: false }
+      ];
+      renderMemberThemesGrid(loadedMemberThemes);
+    }
+  }
+
+  function renderMemberThemesGrid(themes) {
+    if (!memberThemesGrid) return;
+    memberThemesGrid.innerHTML = '';
+
+    const curTheme = draftProfile.memberTheme || 'none';
+
+    // 1. Varsayılan (Temasız) Kartı
+    const noneCard = document.createElement('div');
+    noneCard.className = `member-theme-card ${(!curTheme || curTheme === 'none') ? 'active' : ''}`;
+    noneCard.dataset.themeId = 'none';
+    noneCard.dataset.themeUrl = 'none';
+    noneCard.innerHTML = `
+      <div class="member-theme-card-preview-box" style="background:#18181b; border:1px dashed rgba(255,255,255,0.14);">
+        <i data-lucide="ban" style="width:22px; height:22px; color:#71717a;"></i>
+      </div>
+      <div class="member-theme-card-info">
+        <span class="member-theme-card-title">Varsayılan (Temasız)</span>
+        <span class="member-theme-card-type">Standart Görünüm</span>
+      </div>
+    `;
+    noneCard.addEventListener('click', () => {
+      selectMemberTheme('none');
+    });
+    memberThemesGrid.appendChild(noneCard);
+
+    // 2. Klasördeki Temaları Listele
+    themes.forEach(theme => {
+      const isSelected = curTheme === theme.url || curTheme === theme.id || curTheme.endsWith(theme.filename);
+      const card = document.createElement('div');
+      card.className = `member-theme-card ${isSelected ? 'active' : ''}`;
+      card.dataset.themeId = theme.id;
+      card.dataset.themeUrl = theme.url;
+
+      const previewBox = document.createElement('div');
+      previewBox.className = 'member-theme-card-preview-box';
+
+      if (theme.isGif) {
+        // GIF: Başlangıçta 1. kareyi dondur (canvas), imleç üzerine gelince hareket etsin (img)
+        const canvas = document.createElement('canvas');
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.objectFit = 'cover';
+        canvas.style.display = 'block';
+
+        const img = document.createElement('img');
+        img.src = theme.url;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.display = 'none';
+
+        img.onload = () => {
+          try {
+            canvas.width = img.naturalWidth || 240;
+            canvas.height = img.naturalHeight || 120;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          } catch (e) {
+            canvas.style.display = 'none';
+            img.style.display = 'block';
+          }
+        };
+
+        // İmleç üzerine gelince hareket etsin (play GIF)
+        card.addEventListener('mouseenter', () => {
+          canvas.style.display = 'none';
+          img.style.display = 'block';
+        });
+
+        // İmleç ayrılınca ilk karede donsun (freeze GIF)
+        card.addEventListener('mouseleave', () => {
+          canvas.style.display = 'block';
+          img.style.display = 'none';
+        });
+
+        previewBox.appendChild(canvas);
+        previewBox.appendChild(img);
+
+        const gifBadge = document.createElement('span');
+        gifBadge.className = 'theme-card-gif-badge';
+        gifBadge.textContent = 'GIF';
+        previewBox.appendChild(gifBadge);
+      } else {
+        const img = document.createElement('img');
+        img.src = theme.url;
+        img.alt = theme.name;
+        img.loading = 'lazy';
+        previewBox.appendChild(img);
+      }
+
+      const info = document.createElement('div');
+      info.className = 'member-theme-card-info';
+      info.innerHTML = `
+        <span class="member-theme-card-title">${escapeHtml(theme.name)}</span>
+        <span class="member-theme-card-type">${theme.isGif ? 'Hareketli GIF' : 'Görsel Tema'}</span>
+      `;
+
+      card.appendChild(previewBox);
+      card.appendChild(info);
+
+      card.addEventListener('click', () => {
+        selectMemberTheme(theme.url);
+      });
+
+      memberThemesGrid.appendChild(card);
+    });
+
+    if (themesCountLabel) {
+      themesCountLabel.textContent = `${themes.length} tema bulundu`;
+    }
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  function selectMemberTheme(themeUrl) {
+    draftProfile.memberTheme = themeUrl;
+
+    if (memberThemesGrid) {
+      memberThemesGrid.querySelectorAll('.member-theme-card').forEach(c => {
+        const cUrl = c.dataset.themeUrl;
+        const isAct = (!themeUrl || themeUrl === 'none')
+          ? (cUrl === 'none')
+          : (cUrl === themeUrl || themeUrl.endsWith(c.dataset.themeId));
+        c.classList.toggle('active', isAct);
+      });
+    }
+
+    renderUserInfo();
+    checkChanges();
+  }
+
+  function openMemberThemesModal() {
+    if (!modalMemberThemes) return;
+    modalMemberThemes.style.display = 'flex';
+    loadMemberThemes();
+  }
+
+  function closeMemberThemesModal() {
+    if (!modalMemberThemes) return;
+    modalMemberThemes.style.display = 'none';
+  }
+
+  if (btnOpenMemberThemesModal) {
+    btnOpenMemberThemesModal.addEventListener('click', openMemberThemesModal);
+  }
+
+  if (btnCloseMemberThemes) {
+    btnCloseMemberThemes.addEventListener('click', closeMemberThemesModal);
+  }
+
+  if (btnDoneMemberThemes) {
+    btnDoneMemberThemes.addEventListener('click', closeMemberThemesModal);
+  }
+
+  if (modalMemberThemes) {
+    modalMemberThemes.addEventListener('click', (e) => {
+      if (e.target === modalMemberThemes) closeMemberThemesModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalMemberThemes && modalMemberThemes.style.display !== 'none') {
+      closeMemberThemesModal();
+    }
+  });
+
+  if (btnOpenThemesFolder) {
+    btnOpenThemesFolder.addEventListener('click', () => {
+      if (window.electronAPI && typeof window.electronAPI.openMemberThemesFolder === 'function') {
+        window.electronAPI.openMemberThemesFolder();
+      } else {
+        fetch('http://localhost:3000/api/open-member-themes-folder', { method: 'POST' })
+          .catch(() => fetch('/api/open-member-themes-folder', { method: 'POST' }));
+      }
+      showToast('Temalar klasörü açılıyor...');
+    });
+  }
+
+  if (btnRefreshThemes) {
+    btnRefreshThemes.addEventListener('click', () => {
+      loadMemberThemes();
+      showToast('Temalar listesi yenilendi');
+    });
+  }
 
   // Initial frames load & render
   loadAvatarFrames();
