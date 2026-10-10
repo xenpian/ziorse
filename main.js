@@ -438,6 +438,67 @@ ipcMain.handle('open-avatar-frames-folder', () => {
   return true;
 });
 
+// Member Themes Folder Bridge
+const MEMBER_THEMES_DIR = path.join(__dirname, 'src', 'assets', 'member-themes');
+const ROOT_THEMES_DIR = path.join(__dirname, 'assets', 'member-themes');
+
+function syncMemberThemesDirsMain() {
+  try {
+    if (!fs.existsSync(MEMBER_THEMES_DIR)) fs.mkdirSync(MEMBER_THEMES_DIR, { recursive: true });
+    if (!fs.existsSync(ROOT_THEMES_DIR)) fs.mkdirSync(ROOT_THEMES_DIR, { recursive: true });
+    const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
+    const isThemeFile = f => allowed.includes(path.extname(f).toLowerCase());
+    if (fs.existsSync(ROOT_THEMES_DIR)) {
+      fs.readdirSync(ROOT_THEMES_DIR).filter(isThemeFile).forEach(file => {
+        const dest = path.join(MEMBER_THEMES_DIR, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(ROOT_THEMES_DIR, file), dest);
+      });
+    }
+    if (fs.existsSync(MEMBER_THEMES_DIR)) {
+      fs.readdirSync(MEMBER_THEMES_DIR).filter(isThemeFile).forEach(file => {
+        const dest = path.join(ROOT_THEMES_DIR, file);
+        if (!fs.existsSync(dest)) fs.copyFileSync(path.join(MEMBER_THEMES_DIR, file), dest);
+      });
+    }
+  } catch (e) { }
+}
+syncMemberThemesDirsMain();
+
+ipcMain.handle('get-member-themes', () => {
+  syncMemberThemesDirsMain();
+  try {
+    const list = new Set();
+    const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
+    [MEMBER_THEMES_DIR, ROOT_THEMES_DIR].forEach(dir => {
+      if (fs.existsSync(dir)) {
+        fs.readdirSync(dir).filter(f => allowed.includes(path.extname(f).toLowerCase())).forEach(f => list.add(f));
+      }
+    });
+    return Array.from(list).map(file => {
+      const ext = path.extname(file).toLowerCase();
+      return {
+        id: file,
+        name: path.parse(file).name.replace(/[-_]/g, ' '),
+        url: `assets/member-themes/${file}`,
+        filename: file,
+        isGif: ext === '.gif'
+      };
+    });
+  } catch (e) {
+    return [];
+  }
+});
+
+ipcMain.handle('open-member-themes-folder', () => {
+  syncMemberThemesDirsMain();
+  if (fs.existsSync(ROOT_THEMES_DIR)) {
+    shell.openPath(ROOT_THEMES_DIR);
+  } else if (fs.existsSync(MEMBER_THEMES_DIR)) {
+    shell.openPath(MEMBER_THEMES_DIR);
+  }
+  return true;
+});
+
 const configPath = path.join(app.getPath('userData'), 'window-bounds.json');
 
 function loadWindowBounds() {
