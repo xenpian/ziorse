@@ -1191,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         trackBar.style.background = draftProfile.nameColor;
       } else {
         const c = draftProfile.nameColor || '#ffffff';
-        trackBar.style.background = `linear-gradient(90deg, ${c}, #06b6d4, #3b82f6, #ffffff)`;
+        trackBar.style.background = `linear-gradient(90deg, ${c}, #94a3b8, #64748b, #ffffff)`;
       }
     }
 
@@ -1256,16 +1256,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Gradient Slider & Preset Pills Handlers
   function buildCustomGradient() {
     const s = document.getElementById('input-grad-start')?.value || '#10b981';
-    const m1 = document.getElementById('input-grad-mid1')?.value || '#06b6d4';
-    const m2 = document.getElementById('input-grad-mid2')?.value || '#3b82f6';
+    const m1 = document.getElementById('input-grad-mid1')?.value || '#94a3b8';
+    const m2 = document.getElementById('input-grad-mid2')?.value || '#64748b';
     const e = document.getElementById('input-grad-end')?.value || '#ffffff';
     return `linear-gradient(90deg, ${s} 0%, ${m1} 33%, ${m2} 66%, ${e} 100%)`;
   }
 
   function syncPinHeads() {
     const s = document.getElementById('input-grad-start')?.value || '#10b981';
-    const m1 = document.getElementById('input-grad-mid1')?.value || '#06b6d4';
-    const m2 = document.getElementById('input-grad-mid2')?.value || '#3b82f6';
+    const m1 = document.getElementById('input-grad-mid1')?.value || '#94a3b8';
+    const m2 = document.getElementById('input-grad-mid2')?.value || '#64748b';
     const e = document.getElementById('input-grad-end')?.value || '#ffffff';
     const ps = document.getElementById('grad-pin-start');
     const pm1 = document.getElementById('grad-pin-mid1');
