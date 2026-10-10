@@ -9860,13 +9860,13 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.25));
-  border: 1px solid rgba(99, 102, 241, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #818cf8;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+  color: #cbd5e1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   flex-shrink: 0;
 }
 
@@ -9903,8 +9903,8 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .public-servers-search-wrap:focus-within {
-  border-color: var(--accent-primary, #6366f1);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
   background: var(--bg-hover, rgba(255, 255, 255, 0.08));
 }
 
@@ -9924,20 +9924,22 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   gap: 8px;
   padding: 9px 16px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #fff;
-  border: none;
+  background: #27272a;
+  color: #f4f4f5;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.86rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
 }
 
 .btn-ps-create-trigger:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+  background: #3f3f46;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   filter: brightness(1.08);
 }
 
@@ -9968,13 +9970,15 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .ps-server-card:hover {
-  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
 .ps-card-banner {
   height: 95px;
   width: 100%;
-  background: linear-gradient(135deg, #312e81, #1e1b4b);
+  background: linear-gradient(135deg, #27272a, #18181b);
   position: relative;
   overflow: hidden;
   background-size: cover;
@@ -10022,8 +10026,9 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 .ps-card-avatar-text {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #fff;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #f1f5f9;
+  background: linear-gradient(135deg, #3f3f46, #27272a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
   height: 100%;
   display: flex;
@@ -10099,14 +10104,14 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   width: 100%;
   padding: 10px 16px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #ffffff;
-  border: none;
+  background: #27272a;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10114,9 +10119,10 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .btn-ps-join:hover {
-  filter: brightness(1.1);
+  background: #3f3f46;
+  border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .btn-ps-join:active {
@@ -10157,13 +10163,13 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 
 .privacy-option-card:hover {
   background: var(--bg-hover, rgba(255, 255, 255, 0.07));
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .privacy-option-card.active {
-  background: rgba(99, 102, 241, 0.12);
-  border-color: var(--accent-primary, #6366f1);
-  box-shadow: 0 0 0 1px var(--accent-primary, #6366f1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
 }
 
 .poc-header {
@@ -10182,7 +10188,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .privacy-option-card.active .poc-badge {
-  color: var(--accent-primary, #6366f1);
+  color: #f1f5f9;
 }
 
 .poc-title {
