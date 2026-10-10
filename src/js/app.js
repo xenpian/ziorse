@@ -51,9 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const modalCreateServer = document.getElementById('modal-create-server');
   const btnOpenCreateServer = document.getElementById('btn-open-create-server');
+  const btnOpenCreateServerPs = document.getElementById('btn-open-create-server-ps');
   const btnCloseModalServer = document.getElementById('btn-close-modal-server');
   const newServerNameInput = document.getElementById('new-server-name-input');
+  const newServerDescInput = document.getElementById('new-server-desc-input');
+  const optPrivacyPublic = document.getElementById('opt-privacy-public');
+  const optPrivacyPrivate = document.getElementById('opt-privacy-private');
   const btnSubmitCreateServer = document.getElementById('btn-submit-create-server');
+  const publicServersView = document.getElementById('public-servers-view');
+  const publicServersSearch = document.getElementById('public-servers-search');
 
   const modalCreateVoice = document.getElementById('modal-create-voice');
   const btnOpenCreateVoice = document.getElementById('btn-open-create-voice');
