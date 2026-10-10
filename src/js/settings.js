@@ -1327,7 +1327,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpenMemberThemesModal = document.getElementById('btn-open-member-themes-modal');
   const btnCloseMemberThemes = document.getElementById('btn-close-member-themes');
   const btnDoneMemberThemes = document.getElementById('btn-done-member-themes');
-  const btnOpenThemesFolder = document.getElementById('btn-open-member-themes-folder');
   const btnRefreshThemes = document.getElementById('btn-refresh-member-themes');
   const memberThemesGrid = document.getElementById('member-themes-grid');
   const themesCountLabel = document.getElementById('member-themes-count-label');
