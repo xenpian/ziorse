@@ -9841,7 +9841,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
   background: var(--bg-card, rgba(18, 18, 22, 0.6));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
