@@ -166,12 +166,10 @@ input[type="range"]::-webkit-slider-thumb {
   background: #ffffff;
   border: 2px solid #9ca3af;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
   border-color: #121212;
 }
 
@@ -182,7 +180,6 @@ input[type="range"]::-moz-range-thumb {
   background: #ffffff;
   border: 2px solid #9ca3af;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .settings-range-value {
@@ -230,8 +227,7 @@ input[type="range"]::-moz-range-thumb {
   height: 16px;
   background: #ffffff;
   border-radius: 50%;
-  transition: transform 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: left 0.2s ease;
 }
 
 .ss-toggle-label input[type="checkbox"]:checked+.ss-toggle-slider {
@@ -240,7 +236,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ss-toggle-label input[type="checkbox"]:checked+.ss-toggle-slider::after {
-  transform: translateX(18px);
+  left: 20px;
   background: #ffffff !important;
 }
 
@@ -289,14 +285,11 @@ input[type="range"]::-moz-range-thumb {
 
 .theme-card:hover {
   border-color: #737373;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .theme-card.active {
   border-color: #18181b !important;
   background: #f7f7f7;
-  box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.1);
 }
 
 .theme-card-icon {
@@ -374,7 +367,6 @@ input[type="range"]::-moz-range-thumb {
   border: 1px solid var(--border-dark, #dfdfdf);
   border-radius: 14px;
   overflow: visible !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 10px;
 }
@@ -507,8 +499,11 @@ input[type="range"]::-moz-range-thumb {
   display: none !important;
   position: fixed;
   bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: fit-content;
+  max-width: 90vw;
   background: #ffffff;
   border: 1px solid #dbdbdb;
   border-radius: 14px;
@@ -516,7 +511,6 @@ input[type="range"]::-moz-range-thumb {
   gap: 16px;
   align-items: center;
   z-index: 99999 !important;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
   font-family: var(--font-nunito);
   font-size: 0.88rem;
   color: #121212;
@@ -542,12 +536,10 @@ input[type="range"]::-moz-range-thumb {
 @keyframes saveBarSlideIn {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(16px);
   }
 
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -813,13 +805,11 @@ input[type="range"]::-moz-range-thumb {
 .gg-font-card:hover {
   background: #e4e4e7;
   border-color: #d1d5db;
-  transform: translateY(-2px);
 }
 
 .gg-font-card.active {
   background: #ffffff !important;
   border: 2px solid #18181b !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
 }
 
 .gg-font-card span {
@@ -893,20 +883,16 @@ textarea {
   user-select: none;
   padding: 0 10px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .effect-card:hover {
   background: #ffffff;
   border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .effect-card.active {
   background: #ffffff !important;
   border: 2px solid #0f172a !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09) !important;
 }
 
 /* Crisp & Gorgeous Effect Labels */
@@ -1478,7 +1464,6 @@ body.dark-mode .hesabim-frame-item:hover {
 body.dark-mode .hesabim-frame-item.active {
   background: #1c1c20 !important;
   border-color: #ffffff !important;
-  box-shadow: 0 0 0 1.5px #ffffff !important;
 }
 
 body.dark-mode .hesabim-frame-name {
