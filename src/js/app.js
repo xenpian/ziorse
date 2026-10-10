@@ -1444,17 +1444,51 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── SUNUCU MODAL ──────────────────────────────────────────────
-  if (btnOpenCreateServer) btnOpenCreateServer.addEventListener('click', () => modalCreateServer.classList.add('active'));
+  function openCreateServerModal() {
+    if (modalCreateServer) {
+      modalCreateServer.classList.add('active');
+      if (newServerNameInput) {
+        newServerNameInput.value = '';
+        newServerNameInput.focus();
+      }
+      if (newServerDescInput) newServerDescInput.value = '';
+      if (optPrivacyPublic) optPrivacyPublic.classList.add('active');
+      if (optPrivacyPrivate) optPrivacyPrivate.classList.remove('active');
+    }
+  }
+
+  if (optPrivacyPublic && optPrivacyPrivate) {
+    optPrivacyPublic.addEventListener('click', () => {
+      optPrivacyPublic.classList.add('active');
+      optPrivacyPrivate.classList.remove('active');
+    });
+    optPrivacyPrivate.addEventListener('click', () => {
+      optPrivacyPrivate.classList.add('active');
+      optPrivacyPublic.classList.remove('active');
+    });
+  }
+
+  if (btnOpenCreateServer) btnOpenCreateServer.addEventListener('click', openCreateServerModal);
+  if (btnOpenCreateServerPs) btnOpenCreateServerPs.addEventListener('click', openCreateServerModal);
   if (btnCloseModalServer) btnCloseModalServer.addEventListener('click', () => modalCreateServer.classList.remove('active'));
+  
   if (btnSubmitCreateServer) {
     btnSubmitCreateServer.addEventListener('click', () => {
-      const name = newServerNameInput.value.trim();
+      const name = newServerNameInput?.value.trim();
+      const desc = newServerDescInput?.value.trim() || '';
+      const isPublic = optPrivacyPublic ? optPrivacyPublic.classList.contains('active') : true;
+
       if (name) {
-        const srv = window.dataStore.addServer(name);
-        newServerNameInput.value = '';
+        const srv = window.dataStore.addServer(name, isPublic, desc);
+        if (newServerNameInput) newServerNameInput.value = '';
+        if (newServerDescInput) newServerDescInput.value = '';
         modalCreateServer.classList.remove('active');
+        renderServers();
+        if (typeof renderPublicServers === 'function') renderPublicServers();
         switchToServer(srv.id);
-        showToast(srv.name + ' sunucusu oluşturuldu');
+        showToast(srv.name + ' sunucusu oluşturuldu (' + (isPublic ? 'Herkese Açık' : 'Gizli') + ')');
+      } else {
+        showToast('Lütfen bir sunucu adı girin.');
       }
     });
   }
