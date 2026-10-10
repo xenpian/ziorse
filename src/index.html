@@ -135,7 +135,7 @@
     <div class="center-column-wrapper">
 
       <!-- MAIN FEED VIEW -->
-      <div id="main-feed-view" class="center-feed">
+      <div id="main-feed-view" class="center-feed" style="display:none;">
 
         <!-- Sticky Feed Header -->
         <div class="feed-header">
@@ -451,8 +451,36 @@
               <i data-lucide="send" style="width:14px;height:14px;"></i>
             </button>
           </div>
+      </div>
+
+      <!-- HERKESE AÇIK SUNUCULAR (PUBLIC SERVERS DISCOVERY VIEW) -->
+      <div id="public-servers-view" class="public-servers-container" style="display:flex;">
+        <div class="public-servers-header">
+          <div class="public-servers-title-box">
+            <div class="public-servers-icon-wrap">
+              <i data-lucide="compass" style="width:28px; height:28px;"></i>
+            </div>
+            <div>
+              <h2 class="public-servers-title">Herkese Açık Sunucular</h2>
+              <p class="public-servers-subtitle">Toplulukları keşfet, sohbetlere katıl ve yeni insanlarla tanış.</p>
+            </div>
+          </div>
+          <div class="public-servers-actions">
+            <div class="public-servers-search-wrap">
+              <i data-lucide="search" style="width:16px; height:16px; color:var(--text-muted);"></i>
+              <input type="text" id="public-servers-search" placeholder="Sunucu ara..." class="public-servers-search-input">
+            </div>
+            <button id="btn-open-create-server-ps" class="btn-ps-create-trigger">
+              <i data-lucide="plus" style="width:16px; height:16px;"></i> Sunucu Oluştur
+            </button>
+          </div>
         </div>
 
+        <div class="public-servers-grid-scroll">
+          <div id="public-servers-grid" class="public-servers-grid">
+            <!-- Dinamik Olarak Yüklenecek Herkese Açık Sunucular -->
+          </div>
+        </div>
       </div>
 
     </div>
@@ -525,16 +553,19 @@
   <div class="servers-rail" id="servers-taskbar">
     <!-- MORPHING MAIN HUB (FOR-YOU / MESSAGES / SAVED) -->
     <div class="nav-hub-wrapper" id="nav-hub-wrapper">
-      <div class="server-icon active nav-hub-main-btn" id="nav-hub-main-btn" title="Ana Menü">
+      <div class="server-icon active nav-hub-main-btn" id="nav-hub-main-btn" title="Herkese Açık Sunucular">
         <div class="server-icon-badge"></div>
         <div class="nav-hub-icon-box">
-          <i id="nav-hub-main-icon" data-lucide="home" style="width:20px; height:20px;"></i>
+          <i id="nav-hub-main-icon" data-lucide="compass" style="width:20px; height:20px;"></i>
         </div>
       </div>
 
       <!-- UPWARD FLYOUT MINI ICONS (AÇILIR MENÜ) -->
       <div class="nav-hub-flyout" id="nav-hub-flyout">
-        <button class="hub-mini-btn active" data-nav="for-you" data-icon="home" title="Ana Akış">
+        <button class="hub-mini-btn active" data-nav="public-servers" data-icon="compass" title="Herkese Açık Sunucular">
+          <i data-lucide="compass" style="width:16px; height:16px;"></i>
+        </button>
+        <button class="hub-mini-btn" data-nav="for-you" data-icon="home" title="Ana Akış">
           <i data-lucide="home" style="width:16px; height:16px;"></i>
         </button>
         <button class="hub-mini-btn" data-nav="messages" data-icon="message-square" title="Direkt Mesajlar">
@@ -774,16 +805,52 @@
 
   <!-- CREATE / JOIN SERVER MODAL -->
   <div id="modal-create-server" class="modal-overlay">
-    <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-size:1.1rem; font-weight:700;">Yeni Sunucu Oluştur</h3>
+    <div class="modal-box" style="max-width:440px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);">Yeni Sunucu Oluştur</h3>
         <button id="btn-close-modal-server" class="modal-close-btn" title="Kapat">
           <i data-lucide="x" style="width:15px; height:15px;"></i>
         </button>
       </div>
-      <input type="text" id="new-server-name-input" placeholder="Sunucu Adı (Örn: Yazılım & Topluluk, Gaming TR)">
+      <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px; line-height:1.4;">
+        Topluluğunuz için bir sunucu oluşturun. Arkadaşlarınızla sohbet edin veya herkese açık olarak paylaşın.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
+        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Sunucu Adı</label>
+        <input type="text" id="new-server-name-input" placeholder="Sunucu Adı (Örn: Yazılım & Topluluk, Gaming TR)" maxlength="45">
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:14px;">
+        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Sunucu Açıklaması</label>
+        <textarea id="new-server-desc-input" placeholder="Sunucunuzu tanıtan kısa bir açıklama..." rows="2" style="resize:none; padding:10px; border-radius:10px; border:1px solid var(--border-dark); background:var(--bg-input); color:var(--text-main); font-family:inherit; font-size:0.88rem; width:100%;"></textarea>
+      </div>
+
+      <!-- GİZLİLİK SEÇENEĞİ (PUBLIC vs PRIVATE) -->
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
+        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Gizlilik Türü</label>
+        <div class="privacy-options-group" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="privacy-option-card active" data-privacy="public" id="opt-privacy-public">
+            <div class="poc-header">
+              <i data-lucide="globe" style="width:18px; height:18px; color:var(--accent-primary, #6366f1);"></i>
+              <span class="poc-badge">Herkese Açık</span>
+            </div>
+            <span class="poc-title">Public</span>
+            <span class="poc-desc">Herkes Keşfet listesinde görebilir ve katılabilir.</span>
+          </div>
+          <div class="privacy-option-card" data-privacy="private" id="opt-privacy-private">
+            <div class="poc-header">
+              <i data-lucide="lock" style="width:18px; height:18px; color:#f59e0b;"></i>
+              <span class="poc-badge">Gizli</span>
+            </div>
+            <span class="poc-title">Private</span>
+            <span class="poc-desc">Yalnızca özel davet linkiyle katılım sağlanabilir.</span>
+          </div>
+        </div>
+      </div>
+
       <button id="btn-submit-create-server" class="btn-send-post"
-        style="width:100%; border-radius:var(--radius-md); padding:10px;">Sunucu Oluştur</button>
+        style="width:100%; border-radius:var(--radius-md); padding:12px; font-weight:700; font-size:0.95rem;">Sunucu Oluştur</button>
     </div>
   </div>
 
