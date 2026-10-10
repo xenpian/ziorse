@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateIconPreview(originalIcon || (server.name ? server.name.substring(0, 2).toUpperCase() : 'SR'));
     updateBannerPreview(originalBanner);
+    updatePrivacyUI();
     applyPermissionRestrictions();
     renderChannels();
     renderRoles();
