@@ -301,7 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
               uData.nameEffects,
               uData.avatarFrame,
               uData.fontWeight,
-              uData.name
+              uData.name,
+              uData.memberTheme
             );
           }
         });
@@ -539,6 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
           nameColor: cu.nameColor || '',
           nameEffects: cu.nameEffects || '',
           avatarFrame: cu.avatarFrame || '',
+          memberTheme: cu.memberTheme || '',
           status: window.dataStore.userStatus || { type: 'online', text: '' }
         });
         socket.emit('get-invites');
@@ -4471,11 +4473,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const allUsersMap = new Map();
     // Kendimizi ekle
+    const cuProf = window.dataStore.getUserProfile(cu.handle) || {};
     allUsersMap.set(cu.handle.toLowerCase(), {
       handle: cu.handle,
       name: cu.name,
       avatar: cu.avatar || window.DEFAULT_AVATAR,
       status: myStatus,
+      memberTheme: cuProf.memberTheme || cu.memberTheme || '',
       isOnline: isMeOnline,
       isSelf: true
     });
@@ -4487,12 +4491,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const cleanH = u.handle.toLowerCase();
         if (cleanH === cu.handle.toLowerCase()) return;
         const uStatus = u.status || { type: 'offline', text: '' };
+        const uProf = window.dataStore.getUserProfile(u.handle) || u;
         const isOnline = onlineHandles.includes(cleanH) && uStatus.type !== 'offline' && uStatus.type !== 'invisible';
         allUsersMap.set(cleanH, {
           handle: u.handle,
           name: u.name || u.handle.replace('@', ''),
           avatar: u.avatar || window.DEFAULT_AVATAR,
           status: uStatus,
+          memberTheme: uProf.memberTheme || u.memberTheme || '',
           isOnline: isOnline,
           isSelf: false
         });
@@ -4511,8 +4517,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const stType = u.status?.type || 'online';
       const color = statusColors[stType] || '#22c55e';
       const customTxt = u.status?.text ? `"${u.status.text}"` : (statusLabels[stType] || 'Çevrimiçi');
+      const themeBgHtml = (u.memberTheme && u.memberTheme !== 'none')
+        ? `<div class="user-member-theme-bg" style="background-image: url('${u.memberTheme}');"></div>`
+        : '';
       return `
         <div class="user-member-item" data-handle="${u.handle}">
+          ${themeBgHtml}
           <div class="avatar-wrapper-status">
             <img class="user-avatar-sm" src="${u.avatar}" alt="${escapeHtml(u.name)}">
           </div>
@@ -4525,8 +4535,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (off.length > 0) {
       html += `<div class="user-category-label" style="margin-top:10px;">ÇEVRİM DIŞI — ${off.length}</div>`;
-      html += off.map(u => `
+      html += off.map(u => {
+        const themeBgHtml = (u.memberTheme && u.memberTheme !== 'none')
+          ? `<div class="user-member-theme-bg" style="background-image: url('${u.memberTheme}');"></div>`
+          : '';
+        return `
         <div class="user-member-item" style="opacity:0.55;" data-handle="${u.handle}">
+          ${themeBgHtml}
           <div class="avatar-wrapper-status">
             <img class="user-avatar-sm" src="${u.avatar}" alt="${escapeHtml(u.name)}">
           </div>
@@ -4534,7 +4549,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="user-member-name">${escapeHtml(u.name)}</span>
             <span class="user-member-status">Çevrim dışı</span>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
 
     onlineMembersContainer.innerHTML = html;
@@ -5829,9 +5845,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const color = statusColors[stType] || (item.isOnline ? '#22c55e' : '#737373');
       const customTxt = item.status?.text ? `"${item.status.text}"` : (statusLabels[stType] || (item.isOnline ? 'Çevrimiçi' : 'Çevrim dışı'));
 
+      const mTheme = prof?.memberTheme || item.memberTheme;
+      const themeBgHtml = (mTheme && mTheme !== 'none')
+        ? `<div class="user-member-theme-bg" style="background-image: url('${mTheme}');"></div>`
+        : '';
+
       return `
         <div class="user-member-item" data-handle="${item.handle}"
           style="display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;${!item.isOnline ? 'opacity:0.55;' : ''}">
+          ${themeBgHtml}
           <div style="display:flex;align-items:center;gap:8px;min-width:0;">
             <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0;">
               ${renderMediaAvatarHtml(avatar, 'user-avatar-sm')}
@@ -6056,10 +6078,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const mColor = (isSelf && cu.nameColor ? cu.nameColor : null) || prof.nameColor || m.nameColor;
       const mEffects = (isSelf && cu.nameEffects ? cu.nameEffects : null) || prof.nameEffects || m.nameEffects;
       const memberStyleAttr = getAuthorNameStyleAttr({ fontStyle: mFont, fontWeight: mWeight, nameColor: mColor, nameEffects: mEffects }, highestRole);
+      const mTheme = (isSelf && cu.memberTheme ? cu.memberTheme : null) || prof.memberTheme || m.memberTheme;
+      const themeBgHtml = (mTheme && mTheme !== 'none')
+        ? `<div class="user-member-theme-bg" style="background-image: url('${mTheme}');"></div>`
+        : '';
 
       return `
         <div class="user-member-item" data-handle="${m.handle}"
           style="display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;${!isOnline ? 'opacity:0.55;' : ''}">
+          ${themeBgHtml}
           <div style="display:flex;align-items:center;gap:8px;min-width:0;">
             <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
               ${renderMediaAvatarHtml(avatar, 'user-avatar-sm')}
@@ -7334,7 +7361,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ── INSTANT IN-PLACE LIVE MEDIA & STYLING UPDATER (Zero App Reload) ──
-  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame, newFontWeight, newName) {
+  window.updateLiveUserMedia = function (handle, newAvatar, newBanner, newFontStyle, newNameColor, newNameEffects, newAvatarFrame, newFontWeight, newName, newMemberTheme) {
     if (!handle) return;
     const cleanH = handle.toLowerCase().replace('@', '');
     const fullH = '@' + cleanH;
@@ -7350,6 +7377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (newNameColor !== undefined) window.dataStore.currentUser.nameColor = newNameColor;
         if (newNameEffects !== undefined) window.dataStore.currentUser.nameEffects = newNameEffects;
         if (newAvatarFrame !== undefined) window.dataStore.currentUser.avatarFrame = newAvatarFrame;
+        if (newMemberTheme !== undefined) window.dataStore.currentUser.memberTheme = newMemberTheme;
       }
       if (window.dataStore.userDirectory) {
         const dir = window.dataStore.userDirectory;
@@ -7363,6 +7391,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (newNameColor !== undefined) entry.nameColor = newNameColor;
           if (newNameEffects !== undefined) entry.nameEffects = newNameEffects;
           if (newAvatarFrame !== undefined) entry.avatarFrame = newAvatarFrame;
+          if (newMemberTheme !== undefined) entry.memberTheme = newMemberTheme;
         } else {
           dir[fullH] = {
             handle: fullH,
@@ -7373,7 +7402,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fontWeight: newFontWeight,
             nameColor: newNameColor,
             nameEffects: newNameEffects,
-            avatarFrame: newAvatarFrame
+            avatarFrame: newAvatarFrame,
+            memberTheme: newMemberTheme
           };
         }
       }
@@ -7591,6 +7621,25 @@ document.addEventListener('DOMContentLoaded', () => {
           popBanner.style.background = resolvedBanner;
         }
       }
+    }
+
+    // 4. Targeted Member Item Theme Background DOM Update (.user-member-item)
+    if (newMemberTheme !== undefined) {
+      const hasTheme = newMemberTheme && newMemberTheme !== 'none';
+      document.querySelectorAll(`.user-member-item[data-handle="${fullH}"], .user-member-item[data-handle="${cleanH}"], .user-member-item[data-handle="@${cleanH}"]`).forEach(item => {
+        let bg = item.querySelector('.user-member-theme-bg');
+        if (hasTheme) {
+          if (!bg) {
+            bg = document.createElement('div');
+            bg.className = 'user-member-theme-bg';
+            item.prepend(bg);
+          }
+          bg.style.backgroundImage = `url('${newMemberTheme}')`;
+          bg.style.display = 'block';
+        } else {
+          if (bg) bg.remove();
+        }
+      });
     }
 
     // Right sidebar member avatars and names are already updated in-place above without heavy re-renders
