@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('connect', () => {
       syncWithSocketServer();
+      if (typeof fetchLivePublicServers === 'function') fetchLivePublicServers();
       updateRightSidebar();
     });
 
