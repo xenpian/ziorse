@@ -787,7 +787,7 @@ body.dark-mode .header-server-badge {
   right: var(--app-gap, 10px);
   bottom: calc(var(--servers-rail-height, 56px) + (var(--app-gap, 10px) * 2));
   display: grid;
-  grid-template-columns: var(--left-sidebar-width, 240px) 1fr var(--right-sidebar-width, 260px);
+  grid-template-columns: var(--left-sidebar-width, 240px) minmax(0, 1fr) var(--right-sidebar-width, 260px);
   grid-template-rows: minmax(0, 1fr);
   gap: var(--app-gap, 10px);
   padding: 0;
@@ -797,7 +797,7 @@ body.dark-mode .header-server-badge {
 }
 
 .app-layout.hide-channels-sidebar {
-  grid-template-columns: 1fr var(--right-sidebar-width, 260px);
+  grid-template-columns: minmax(0, 1fr) var(--right-sidebar-width, 260px);
 }
 
 .app-layout.hide-channels-sidebar .left-sidebar {
@@ -805,7 +805,7 @@ body.dark-mode .header-server-badge {
 }
 
 .app-layout.hide-right-sidebar {
-  grid-template-columns: var(--left-sidebar-width, 240px) 1fr;
+  grid-template-columns: var(--left-sidebar-width, 240px) minmax(0, 1fr);
 }
 
 .app-layout.hide-right-sidebar .right-sidebar {
