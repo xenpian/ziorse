@@ -27,8 +27,8 @@
     "avatarFrame": "assets/avatar-frames/Liaz.png",
     "memberTheme": "none",
     "status": {
-      "type": "online",
-      "text": ""
+      "type": "idle",
+      "text": "porno"
     }
   },
   "@saf": {

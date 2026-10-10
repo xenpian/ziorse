@@ -7,6 +7,7 @@
     "fontWeight": "900",
     "nameColor": "#18181b",
     "nameEffects": [],
-    "avatarFrame": "assets/avatar-frames/Liaz.png"
+    "avatarFrame": "assets/avatar-frames/Liaz.png",
+    "memberTheme": "none"
   }
 ]

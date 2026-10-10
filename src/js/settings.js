@@ -1532,17 +1532,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  if (btnOpenThemesFolder) {
-    btnOpenThemesFolder.addEventListener('click', () => {
-      if (window.electronAPI && typeof window.electronAPI.openMemberThemesFolder === 'function') {
-        window.electronAPI.openMemberThemesFolder();
-      } else {
-        fetch('http://localhost:3000/api/open-member-themes-folder', { method: 'POST' })
-          .catch(() => fetch('/api/open-member-themes-folder', { method: 'POST' }));
-      }
-      showToast('Temalar klasörü açılıyor...');
-    });
-  }
+
 
   if (btnRefreshThemes) {
     btnRefreshThemes.addEventListener('click', () => {
