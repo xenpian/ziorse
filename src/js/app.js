@@ -534,8 +534,14 @@ document.addEventListener('DOMContentLoaded', () => {
           bio: cu.bio || '',
           followers: cu.followers || 0,
           following: cu.following || 0,
+          fontStyle: cu.fontStyle || '',
+          fontWeight: cu.fontWeight || '',
+          nameColor: cu.nameColor || '',
+          nameEffects: cu.nameEffects || '',
+          avatarFrame: cu.avatarFrame || '',
           status: window.dataStore.userStatus || { type: 'online', text: '' }
         });
+        socket.emit('get-invites');
 
         // Sunuculardaki üyeliklerimizi ve yerel üye listelerini backend'e bildir ve eşitle
         if (window.dataStore.servers && window.dataStore.servers.length > 0) {
