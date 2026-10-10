@@ -9964,14 +9964,11 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   border-radius: 18px;
   overflow: hidden;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   position: relative;
 }
 
 .ps-server-card:hover {
-  transform: translateY(-3px);
   border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.2);
 }
 
 .ps-card-banner {
