@@ -900,7 +900,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const PRESET_COLORS = [
     '#dbdbdb', '#8b5cf6', '#a855f7', '#ec4899', '#ef4444',
     '#f97316', '#eab308', '#22c55e', '#14b8a6', '#06b6d4',
-    '#3b82f6', '#9ca3af'
+    '#64748b', '#9ca3af'
   ];
 
   let selectedRoleId = null;
