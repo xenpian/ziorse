@@ -5748,7 +5748,7 @@ body.dark-mode .dm-invite-join:hover {
 
 body.dark-mode .splash-quote {
   color: #a1a1aa;
-  text-shadow: 0 0 16px rgba(99, 102, 241, 0.3);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.15);
 }
 
 .splash-quote-author {
