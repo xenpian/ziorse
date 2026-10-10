@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let originalDesc = server.description || '';
   let originalIcon = server.icon || '';
   let originalBanner = server.banner || '';
+  let originalIsPublic = server.isPublic === true;
+  let currentIsPublic = originalIsPublic;
   let newIconDataUrl = null;
   let newBannerDataUrl = null;
   let editingChannelId = null;
