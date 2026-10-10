@@ -1862,6 +1862,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appLayoutEl.classList.remove('dm-active');
       }
       renderPublicServers();
+      if (typeof fetchLivePublicServers === 'function') fetchLivePublicServers();
     } else if (navType === 'messages') {
       if (publicServersView) publicServersView.style.display = 'none';
       if (mainFeedView) mainFeedView.style.display = 'none';
@@ -1892,6 +1893,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateRightSidebar();
   }
+
+  window.switchNavHubTo = switchNavHubTo;
 
   async function fetchLivePublicServers() {
     try {
