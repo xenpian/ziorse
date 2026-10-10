@@ -1201,13 +1201,15 @@ class DataStore {
     return server;
   }
 
-  addServer(name) {
+  addServer(name, isPublic = true, description = '') {
     if (!name.trim() || !this.currentUser) return;
     const initials = name.trim().substring(0, 2).toUpperCase();
     const inviteCode = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 6);
     const newServer = {
       id: 'srv-' + Date.now(),
       name: name.trim(),
+      description: (description || '').trim(),
+      isPublic: isPublic !== false,
       icon: initials,
       inviteCode: inviteCode,
       ownerHandle: this.currentUser.handle,
@@ -1221,6 +1223,8 @@ class DataStore {
     const registry = this._loadInviteRegistry();
     registry[inviteCode] = {
       serverName: newServer.name,
+      serverDescription: newServer.description,
+      isPublic: newServer.isPublic,
       serverIcon: newServer.icon,
       memberCount: 1,
       serverId: newServer.id,
@@ -1244,6 +1248,54 @@ class DataStore {
 
     this.notify();
     return newServer;
+  }
+
+  getPublicServers() {
+    const registry = this._loadInviteRegistry();
+    const mergedMap = new Map();
+
+    // 1. From Invite Registry
+    Object.keys(registry).forEach(code => {
+      const reg = registry[code];
+      if (reg && reg.isPublic !== false) {
+        mergedMap.set(code, {
+          inviteCode: code,
+          serverId: reg.serverId || code,
+          name: reg.serverName || 'Sunucu',
+          description: reg.serverDescription || reg.description || 'Topluluk ve sohbet sunucusu.',
+          icon: reg.serverIcon || 'Z',
+          banner: reg.serverBanner || '',
+          memberCount: reg.memberCount || 1,
+          ownerHandle: reg.ownerHandle,
+          ownerName: reg.ownerName,
+          ownerAvatar: reg.ownerAvatar,
+          categories: reg.categories || [],
+          isPublic: true
+        });
+      }
+    });
+
+    // 2. From user's servers
+    (this.servers || []).forEach(s => {
+      if (s && s.isPublic !== false && s.inviteCode) {
+        const existing = mergedMap.get(s.inviteCode) || {};
+        mergedMap.set(s.inviteCode, {
+          ...existing,
+          inviteCode: s.inviteCode,
+          serverId: s.id,
+          name: s.name || existing.name || 'Sunucu',
+          description: s.description || existing.description || 'Topluluk ve sohbet sunucusu.',
+          icon: s.icon || existing.icon || 'Z',
+          banner: s.banner || existing.banner || '',
+          memberCount: Math.max(s.memberCount || 1, existing.memberCount || 1),
+          ownerHandle: s.ownerHandle || existing.ownerHandle,
+          categories: s.categories || existing.categories || [],
+          isPublic: true
+        });
+      }
+    });
+
+    return Array.from(mergedMap.values());
   }
 
   getServerMemberCount(inviteCode) {
