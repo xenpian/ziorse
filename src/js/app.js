@@ -1964,7 +1964,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filtered.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--text-muted);">
-          <div style="width:64px; height:64px; border-radius:20px; background:rgba(99,102,241,0.1); display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#818cf8;">
+          <div style="width:64px; height:64px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; color:#94a3b8;">
             <i data-lucide="compass" style="width:32px; height:32px;"></i>
           </div>
           <h3 style="font-size:1.15rem; font-weight:700; color:var(--text-main); margin-bottom:6px;">${q ? 'Eşleşen sunucu bulunamadı' : 'Henüz herkese açık sunucu yok'}</h3>
