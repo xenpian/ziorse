@@ -77,6 +77,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPickBanner = document.getElementById('btn-ss-pick-banner');
   const btnResetBanner = document.getElementById('btn-ss-reset-banner');
 
+  // Gizlilik DOM Elemanları
+  const optPrivacyPrivate = document.getElementById('ss-opt-privacy-private');
+  const optPrivacyPublic = document.getElementById('ss-opt-privacy-public');
+
+  function updatePrivacyUI() {
+    if (optPrivacyPrivate && optPrivacyPublic) {
+      if (currentIsPublic) {
+        optPrivacyPublic.classList.add('active');
+        optPrivacyPrivate.classList.remove('active');
+      } else {
+        optPrivacyPrivate.classList.add('active');
+        optPrivacyPublic.classList.remove('active');
+      }
+    }
+  }
+
+  if (optPrivacyPrivate) {
+    optPrivacyPrivate.addEventListener('click', () => {
+      if (!canManageServer) return;
+      currentIsPublic = false;
+      updatePrivacyUI();
+      checkChanges();
+    });
+  }
+
+  if (optPrivacyPublic) {
+    optPrivacyPublic.addEventListener('click', () => {
+      if (!canManageServer) return;
+      currentIsPublic = true;
+      updatePrivacyUI();
+      checkChanges();
+    });
+  }
+
   const ssSaveBar = document.getElementById('ss-save-bar');
   const btnSave = document.getElementById('btn-ss-save');
   const btnDiscard = document.getElementById('btn-ss-discard');
