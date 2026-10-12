@@ -4183,6 +4183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+  }
 
     setTimeout(() => {
       document.addEventListener('click', function h() { menu.remove(); document.removeEventListener('click', h); });
