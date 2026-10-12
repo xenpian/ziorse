@@ -3581,14 +3581,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!srv) return;
 
         const canManageChannels = window.dataStore.isServerOwner(activeServerId, cu.handle) || (window.dataStore.checkServerPermission && window.dataStore.checkServerPermission(activeServerId, cu.handle, 'manage_channels'));
+        const canManageServer = window.dataStore.isServerOwner(activeServerId, cu.handle) || (window.dataStore.checkServerPermission && window.dataStore.checkServerPermission(activeServerId, cu.handle, 'manage_server'));
 
         const dd = document.createElement('div');
         dd.id = 'server-header-dropdown';
         dd.className = 'server-header-dropdown';
         dd.innerHTML = `
-          <button class="shd-item" id="shd-settings">
-            <i data-lucide="settings" style="width:14px;height:14px;"></i> Sunucu Ayarları
-          </button>
+          ${canManageServer ? `
+            <button class="shd-item" id="shd-settings">
+              <i data-lucide="settings" style="width:14px;height:14px;"></i> Sunucu Ayarları
+            </button>
+          ` : ''}
           ${canManageChannels ? `
             <button class="shd-item" id="shd-create-category">
               <i data-lucide="folder-plus" style="width:14px;height:14px;"></i> Kategori Oluştur
@@ -3605,14 +3608,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(dd);
         refreshIcons();
 
-        dd.querySelector('#shd-settings').addEventListener('click', () => {
-          dd.remove();
-          window.openModalView(`server-settings.html?id=${srv.id}&channel=${encodeURIComponent(window.dataStore.activeChannelId || 'genel')}`);
-        });
-        dd.querySelector('#shd-create-category').addEventListener('click', () => {
-          dd.remove();
-          openCreateCategoryModal(srv.id);
-        });
+        const btnSettings = dd.querySelector('#shd-settings');
+        if (btnSettings) {
+          btnSettings.addEventListener('click', () => {
+            dd.remove();
+            window.openModalView(`server-settings.html?id=${srv.id}&channel=${encodeURIComponent(window.dataStore.activeChannelId || 'chat')}`);
+          });
+        }
+        const btnCreateCat = dd.querySelector('#shd-create-category');
+        if (btnCreateCat) {
+          btnCreateCat.addEventListener('click', () => {
+            dd.remove();
+            openCreateCategoryModal(srv.id);
+          });
+        }
         dd.querySelector('#shd-invite').addEventListener('click', () => {
           dd.remove();
           showServerInviteModal(srv);
