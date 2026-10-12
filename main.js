@@ -77,108 +77,111 @@ function performDatabaseBackup() {
 let memoryStore = null;
 let saveDebounceTimer = null;
 
-// Read & assemble from 1000-message .txt chunk files
-function readPersistentStore() {
-  if (memoryStore !== null) return memoryStore;
+// Read & assemble from 1000-message .txt chunk files with live disk refresh
+function readPersistentStore(forceRefreshSystem = false) {
   ensureDbDirs();
-  memoryStore = {};
+  if (memoryStore === null) {
+    memoryStore = {};
 
-  // Check legacy migration first
-  const legacyPath1 = path.join(app.getPath('userData'), 'ziorse-persistent-store.json');
-  const legacyPath2 = path.join(__dirname, 'ziorse-data.json');
+    // Check legacy migration first
+    const legacyPath1 = path.join(app.getPath('userData'), 'ziorse-persistent-store.json');
+    const legacyPath2 = path.join(__dirname, 'ziorse-data.json');
 
-  let legacyData = null;
-  try {
-    if (fs.existsSync(legacyPath1)) {
-      legacyData = JSON.parse(fs.readFileSync(legacyPath1, 'utf8'));
-    } else if (fs.existsSync(legacyPath2)) {
-      legacyData = JSON.parse(fs.readFileSync(legacyPath2, 'utf8'));
-    }
-  } catch (e) { }
-
-  if (legacyData) {
-    console.log('[TxtDatabase] Eski veritabanı bulundu, 1000 mesajlık TXT dosyalarına aktarılıyor...');
-    memoryStore = legacyData;
-    flushPersistentStore(); // Immediately writes to chunked txt files
-
-    // Delete legacy files to free space and finalize transition
-    try { if (fs.existsSync(legacyPath1)) fs.unlinkSync(legacyPath1); } catch { }
-    try { if (fs.existsSync(legacyPath2)) fs.unlinkSync(legacyPath2); } catch { }
-    console.log('[TxtDatabase] Eski JSON dosyaları silindi, TXT parçalı veritabanı aktif!');
-    return memoryStore;
-  }
-
-  // 1. Read Posts from posts_chunk_*.txt
-  try {
-    const postFiles = fs.readdirSync(POSTS_DIR)
-      .filter(f => f.startsWith('posts_chunk_') && f.endsWith('.txt'))
-      .sort();
-
-    let allPosts = [];
-    for (const file of postFiles) {
-      const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8').trim();
-      if (!content) continue;
-      const lines = content.split('\n');
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) continue;
-        try {
-          allPosts.push(JSON.parse(trimmed));
-        } catch { }
+    let legacyData = null;
+    try {
+      if (fs.existsSync(legacyPath1)) {
+        legacyData = JSON.parse(fs.readFileSync(legacyPath1, 'utf8'));
+      } else if (fs.existsSync(legacyPath2)) {
+        legacyData = JSON.parse(fs.readFileSync(legacyPath2, 'utf8'));
       }
-    }
-    if (allPosts.length > 0) {
-      memoryStore['ziorse_real_posts_v14'] = allPosts;
-    }
-  } catch (err) {
-    console.error('[TxtDatabase] Error reading posts chunks:', err.message);
-  }
+    } catch (e) { }
 
-  // 2. Read DMs from dms_chunk_*.txt
-  try {
-    const dmFiles = fs.readdirSync(DMS_DIR)
-      .filter(f => f.startsWith('dms_chunk_') && f.endsWith('.txt'))
-      .sort();
+    if (legacyData) {
+      console.log('[TxtDatabase] Eski veritabanı bulundu, 1000 mesajlık TXT dosyalarına aktarılıyor...');
+      memoryStore = legacyData;
+      flushPersistentStore(); // Immediately writes to chunked txt files
 
-    let allThreads = [];
-    for (const file of dmFiles) {
-      const content = fs.readFileSync(path.join(DMS_DIR, file), 'utf8').trim();
-      if (!content) continue;
-      const lines = content.split('\n');
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) continue;
-        try {
-          allThreads.push(JSON.parse(trimmed));
-        } catch { }
-      }
+      // Delete legacy files to free space and finalize transition
+      try { if (fs.existsSync(legacyPath1)) fs.unlinkSync(legacyPath1); } catch { }
+      try { if (fs.existsSync(legacyPath2)) fs.unlinkSync(legacyPath2); } catch { }
+      console.log('[TxtDatabase] Eski JSON dosyaları silindi, TXT parçalı veritabanı aktif!');
+      return memoryStore;
     }
-    if (allThreads.length > 0) {
-      memoryStore['ziorse_real_dms_v14'] = allThreads;
-    }
-  } catch (err) {
-    console.error('[TxtDatabase] Error reading DM chunks:', err.message);
-  }
 
-  // 3. Read System metadata files
-  try {
-    const sysFiles = fs.readdirSync(SYSTEM_DIR).filter(f => f.endsWith('.txt'));
-    for (const file of sysFiles) {
-      const key = decodeURIComponent(file.replace(/\.txt$/, ''));
-      const content = fs.readFileSync(path.join(SYSTEM_DIR, file), 'utf8');
-      try {
-        const parsed = JSON.parse(content);
-        if (parsed !== null && parsed !== undefined) {
-          memoryStore[key] = parsed;
-        }
-      } catch {
-        if (content && content !== 'null' && content !== 'undefined') {
-          memoryStore[key] = content;
+    // 1. Read Posts from posts_chunk_*.txt
+    try {
+      const postFiles = fs.readdirSync(POSTS_DIR)
+        .filter(f => f.startsWith('posts_chunk_') && f.endsWith('.txt'))
+        .sort();
+
+      let allPosts = [];
+      for (const file of postFiles) {
+        const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8').trim();
+        if (!content) continue;
+        const lines = content.split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+          try {
+            allPosts.push(JSON.parse(trimmed));
+          } catch { }
         }
       }
+      if (allPosts.length > 0) {
+        memoryStore['ziorse_real_posts_v14'] = allPosts;
+      }
+    } catch (err) {
+      console.error('[TxtDatabase] Error reading posts chunks:', err.message);
     }
-  } catch (err) {
-    console.error('[TxtDatabase] Error reading system txt files:', err.message);
+
+    // 2. Read DMs from dms_chunk_*.txt
+    try {
+      const dmFiles = fs.readdirSync(DMS_DIR)
+        .filter(f => f.startsWith('dms_chunk_') && f.endsWith('.txt'))
+        .sort();
+
+      let allThreads = [];
+      for (const file of dmFiles) {
+        const content = fs.readFileSync(path.join(DMS_DIR, file), 'utf8').trim();
+        if (!content) continue;
+        const lines = content.split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+          try {
+            allThreads.push(JSON.parse(trimmed));
+          } catch { }
+        }
+      }
+      if (allThreads.length > 0) {
+        memoryStore['ziorse_real_dms_v14'] = allThreads;
+      }
+    } catch (err) {
+      console.error('[TxtDatabase] Error reading DM chunks:', err.message);
+    }
+  }
+
+  // 3. Read or Refresh System metadata files
+  if (forceRefreshSystem || Object.keys(memoryStore).length <= 2) {
+    try {
+      const sysFiles = fs.readdirSync(SYSTEM_DIR).filter(f => f.endsWith('.txt'));
+      for (const file of sysFiles) {
+        const key = decodeURIComponent(file.replace(/\.txt$/, ''));
+        const content = fs.readFileSync(path.join(SYSTEM_DIR, file), 'utf8');
+        try {
+          const parsed = JSON.parse(content);
+          if (parsed !== null && parsed !== undefined) {
+            memoryStore[key] = parsed;
+          }
+        } catch {
+          if (content && content !== 'null' && content !== 'undefined') {
+            memoryStore[key] = content;
+          }
+        }
+      }
+    } catch (err) {
+      console.error('[TxtDatabase] Error reading system txt files:', err.message);
+    }
   }
 
   return memoryStore;
