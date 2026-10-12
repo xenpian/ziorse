@@ -6045,8 +6045,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const srv = window.dataStore.servers.find(s => s.id === window.dataStore.activeServerId);
     if (!srv) return;
 
-    const members = (typeof window.dataStore.getServerMembers === 'function' && srv.inviteCode)
-      ? window.dataStore.getServerMembers(srv.inviteCode)
+    const members = (typeof window.dataStore.getServerMembers === 'function')
+      ? window.dataStore.getServerMembers(srv.inviteCode || srv.id)
       : (srv.members || []);
     // En üstteki rol (küçük position / 0) en başta olacak şekilde hiyerarşik sırala
     const serverRoles = (window.dataStore.getServerRoles
