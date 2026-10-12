@@ -1253,6 +1253,10 @@ class DataStore {
     let list = Array.isArray(cached) ? [...cached] : [];
     const existingInviteCodes = new Set();
     const existingServerIds = new Set();
+
+    let registry = {};
+    try { registry = this._loadInviteRegistry() || {}; } catch (e) { }
+
     list.forEach(s => {
       if (s.inviteCode) existingInviteCodes.add(s.inviteCode);
       if (s.id) existingServerIds.add(String(s.id));
@@ -1260,6 +1264,21 @@ class DataStore {
         if (!s.memberCount || s.memberCount < s.members.length) {
           s.memberCount = s.members.length;
         }
+      }
+
+      // Global registry'den en güncel rolleri, üye rollerini ve yapıyı al
+      const code = s.inviteCode || s.id;
+      const reg = (registry && (registry[code] || registry[s.id] || (s.inviteCode ? registry[s.inviteCode] : null))) || null;
+      if (reg) {
+        if (reg.serverName && (!s.name || s.name === 'Sunucu')) s.name = reg.serverName;
+        if (reg.serverIcon && (!s.icon || s.icon === 'Z')) s.icon = reg.serverIcon;
+        if (reg.serverBanner !== undefined && !s.banner) s.banner = reg.serverBanner;
+        if (Array.isArray(reg.categories) && reg.categories.length > 0) s.categories = JSON.parse(JSON.stringify(reg.categories));
+        if (Array.isArray(reg.roles) && reg.roles.length > 0) s.roles = JSON.parse(JSON.stringify(reg.roles));
+        if (reg.memberRoles && typeof reg.memberRoles === 'object') {
+          s.memberRoles = { ...(s.memberRoles || {}), ...JSON.parse(JSON.stringify(reg.memberRoles)) };
+        }
+        if (reg.memberCount) s.memberCount = Math.max(s.memberCount || 1, reg.memberCount);
       }
     });
 
