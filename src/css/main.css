@@ -134,6 +134,8 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   align-items: center;
   gap: 4px;
   vertical-align: middle;
+  border: 1px solid var(--border-color);
+
   margin-left: 6px;
   flex-shrink: 0;
 }
@@ -3463,7 +3465,7 @@ body.dark-mode .draw-color-picker-btn:hover {
 }
 
 .user-member-item .avatar-wrapper-status,
-.user-member-item > div:not(.user-member-theme-bg),
+.user-member-item>div:not(.user-member-theme-bg),
 .user-member-item .user-member-name,
 .user-member-item .user-member-status {
   position: relative;

@@ -1,5 +1,120 @@
 [
   {
+    "id": "srv-ziorse-official",
+    "name": "ziorse.comf",
+    "description": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
+    "icon": "logo.png",
+    "banner": "",
+    "inviteCode": "ziorse",
+    "isOfficial": true,
+    "isPublic": true,
+    "serverType": "community",
+    "ownerHandle": "@ziorse",
+    "ownerName": "Ziorse Official",
+    "ownerAvatar": "logo.png",
+    "memberCount": 13,
+    "categories": [
+      {
+        "id": "cat-ziorse-genel",
+        "name": "BİLGİLENDİRME & SOHBET",
+        "collapsed": false,
+        "channels": [
+          {
+            "id": "ch-ziorse-duyurular",
+            "name": "duyurular",
+            "type": "text",
+            "topic": "Resmi duyurular ve güncellemeler"
+          },
+          {
+            "id": "genel",
+            "name": "genel-sohbet",
+            "type": "text",
+            "topic": "Tüm Ziorse kullanıcıları için genel sohbet"
+          },
+          {
+            "id": "ch-ziorse-yardim",
+            "name": "yardim-destek",
+            "type": "text",
+            "topic": "Soru, öneri ve destek kanalı"
+          },
+          {
+            "id": "ch-ziorse-ses",
+            "name": "Genel Ses Odası",
+            "type": "voice"
+          }
+        ]
+      }
+    ],
+    "members": [
+      {
+        "handle": "@ziorse",
+        "name": "ziorse",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@kurtv_dev",
+        "name": "Kurtv",
+        "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+      },
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3001/uploads/avatar_1791669449956_gcbyr.png"
+      },
+      {
+        "handle": "@selamsa",
+        "name": "selam",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@sasasa",
+        "name": "sa",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@as",
+        "name": "s",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@yarra",
+        "name": "yarra",
+        "avatar": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=120&auto=format&fit=crop&q=80"
+      },
+      {
+        "handle": "@fafa",
+        "name": "fafa",
+        "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+      },
+      {
+        "handle": "@ahmet",
+        "name": "AHMET",
+        "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+      },
+      {
+        "handle": "@sasa",
+        "name": "sass",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@dadime",
+        "name": "dadime",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@dadimed",
+        "name": "dadime",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@dadimedg",
+        "name": "dadimed",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      }
+    ],
+    "roles": []
+  },
+  {
     "id": "srv-1791824297056",
     "name": "patates",
     "icon": "PA",
@@ -46,6 +161,11 @@
         "handle": "@dadimedg",
         "name": "dadimed",
         "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+      },
+      {
+        "handle": "@ahmet",
+        "name": "AHMET",
+        "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
       }
     ]
   },
