@@ -956,8 +956,8 @@ document.addEventListener('DOMContentLoaded', () => {
         availableFrames.forEach(f => {
           if (f.scale) window.FRAME_SCALES[f.id] = f.scale;
         });
-      } else {
-        const res = await fetch('http://localhost:3000/api/avatar-frames');
+        const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
+        const res = await fetch(srv + '/api/avatar-frames');
         const data = await res.json();
         availableFrames = data.frames || [];
         availableFrames.forEach(f => {
