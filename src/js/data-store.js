@@ -1386,23 +1386,56 @@ class DataStore {
   _ensureOfficialServer(list) {
     if (!Array.isArray(list)) list = [];
     const existingIdx = list.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || (s.name && s.name.toLowerCase() === 'ziorse.com'));
+    
+    // Registry'den güncel ve dinamik ayarları çek (hiçbir şey sabit olmasın, @sa her şeyi değiştirebilsin)
+    const registry = this._loadInviteRegistry();
+    const regOfficial = registry['ziorse'] || {};
+
+    let officialSrv = null;
     if (existingIdx !== -1) {
-      const existing = list[existingIdx];
-      existing.name = 'ziorse.com';
-      existing.isOfficial = true;
-      existing.isPublic = true;
-      existing.serverType = 'community';
-      if (!existing.id) existing.id = 'srv-ziorse-official';
-      if (!existing.inviteCode) existing.inviteCode = 'ziorse';
-      if (!existing.icon) existing.icon = 'logo.png';
-      if (existingIdx !== 0) {
-        list.splice(existingIdx, 1);
-        list.unshift(existing);
+      officialSrv = list[existingIdx];
+      list.splice(existingIdx, 1);
+    } else {
+      officialSrv = JSON.parse(JSON.stringify(OFFICIAL_ZIORSE_SERVER));
+    }
+
+    officialSrv.isOfficial = true;
+    officialSrv.id = 'srv-ziorse-official';
+    officialSrv.inviteCode = 'ziorse';
+    officialSrv.ownerHandle = '@sa';
+    officialSrv.ownerName = 'sa';
+
+    // Dinamik alanları aktar
+    if (regOfficial.serverName) officialSrv.name = regOfficial.serverName;
+    else if (!officialSrv.name) officialSrv.name = 'ziorse.com';
+
+    if (regOfficial.serverIcon) officialSrv.icon = regOfficial.serverIcon;
+    else if (!officialSrv.icon) officialSrv.icon = '/uploads/srv_icon_1791843284247_wagh8.png';
+
+    if (regOfficial.serverBanner !== undefined) officialSrv.banner = regOfficial.serverBanner;
+    if (regOfficial.description !== undefined) officialSrv.description = regOfficial.description;
+    if (regOfficial.isPublic !== undefined) officialSrv.isPublic = regOfficial.isPublic;
+    if (regOfficial.serverType) officialSrv.serverType = regOfficial.serverType;
+    if (Array.isArray(regOfficial.roles)) officialSrv.roles = regOfficial.roles;
+    if (regOfficial.memberRoles) officialSrv.memberRoles = regOfficial.memberRoles;
+
+    if (Array.isArray(regOfficial.categories) && regOfficial.categories.length > 0) {
+      officialSrv.categories = regOfficial.categories;
+    }
+
+    // Eski 4 kanallı yapı varsa tek 'chat' kanalına güncelle
+    if (Array.isArray(officialSrv.categories)) {
+      const allChs = officialSrv.categories.flatMap(c => c.channels || []);
+      const hasOldDefaults = allChs.some(c => c.id === 'ch-ziorse-duyurular' || c.id === 'ch-ziorse-yardim' || c.id === 'ch-ziorse-ses');
+      if (hasOldDefaults) {
+        officialSrv.categories = JSON.parse(JSON.stringify(OFFICIAL_ZIORSE_SERVER.categories));
       }
     } else {
-      const copy = JSON.parse(JSON.stringify(OFFICIAL_ZIORSE_SERVER));
-      list.unshift(copy);
+      officialSrv.categories = JSON.parse(JSON.stringify(OFFICIAL_ZIORSE_SERVER.categories));
     }
+
+    // DAİMA İLK BAŞA SABİTLE (Index 0) - Hiçbir sunucu onun önüne geçemez!
+    list.unshift(officialSrv);
 
     // Kullanıcıyı resmi sunucu üye listesine otomatik kaydet
     if (this.currentUser && this.currentUser.handle && this.currentUser.handle !== 'guest') {
