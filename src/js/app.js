@@ -821,8 +821,11 @@ document.addEventListener('DOMContentLoaded', () => {
     while (url.includes('http://localhost:3000http://localhost:3000/')) {
       url = url.replace('http://localhost:3000http://localhost:3000/', 'http://localhost:3000/');
     }
-    if (url.startsWith('/uploads/')) return 'http://localhost:3000' + url;
-    if (url.startsWith('uploads/')) return 'http://localhost:3000/' + url;
+    if (window.formatMediaUrl) return window.formatMediaUrl(url);
+    const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:3001');
+    if (url.startsWith('http://localhost:3000/uploads/')) return srv + url.substring('http://localhost:3000'.length);
+    if (url.startsWith('/uploads/')) return srv + url;
+    if (url.startsWith('uploads/')) return srv + '/' + url;
     return url;
   }
   window.normalizeMediaUrl = normalizeMediaUrl;
