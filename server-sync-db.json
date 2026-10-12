@@ -2199,6 +2199,14 @@
   "friendRequests": {},
   "posts": [
     {
+      "id": "post-test-1791843984398",
+      "author": "Test Bot",
+      "handle": "@testbot",
+      "content": "Hızlı mesaj testi",
+      "serverChannelKey": "ziorse:genel",
+      "timestamp": "2026-10-12T22:26:24.408Z"
+    },
+    {
       "id": "post-1791827581866-yfwm9",
       "author": "dadimed",
       "handle": "@dadimedg",
