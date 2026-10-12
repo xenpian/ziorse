@@ -294,8 +294,8 @@ class DataStore {
   saveUser(userData, isHandleRename = false) {
     const oldHandle = this.currentUser ? this.currentUser.handle : null;
     let formattedHandle = userData.handle || (this.currentUser ? this.currentUser.handle : '');
-    if (formattedHandle && !formattedHandle.startsWith('@')) {
-      formattedHandle = '@' + formattedHandle;
+    if (formattedHandle) {
+      formattedHandle = (formattedHandle.startsWith('@') ? formattedHandle : '@' + formattedHandle).toLowerCase();
     }
 
     const mergedData = { ...(this.currentUser || {}), ...userData };
@@ -305,7 +305,7 @@ class DataStore {
     this.currentUser = mergedData;
     ziorseSetStorage(this.storageKeyUser, this.currentUser);
 
-    const h = this.currentUser.handle;
+    const h = (this.currentUser.handle.startsWith('@') ? this.currentUser.handle : '@' + this.currentUser.handle).toLowerCase();
     this.storageKeyServers = 'ziorse_real_servers_v14_' + h;
     this.storageKeyFriends = 'ziorse_friends_v2_' + h;
     this.storageKeyFriendRequests = 'ziorse_friend_requests_v2_' + h;
