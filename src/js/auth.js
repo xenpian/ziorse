@@ -295,7 +295,7 @@ function initRegister() {
 
     // Sunucuya bildir
     try {
-      const regUrl = window.location.protocol.startsWith('http') ? '/api/register' : 'http://localhost:3000/api/register';
+      const regUrl = window.location.protocol.startsWith('http') ? '/api/register' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/register');
       const resp = await fetch(regUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
