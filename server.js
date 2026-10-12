@@ -1369,7 +1369,6 @@ io.on('connection', (socket) => {
       };
 
       // Katılan üyeyi anında online listesine de ekle
-      activeOnlineHandles.add(mHandle);
       activeOnlineHandles.add(cleanH);
 
       saveSyncDb();
