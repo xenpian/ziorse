@@ -732,17 +732,7 @@ app.get('/api/public-servers', (req, res) => {
   res.json({ servers: publicList });
 });
 
-// ── BROWSER / DESKTOP DATA PARITY STORAGE API ─────────────────
-const DB_TXT_DIR = path.join(__dirname, 'database_txt');
-const SYSTEM_TXT_DIR = path.join(DB_TXT_DIR, 'system');
-const POSTS_TXT_DIR = path.join(DB_TXT_DIR, 'posts');
-const DMS_TXT_DIR = path.join(DB_TXT_DIR, 'dms');
 
-function ensureDbTxtDirs() {
-  [DB_TXT_DIR, SYSTEM_TXT_DIR, POSTS_TXT_DIR, DMS_TXT_DIR].forEach(dir => {
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  });
-}
 
 function readAllStoreData() {
   ensureDbTxtDirs();
