@@ -6459,7 +6459,10 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="dm-invite-content">
           <div class="dm-invite-info">
-            <div class="dm-invite-name">${escapeHtml(name)}</div>
+            <div class="dm-invite-name" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <span>${escapeHtml(name)}</span>
+              ${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv || info || { name: name, inviteCode: code, isPublic: (srv?.isPublic ?? info?.isPublic ?? true), serverType: (srv?.serverType ?? info?.serverType ?? 'community') }) : ''}
+            </div>
             <div class="dm-invite-members"><span class="dm-invite-dot"></span> ${memberCount} üye</div>
           </div>
           <div class="dm-invite-url">${escapeHtml(invite.url || ('ziorse/' + code))}</div>
