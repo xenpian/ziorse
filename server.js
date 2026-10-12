@@ -698,9 +698,14 @@ function readAllStoreData() {
       const key = decodeURIComponent(file.replace(/\.txt$/, ''));
       const content = fs.readFileSync(path.join(SYSTEM_TXT_DIR, file), 'utf8');
       try {
-        store[key] = JSON.parse(content);
+        const parsed = JSON.parse(content);
+        if (parsed !== null && parsed !== undefined) {
+          store[key] = parsed;
+        }
       } catch {
-        store[key] = content;
+        if (content && content !== 'null' && content !== 'undefined') {
+          store[key] = content;
+        }
       }
     }
   } catch (e) { }
@@ -733,8 +738,18 @@ app.post('/api/store/set', (req, res) => {
   try {
     const safeKey = encodeURIComponent(key);
     const filename = `${safeKey}.txt`;
+    const filePath = path.join(SYSTEM_TXT_DIR, filename);
+
+    if (val === null || val === undefined) {
+      if (fs.existsSync(filePath)) {
+        try { fs.unlinkSync(filePath); } catch (e) { }
+      }
+      io.emit('store-synced', { key, val: null });
+      return res.json({ success: true });
+    }
+
     const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
-    fs.writeFileSync(path.join(SYSTEM_TXT_DIR, filename), strVal, 'utf8');
+    fs.writeFileSync(filePath, strVal, 'utf8');
 
     if (key === 'ziorse_invite_registry' && typeof val === 'object') {
       globalInviteRegistry = Object.assign(globalInviteRegistry, val);
@@ -750,6 +765,44 @@ app.post('/api/store/set', (req, res) => {
     }
 
     io.emit('store-synced', { key, val });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post(['/api/store/delete', '/api/store/remove'], (req, res) => {
+  const { key } = req.body;
+  if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
+  ensureDbTxtDirs();
+
+  try {
+    const safeKey = encodeURIComponent(key);
+    const filename = `${safeKey}.txt`;
+    const filePath = path.join(SYSTEM_TXT_DIR, filename);
+    if (fs.existsSync(filePath)) {
+      try { fs.unlinkSync(filePath); } catch (e) { }
+    }
+    io.emit('store-synced', { key, val: null });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/store/:key', (req, res) => {
+  const key = req.params.key;
+  if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
+  ensureDbTxtDirs();
+
+  try {
+    const safeKey = encodeURIComponent(key);
+    const filename = `${safeKey}.txt`;
+    const filePath = path.join(SYSTEM_TXT_DIR, filename);
+    if (fs.existsSync(filePath)) {
+      try { fs.unlinkSync(filePath); } catch (e) { }
+    }
+    io.emit('store-synced', { key, val: null });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
