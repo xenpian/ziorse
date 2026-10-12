@@ -289,7 +289,7 @@ function flushPersistentStore() {
   }
 
   for (const [key, val] of Object.entries(memoryStore)) {
-    if (key === 'ziorse_real_posts_v14' || key === 'ziorse_real_dms_v14') continue;
+    if (key === 'ziorse_real_posts_v14' || key === 'ziorse_real_dms_v14' || key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
     try {
       const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
       fs.writeFileSync(path.join(SYSTEM_DIR, `${encodeURIComponent(key)}.txt`), strVal, 'utf8');
