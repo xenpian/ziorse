@@ -1425,6 +1425,12 @@ io.on('connection', (socket) => {
 
   socket.on('sync-my-server-memberships', (items) => {
     if (Array.isArray(items) && items.length > 0) {
+      if (items[0]?.member?.handle) {
+        const cleanH = items[0].member.handle.toLowerCase().replace('@', '');
+        socketHandleMap.set(socket.id, cleanH);
+        activeOnlineHandles.add(cleanH);
+        io.emit('online-users-updated', Array.from(activeOnlineHandles));
+      }
       let changed = false;
       items.forEach(it => {
         if (it && it.inviteCode) {
