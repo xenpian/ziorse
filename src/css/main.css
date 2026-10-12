@@ -147,7 +147,6 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   gap: 4px;
   vertical-align: middle;
 
-  margin-left: 6px;
   flex-shrink: 0;
 }
 
