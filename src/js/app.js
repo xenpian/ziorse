@@ -271,7 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let socket = null;
   if (typeof io !== 'undefined') {
-    socket = io('http://localhost:3000');
+    const srvUrl = (window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:3001'));
+    socket = io(srvUrl);
     window.socket = socket;
 
     socket.on('invite-registry-updated', (registry) => {
@@ -342,13 +343,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('store-synced', (data) => {
       if (data && data.key) {
+        // Active user session is strictly client-local and NEVER overwritten via socket broadcast!
+        if (data.key === 'ziorse_real_user_v14' || data.key === 'ziorse_jwt_token' || data.key === 'ziorse_user') {
+          return;
+        }
         try {
           if (data.val === null || data.val === undefined || data.val === 'null') {
             if (window._ziorseMemCache) window._ziorseMemCache.delete(data.key);
             if (window._ziorseParsedCache) window._ziorseParsedCache.delete(data.key);
-            if (window.dataStore && data.key === window.dataStore.storageKeyUser) {
-              window.dataStore.currentUser = null;
-            }
           } else {
             if (window._ziorseMemCache) window._ziorseMemCache.set(data.key, typeof data.val === 'object' ? JSON.stringify(data.val) : String(data.val));
             if (window._ziorseParsedCache && typeof data.val === 'object') window._ziorseParsedCache.set(data.key, data.val);
