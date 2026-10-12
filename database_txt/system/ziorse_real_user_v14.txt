@@ -5,5 +5,12 @@
   "banner": "#999999",
   "bio": "",
   "email": "paatates@gmail.com",
-  "loggedIn": true
+  "loggedIn": true,
+  "fontStyle": "",
+  "fontWeight": "",
+  "nameColor": "",
+  "nameEffects": "",
+  "avatarFrame": "",
+  "memberTheme": "",
+  "postCount": 2
 }
