@@ -160,11 +160,9 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 
 /* 1. Mavi Tik Rozeti (ziorse.com Resmi Doğrulanmış Sunucu) */
 .srv-badge-verified {
-  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
   color: #ffffff;
-  padding: 2px 3px;
+  paddingrgb(0, 28, 187)px;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(37, 99, 235, 0.45);
   display: inline-flex;
   align-items: center;
   justify-content: center;
