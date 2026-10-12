@@ -470,9 +470,9 @@ document.addEventListener('DOMContentLoaded', () => {
               window.__globalInviteRegistry[code].memberCount = mLen;
             }
           }
-        });
-        if (window.dataStore) window.dataStore.saveServers();
-      }
+        if (window.dataStore && window.dataStore.currentUser && window.dataStore.currentUser.loggedIn && Array.isArray(window.dataStore.servers) && window.dataStore.servers.length > 0) {
+          window.dataStore.saveServers();
+        }
       updateRightSidebar();
       renderFeed();
       renderDMs();
