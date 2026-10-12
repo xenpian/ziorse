@@ -169,8 +169,8 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 }
 
 .srv-badge-verified svg {
-  width: 13px;
-  height: 13px;
+  width: 10px;
+  height: 10px;
   display: block;
 }
 
