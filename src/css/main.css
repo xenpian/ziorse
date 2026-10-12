@@ -135,7 +135,7 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   gap: 4px;
   vertical-align: middle;
   border: 1px solid var(--border-color);
-
+  border-radius: 8px;
   margin-left: 6px;
   flex-shrink: 0;
 }
