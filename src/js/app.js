@@ -3363,8 +3363,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let html = `<div class="server-header-banner ${hasBanner ? 'has-custom-banner' : ''}" style="${hasBanner ? `background-image: url('${escapeHtml(srvObj.banner)}');` : ''}">
       ${hasBanner ? '<div class="server-header-banner-overlay"></div>' : ''}
       <div class="server-header-banner-content">
-        <span id="current-server-name" class="server-title-text">${escapeHtml(srvObj.name)}</span>
-        <i data-lucide="chevron-down" style="width:16px;height:16px;color:var(--text-muted);cursor:pointer;"></i>
+        <span id="current-server-name" class="server-title-text" style="display:flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(srvObj.name)}</span>
+          ${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srvObj) : ''}
+        </span>
+        <i data-lucide="chevron-down" style="width:16px;height:16px;color:var(--text-muted);cursor:pointer;flex-shrink:0;"></i>
       </div>
     </div>
     <div class="server-channels-roles-wrap">
