@@ -17,9 +17,13 @@ const _LARGE_JSON_KEYS = new Set([
   'ziorse_real_dms_v14',
 ]);
 
-function _initMemCacheOnce() {
-  if (_memCacheLoaded) return;
+function _initMemCacheOnce(forceReload = false) {
+  if (_memCacheLoaded && !forceReload) return;
   _memCacheLoaded = true;
+  if (forceReload) {
+    _ziorseMemCache.clear();
+    _ziorseParsedCache.clear();
+  }
   if (window.electronAPI?.storeGetAllSync) {
     try {
       const all = window.electronAPI.storeGetAllSync();
