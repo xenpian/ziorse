@@ -6179,12 +6179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const userRoles = getMemberRoleIds(m.handle);
         if (userRoles.includes(r.id) && !usedHandles.has(cleanH)) {
           const prof = window.dataStore.getUserProfile(m.handle);
-          const isSelf = cu.handle && cu.handle.toLowerCase().replace('@', '') === cleanH;
-          const myStatus = window.dataStore.userStatus || { type: 'online', text: '' };
-          const otherSt = prof.status || { type: 'offline', text: '' };
-          const isOnline = isSelf
-            ? (myStatus.type !== 'invisible' && myStatus.type !== 'offline')
-            : (onlineHandles.includes(cleanH) && otherSt.type !== 'invisible');
+          const isOnline = isUserHandleOnline(m.handle);
 
           roleMembers.push({ ...m, prof, isOnline });
           usedHandles.add(cleanH);
@@ -6205,13 +6200,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (usedHandles.has(cleanH)) return;
 
       const prof = window.dataStore.getUserProfile(m.handle);
-      const isSelf = cu.handle && cu.handle.toLowerCase().replace('@', '') === cleanH;
-      const myStatus = window.dataStore.userStatus || { type: 'online', text: '' };
-      const otherSt = prof.status || { type: 'offline', text: '' };
-
-      const isOnline = isSelf
-        ? (myStatus.type !== 'invisible' && myStatus.type !== 'offline')
-        : (onlineHandles.includes(cleanH) && otherSt.type !== 'invisible');
+      const isOnline = isUserHandleOnline(m.handle);
 
       if (isOnline) {
         unassignedOnline.push({ ...m, prof, isOnline: true });
@@ -6223,14 +6212,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function memberHtml(m, isOnline) {
       const cleanH = (m.handle || '').toLowerCase().replace('@', '');
       const isSelf = cu.handle && cu.handle.toLowerCase().replace('@', '') === cleanH;
-      const myStatus = window.dataStore.userStatus || { type: 'online', text: '' };
       const prof = m.prof || window.dataStore.getUserProfile(m.handle) || {};
-      const st = isSelf ? myStatus : (prof.status || { type: 'offline', text: '' });
-      const stType = isOnline
-        ? ((st.type && st.type !== 'offline' && st.type !== 'invisible') ? st.type : 'online')
-        : 'offline';
+      const effStatus = getUserEffectiveStatus(m.handle);
+      const stType = isOnline ? effStatus.type : 'offline';
       const color = statusColors[stType] || (isOnline ? '#22c55e' : '#737373');
-      const customTxt = st.text ? `"${st.text}"` : (statusLabels[stType] || (isOnline ? 'Çevrimiçi' : 'Çevrim dışı'));
+      const customTxt = effStatus.text ? `"${effStatus.text}"` : (statusLabels[stType] || (isOnline ? 'Çevrimiçi' : 'Çevrim dışı'));
 
       const userRoleIds = getMemberRoleIds(m.handle);
       // En üstteki rol hiyerarşideki en küçük position değerine sahip roldür
