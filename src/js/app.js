@@ -534,6 +534,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderOnlineMembers();
       renderFeed();
       renderDMs();
+      if (typeof renderServers === 'function') renderServers();
+      if (typeof renderPublicServers === 'function') renderPublicServers();
       if (data.member && data.member.name) {
         showToast(`🎉 ${data.member.name} (${data.member.handle}) sunucuya katıldı!`);
       }
