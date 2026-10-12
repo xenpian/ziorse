@@ -734,6 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isOwner = m.handle === currentOwnerHandle;
       const isSelf = m.handle === ds.currentUser.handle;
       const profile = ds.getUserProfile(m.handle);
+      const name = profile.name || m.name || m.handle;
       let avatar = profile.avatar || m.avatar || window.DEFAULT_AVATAR;
       if (avatar && (avatar.startsWith('/uploads/') || avatar.startsWith('http://localhost:3000/uploads/'))) avatar = (window.formatMediaUrl ? window.formatMediaUrl(avatar) : avatar);
       const memberRoles = ds.getServerRoles ? ds.getMemberRoles(server.id, m.handle) : [];
