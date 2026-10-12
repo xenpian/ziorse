@@ -1,0 +1,47 @@
+[
+  {
+    "id": "srv-1791824297056",
+    "name": "patates",
+    "icon": "PA",
+    "banner": "",
+    "inviteCode": "7vzxbedy1u",
+    "memberCount": 1,
+    "ownerHandle": "@sa",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
+    "joined": true,
+    "categories": [
+      {
+        "id": "cat-1791673454076",
+        "name": "METİN KANALLARI",
+        "collapsed": false,
+        "channels": [
+          {
+            "id": "genel",
+            "name": "genel-sohbet",
+            "type": "text"
+          },
+          {
+            "id": "duyurular",
+            "name": "duyurular",
+            "type": "text"
+          },
+          {
+            "id": "kod-paylasim",
+            "name": "kod-paylasimi",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "roles": [],
+    "memberRoles": {},
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ]
+  }
+]
