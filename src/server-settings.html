@@ -27,7 +27,8 @@
   <script src="js/data-store.js"></script>
   <script>
     if (typeof io !== 'undefined') {
-      window.socket = io('http://localhost:3000');
+      const srvUrl = (window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:3001'));
+      window.socket = io(srvUrl);
     }
     if (!window.dataStore || !window.dataStore.isLoggedIn()) {
       window.location.replace('login.html');
