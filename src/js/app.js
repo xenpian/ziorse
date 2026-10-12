@@ -6327,7 +6327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     // Sunucuda zaten var mıyız?
-    const isMember = !!srv;
+    const isMember = !!srv || (typeof window.dataStore?.isServerMember === 'function' && window.dataStore.isServerMember(code));
 
     const bannerStyle = banner
       ? `background-image: url('${escapeHtml(banner)}');`
