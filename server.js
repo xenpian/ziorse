@@ -1765,20 +1765,37 @@ io.on('connection', (socket) => {
 
   // Sunucu Rolleri & Üye Rol Atamaları Canlı Senkronizasyonu
   socket.on('sync-server-roles', (data) => {
-    if (data && data.inviteCode) {
-      if (!globalInviteRegistry[data.inviteCode]) {
-        globalInviteRegistry[data.inviteCode] = {};
+    if (data) {
+      const code = data.inviteCode || Object.keys(globalInviteRegistry).find(k => globalInviteRegistry[k].serverId === data.serverId) || data.serverId;
+      if (code) {
+        if (!globalInviteRegistry[code]) {
+          globalInviteRegistry[code] = {};
+        }
+        if (Array.isArray(data.roles)) {
+          data.roles.forEach(r => {
+            if (r.icon && r.icon.startsWith('data:image/')) {
+              r.icon = extractDataUrlToUpload(r.icon, 'role_icon');
+            }
+          });
+          globalInviteRegistry[code].roles = data.roles;
+        }
+        if (data.memberRoles && typeof data.memberRoles === 'object') {
+          globalInviteRegistry[code].memberRoles = data.memberRoles;
+        }
+        if (data.serverId && !globalInviteRegistry[code].serverId) {
+          globalInviteRegistry[code].serverId = data.serverId;
+        }
+        saveSyncDb();
+        saveInviteRegistryTxt();
+        const broadcastData = {
+          serverId: data.serverId || globalInviteRegistry[code].serverId || code,
+          inviteCode: code,
+          roles: globalInviteRegistry[code].roles,
+          memberRoles: globalInviteRegistry[code].memberRoles
+        };
+        io.emit('server-roles-updated', broadcastData);
+        io.emit('invite-registry-updated', globalInviteRegistry);
       }
-      if (Array.isArray(data.roles)) {
-        globalInviteRegistry[data.inviteCode].roles = data.roles;
-      }
-      if (data.memberRoles && typeof data.memberRoles === 'object') {
-        globalInviteRegistry[data.inviteCode].memberRoles = data.memberRoles;
-      }
-      saveSyncDb();
-      saveInviteRegistryTxt();
-      io.emit('server-roles-updated', data);
-      io.emit('invite-registry-updated', globalInviteRegistry);
     }
   });
 
