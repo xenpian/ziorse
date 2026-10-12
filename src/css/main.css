@@ -183,30 +183,26 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 
 /* 3. Dünya Rozeti (Public / Herkese Açık) */
 .srv-badge-public {
-  background: rgba(6, 182, 212, 0.15);
-  color: #06b6d4;
-  border: 1px solid rgba(6, 182, 212, 0.35);
+  color: #000000;
+
 }
 
 /* 4. Kilit Rozeti (Private / Gizli) */
 .srv-badge-private {
-  background: rgba(244, 63, 94, 0.15);
-  color: #f43f5e;
-  border: 1px solid rgba(244, 63, 94, 0.35);
+  color: #000000;
+
 }
 
 /* 5. Bina Rozeti (Topluluk Sunucusu) */
 .srv-badge-community {
-  background: rgba(168, 85, 247, 0.15);
-  color: #a855f7;
-  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #000000;
+
 }
 
 /* 6. Ev Rozeti (Arkadaşlar İçin Sunucu) */
 .srv-badge-friends {
-  background: rgba(249, 115, 22, 0.15);
-  color: #f97316;
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  color: #000000;
+
 }
 
 /* ── SADE BUTON SİSTEMİ ─────────────────────────────────────────── */
