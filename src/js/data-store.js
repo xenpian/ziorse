@@ -1416,9 +1416,11 @@ class DataStore {
     else if (!officialSrv.name) officialSrv.name = 'ziorse.com';
 
     if (regOfficial.serverIcon) officialSrv.icon = regOfficial.serverIcon;
-    else if (!officialSrv.icon) officialSrv.icon = '/uploads/srv_icon_1791843284247_wagh8.png';
+    else if (!officialSrv.icon) officialSrv.icon = OFFICIAL_ZIORSE_SERVER.icon || '';
 
     if (regOfficial.serverBanner !== undefined) officialSrv.banner = regOfficial.serverBanner;
+    else if (!officialSrv.banner) officialSrv.banner = OFFICIAL_ZIORSE_SERVER.banner || '';
+
     if (regOfficial.description !== undefined) officialSrv.description = regOfficial.description;
     if (regOfficial.isPublic !== undefined) officialSrv.isPublic = regOfficial.isPublic;
     if (regOfficial.serverType) officialSrv.serverType = regOfficial.serverType;
@@ -1447,6 +1449,7 @@ class DataStore {
     if (this.currentUser && this.currentUser.handle && this.currentUser.handle !== 'guest') {
       try {
         this._addServerMember('ziorse', this.currentUser);
+        this._addServerMember('srv-ziorse-official', this.currentUser);
       } catch (e) { }
     }
     return list;
