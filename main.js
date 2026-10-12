@@ -167,6 +167,7 @@ function readPersistentStore(forceRefreshSystem = false) {
       const sysFiles = fs.readdirSync(SYSTEM_DIR).filter(f => f.endsWith('.txt'));
       for (const file of sysFiles) {
         const key = decodeURIComponent(file.replace(/\.txt$/, ''));
+        if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
         const content = fs.readFileSync(path.join(SYSTEM_DIR, file), 'utf8');
         try {
           const parsed = JSON.parse(content);
