@@ -374,8 +374,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('server-structure-updated', (data) => {
-      if (data && data.inviteCode && window.dataStore && window.dataStore.servers) {
-        const matched = window.dataStore.servers.find(s => s.inviteCode === data.inviteCode);
+      if (data && (data.inviteCode || data.serverId) && window.dataStore && window.dataStore.servers) {
+        const matched = window.dataStore.servers.find(s => (data.inviteCode && s.inviteCode === data.inviteCode) || (data.serverId && s.id === data.serverId));
         if (matched) {
           if (data.categories) matched.categories = JSON.parse(JSON.stringify(data.categories));
           if (data.serverName) matched.name = data.serverName;
@@ -613,8 +613,11 @@ document.addEventListener('DOMContentLoaded', () => {
           window.dataStore.savePosts();
         }
       }
-      renderFeed();
-      renderRightSidebar();
+      renderFeed(true);
+      updateRightSidebar();
+      if (window.dataStore.activeServerId !== 'home') {
+        setTimeout(() => scrollContainerToBottom(feedPostsContainer), 50);
+      }
     });
 
     socket.on('delete-post-event', (data) => {
@@ -4508,12 +4511,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cleanH === cu.handle.toLowerCase()) return;
         const uStatus = u.status || { type: 'offline', text: '' };
         const uProf = window.dataStore.getUserProfile(u.handle) || u;
-        const isOnline = onlineHandles.includes(cleanH) && uStatus.type !== 'offline' && uStatus.type !== 'invisible';
+        const isOnline = onlineHandles.includes(cleanH) && uStatus.type !== 'invisible';
+        const stType = isOnline ? ((uStatus.type && uStatus.type !== 'offline' && uStatus.type !== 'invisible') ? uStatus.type : 'online') : 'offline';
         allUsersMap.set(cleanH, {
           handle: u.handle,
           name: u.name || u.handle.replace('@', ''),
           avatar: u.avatar || window.DEFAULT_AVATAR,
-          status: uStatus,
+          status: { ...uStatus, type: stType },
           memberTheme: uProf.memberTheme || u.memberTheme || '',
           isOnline: isOnline,
           isSelf: false
@@ -4670,8 +4674,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const fProfile = ds.getUserProfile(f.handle);
           const fAvatar = fProfile.avatar || window.DEFAULT_AVATAR;
           const otherSt = fProfile.status || { type: 'offline', text: '' };
-          const isOnline = onlineHandles.includes(cleanH) && otherSt.type !== 'offline' && otherSt.type !== 'invisible';
-          const stType = isOnline ? (otherSt.type || 'online') : 'offline';
+          const isOnline = onlineHandles.includes(cleanH) && otherSt.type !== 'invisible';
+          const stType = isOnline ? ((otherSt.type && otherSt.type !== 'offline' && otherSt.type !== 'invisible') ? otherSt.type : 'online') : 'offline';
           const dotColor = statusColors[stType] || (isOnline ? '#22c55e' : '#737373');
 
           const msgs = ds.getThreadMessages(f.handle);
@@ -5845,11 +5849,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const cleanH = f.handle.toLowerCase();
       const prof = window.dataStore.getUserProfile(f.handle);
       const otherSt = prof.status || { type: 'offline', text: '' };
-      const isOnline = onlineHandles.includes(cleanH) && otherSt.type !== 'offline' && otherSt.type !== 'invisible';
+      const isOnline = onlineHandles.includes(cleanH) && otherSt.type !== 'invisible';
+      const stType = isOnline ? ((otherSt.type && otherSt.type !== 'offline' && otherSt.type !== 'invisible') ? otherSt.type : 'online') : 'offline';
       if (isOnline) {
-        onlineFriends.push({ ...f, prof, status: otherSt, isOnline: true });
+        onlineFriends.push({ ...f, prof, status: { ...otherSt, type: stType }, isOnline: true });
       } else {
-        offlineFriends.push({ ...f, prof, status: otherSt, isOnline: false });
+        offlineFriends.push({ ...f, prof, status: { ...otherSt, type: 'offline' }, isOnline: false });
       }
     });
 
@@ -6032,25 +6037,26 @@ document.addEventListener('DOMContentLoaded', () => {
           const otherSt = prof.status || { type: 'offline', text: '' };
           const isOnline = isSelf
             ? (myStatus.type !== 'invisible' && myStatus.type !== 'offline')
-            : (onlineHandles.includes(cleanH) && otherSt.type !== 'offline' && otherSt.type !== 'invisible');
+            : (onlineHandles.includes(cleanH) && otherSt.type !== 'invisible');
 
-          if (isOnline) {
-            roleMembers.push({ ...m, prof, isOnline: true });
-            usedHandles.add(cleanH);
-          }
+          roleMembers.push({ ...m, prof, isOnline });
+          usedHandles.add(cleanH);
         }
       });
 
       if (roleMembers.length > 0) {
+        roleMembers.sort((a, b) => (b.isOnline ? 1 : 0) - (a.isOnline ? 1 : 0));
         roleGroups.push({ role: r, members: roleMembers });
       }
     });
 
-    const onlineMembers = [];
-    const offlineMembers = [];
+    const unassignedOnline = [];
+    const unassignedOffline = [];
 
     members.forEach(m => {
       const cleanH = (m.handle || '').toLowerCase().replace('@', '');
+      if (usedHandles.has(cleanH)) return;
+
       const prof = window.dataStore.getUserProfile(m.handle);
       const isSelf = cu.handle && cu.handle.toLowerCase().replace('@', '') === cleanH;
       const myStatus = window.dataStore.userStatus || { type: 'online', text: '' };
@@ -6058,16 +6064,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const isOnline = isSelf
         ? (myStatus.type !== 'invisible' && myStatus.type !== 'offline')
-        : (onlineHandles.includes(cleanH) && otherSt.type !== 'offline' && otherSt.type !== 'invisible');
+        : (onlineHandles.includes(cleanH) && otherSt.type !== 'invisible');
 
       if (isOnline) {
-        onlineMembers.push({ ...m, prof, isOnline: true });
+        unassignedOnline.push({ ...m, prof, isOnline: true });
       } else {
-        offlineMembers.push({ ...m, prof, isOnline: false });
+        unassignedOffline.push({ ...m, prof, isOnline: false });
       }
     });
-
-    const unassignedOnline = onlineMembers.filter(m => !usedHandles.has((m.handle || '').toLowerCase().replace('@', '')));
 
     function memberHtml(m, isOnline) {
       const cleanH = (m.handle || '').toLowerCase().replace('@', '');
@@ -6075,7 +6079,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const myStatus = window.dataStore.userStatus || { type: 'online', text: '' };
       const prof = m.prof || window.dataStore.getUserProfile(m.handle) || {};
       const st = isSelf ? myStatus : (prof.status || { type: 'offline', text: '' });
-      const stType = isOnline ? (st.type || 'online') : 'offline';
+      const stType = isOnline
+        ? ((st.type && st.type !== 'offline' && st.type !== 'invisible') ? st.type : 'online')
+        : 'offline';
       const color = statusColors[stType] || (isOnline ? '#22c55e' : '#737373');
       const customTxt = st.text ? `"${st.text}"` : (statusLabels[stType] || (isOnline ? 'Çevrimiçi' : 'Çevrim dışı'));
 
@@ -6107,13 +6113,14 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
               ${renderMediaAvatarHtml(avatar, 'user-avatar-sm')}
               ${renderAvatarFrameHtml(mFrame)}
+              <span class="user-status-dot" style="position:absolute;bottom:0;right:0;width:9px;height:9px;border-radius:50%;background:${color};border:2px solid var(--bg-card,#18181b);"></span>
             </div>
             <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
               <div style="display:flex;align-items:center;gap:2px;">
                 ${roleIconHtml}
                 <span class="user-member-name" ${memberStyleAttr}>${escapeHtml(name)}</span>
               </div>
-              <span class="user-member-status" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;" title="${escapeHtml(customTxt)}">${escapeHtml(customTxt)}</span>
+              <span class="user-member-status" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;color:${color};font-size:0.72rem;" title="${escapeHtml(customTxt)}">${escapeHtml(customTxt)}</span>
             </div>
           </div>
         </div>`;
@@ -6125,24 +6132,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const roleIconHtml = rg.role.icon ? `<img src="${rg.role.icon}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;margin-right:6px;flex-shrink:0;">` : '';
       groupsHtml += `
         <div class="user-category-label" style="color:${rg.role.color}; font-weight:600; display:flex; align-items:center;">
-          ${roleIconHtml}<span>${escapeHtml(rg.role.name).toUpperCase()}</span>
+          ${roleIconHtml}<span>${escapeHtml(rg.role.name).toUpperCase()} — ${rg.members.length}</span>
         </div>
-        ${rg.members.map(m => memberHtml(m, true)).join('')}
+        ${rg.members.map(m => memberHtml(m, m.isOnline)).join('')}
       `;
     });
 
-    if (unassignedOnline.length > 0 || (roleGroups.length === 0 && onlineMembers.length === 0)) {
+    if (unassignedOnline.length > 0) {
       groupsHtml += `
-        <div class="user-category-label">ÇEVRİMİÇİ</div>
-        ${unassignedOnline.map(m => memberHtml(m, true)).join('') || '<div style="font-size:0.75rem;color:var(--text-muted);padding:2px 0;">Yok</div>'}
+        <div class="user-category-label">ÇEVRİMİÇİ — ${unassignedOnline.length}</div>
+        ${unassignedOnline.map(m => memberHtml(m, true)).join('')}
       `;
     }
 
-    if (offlineMembers.length > 0) {
+    if (unassignedOffline.length > 0) {
       groupsHtml += `
-        <div class="user-category-label" style="margin-top:10px;">ÇEVRİM DIŞI</div>
-        ${offlineMembers.map(m => memberHtml(m, false)).join('')}
+        <div class="user-category-label" style="margin-top:10px;">ÇEVRİM DIŞI — ${unassignedOffline.length}</div>
+        ${unassignedOffline.map(m => memberHtml(m, false)).join('')}
       `;
+    }
+
+    if (roleGroups.length === 0 && unassignedOnline.length === 0 && unassignedOffline.length === 0) {
+      groupsHtml = '<div style="font-size:0.75rem;color:var(--text-muted);padding:8px 0;text-align:center;">Henüz üye yok</div>';
     }
 
     container.innerHTML = `
