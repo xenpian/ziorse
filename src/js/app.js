@@ -49,6 +49,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxTargetImg = document.getElementById('lightbox-target-img');
   const btnCloseLightbox = document.getElementById('btn-close-lightbox');
 
+  // ── AUTO-FADING SCROLLBAR MOTORU (1 Saniye Sonra Şeffaflaşma) ──
+  const _scrollFadeTimers = new WeakMap();
+  window.addEventListener('scroll', (e) => {
+    const target = e.target;
+    if (!target || target === document || target === window) return;
+    if (target.classList) {
+      target.classList.add('is-scrolling');
+      if (_scrollFadeTimers.has(target)) {
+        clearTimeout(_scrollFadeTimers.get(target));
+      }
+      const timer = setTimeout(() => {
+        target.classList.remove('is-scrolling');
+        _scrollFadeTimers.delete(target);
+      }, 1000);
+      _scrollFadeTimers.set(target, timer);
+    }
+  }, { passive: true, capture: true });
+
   const modalCreateServer = document.getElementById('modal-create-server');
   const btnOpenCreateServer = document.getElementById('btn-open-create-server');
   const btnOpenCreateServerPs = document.getElementById('btn-open-create-server-ps');
@@ -57,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const newServerDescInput = document.getElementById('new-server-desc-input');
   const optPrivacyPublic = document.getElementById('opt-privacy-public');
   const optPrivacyPrivate = document.getElementById('opt-privacy-private');
+  const optTypeCommunity = document.getElementById('opt-type-community');
+  const optTypeFriends = document.getElementById('opt-type-friends');
   const btnSubmitCreateServer = document.getElementById('btn-submit-create-server');
   const publicServersView = document.getElementById('public-servers-view');
   const publicServersSearch = document.getElementById('public-servers-search');
