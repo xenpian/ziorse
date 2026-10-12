@@ -1917,7 +1917,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchLivePublicServers() {
     try {
-      const res = await fetch('/api/public-servers');
+      const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
+      const res = await fetch(srvUrl + '/api/public-servers');
       if (res.ok) {
         const data = await res.json();
         if (data && Array.isArray(data.servers)) {
