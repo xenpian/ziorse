@@ -187,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!onlineList.includes(clean)) return false;
     const prof = window.dataStore?.getUserProfile(handle);
     const stType = prof?.status?.type;
-    if (stType === 'invisible' || stType === 'offline') return false;
+    // Only explicit invisible hides an active socket connection
+    if (stType === 'invisible') return false;
     return true;
   }
   window.isUserHandleOnline = isUserHandleOnline;
@@ -200,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isSelf = cu && (cu.handle || '').toLowerCase().replace('@', '') === clean;
     const rawStatus = isSelf
       ? (window.dataStore?.userStatus || { type: 'online', text: '' })
-      : (window.dataStore?.getUserProfile(handle)?.status || { type: 'offline', text: '' });
+      : (window.dataStore?.getUserProfile(handle)?.status || { type: isOnline ? 'online' : 'offline', text: '' });
     const stType = isOnline
       ? ((rawStatus.type && rawStatus.type !== 'offline' && rawStatus.type !== 'invisible') ? rawStatus.type : 'online')
       : 'offline';
@@ -656,6 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function syncWithSocketServer() {
       if (!socket || !window.dataStore) return;
+      socket.emit('get-online-users');
       if (window.dataStore.posts && window.dataStore.posts.length > 0) {
         socket.emit('sync-client-posts', window.dataStore.posts);
       }
@@ -3327,7 +3329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
           <div class="cr-role-item">
             <div class="cr-role-badge" style="color:${roleColor};">
-              ${r.icon ? `<img src="${escapeHtml(r.icon)}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;">` : `<span class="cr-role-dot" style="background:${roleColor};"></span>`}
+              ${r.icon ? `<img src="${escapeHtml(normalizeMediaUrl(r.icon))}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;">` : `<span class="cr-role-dot" style="background:${roleColor};"></span>`}
               <span>${escapeHtml(r.name)}</span>
             </div>
             <span class="cr-role-members-count">${membersWithRole > 0 ? `${membersWithRole} üye` : 'Üye yok'}</span>
@@ -3426,8 +3428,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Build sidebar HTML
-    const hasBanner = srvObj.banner && (srvObj.banner.startsWith('data:image') || srvObj.banner.startsWith('http'));
-    let html = `<div class="server-header-banner ${hasBanner ? 'has-custom-banner' : ''}" style="${hasBanner ? `background-image: url('${escapeHtml(srvObj.banner)}');` : ''}">
+    const hasBanner = srvObj.banner && (srvObj.banner.startsWith('data:image') || srvObj.banner.startsWith('http') || srvObj.banner.startsWith('/uploads') || srvObj.banner.startsWith('uploads') || srvObj.banner.includes('.'));
+    let html = `<div class="server-header-banner ${hasBanner ? 'has-custom-banner' : ''}" style="${hasBanner ? `background-image: url('${escapeHtml(normalizeMediaUrl(srvObj.banner))}');` : ''}">
       ${hasBanner ? '<div class="server-header-banner-overlay"></div>' : ''}
       <div class="server-header-banner-content">
         <span id="current-server-name" class="server-title-text" style="display:flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
@@ -3463,7 +3465,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="ch-category" data-cat-id="${cat.id}" data-cat-index="${catIndex}" draggable="true">
         <div class="ch-category-header" data-cat-id="${cat.id}">
           <div class="ch-cat-left">
-            ${cat.icon ? `<img src="${escapeHtml(cat.icon)}" class="ch-cat-icon" alt="">` : ''}
+            ${cat.icon ? `<img src="${escapeHtml(normalizeMediaUrl(cat.icon))}" class="ch-cat-icon" alt="">` : ''}
             <i data-lucide="${isCollapsed ? 'chevron-right' : 'chevron-down'}" class="ch-cat-arrow" style="width:11px;height:11px;"></i>
             <span class="ch-cat-name">${escapeHtml(cat.name)}</span>
           </div>
@@ -4280,10 +4282,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Kapalı 4'lü Kutu / 2x2 Mini İkonlu Klasör
             const miniPreviews = folderServers.slice(0, 4).map(fs => {
               const fInitials = fs.name ? fs.name.trim().substring(0, 2).toUpperCase() : 'SR';
-              const fIsImg = fs.icon && (fs.icon.startsWith('data:image') || fs.icon.startsWith('http'));
+              const fIsImg = fs.icon && (fs.icon.startsWith('data:image') || fs.icon.startsWith('http') || fs.icon.startsWith('/uploads') || fs.icon.startsWith('uploads') || fs.icon.includes('.'));
               return `
                 <div class="mini-server-icon">
-                  ${fIsImg ? `<img src="${fs.icon}">` : `<span>${escapeHtml(fs.icon && fs.icon.length <= 4 ? fs.icon : fInitials)}</span>`}
+                  ${fIsImg ? `<img src="${normalizeMediaUrl(fs.icon)}">` : `<span>${escapeHtml(fs.icon && fs.icon.length <= 4 ? fs.icon : fInitials)}</span>`}
                 </div>
               `;
             }).join('');
@@ -4300,9 +4302,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const isJustOpened = parentFolder.id === justExpandedFolderId;
             const serverIconsHtml = folderServers.map(fs => {
               const initials = fs.name ? fs.name.trim().substring(0, 2).toUpperCase() : 'SR';
-              const isImg = fs.icon && (fs.icon.startsWith('data:image') || fs.icon.startsWith('http'));
+              const isImg = fs.icon && (fs.icon.startsWith('data:image') || fs.icon.startsWith('http') || fs.icon.startsWith('/uploads') || fs.icon.startsWith('uploads') || fs.icon.includes('.'));
               const iconContent = isImg
-                ? `<img src="${fs.icon}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;">`
+                ? `<img src="${normalizeMediaUrl(fs.icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;">`
                 : `<span>${escapeHtml(fs.icon && fs.icon.length <= 4 ? fs.icon : initials)}</span>`;
               return `<div class="server-icon ${fs.id === window.dataStore.activeServerId ? 'active' : ''}" data-id="${fs.id}" data-parent-folder="${parentFolder.id}" draggable="true"><div class="server-icon-badge"></div>${iconContent}</div>`;
             }).join('');
@@ -4320,9 +4322,9 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         // Tekil Sunucu İkonu
         const initials = srv.name ? srv.name.trim().substring(0, 2).toUpperCase() : 'SR';
-        const isImg = srv.icon && (srv.icon.startsWith('data:image') || srv.icon.startsWith('http'));
+        const isImg = srv.icon && (srv.icon.startsWith('data:image') || srv.icon.startsWith('http') || srv.icon.startsWith('/uploads') || srv.icon.startsWith('uploads') || srv.icon.includes('.'));
         const iconContent = isImg
-          ? `<img src="${srv.icon}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;">`
+          ? `<img src="${normalizeMediaUrl(srv.icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;">`
           : `<span>${escapeHtml(srv.icon && srv.icon.length <= 4 ? srv.icon : initials)}</span>`;
         html += `<div class="server-icon ${srv.id === window.dataStore.activeServerId ? 'active' : ''}" data-id="${srv.id}" draggable="true"><div class="server-icon-badge"></div>${iconContent}</div>`;
       }
@@ -5721,7 +5723,7 @@ document.addEventListener('DOMContentLoaded', () => {
       popoverRolesContainer.innerHTML = `
         ${memberRoles.map(r => `
           <span class="popover-role-badge" style="border-color:${r.color}; color:${r.color}; display:inline-flex; align-items:center; gap:4px;">
-            ${r.icon ? `<img src="${r.icon}" style="width:12px;height:12px;object-fit:cover;border-radius:2px;">` : `<span class="popover-role-dot" style="background:${r.color};"></span>`}
+            ${r.icon ? `<img src="${normalizeMediaUrl(r.icon)}" style="width:12px;height:12px;object-fit:cover;border-radius:2px;">` : `<span class="popover-role-dot" style="background:${r.color};"></span>`}
             <span>${escapeHtml(r.name)}</span>
             ${canManageRoles ? `<button type="button" class="popover-role-remove-btn" data-role-id="${r.id}" data-handle="${escapeHtml(handle)}" title="Rolü kaldır">&times;</button>` : ''}
           </span>
@@ -5770,7 +5772,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasRole = memberRoleIds.includes(r.id);
             return `
               <button type="button" class="popover-role-dropdown-item ${hasRole ? 'has-role' : ''}" data-role-id="${r.id}">
-                ${r.icon ? `<img src="${r.icon}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;">` : `<span class="popover-role-dot" style="background:${r.color}; width:8px; height:8px;"></span>`}
+                ${r.icon ? `<img src="${normalizeMediaUrl(r.icon)}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;">` : `<span class="popover-role-dot" style="background:${r.color}; width:8px; height:8px;"></span>`}
                 <span style="flex:1;">${escapeHtml(r.name)}</span>
                 ${hasRole ? '<i data-lucide="check" style="width:12px;height:12px;"></i>' : ''}
               </button>
@@ -6279,7 +6281,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // En üstteki rol hiyerarşideki en küçük position değerine sahip roldür
       const highestRole = serverRoles.find(r => userRoleIds.includes(r.id)) || null;
       const roleIconHtml = (highestRole && highestRole.icon)
-        ? `<img src="${highestRole.icon}" style="width:12px;height:12px;object-fit:cover;border-radius:2px;margin-right:4px;flex-shrink:0;">`
+        ? `<img src="${normalizeMediaUrl(highestRole.icon)}" style="width:12px;height:12px;object-fit:cover;border-radius:2px;margin-right:4px;flex-shrink:0;">`
         : '';
 
       const avatar = (isSelf && cu.avatar ? cu.avatar : null) || prof.avatar || m.avatar || window.DEFAULT_AVATAR;
@@ -6319,7 +6321,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let groupsHtml = '';
 
     roleGroups.forEach(rg => {
-      const roleIconHtml = rg.role.icon ? `<img src="${rg.role.icon}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;margin-right:6px;flex-shrink:0;">` : '';
+      const roleIconHtml = rg.role.icon ? `<img src="${normalizeMediaUrl(rg.role.icon)}" style="width:14px;height:14px;object-fit:cover;border-radius:3px;margin-right:6px;flex-shrink:0;">` : '';
       groupsHtml += `
         <div class="user-category-label" style="color:${rg.role.color}; font-weight:600; display:flex; align-items:center;">
           ${roleIconHtml}<span>${escapeHtml(rg.role.name).toUpperCase()} — ${rg.members.length}</span>
@@ -6833,7 +6835,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const authorFrame = authorProf.avatarFrame || post.avatarFrame;
         const authorNameStyle = getAuthorNameStyleAttr(authorProf, highestRole);
         const roleIconHtml = highestRole?.icon
-          ? `<img src="${highestRole.icon}" class="chat-role-icon" style="width:20px;height:20px;object-fit:cover;border-radius:3px;vertical-align:middle;display:inline-block;" title="${escapeHtml(highestRole.name)}">`
+          ? `<img src="${normalizeMediaUrl(highestRole.icon)}" class="chat-role-icon" style="width:20px;height:20px;object-fit:cover;border-radius:3px;vertical-align:middle;display:inline-block;" title="${escapeHtml(highestRole.name)}">`
           : '';
 
         return `
@@ -7880,7 +7882,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const srvBtn = document.querySelector(`.server-icon[data-id="${serverId}"]`);
     if (srvBtn && newIcon) {
       const resolvedIcon = normalizeMediaUrl(newIcon);
-      const isImg = resolvedIcon.startsWith('data:image') || resolvedIcon.startsWith('http');
+      const isImg = resolvedIcon.startsWith('data:image') || resolvedIcon.startsWith('http') || resolvedIcon.startsWith('/uploads') || resolvedIcon.includes('.');
       const existingImg = srvBtn.querySelector('img');
       const existingSpan = srvBtn.querySelector('span');
 
@@ -7910,7 +7912,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.dataStore && window.dataStore.activeServerId === serverId) {
       if (newBanner !== undefined) {
         const resolvedBanner = normalizeMediaUrl(newBanner);
-        const bannerContainer = document.querySelector('.srv-banner-bg, #server-banner-container');
+        const bannerContainer = document.querySelector('.srv-banner-bg, #server-banner-container, .server-header-banner');
         if (bannerContainer && resolvedBanner) {
           bannerContainer.style.backgroundImage = `url('${resolvedBanner}')`;
         }
