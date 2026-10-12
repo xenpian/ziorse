@@ -2068,10 +2068,17 @@ class DataStore {
     if (!inviteCode || !user || !user.handle) return;
     const key = this._serverMembersKey(inviteCode);
     const members = this.getServerMembers(inviteCode);
+    const cuProf = this.getUserProfile(user.handle) || {};
     const memberObj = {
       handle: user.handle.startsWith('@') ? user.handle : '@' + user.handle,
-      name: user.name || user.handle.replace('@', ''),
-      avatar: user.avatar || ''
+      name: user.name || cuProf.name || user.handle.replace('@', ''),
+      avatar: user.avatar || cuProf.avatar || '',
+      avatarFrame: user.avatarFrame || cuProf.avatarFrame || '',
+      fontStyle: user.fontStyle || cuProf.fontStyle || '',
+      fontWeight: user.fontWeight || cuProf.fontWeight || '',
+      nameColor: user.nameColor || cuProf.nameColor || '',
+      nameEffects: user.nameEffects || cuProf.nameEffects || '',
+      memberTheme: user.memberTheme || cuProf.memberTheme || ''
     };
     const existing = members.find(m => m.handle.toLowerCase() === memberObj.handle.toLowerCase());
     if (existing && existing.name === memberObj.name && existing.avatar === memberObj.avatar) {
@@ -2089,6 +2096,9 @@ class DataStore {
     if (srv) {
       srv.members = members;
       srv.memberCount = members.length;
+      if (srv.id && srv.id !== inviteCode) {
+        ziorseSetStorage(this._serverMembersKey(srv.id), members);
+      }
       this.saveServers();
     }
 
@@ -2103,6 +2113,7 @@ class DataStore {
     if (window.socket) {
       window.socket.emit('server-member-joined', {
         inviteCode,
+        serverId: srv ? srv.id : null,
         member: memberObj
       });
     }
@@ -2115,14 +2126,20 @@ class DataStore {
 
     let local = [];
     try {
-      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode)) || (srv && srv.inviteCode ? ziorseGetStorage(this._serverMembersKey(srv.inviteCode)) : null);
+      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode)) || 
+                  (srv && srv.inviteCode ? ziorseGetStorage(this._serverMembersKey(srv.inviteCode)) : null) ||
+                  (srv && srv.id ? ziorseGetStorage(this._serverMembersKey(srv.id)) : null);
       local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
     } catch { local = []; }
 
-    const globalList = (window.__globalServerMembers && (window.__globalServerMembers[inviteCode] || (srv && srv.inviteCode && window.__globalServerMembers[srv.inviteCode]) || (srv && window.__globalServerMembers[srv.id]))) || [];
+    const globalList = (window.__globalServerMembers && (
+      window.__globalServerMembers[inviteCode] || 
+      (srv && srv.inviteCode && window.__globalServerMembers[srv.inviteCode]) || 
+      (srv && window.__globalServerMembers[srv.id])
+    )) || [];
 
     const registry = this._loadInviteRegistry();
-    const inviteInfo = registry[inviteCode] || (srv && srv.inviteCode ? registry[srv.inviteCode] : null);
+    const inviteInfo = registry[inviteCode] || (srv && srv.inviteCode ? registry[srv.inviteCode] : null) || (srv && srv.id ? registry[srv.id] : null);
     const inviteMembers = (inviteInfo && Array.isArray(inviteInfo.members)) ? inviteInfo.members : [];
 
     const map = new Map();
