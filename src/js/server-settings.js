@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // URL'den serverId ve channelId parametrelerini al
   const urlParams = new URLSearchParams(window.location.search);
-  const serverId = urlParams.get('id');
+  const serverId = urlParams.get('id') || urlParams.get('serverId');
   const channelId = urlParams.get('channel') || 'genel';
 
   let server = ds.servers.find(s => s.id === serverId);
@@ -285,15 +285,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateIconPreview(val) {
-    if (val && (val.startsWith('data:image') || val.startsWith('http'))) {
+    const isImg = val && (val.startsWith('data:image') || val.startsWith('http') || val.startsWith('/uploads') || val.startsWith('uploads') || val.includes('.'));
+    if (isImg) {
+      const srcUrl = window.formatMediaUrl ? window.formatMediaUrl(val) : val;
       if (ssIconImg) {
-        ssIconImg.src = val;
+        ssIconImg.src = srcUrl;
         ssIconImg.classList.add('loaded');
         ssIconImg.style.display = 'block';
       }
       if (ssIconInitials) ssIconInitials.style.display = 'none';
       if (ssSidebarIcon) {
-        ssSidebarIcon.innerHTML = `<img src="${val}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;">`;
+        ssSidebarIcon.innerHTML = `<img src="${srcUrl}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;">`;
       }
     } else {
       const initials = val || (server.name ? server.name.substring(0, 2).toUpperCase() : 'SR');
@@ -312,9 +314,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateBannerPreview(val) {
-    if (val && (val.startsWith('data:image') || val.startsWith('http'))) {
+    const isImg = val && (val.startsWith('data:image') || val.startsWith('http') || val.startsWith('/uploads') || val.startsWith('uploads') || val.includes('.'));
+    if (isImg) {
+      const srcUrl = window.formatMediaUrl ? window.formatMediaUrl(val) : val;
       if (ssBannerImg) {
-        ssBannerImg.src = val;
+        ssBannerImg.src = srcUrl;
         ssBannerImg.classList.add('loaded');
         ssBannerImg.style.display = 'block';
       }
@@ -514,9 +518,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Also update local invite registry storage if present
         const registry = ziorseGetStorage('ziorse_invite_registry') || {};
-        if (server.inviteCode && registry[server.inviteCode]) {
-          registry[server.inviteCode].isPublic = server.isPublic;
-          registry[server.inviteCode].description = server.description;
+        const regCode = server.inviteCode || (server.id === 'srv-ziorse-official' ? 'ziorse' : null);
+        if (regCode && registry[regCode]) {
+          registry[regCode].serverName = server.name;
+          registry[regCode].serverIcon = server.icon;
+          registry[regCode].serverBanner = server.banner || '';
+          registry[regCode].isPublic = server.isPublic;
+          registry[regCode].description = server.description;
           ziorseSetStorage('ziorse_invite_registry', registry);
         }
 
@@ -526,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
           targetParent.updateLiveServerMedia(server.id, server.icon, server.banner);
         }
 
-        if (server.inviteCode) {
+        if (server.inviteCode || server.id === 'srv-ziorse-official') {
           ds._syncServerStructure(server);
         }
 
@@ -776,7 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="ss-member-roles-row">
               ${memberRoles.map(r => `
                 <span class="ss-member-role-badge" style="border-color:${r.color}; color:${r.color};">
-                  <span class="ss-role-color-dot" style="background:${r.color}; width:8px; height:8px;"></span>
+                  ${r.icon ? `<img src="${window.formatMediaUrl ? window.formatMediaUrl(r.icon) : r.icon}" style="width:12px;height:12px;object-fit:cover;border-radius:2px;margin-right:4px;">` : `<span class="ss-role-color-dot" style="background:${r.color}; width:8px; height:8px;"></span>`}
                   ${escapeHtml(r.name)}
                   ${canManageRoles ? `<span class="ss-remove-role-btn" data-handle="${escapeHtml(m.handle)}" data-role-id="${r.id}" title="Rolü kaldır">&times;</span>` : ''}
                 </span>
@@ -957,7 +965,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       return `
         <div class="ss-role-item ${isActive ? 'active' : ''}" data-role-id="${r.id}">
-          ${r.icon ? `<img src="${r.icon}" style="width:16px;height:16px;object-fit:cover;border-radius:4px;flex-shrink:0;">` : `<span class="ss-role-color-dot" style="background:${r.color};"></span>`}
+          ${r.icon ? `<img src="${window.formatMediaUrl ? window.formatMediaUrl(r.icon) : r.icon}" style="width:16px;height:16px;object-fit:cover;border-radius:4px;flex-shrink:0;">` : `<span class="ss-role-color-dot" style="background:${r.color};"></span>`}
           <span class="ss-role-item-name">${escapeHtml(r.name)}</span>
           <div class="ss-role-item-actions">
             <button class="ss-role-btn-arrow btn-role-up" data-role-id="${r.id}" ${isFirst ? 'disabled' : ''} title="Yukarı Taşı (Daha Yüksek Öncelik)">
@@ -1085,7 +1093,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnRemoveIcon = document.getElementById('btn-ss-role-remove-icon');
     if (iconPreview) {
       if (role.icon) {
-        iconPreview.innerHTML = `<img src="${role.icon}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`;
+        iconPreview.innerHTML = `<img src="${window.formatMediaUrl ? window.formatMediaUrl(role.icon) : role.icon}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`;
         if (btnRemoveIcon) btnRemoveIcon.style.display = 'inline-flex';
       } else {
         iconPreview.innerHTML = `<i data-lucide="image" style="width:20px;height:20px;color:var(--text-muted);"></i>`;
