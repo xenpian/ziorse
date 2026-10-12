@@ -949,7 +949,7 @@ app.post('/api/db/reconcile', (req, res) => {
 // ── FILE UPLOAD ENDPOINT ──────────────────────────────────────
 app.post('/api/upload', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Dosya yüklenemedi.' });
-  const fileUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+  const fileUrl = `/uploads/${req.file.filename}`;
   res.json({
     success: true,
     url: fileUrl,
