@@ -1,9 +1,0 @@
-{
-  "name": "ziorse creator",
-  "handle": "@sa",
-  "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-  "banner": "http://localhost:3000/uploads/ziorse_1787405103337_oh0uo80ebvc.gif",
-  "bio": "fdffa",
-  "email": "sa@sa.s",
-  "loggedIn": true
-}
