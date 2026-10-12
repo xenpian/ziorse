@@ -27,6 +27,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   storeGetSync: (key) => ipcRenderer.sendSync('store-get-sync', key),
   storeSetSync: (key, val) => ipcRenderer.sendSync('store-set-sync', key, val),
   storeGetAllSync: () => ipcRenderer.sendSync('store-get-all-sync'),
+  storeReloadSync: () => ipcRenderer.sendSync('store-reload-sync'),
   storeGet: (key) => ipcRenderer.invoke('store-get', key),
   storeSet: (key, val) => ipcRenderer.invoke('store-set', key, val),
   storeGetAll: () => ipcRenderer.invoke('store-get-all'),
