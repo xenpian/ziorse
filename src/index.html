@@ -835,6 +835,31 @@
           style="resize:none; padding:10px; border-radius:10px; border:1px solid var(--border-dark); background:var(--bg-input); color:var(--text-main); font-family:inherit; font-size:0.88rem; width:100%;"></textarea>
       </div>
 
+      <!-- SUNUCU TÜRÜ / AMACI (TOPLULUK vs ARKADAŞLAR) -->
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+        <label
+          style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Sunucu
+          Türü</label>
+        <div class="privacy-options-group" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="privacy-option-card active" data-server-type="community" id="opt-type-community">
+            <div class="poc-header">
+              <i data-lucide="building-2" style="width:18px; height:18px; color:#a855f7;"></i>
+              <span class="poc-badge" style="background:rgba(168,85,247,0.15); color:#a855f7;">Bina</span>
+            </div>
+            <span class="poc-title">Topluluk</span>
+            <span class="poc-desc">Geniş kitleler, projeler ve açık topluluklar için.</span>
+          </div>
+          <div class="privacy-option-card" data-server-type="friends" id="opt-type-friends">
+            <div class="poc-header">
+              <i data-lucide="home" style="width:18px; height:18px; color:#f97316;"></i>
+              <span class="poc-badge" style="background:rgba(249,115,22,0.15); color:#f97316;">Ev</span>
+            </div>
+            <span class="poc-title">Arkadaşlar</span>
+            <span class="poc-desc">Yakın arkadaş grupları ve samimi sohbetler için.</span>
+          </div>
+        </div>
+      </div>
+
       <!-- GİZLİLİK SEÇENEĞİ (PUBLIC vs PRIVATE) -->
       <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
         <label
