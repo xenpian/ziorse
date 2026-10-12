@@ -742,6 +742,8 @@ function readAllStoreData() {
     const sysFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.endsWith('.txt'));
     for (const file of sysFiles) {
       const key = decodeURIComponent(file.replace(/\.txt$/, ''));
+      // Active user sessions are strictly local to each client/browser and must NEVER be shared across instances
+      if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
       const content = fs.readFileSync(path.join(SYSTEM_TXT_DIR, file), 'utf8');
       try {
         const parsed = JSON.parse(content);
@@ -772,6 +774,9 @@ app.get('/api/store/all', (req, res) => {
 
 app.get('/api/store/get/:key', (req, res) => {
   const key = req.params.key;
+  if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
+    return res.json({ key, value: null });
+  }
   const store = readAllStoreData();
   res.json({ key, value: store[key] !== undefined ? store[key] : null });
 });
@@ -779,6 +784,10 @@ app.get('/api/store/get/:key', (req, res) => {
 app.post('/api/store/set', (req, res) => {
   const { key, val } = req.body;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
+  // Client session keys are isolated per browser/application instance
+  if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
+    return res.json({ success: true, localOnly: true });
+  }
   ensureDbTxtDirs();
 
   try {
@@ -840,6 +849,9 @@ app.post('/api/store/set', (req, res) => {
 app.post(['/api/store/delete', '/api/store/remove'], (req, res) => {
   const { key } = req.body;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
+  if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
+    return res.json({ success: true, localOnly: true });
+  }
   ensureDbTxtDirs();
 
   try {
@@ -859,6 +871,9 @@ app.post(['/api/store/delete', '/api/store/remove'], (req, res) => {
 app.delete('/api/store/:key', (req, res) => {
   const key = req.params.key;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
+  if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
+    return res.json({ success: true, localOnly: true });
+  }
   ensureDbTxtDirs();
 
   try {
