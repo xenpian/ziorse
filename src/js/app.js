@@ -651,9 +651,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       renderFeed(true);
-      updateRightSidebar();
-      if (window.dataStore.activeServerId !== 'home') {
-        setTimeout(() => scrollContainerToBottom(feedPostsContainer), 50);
+      if (window.dataStore.activeServerId !== 'home' && feedPostsContainer) {
+        scrollContainerToBottom(feedPostsContainer);
       }
     });
 
