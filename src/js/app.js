@@ -463,15 +463,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('server-roles-updated', (data) => {
-      if (data && data.inviteCode && window.dataStore && window.dataStore.servers) {
-        const matched = window.dataStore.servers.find(s => s.inviteCode === data.inviteCode || s.id === data.serverId);
-        if (matched) {
-          if (Array.isArray(data.roles)) matched.roles = JSON.parse(JSON.stringify(data.roles));
-          if (data.memberRoles && typeof data.memberRoles === 'object') matched.memberRoles = JSON.parse(JSON.stringify(data.memberRoles));
-          window.dataStore.saveServers();
-          updateRightSidebar();
-          renderFeed();
+      if (data && (data.inviteCode || data.serverId)) {
+        const code = data.inviteCode || data.serverId;
+        if (!window.__globalInviteRegistry) window.__globalInviteRegistry = {};
+        if (!window.__globalInviteRegistry[code]) window.__globalInviteRegistry[code] = {};
+        if (Array.isArray(data.roles)) window.__globalInviteRegistry[code].roles = JSON.parse(JSON.stringify(data.roles));
+        if (data.memberRoles && typeof data.memberRoles === 'object') window.__globalInviteRegistry[code].memberRoles = JSON.parse(JSON.stringify(data.memberRoles));
+        if (data.inviteCode && window.__globalInviteRegistry[data.inviteCode]) {
+          if (Array.isArray(data.roles)) window.__globalInviteRegistry[data.inviteCode].roles = JSON.parse(JSON.stringify(data.roles));
+          if (data.memberRoles && typeof data.memberRoles === 'object') window.__globalInviteRegistry[data.inviteCode].memberRoles = JSON.parse(JSON.stringify(data.memberRoles));
         }
+        if (data.serverId && window.__globalInviteRegistry[data.serverId]) {
+          if (Array.isArray(data.roles)) window.__globalInviteRegistry[data.serverId].roles = JSON.parse(JSON.stringify(data.roles));
+          if (data.memberRoles && typeof data.memberRoles === 'object') window.__globalInviteRegistry[data.serverId].memberRoles = JSON.parse(JSON.stringify(data.memberRoles));
+        }
+
+        if (window.dataStore && Array.isArray(window.dataStore.servers)) {
+          const matched = window.dataStore.servers.find(s => 
+            (data.inviteCode && (s.inviteCode === data.inviteCode || s.id === data.inviteCode)) ||
+            (data.serverId && (s.id === data.serverId || s.inviteCode === data.serverId))
+          );
+          if (matched) {
+            if (Array.isArray(data.roles)) matched.roles = JSON.parse(JSON.stringify(data.roles));
+            if (data.memberRoles && typeof data.memberRoles === 'object') matched.memberRoles = JSON.parse(JSON.stringify(data.memberRoles));
+            window.dataStore.saveServers();
+            if (window.dataStore.activeServerId === matched.id || window.dataStore.activeServerId === matched.inviteCode) {
+              renderServerChannels(matched, window.dataStore.activeChannelId);
+            }
+          }
+        }
+        updateRightSidebar();
+        renderFeed();
       }
     });
 
