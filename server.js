@@ -658,6 +658,12 @@ app.post(['/api/register', '/api/auth/register'], (req, res) => {
     saveInviteRegistryTxt();
     io.emit('server-members-updated', globalServerMembers);
     io.emit('invite-registry-updated', globalInviteRegistry);
+    io.emit('server-member-joined-event', {
+      inviteCode: 'ziorse',
+      serverId: 'srv-ziorse-official',
+      member: { handle: acc.handle, name: acc.name, avatar: acc.avatar || '' },
+      members: globalServerMembers['ziorse']
+    });
   }
 
   saveSyncDb();
