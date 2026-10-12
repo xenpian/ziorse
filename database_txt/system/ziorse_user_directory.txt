@@ -130,8 +130,14 @@
     "bio": "",
     "followers": 0,
     "following": 0,
+    "fontStyle": "",
+    "fontWeight": "",
+    "nameColor": "",
+    "nameEffects": "",
+    "avatarFrame": "",
+    "memberTheme": "",
     "status": {
-      "type": "offline",
+      "type": "online",
       "text": ""
     }
   },

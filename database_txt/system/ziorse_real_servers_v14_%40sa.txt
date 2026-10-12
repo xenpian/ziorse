@@ -5,7 +5,7 @@
     "icon": "http://localhost:3000/uploads/migrated_1789652001731_wxlq8.png",
     "inviteCode": "vcyj4drhz0",
     "ownerHandle": "@sa",
-    "memberCount": 3,
+    "memberCount": 4,
     "categories": [
       {
         "id": "cat-1787001503309",
@@ -87,7 +87,7 @@
     "description": "",
     "banner": "http://localhost:3000/uploads/migrated_1789652001735_vpjjl.jpg",
     "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
+    "ownerAvatar": "http://localhost:3001/uploads/avatar_1791669449956_gcbyr.png",
     "members": [
       {
         "handle": "@sa",
@@ -103,6 +103,11 @@
         "handle": "@fas",
         "name": "fas",
         "avatar": "http://localhost:3001/uploads/avatar_1789671526343_sdcd7.png"
+      },
+      {
+        "handle": "@dadimedg",
+        "name": "dadimed",
+        "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
       }
     ],
     "roles": [
@@ -146,6 +151,9 @@
         "role_1787396236737_lrb1"
       ],
       "@fas": [
+        "role_1787396024739_d1d0"
+      ],
+      "@dadimedg": [
         "role_1787396024739_d1d0"
       ]
     }

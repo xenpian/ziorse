@@ -74,7 +74,7 @@
     "email": "ahmet@a.a",
     "password": "ahmet12",
     "avatar": "https://i.imgur.com/w3OhOmW.jpeg",
-    "banner": "",
+    "banner": "#999999",
     "bio": ""
   },
   {

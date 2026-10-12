@@ -99,7 +99,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 5px;
   height: 6px;
 }
 
@@ -107,13 +107,105 @@ body {
   background: transparent;
 }
 
+/* Scrollbar varsayılan olarak şeffaftır, 1 saniye içinde pürüzsüzce kaybolur */
 ::-webkit-scrollbar-thumb {
-  background: #c4c4c4;
-  border-radius: 4px;
+  background-color: transparent;
+  border-radius: 6px;
+  transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.dark-mode ::-webkit-scrollbar-thumb {
-  background: #222222;
+/* Mouse ile üzerine gelindiğinde veya scroll yapıldığında hemen görünür */
+*:hover::-webkit-scrollbar-thumb,
+*.is-scrolling::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(160, 160, 160, 0.55);
+  transition: background-color 0.15s ease;
+}
+
+body.dark-mode *:hover::-webkit-scrollbar-thumb,
+body.dark-mode *.is-scrolling::-webkit-scrollbar-thumb,
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.28);
+}
+
+/* ── SUNUCU ROZETLERİ (SERVER BADGES) SİSTEMİ ───────────────────────── */
+.srv-badges-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.srv-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  line-height: 1;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  user-select: none;
+  cursor: default;
+}
+
+.srv-badge:hover {
+  transform: scale(1.12);
+}
+
+/* 1. Mavi Tik Rozeti (ziorse.com Resmi Doğrulanmış Sunucu) */
+.srv-badge-verified {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: #ffffff;
+  padding: 2px 3px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.45);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.srv-badge-verified svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+/* 2. Bookmark Rozeti (Normal Kullanıcı Sunucuları) */
+.srv-badge-bookmark {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+/* 3. Dünya Rozeti (Public / Herkese Açık) */
+.srv-badge-public {
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+/* 4. Kilit Rozeti (Private / Gizli) */
+.srv-badge-private {
+  background: rgba(244, 63, 94, 0.15);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+}
+
+/* 5. Bina Rozeti (Topluluk Sunucusu) */
+.srv-badge-community {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+/* 6. Ev Rozeti (Arkadaşlar İçin Sunucu) */
+.srv-badge-friends {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.35);
 }
 
 /* ── SADE BUTON SİSTEMİ ─────────────────────────────────────────── */
