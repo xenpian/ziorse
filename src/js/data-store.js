@@ -2442,6 +2442,24 @@ class DataStore {
       }
     }
 
+    // 6. Resmi sunucu (ziorse.com) için tüm kayıtlı kullanıcıları üye listesine ekle
+    if (inviteCode === 'ziorse' || inviteCode === 'srv-ziorse-official' || (srv && (srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse'))) {
+      const dir = this._loadGlobalDirectory();
+      Object.keys(dir).forEach(k => {
+        const u = dir[k];
+        if (u && u.handle) {
+          const cleanH = u.handle.toLowerCase();
+          if (!map.has(cleanH)) {
+            map.set(cleanH, {
+              handle: u.handle.startsWith('@') ? u.handle : '@' + u.handle,
+              name: u.name || u.handle.replace('@', ''),
+              avatar: u.avatar || DEFAULT_AVATAR
+            });
+          }
+        }
+      });
+    }
+
     const result = Array.from(map.values());
 
     // Sync back to local storage cache and server object
