@@ -492,6 +492,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderOnlineMembers();
       renderFeed();
       renderDMs();
+      if (typeof renderServers === 'function') renderServers();
+      if (typeof renderPublicServers === 'function') renderPublicServers();
     });
 
     socket.on('server-member-joined-event', (data) => {
