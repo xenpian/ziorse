@@ -5988,7 +5988,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const friends = window.dataStore.friends || [];
-    const onlineHandles = (window.__globalOnlineHandles || []).map(h => h.toLowerCase());
     const statusColors = { online: '#22c55e', idle: '#eab308', dnd: '#ef4444', invisible: '#737373', offline: '#737373' };
     const statusLabels = { online: 'Çevrimiçi', idle: 'Boşta', dnd: 'Rahatsız Etmeyin', invisible: 'Çevrim dışı', offline: 'Çevrim dışı' };
 
@@ -5996,15 +5995,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const offlineFriends = [];
 
     friends.forEach(f => {
-      const cleanH = f.handle.toLowerCase();
-      const prof = window.dataStore.getUserProfile(f.handle);
-      const otherSt = prof.status || { type: 'offline', text: '' };
-      const isOnline = onlineHandles.includes(cleanH) && otherSt.type !== 'invisible';
-      const stType = isOnline ? ((otherSt.type && otherSt.type !== 'offline' && otherSt.type !== 'invisible') ? otherSt.type : 'online') : 'offline';
+      const prof = window.dataStore.getUserProfile(f.handle) || {};
+      const isOnline = isUserHandleOnline(f.handle);
+      const status = getUserEffectiveStatus(f.handle);
       if (isOnline) {
-        onlineFriends.push({ ...f, prof, status: { ...otherSt, type: stType }, isOnline: true });
+        onlineFriends.push({ ...f, prof, status, isOnline: true });
       } else {
-        offlineFriends.push({ ...f, prof, status: { ...otherSt, type: 'offline' }, isOnline: false });
+        offlineFriends.push({ ...f, prof, status, isOnline: false });
       }
     });
 
