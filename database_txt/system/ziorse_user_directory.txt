@@ -130,14 +130,8 @@
     "bio": "",
     "followers": 0,
     "following": 0,
-    "fontStyle": "",
-    "fontWeight": "",
-    "nameColor": "",
-    "nameEffects": "",
-    "avatarFrame": "",
-    "memberTheme": "",
     "status": {
-      "type": "online",
+      "type": "offline",
       "text": ""
     }
   },
@@ -198,5 +192,9 @@
       "type": "offline",
       "text": ""
     }
+  },
+  "@testbot": {
+    "handle": "@testbot",
+    "name": "Test Bot"
   }
 }
