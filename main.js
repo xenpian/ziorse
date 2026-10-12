@@ -46,13 +46,32 @@ const DB_DIR = path.join(__dirname, 'database_txt');
 const POSTS_DIR = path.join(DB_DIR, 'posts');
 const DMS_DIR = path.join(DB_DIR, 'dms');
 const SYSTEM_DIR = path.join(DB_DIR, 'system');
+const BACKUP_DIR = path.join(DB_DIR, 'backups');
 
 function ensureDbDirs() {
-  [DB_DIR, POSTS_DIR, DMS_DIR, SYSTEM_DIR].forEach(dir => {
+  [DB_DIR, POSTS_DIR, DMS_DIR, SYSTEM_DIR, BACKUP_DIR].forEach(dir => {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
   });
+}
+
+function performDatabaseBackup() {
+  try {
+    ensureDbDirs();
+    const now = new Date();
+    const dateStr = now.toISOString().slice(0, 10);
+    const targetFolder = path.join(BACKUP_DIR, `backup_${dateStr}`);
+    if (!fs.existsSync(targetFolder)) fs.mkdirSync(targetFolder, { recursive: true });
+
+    const coreFiles = ['ziorse_accounts.txt', 'ziorse_invite_registry.txt', 'ziorse_user_directory.txt'];
+    coreFiles.forEach(f => {
+      const src = path.join(SYSTEM_DIR, f);
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, path.join(targetFolder, f));
+      }
+    });
+  } catch (e) { }
 }
 
 let memoryStore = null;
