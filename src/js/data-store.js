@@ -30,6 +30,80 @@ window.formatMediaUrl = formatMediaUrl;
 window.DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E";
 const DEFAULT_AVATAR = window.DEFAULT_AVATAR;
 
+const OFFICIAL_ZIORSE_SERVER = {
+  id: 'srv-ziorse-official',
+  name: 'ziorse.com',
+  description: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+  icon: 'logo.png',
+  banner: '',
+  inviteCode: 'ziorse',
+  isOfficial: true,
+  isPublic: true,
+  serverType: 'community',
+  ownerHandle: '@ziorse',
+  ownerName: 'Ziorse Official',
+  ownerAvatar: 'logo.png',
+  memberCount: 1,
+  categories: [
+    {
+      id: 'cat-ziorse-genel',
+      name: 'BİLGİLENDİRME & SOHBET',
+      collapsed: false,
+      channels: [
+        { id: 'ch-ziorse-duyurular', name: 'duyurular', type: 'text', topic: 'Resmi duyurular ve güncellemeler' },
+        { id: 'genel', name: 'genel-sohbet', type: 'text', topic: 'Tüm Ziorse kullanıcıları için genel sohbet' },
+        { id: 'ch-ziorse-yardim', name: 'yardim-destek', type: 'text', topic: 'Soru, öneri ve destek kanalı' },
+        { id: 'ch-ziorse-ses', name: 'Genel Ses Odası', type: 'voice' }
+      ]
+    }
+  ]
+};
+window.OFFICIAL_ZIORSE_SERVER = OFFICIAL_ZIORSE_SERVER;
+
+function renderServerBadgesHtml(srv) {
+  if (!srv) return '';
+  const srvName = (srv.name || srv.serverName || '').trim();
+  const isOfficial = srv.isOfficial === true || srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srvName.toLowerCase() === 'ziorse.com';
+
+  if (isOfficial) {
+    // 1. Mavi Tik Rozeti (ziorse.com Resmi Doğrulanmış Sunucu)
+    return `
+      <span class="srv-badges-wrap" title="Doğrulanmış Resmi Sunucu (ziorse.com)">
+        <span class="srv-badge srv-badge-verified">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+          </svg>
+        </span>
+      </span>
+    `;
+  }
+
+  // Normal Kullanıcı Sunucusu:
+  // 1. Sunucu Türü: Topluluksa Bina, Arkadaşlarsa Ev
+  const isFriends = srv.serverType === 'friends';
+  const typeBadgeHtml = isFriends
+    ? `<span class="srv-badge srv-badge-friends" title="Arkadaşlar İçin"><i data-lucide="home" style="width:11px;height:11px;"></i></span>`
+    : `<span class="srv-badge srv-badge-community" title="Topluluk Sunucusu"><i data-lucide="building-2" style="width:11px;height:11px;"></i></span>`;
+
+  // 2. Görünürlük: Public ise Dünya, Private ise Kilit
+  const isPublic = srv.isPublic === true;
+  const visibilityBadgeHtml = isPublic
+    ? `<span class="srv-badge srv-badge-public" title="Herkese Açık (Public)"><i data-lucide="globe" style="width:11px;height:11px;"></i></span>`
+    : `<span class="srv-badge srv-badge-private" title="Gizli Sunucu (Private)"><i data-lucide="lock" style="width:11px;height:11px;"></i></span>`;
+
+  // 3. Bookmark Rozeti (Tüm normal kullanıcı sunucularında)
+  const bookmarkBadgeHtml = `<span class="srv-badge srv-badge-bookmark" title="Kullanıcı Sunucusu"><i data-lucide="bookmark" style="width:11px;height:11px;"></i></span>`;
+
+  return `
+    <span class="srv-badges-wrap">
+      ${typeBadgeHtml}
+      ${visibilityBadgeHtml}
+      ${bookmarkBadgeHtml}
+    </span>
+  `;
+}
+window.renderServerBadgesHtml = renderServerBadgesHtml;
+
 const _ziorseMemCache = new Map();
 const _ziorseParsedCache = new Map(); // Parsed objects to avoid re-JSON.parse
 let _memCacheLoaded = false;
