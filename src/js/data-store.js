@@ -2066,6 +2066,13 @@ class DataStore {
     const srv = this.servers.find(s => s.id === serverId || s.inviteCode === serverId);
     if (!srv) return false;
     const cleanUser = cu.handle.toLowerCase().replace('@', '');
+
+    // ziorse.com resmi sunucusunun yöneticisi sadece ve sadece @sa olacak!
+    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
+    if (isOfficial) {
+      return cleanUser === 'sa';
+    }
+
     if (srv.ownerHandle) {
       const cleanOwner = srv.ownerHandle.toLowerCase().replace('@', '');
       if (cleanOwner === cleanUser) return true;
@@ -2077,13 +2084,14 @@ class DataStore {
         if (cleanInfoOwner === cleanUser) return true;
       }
     }
-    if (srv.joined !== true) return true;
+    if (srv.joined !== true && !srv.ownerHandle) return true;
     return false;
   }
 
   deleteServer(serverId) {
     const srv = this.servers.find(s => s.id === serverId);
     if (!srv) return false;
+    if (srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse') return false; // ziorse.com silinemez
     this.servers = this.servers.filter(s => s.id !== serverId);
     this.saveServers();
     if (srv.inviteCode) {
@@ -2098,6 +2106,7 @@ class DataStore {
   leaveServer(serverId) {
     const srv = this.servers.find(s => s.id === serverId);
     if (!srv) return false;
+    if (srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse') return false; // ziorse.com'dan ayrılınamaz
     this.servers = this.servers.filter(s => s.id !== serverId);
     this.saveServers();
     if (srv.inviteCode && this.currentUser) {
