@@ -1543,6 +1543,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (newServerDescInput) newServerDescInput.value = '';
       if (optPrivacyPrivate) optPrivacyPrivate.classList.add('active');
       if (optPrivacyPublic) optPrivacyPublic.classList.remove('active');
+      if (optTypeCommunity) optTypeCommunity.classList.add('active');
+      if (optTypeFriends) optTypeFriends.classList.remove('active');
+      if (window.lucide) window.lucide.createIcons();
     }
   }
 
@@ -1557,6 +1560,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  if (optTypeCommunity && optTypeFriends) {
+    optTypeCommunity.addEventListener('click', () => {
+      optTypeCommunity.classList.add('active');
+      optTypeFriends.classList.remove('active');
+    });
+    optTypeFriends.addEventListener('click', () => {
+      optTypeFriends.classList.add('active');
+      optTypeCommunity.classList.remove('active');
+    });
+  }
+
   if (btnOpenCreateServer) btnOpenCreateServer.addEventListener('click', openCreateServerModal);
   if (btnOpenCreateServerPs) btnOpenCreateServerPs.addEventListener('click', openCreateServerModal);
   if (btnCloseModalServer) btnCloseModalServer.addEventListener('click', () => modalCreateServer.classList.remove('active'));
@@ -1566,16 +1580,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = newServerNameInput?.value.trim();
       const desc = newServerDescInput?.value.trim() || '';
       const isPublic = optPrivacyPublic ? optPrivacyPublic.classList.contains('active') : false;
+      const serverType = optTypeFriends && optTypeFriends.classList.contains('active') ? 'friends' : 'community';
 
       if (name) {
-        const srv = window.dataStore.addServer(name, isPublic, desc);
+        const srv = window.dataStore.addServer(name, isPublic, desc, serverType);
         if (newServerNameInput) newServerNameInput.value = '';
         if (newServerDescInput) newServerDescInput.value = '';
         modalCreateServer.classList.remove('active');
         renderServers();
         if (typeof renderPublicServers === 'function') renderPublicServers();
         switchToServer(srv.id);
-        showToast(srv.name + ' sunucusu oluşturuldu (' + (isPublic ? 'Herkese Açık' : 'Gizli') + ')');
+        showToast(srv.name + ' sunucusu oluşturuldu (' + (isPublic ? 'Herkese Açık' : 'Gizli') + ' • ' + (serverType === 'friends' ? 'Arkadaşlar' : 'Topluluk') + ')');
       } else {
         showToast('Lütfen bir sunucu adı girin.');
       }
