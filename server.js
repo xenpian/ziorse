@@ -1276,6 +1276,10 @@ io.on('connection', (socket) => {
   socket.emit('sync-all-posts', serverPosts);
   socket.emit('online-users-updated', Array.from(activeOnlineHandles));
 
+  socket.on('get-online-users', () => {
+    socket.emit('online-users-updated', Array.from(activeOnlineHandles));
+  });
+
   socket.on('sync-user-profile', (data) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
