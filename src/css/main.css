@@ -177,10 +177,10 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 
 /* 2. Bookmark Rozeti (Normal Kullanıcı Sunucuları) */
 .srv-badge-bookmark {
-  background: rgba(245, 158, 11, 0.15);
   color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.35);
 }
+
+rgb(0, 0, 0)
 
 /* 3. Dünya Rozeti (Public / Herkese Açık) */
 .srv-badge-public {
