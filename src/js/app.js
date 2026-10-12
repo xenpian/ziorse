@@ -3979,7 +3979,10 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="stt-body">
           <div class="stt-avatar">${iconHtml}</div>
-          <div class="stt-title">${escapeHtml(srv.name)}</div>
+          <div class="stt-title" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span>${escapeHtml(srv.name)}</span>
+            ${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv) : ''}
+          </div>
           ${srv.description ? `<div class="stt-desc">${escapeHtml(srv.description)}</div>` : ''}
           <div class="stt-meta">
             <span class="stt-dot" style="background:var(--accent-primary, #dbdbdb);"></span>
@@ -3989,6 +3992,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `;
+    if (window.lucide) window.lucide.createIcons({ root: el });
 
     const rect = e.currentTarget.getBoundingClientRect();
     let left = rect.left + (rect.width / 2);
