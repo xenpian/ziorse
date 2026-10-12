@@ -1777,7 +1777,7 @@ io.on('connection', (socket) => {
   socket.on('user-status-changed', (data) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
-      const cleanH = h.toLowerCase();
+      const cleanH = h.toLowerCase().replace('@', '');
       if (!globalUserDirectory[h]) {
         globalUserDirectory[h] = {
           name: h.replace('@', ''),
@@ -1808,12 +1808,12 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log(`[Socket] Ayrıldı: ${socket.id}`);
-    const handle = socketHandleMap.get(socket.id);
+    const cleanH = socketHandleMap.get(socket.id);
     socketHandleMap.delete(socket.id);
-    if (handle) {
-      const stillConnected = Array.from(socketHandleMap.values()).includes(handle);
+    if (cleanH) {
+      const stillConnected = Array.from(socketHandleMap.values()).includes(cleanH);
       if (!stillConnected) {
-        activeOnlineHandles.delete(handle);
+        activeOnlineHandles.delete(cleanH);
       }
       io.emit('online-users-updated', Array.from(activeOnlineHandles));
     }
