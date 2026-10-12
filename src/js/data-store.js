@@ -1710,7 +1710,15 @@ class DataStore {
       }
     });
 
-    return Array.from(mergedMap.values());
+    const result = Array.from(mergedMap.values());
+    // Ziorse.com keşfette her zaman en başta sabit kalır
+    const zIdx = result.findIndex(s => s.serverId === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || ((s.name || '').toLowerCase() === 'ziorse.com'));
+    if (zIdx !== -1) {
+      const [zCard] = result.splice(zIdx, 1);
+      zCard.isOfficial = true;
+      result.unshift(zCard);
+    }
+    return result;
   }
 
   getServerMemberCount(inviteCode) {
