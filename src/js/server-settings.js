@@ -58,6 +58,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const canManageChannels = isOwner || canManageServer || (ds.checkServerPermission && ds.checkServerPermission(server.id, currentHandle, 'manage_channels'));
   const canManageMembers = isOwner || canManageServer || canManageRoles || (ds.checkServerPermission && ds.checkServerPermission(server.id, currentHandle, 'kick_ban_members'));
 
+  const isOfficial = server.id === 'srv-ziorse-official' || server.inviteCode === 'ziorse' || server.isOfficial === true || ((server.name || '').toLowerCase() === 'ziorse.com');
+  if (isOfficial && !isOwner) {
+    alert('ziorse.com sunucusunun ayarlarını yalnızca yönetici (@sa) düzenleyebilir.');
+    if (window.parent && window.parent !== window && typeof window.parent.closeModalView === 'function') {
+      window.parent.closeModalView();
+    } else if (window.close) {
+      window.close();
+    }
+    return;
+  }
+
+  if (!isOwner && !canManageServer && !canManageRoles && !canManageChannels && !canManageMembers) {
+    alert('Bu sunucunun ayarlarını görüntüleme veya değiştirme yetkiniz bulunmuyor.');
+    if (window.parent && window.parent !== window && typeof window.parent.closeModalView === 'function') {
+      window.parent.closeModalView();
+    } else if (window.close) {
+      window.close();
+    }
+    return;
+  }
+
   // DOM Elemanları
   const ssTitleBar = document.getElementById('ss-server-title-bar');
   const ssSidebarIcon = document.getElementById('ss-sidebar-icon');
