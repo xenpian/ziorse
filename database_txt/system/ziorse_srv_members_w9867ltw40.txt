@@ -1,7 +1,0 @@
-[
-  {
-    "handle": "@sa",
-    "name": "ziorse creator",
-    "avatar": "http://localhost:3001/uploads/avatar_1791669449956_gcbyr.png"
-  }
-]
