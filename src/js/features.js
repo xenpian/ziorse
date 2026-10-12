@@ -432,12 +432,14 @@ class FileUploadSystem {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const res = await fetch('http://localhost:3000/api/upload', {
+      const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
+      const res = await fetch((srv ? srv : '') + '/api/upload', {
         method: 'POST',
         body: formData
       });
+      const data = await res.json();
       if (data && data.success && data.url) {
-        return data.url.startsWith('http') ? data.url : `http://localhost:3000${data.url.startsWith('/') ? '' : '/'}${data.url}`;
+        return (window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url);
       }
     } catch (err) {
       console.error('Upload error:', err);
