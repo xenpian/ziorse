@@ -1581,6 +1581,10 @@ io.on('connection', (socket) => {
       if (post.codeSnippet && typeof post.codeSnippet === 'string' && post.codeSnippet.length > 8000) {
         post.codeSnippet = post.codeSnippet.substring(0, 8000) + '\n// ... (kod boyutu optimize edildi)';
       }
+      // ÖNCE ANINDA SIFIR GECİKMEYLE TÜM İSTEMCİLERE İLET!
+      io.emit('new-post-event', post);
+
+      // Veritabanı ve medya işlemlerini arka planda yürüt
       if (post.avatar && post.avatar.startsWith('data:image/')) {
         post.avatar = extractDataUrlToUpload(post.avatar, 'avatar');
       }
@@ -1590,7 +1594,6 @@ io.on('connection', (socket) => {
       serverPosts = serverPosts.filter(p => p.id !== post.id);
       serverPosts.unshift(post);
       saveSyncDb();
-      io.emit('new-post-event', post);
     }
   });
 
