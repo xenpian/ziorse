@@ -546,34 +546,65 @@ function ensureOfficialServerBackend() {
   if (!globalInviteRegistry[officialCode]) {
     globalInviteRegistry[officialCode] = {
       serverName: 'ziorse.com',
-      serverDescription: 'Welcome to Ziorse.',
+      serverDescription: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
       isPublic: true,
       isOfficial: true,
       serverType: 'community',
-      serverIcon: 'logo.png',
+      serverIcon: '/uploads/srv_icon_1791843284247_wagh8.png',
+      serverBanner: '/uploads/srv_banner_1791843284248_6kbj4.png',
       serverId: officialId,
-      ownerHandle: '@ziorse',
-      ownerName: 'Ziorse Official',
+      ownerHandle: '@sa',
+      ownerName: 'sa',
       ownerAvatar: 'logo.png',
       memberCount: 1,
       categories: [
         {
           id: 'cat-ziorse-genel',
-          name: 'BİLGİLENDİRME & SOHBET',
+          name: 'METİN KANALLARI',
+          collapsed: false,
           channels: [
-            { id: 'ch-ziorse-duyurular', name: 'duyurular', type: 'text', topic: 'Resmi duyurular ve güncellemeler' },
-            { id: 'genel', name: 'genel-sohbet', type: 'text', topic: 'Tüm Ziorse kullanıcıları için genel sohbet' },
-            { id: 'ch-ziorse-yardim', name: 'yardim-destek', type: 'text', topic: 'Soru, öneri ve destek kanalı' },
-            { id: 'ch-ziorse-ses', name: 'Genel Ses Odası', type: 'voice' }
+            { id: 'chat', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
           ]
         }
       ]
     };
   } else {
-    globalInviteRegistry[officialCode].serverName = 'ziorse.com';
+    // Sunucu sahibi kesinlikle @sa olacak
+    globalInviteRegistry[officialCode].ownerHandle = '@sa';
+    globalInviteRegistry[officialCode].ownerName = 'sa';
     globalInviteRegistry[officialCode].isOfficial = true;
-    globalInviteRegistry[officialCode].serverType = 'community';
+    if (!globalInviteRegistry[officialCode].serverName) globalInviteRegistry[officialCode].serverName = 'ziorse.com';
     if (!globalInviteRegistry[officialCode].serverId) globalInviteRegistry[officialCode].serverId = officialId;
+    
+    // Eski 4 kanallı yapı varsa tek 'chat' kanalına güncelle
+    const cats = globalInviteRegistry[officialCode].categories;
+    if (Array.isArray(cats) && cats.length > 0) {
+      const allChs = cats.flatMap(c => c.channels || []);
+      const hasOldDefaults = allChs.some(c => c.id === 'ch-ziorse-duyurular' || c.id === 'ch-ziorse-yardim' || c.id === 'ch-ziorse-ses');
+      if (hasOldDefaults) {
+        globalInviteRegistry[officialCode].categories = [
+          {
+            id: 'cat-ziorse-genel',
+            name: 'METİN KANALLARI',
+            collapsed: false,
+            channels: [
+              { id: 'chat', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
+            ]
+          }
+        ];
+      }
+    } else {
+      globalInviteRegistry[officialCode].categories = [
+        {
+          id: 'cat-ziorse-genel',
+          name: 'METİN KANALLARI',
+          collapsed: false,
+          channels: [
+            { id: 'chat', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
+          ]
+        }
+      ];
+    }
   }
 
   if (!globalServerMembers[officialCode]) globalServerMembers[officialCode] = [];
