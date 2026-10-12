@@ -304,6 +304,7 @@ class DataStore {
     const saved = ziorseGetStorage(this.storageKeyUser);
     if (saved) {
       try {
+        const u = typeof saved === 'string' ? JSON.parse(saved) : saved;
         if (u && u.loggedIn === true && u.handle) {
           if (u.avatar && (u.avatar.startsWith('/uploads/') || u.avatar.startsWith('http://localhost:3000/uploads/'))) {
             u.avatar = formatMediaUrl(u.avatar);
