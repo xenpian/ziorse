@@ -139,7 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setMediaAvatar(parent, imgEl, initialsEl, url, initials) {
     if (!parent) return;
-    if (url && url.startsWith('/uploads/')) url = 'http://localhost:3000' + url;
+    if (url && (url.startsWith('/uploads/') || url.startsWith('http://localhost:3000/uploads/'))) {
+      url = window.formatMediaUrl ? window.formatMediaUrl(url) : url;
+    }
     let vid = parent.querySelector('video.dynamic-media-avatar');
     if (url && isVideoUrl(url)) {
       if (imgEl) imgEl.style.display = 'none';
@@ -177,7 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setMediaBanner(bannerEl, url, placeholderEl) {
     if (!bannerEl) return;
-    if (url && url.startsWith('/uploads/')) url = 'http://localhost:3000' + url;
+    if (url && (url.startsWith('/uploads/') || url.startsWith('http://localhost:3000/uploads/'))) {
+      url = window.formatMediaUrl ? window.formatMediaUrl(url) : url;
+    }
     let vid = bannerEl.querySelector('video.dynamic-media-banner');
     if (url && isVideoUrl(url)) {
       bannerEl.style.backgroundImage = 'none';
