@@ -1925,6 +1925,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.switchNavHubTo = switchNavHubTo;
 
   async function fetchLivePublicServers() {
+    try {
       const srvUrl = (window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? '' : 'http://localhost:3001'));
       const res = await fetch((srvUrl ? srvUrl : '') + '/api/public-servers');
       if (res.ok) {
