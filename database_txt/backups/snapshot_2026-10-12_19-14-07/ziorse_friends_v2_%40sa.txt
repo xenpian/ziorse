@@ -1,0 +1,12 @@
+[
+  {
+    "handle": "@fas",
+    "name": "fas",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+  },
+  {
+    "handle": "@fafafa",
+    "name": "fafafa",
+    "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "handle": "@fas",
+    "name": "fas",
+    "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
+  }
+]
