@@ -234,7 +234,9 @@ class DataStore {
     }
 
     // Kullaniciya ozel key'ler
-    const h = (this.currentUser && this.currentUser.handle) ? this.currentUser.handle : 'guest';
+    const h = (this.currentUser && this.currentUser.handle)
+      ? (this.currentUser.handle.startsWith('@') ? this.currentUser.handle : '@' + this.currentUser.handle).toLowerCase()
+      : 'guest';
     this.storageKeyServers = 'ziorse_real_servers_v14_' + h;
     this.storageKeyFriends = 'ziorse_friends_v2_' + h;
     this.storageKeyFriendRequests = 'ziorse_friend_requests_v2_' + h;
