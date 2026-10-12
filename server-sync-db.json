@@ -1707,43 +1707,26 @@
       "serverBanner": "/uploads/srv_banner_1791843284248_6kbj4.png",
       "memberCount": 13,
       "serverId": "srv-ziorse-official",
-      "ownerHandle": "@ziorse",
-      "ownerName": "Ziorse Official",
+      "ownerHandle": "@sa",
+      "ownerName": "sa",
       "ownerAvatar": "logo.png",
       "categories": [
         {
           "id": "cat-ziorse-genel",
-          "name": "BİLGİLENDİRME & SOHBET",
+          "name": "METİN KANALLARI",
           "collapsed": false,
           "channels": [
             {
-              "id": "ch-ziorse-duyurular",
-              "name": "duyurular",
+              "id": "chat",
+              "name": "chat",
               "type": "text",
-              "topic": "Resmi duyurular ve güncellemeler"
-            },
-            {
-              "id": "genel",
-              "name": "genel-sohbet",
-              "type": "text",
-              "topic": "Tüm Ziorse kullanıcıları için genel sohbet"
-            },
-            {
-              "id": "ch-ziorse-yardim",
-              "name": "yardim-destek",
-              "type": "text",
-              "topic": "Soru, öneri ve destek kanalı"
-            },
-            {
-              "id": "ch-ziorse-ses",
-              "name": "Genel Ses Odası",
-              "type": "voice"
+              "topic": "Ziorse Sohbet Kanalı"
             }
           ]
         }
       ],
       "isPublic": true,
-      "description": "Welcome to Ziorse.",
+      "description": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
       "roles": [],
       "memberRoles": {},
       "isOfficial": true,
