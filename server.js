@@ -758,10 +758,30 @@ app.post('/api/store/set', (req, res) => {
     } else if (key === 'ziorse_user_directory' && typeof val === 'object') {
       globalUserDirectory = Object.assign(globalUserDirectory, val);
       io.emit('user-directory-updated', globalUserDirectory);
+    } else if (key === 'ziorse_accounts' && Array.isArray(val)) {
+      globalAccounts = val;
     } else if (key.startsWith('ziorse_srv_members_') && Array.isArray(val)) {
       const code = key.replace('ziorse_srv_members_', '');
       globalServerMembers[code] = val;
       io.emit('server-members-updated', globalServerMembers);
+    } else if (key.startsWith('ziorse_real_servers_v14_') && Array.isArray(val)) {
+      val.forEach(s => {
+        if (s && s.inviteCode && !globalInviteRegistry[s.inviteCode]) {
+          globalInviteRegistry[s.inviteCode] = {
+            serverName: s.name,
+            serverIcon: s.icon,
+            serverBanner: s.banner || '',
+            memberCount: s.memberCount || 1,
+            serverId: s.id,
+            ownerHandle: s.ownerHandle || '',
+            ownerName: s.ownerName || '',
+            ownerAvatar: s.ownerAvatar || '',
+            categories: s.categories || [],
+            roles: s.roles || [],
+            memberRoles: s.memberRoles || {}
+          };
+        }
+      });
     }
 
     io.emit('store-synced', { key, val });
