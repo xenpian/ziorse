@@ -829,6 +829,62 @@ app.delete('/api/store/:key', (req, res) => {
   }
 });
 
+// ── ADVANCED DATABASE ENGINE HEALTH & RECONCILIATION API ──
+app.get('/api/db/stats', (req, res) => {
+  ensureDbTxtDirs();
+  const sysFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.endsWith('.txt'));
+  const postFiles = fs.readdirSync(POSTS_TXT_DIR).filter(f => f.endsWith('.txt'));
+  const dmFiles = fs.readdirSync(DMS_TXT_DIR).filter(f => f.endsWith('.txt'));
+
+  res.json({
+    status: 'healthy',
+    engine: '1000-message chunked TXT + RAM parity v14',
+    collections: {
+      accounts: globalAccounts ? globalAccounts.length : 0,
+      servers: globalInviteRegistry ? Object.keys(globalInviteRegistry).length : 0,
+      serverMemberTables: Object.keys(globalServerMembers).length,
+      userProfiles: Object.keys(globalUserDirectory).length,
+      systemTables: sysFiles.length,
+      postChunks: postFiles.length,
+      dmChunks: dmFiles.length
+    },
+    totalPosts: serverPosts ? serverPosts.length : 0
+  });
+});
+
+app.post('/api/db/reconcile', (req, res) => {
+  try {
+    ensureDbTxtDirs();
+    let restoredCount = 0;
+    Object.keys(globalInviteRegistry).forEach(code => {
+      const info = globalInviteRegistry[code];
+      if (!globalServerMembers[code]) globalServerMembers[code] = [];
+      if (info.ownerHandle) {
+        const oHandle = info.ownerHandle.startsWith('@') ? info.ownerHandle : '@' + info.ownerHandle;
+        const cleanH = oHandle.toLowerCase();
+        if (!globalServerMembers[code].some(m => m.handle && m.handle.toLowerCase() === cleanH)) {
+          globalServerMembers[code].unshift({
+            handle: oHandle,
+            name: info.ownerName || oHandle.replace('@', ''),
+            avatar: info.ownerAvatar || ''
+          });
+          restoredCount++;
+        }
+      }
+      const memFilePath = path.join(SYSTEM_TXT_DIR, `ziorse_srv_members_${encodeURIComponent(code)}.txt`);
+      fs.writeFileSync(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8');
+    });
+
+    fs.writeFileSync(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8');
+
+    io.emit('server-members-updated', globalServerMembers);
+    io.emit('invite-registry-updated', globalInviteRegistry);
+    res.json({ success: true, reconciledMembers: restoredCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── FILE UPLOAD ENDPOINT ──────────────────────────────────────
 app.post('/api/upload', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Dosya yüklenemedi.' });
