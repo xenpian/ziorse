@@ -4638,14 +4638,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!onlineMembersContainer) return;
     const dir = window.dataStore._loadGlobalDirectory();
     const cu = window.dataStore.currentUser || { handle: '@kullanici', name: 'Kullanıcı', avatar: window.DEFAULT_AVATAR };
-    const myStatus = window.dataStore.userStatus || { type: 'online', text: '' };
-    const isMeOnline = myStatus.type !== 'invisible';
-    const onlineHandles = (window.__globalOnlineHandles || []).map(h => h.toLowerCase());
+    const myStatus = getUserEffectiveStatus(cu.handle);
+    const isMeOnline = isUserHandleOnline(cu.handle);
 
     const allUsersMap = new Map();
     // Kendimizi ekle
     const cuProf = window.dataStore.getUserProfile(cu.handle) || {};
-    allUsersMap.set(cu.handle.toLowerCase(), {
+    allUsersMap.set(cu.handle.toLowerCase().replace('@', ''), {
       handle: cu.handle,
       name: cu.name,
       avatar: cu.avatar || window.DEFAULT_AVATAR,
@@ -4659,17 +4658,16 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.keys(dir).forEach(k => {
       const u = dir[k];
       if (u && u.handle) {
-        const cleanH = u.handle.toLowerCase();
-        if (cleanH === cu.handle.toLowerCase()) return;
-        const uStatus = u.status || { type: 'offline', text: '' };
+        const cleanH = u.handle.toLowerCase().replace('@', '');
+        if (cleanH === cu.handle.toLowerCase().replace('@', '')) return;
         const uProf = window.dataStore.getUserProfile(u.handle) || u;
-        const isOnline = onlineHandles.includes(cleanH) && uStatus.type !== 'invisible';
-        const stType = isOnline ? ((uStatus.type && uStatus.type !== 'offline' && uStatus.type !== 'invisible') ? uStatus.type : 'online') : 'offline';
+        const isOnline = isUserHandleOnline(u.handle);
+        const effStatus = getUserEffectiveStatus(u.handle);
         allUsersMap.set(cleanH, {
           handle: u.handle,
-          name: u.name || u.handle.replace('@', ''),
+          name: u.name || cleanH,
           avatar: u.avatar || window.DEFAULT_AVATAR,
-          status: { ...uStatus, type: stType },
+          status: effStatus,
           memberTheme: uProf.memberTheme || u.memberTheme || '',
           isOnline: isOnline,
           isSelf: false
