@@ -141,6 +141,16 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   flex-shrink: 0;
 }
 
+.srv-badges-wrap2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
 .srv-badge {
   display: inline-flex;
   align-items: center;
