@@ -4574,6 +4574,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const parentFolderOfDragged = document.querySelector(`.server-icon[data-id="${draggedServerId}"]`)?.dataset.parentFolder;
 
         if (isCenter) {
+          // ziorse.com hiçbir zaman bir klasöre dahil edilemez
+          if (targetId === 'srv-ziorse-official' || draggedServerId === 'srv-ziorse-official') {
+            return;
+          }
           // ÜST ÜSTE BİNDİRİNCE 4'LÜ KUTU / KLASÖR HALİNE GETİR
           if (parentFolderOfTarget) {
             window.dataStore.addServerToFolder(parentFolderOfTarget, draggedServerId);
