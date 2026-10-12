@@ -983,14 +983,14 @@ class DataStore {
     if (!res.avatar || res.avatar.includes('photo-1535713875002-d1d0cf377fde') || res.avatar.length < 10) {
       res.avatar = DEFAULT_AVATAR;
     }
-    if (res.avatar && res.avatar.startsWith('/uploads/')) {
-      res.avatar = 'http://localhost:3000' + res.avatar;
+    if (res.avatar && (res.avatar.startsWith('/uploads/') || res.avatar.startsWith('http://localhost:3000/uploads/'))) {
+      res.avatar = formatMediaUrl(res.avatar);
     }
     if (!res.banner || res.banner.includes('photo-1618005182384-a83a8bd57fbe') || res.banner === 'none' || res.banner === '') {
       res.banner = '#999999';
     }
-    if (res.banner && res.banner.startsWith('/uploads/')) {
-      res.banner = 'http://localhost:3000' + res.banner;
+    if (res.banner && (res.banner.startsWith('/uploads/') || res.banner.startsWith('http://localhost:3000/uploads/'))) {
+      res.banner = formatMediaUrl(res.banner);
     }
     return res;
   }
@@ -1010,16 +1010,16 @@ class DataStore {
           modified = true;
         }
         if (p.avatar && typeof p.avatar === 'string') {
-          if (p.avatar.startsWith('/uploads/')) {
-            p.avatar = 'http://localhost:3000' + p.avatar;
+          if (p.avatar.startsWith('/uploads/') || p.avatar.startsWith('http://localhost:3000/uploads/')) {
+            p.avatar = formatMediaUrl(p.avatar);
             modified = true;
           } else if (p.avatar === 'https://i.imgur.com/w3OhOmW.jpeg' || (p.avatar.startsWith('data:image/') && p.avatar.length > 20000)) {
             p.avatar = DEFAULT_AVATAR;
             modified = true;
           }
         }
-        if (p.image && typeof p.image === 'string' && p.image.startsWith('/uploads/')) {
-          p.image = 'http://localhost:3000' + p.image;
+        if (p.image && typeof p.image === 'string' && (p.image.startsWith('/uploads/') || p.image.startsWith('http://localhost:3000/uploads/'))) {
+          p.image = formatMediaUrl(p.image);
           modified = true;
         }
         if (p.comments && Array.isArray(p.comments)) {
@@ -1029,8 +1029,8 @@ class DataStore {
               modified = true;
             }
             if (c.avatar && typeof c.avatar === 'string') {
-              if (c.avatar.startsWith('/uploads/')) {
-                c.avatar = 'http://localhost:3000' + c.avatar;
+              if (c.avatar.startsWith('/uploads/') || c.avatar.startsWith('http://localhost:3000/uploads/')) {
+                c.avatar = formatMediaUrl(c.avatar);
                 modified = true;
               } else if (c.avatar === 'https://i.imgur.com/w3OhOmW.jpeg' || (c.avatar.startsWith('data:image/') && c.avatar.length > 20000)) {
                 c.avatar = DEFAULT_AVATAR;
