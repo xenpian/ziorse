@@ -27,8 +27,8 @@
     "avatarFrame": "none",
     "memberTheme": "none",
     "status": {
-      "type": "idle",
-      "text": "porno"
+      "type": "online",
+      "text": ""
     }
   },
   "@saf": {

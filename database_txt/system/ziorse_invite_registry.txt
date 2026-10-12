@@ -1388,7 +1388,7 @@
     "serverDescription": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
     "serverIcon": "/uploads/srv_icon_1791843284247_wagh8.png",
     "serverBanner": "/uploads/srv_banner_1791843284248_6kbj4.png",
-    "memberCount": 13,
+    "memberCount": 14,
     "serverId": "srv-ziorse-official",
     "ownerHandle": "@sa",
     "ownerName": "sa",
