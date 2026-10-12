@@ -1299,6 +1299,11 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedRoleId = null;
       renderRoles();
       renderMembers();
+      const pWinDel = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
+      if (pWinDel) {
+        if (typeof pWinDel.updateRightSidebar === 'function') pWinDel.updateRightSidebar();
+        if (typeof pWinDel.renderFeed === 'function') pWinDel.renderFeed();
+      }
       showToast('Rol silindi');
     });
   }
