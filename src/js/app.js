@@ -1993,7 +1993,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     grid.innerHTML = filtered.map(srv => {
-      const isMember = myServers.some(ms => ms.inviteCode === srv.inviteCode || ms.id === srv.inviteCode || ms.id === srv.serverId);
+      const isMember = myServers.some(ms => ms.inviteCode === srv.inviteCode || ms.id === srv.inviteCode || ms.id === srv.serverId) ||
+        (typeof window.dataStore?.isServerMember === 'function' && window.dataStore.isServerMember(srv.inviteCode));
       const members = window.dataStore?.getServerMembers(srv.inviteCode) || [];
       const totalMembers = Math.max(members.length, srv.memberCount || 1);
 
