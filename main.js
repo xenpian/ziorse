@@ -307,8 +307,35 @@ function schedulePersistentStoreSave(key) {
   }, 400);
 }
 
+// Electron-Private User Session File (Isolated from browser ports and shared db_txt)
+const ELECTRON_USER_SESSION_FILE = path.join(app.getPath('userData'), 'electron_user_session.json');
+
+function getElectronUserSession() {
+  try {
+    if (fs.existsSync(ELECTRON_USER_SESSION_FILE)) {
+      const raw = fs.readFileSync(ELECTRON_USER_SESSION_FILE, 'utf8');
+      return JSON.parse(raw);
+    }
+  } catch { }
+  return null;
+}
+
+function setElectronUserSession(val) {
+  try {
+    if (val === null || val === undefined) {
+      if (fs.existsSync(ELECTRON_USER_SESSION_FILE)) fs.unlinkSync(ELECTRON_USER_SESSION_FILE);
+    } else {
+      fs.writeFileSync(ELECTRON_USER_SESSION_FILE, JSON.stringify(val, null, 2), 'utf8');
+    }
+  } catch { }
+}
+
 // Synchronous Store Bridge (0ms Instant RAM IPC with live disk parity)
 ipcMain.on('store-get-sync', (event, key) => {
+  if (key === 'ziorse_real_user_v14') {
+    event.returnValue = getElectronUserSession();
+    return;
+  }
   const store = readPersistentStore();
   if (key) {
     const safeKey = encodeURIComponent(key);
@@ -329,6 +356,11 @@ ipcMain.on('store-get-sync', (event, key) => {
 });
 
 ipcMain.on('store-set-sync', (event, key, val) => {
+  if (key === 'ziorse_real_user_v14') {
+    setElectronUserSession(val);
+    event.returnValue = true;
+    return;
+  }
   const store = readPersistentStore();
   if (val === null || val === undefined) {
     delete store[key];
@@ -345,7 +377,14 @@ ipcMain.on('store-set-sync', (event, key, val) => {
 });
 
 ipcMain.on('store-get-all-sync', (event) => {
-  event.returnValue = readPersistentStore(true);
+  const store = { ...readPersistentStore(true) };
+  const u = getElectronUserSession();
+  if (u) {
+    store['ziorse_real_user_v14'] = u;
+  } else {
+    delete store['ziorse_real_user_v14'];
+  }
+  event.returnValue = store;
 });
 
 ipcMain.on('store-reload-sync', (event) => {
@@ -355,11 +394,18 @@ ipcMain.on('store-reload-sync', (event) => {
 
 // Async Store Bridge
 ipcMain.handle('store-get', (event, key) => {
+  if (key === 'ziorse_real_user_v14') {
+    return getElectronUserSession();
+  }
   const store = readPersistentStore();
   return store[key] !== undefined ? store[key] : null;
 });
 
 ipcMain.handle('store-set', (event, key, val) => {
+  if (key === 'ziorse_real_user_v14') {
+    setElectronUserSession(val);
+    return true;
+  }
   const store = readPersistentStore();
   if (val === null || val === undefined) {
     delete store[key];
@@ -376,7 +422,14 @@ ipcMain.handle('store-set', (event, key, val) => {
 });
 
 ipcMain.handle('store-get-all', () => {
-  return readPersistentStore();
+  const store = { ...readPersistentStore() };
+  const u = getElectronUserSession();
+  if (u) {
+    store['ziorse_real_user_v14'] = u;
+  } else {
+    delete store['ziorse_real_user_v14'];
+  }
+  return store;
 });
 
 // Avatar Frames Discovery & Management
