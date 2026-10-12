@@ -1954,136 +1954,140 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('public-servers-grid');
     if (!grid) return;
 
-    let allPublic = (window.dataStore?.getPublicServers() || []);
-    if (Array.isArray(window.__livePublicServers) && window.__livePublicServers.length > 0) {
-      const map = new Map();
-      allPublic.forEach(s => map.set(s.inviteCode, s));
-      window.__livePublicServers.forEach(s => {
-        const existing = map.get(s.inviteCode) || {};
-        map.set(s.inviteCode, { ...existing, ...s });
-      });
-      allPublic = Array.from(map.values());
-    }
-
-    const myServers = window.dataStore?.servers || [];
-    const onlineHandles = window.__activeOnlineHandles || new Set();
-
-    const q = (filterQuery || '').toLowerCase().trim();
-    const filtered = allPublic.filter(s => {
-      if (!q) return true;
-      return (s.name || '').toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q);
-    });
-
-    if (filtered.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--text-muted);">
-          <div style="width:64px; height:64px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; ">
-            <i data-lucide="compass" style="width:32px; height:32px;"></i>
-          </div>
-          <h3 style="font-size:1.15rem; font-weight:700; color:var(--text-main); margin-bottom:6px;">${q ? 'Eşleşen sunucu bulunamadı' : 'Henüz herkese açık sunucu yok'}</h3>
-          <p style="font-size:0.86rem; max-width:360px; line-height:1.45; margin-bottom:18px;">${q ? 'Farklı bir arama terimi deneyin.' : 'İlk herkese açık sunucuyu sen oluştur ve topluluğunu kur!'}</p>
-          <button id="btn-empty-create-server" class="btn-ps-create-trigger">
-            <i data-lucide="plus" style="width:16px; height:16px;"></i> Sunucu Oluştur
-          </button>
-        </div>
-      `;
-      refreshIcons(grid);
-      const emptyBtn = document.getElementById('btn-empty-create-server');
-      if (emptyBtn && typeof openCreateServerModal === 'function') {
-        emptyBtn.addEventListener('click', openCreateServerModal);
-      }
-      return;
-    }
-
-    grid.innerHTML = filtered.map(srv => {
-      const isMember = myServers.some(ms => ms.inviteCode === srv.inviteCode || ms.id === srv.inviteCode || ms.id === srv.serverId) ||
-        (typeof window.dataStore?.isServerMember === 'function' && window.dataStore.isServerMember(srv.inviteCode));
-      const members = window.dataStore?.getServerMembers(srv.inviteCode) || [];
-      const totalMembers = Math.max(members.length, srv.memberCount || 1);
-
-      // Canlı çevrim içi / çevrim dışı üye hesaplama
-      let onlineCount = 0;
-      members.forEach(m => {
-        if (!m || !m.handle) return;
-        const cleanH = m.handle.toLowerCase().replace('@', '');
-        const fullH = '@' + cleanH;
-        const dirUser = window.__globalUserDirectory && (window.__globalUserDirectory[fullH] || window.__globalUserDirectory[cleanH]);
-        const isOnline = onlineHandles.has(cleanH) || onlineHandles.has(fullH) || (dirUser && dirUser.status && dirUser.status.type !== 'offline');
-        if (isOnline) onlineCount++;
-      });
-      if (onlineCount === 0 && totalMembers > 0) onlineCount = 1;
-      const offlineCount = Math.max(0, totalMembers - onlineCount);
-
-      // Sunucu ikonu
-      let avatarHtml = '';
-      if (srv.icon && (srv.icon.startsWith('http') || srv.icon.startsWith('/uploads') || srv.icon.startsWith('data:image/'))) {
-        avatarHtml = `<img src="${escapeHtml(normalizeMediaUrl(srv.icon))}" class="ps-card-avatar-img" alt="${escapeHtml(srv.name)}">`;
-      } else {
-        const initials = (srv.icon || srv.name.substring(0, 2)).toUpperCase();
-        avatarHtml = `<div class="ps-card-avatar-text">${escapeHtml(initials)}</div>`;
+    try {
+      let allPublic = (window.dataStore?.getPublicServers() || []);
+      if (Array.isArray(window.__livePublicServers) && window.__livePublicServers.length > 0) {
+        const map = new Map();
+        allPublic.forEach(s => map.set(s.inviteCode, s));
+        window.__livePublicServers.forEach(s => {
+          const existing = map.get(s.inviteCode) || {};
+          map.set(s.inviteCode, { ...existing, ...s });
+        });
+        allPublic = Array.from(map.values());
       }
 
-      // Banner
-      const bannerStyle = srv.banner && (srv.banner.startsWith('http') || srv.banner.startsWith('/uploads') || srv.banner.startsWith('data:image/'))
-        ? `background-image: url('${escapeHtml(normalizeMediaUrl(srv.banner))}');`
-        : '';
+      const myServers = window.dataStore?.servers || [];
+      const onlineHandles = window.__activeOnlineHandles || new Set();
 
-      const actionBtnHtml = isMember
-        ? `<button class="btn-ps-joined" disabled title="Bu sunucunun zaten üyesisiniz"><i data-lucide="check" style="width:15px; height:15px;"></i> Katıldın.</button>`
-        : `<button class="btn-ps-join" data-invite="${escapeHtml(srv.inviteCode)}" data-name="${escapeHtml(srv.name)}"><i data-lucide="user-plus" style="width:15px; height:15px;"></i> Katıl</button>`;
+      const q = (filterQuery || '').toLowerCase().trim();
+      const filtered = allPublic.filter(s => {
+        if (!q) return true;
+        return (s.name || '').toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q);
+      });
 
-      return `
-        <div class="ps-server-card" data-invite="${escapeHtml(srv.inviteCode)}">
-          <div class="ps-card-banner" style="${bannerStyle}">
-            <div class="ps-card-banner-overlay"></div>
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center; color:var(--text-muted);">
+            <div style="width:64px; height:64px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; ">
+              <i data-lucide="compass" style="width:32px; height:32px;"></i>
+            </div>
+            <h3 style="font-size:1.15rem; font-weight:700; color:var(--text-main); margin-bottom:6px;">${q ? 'Eşleşen sunucu bulunamadı' : 'Henüz herkese açık sunucu yok'}</h3>
+            <p style="font-size:0.86rem; max-width:360px; line-height:1.45; margin-bottom:18px;">${q ? 'Farklı bir arama terimi deneyin.' : 'İlk herkese açık sunucuyu sen oluştur ve topluluğunu kur!'}</p>
+            <button id="btn-empty-create-server" class="btn-ps-create-trigger">
+              <i data-lucide="plus" style="width:16px; height:16px;"></i> Sunucu Oluştur
+            </button>
           </div>
-          <div class="ps-card-body">
-            <div class="ps-card-avatar-wrap">
-              ${avatarHtml}
-            </div>
-            <h3 class="ps-card-name" title="${escapeHtml(srv.name)}">${escapeHtml(srv.name)}</h3>
-            <p class="ps-card-desc" title="${escapeHtml(srv.description)}">${escapeHtml(srv.description || 'Topluluk ve sohbet sunucusu.')}</p>
-            <div class="ps-card-stats">
-              <span class="ps-stat-pill"><i data-lucide="users" style="width:13px; height:13px;"></i> ${totalMembers} üye</span>
-              <span class="ps-stat-pill"><span class="ps-dot ps-dot-online"></span> ${onlineCount} Çevrim İçi</span>
-              <span class="ps-stat-pill"><span class="ps-dot ps-dot-offline"></span> ${offlineCount} Çevrim Dışı</span>
-            </div>
-            <div class="ps-card-footer">
-              ${actionBtnHtml}
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    refreshIcons(grid);
-
-    // Join button listeners
-    grid.querySelectorAll('.btn-ps-join').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const inviteCode = btn.dataset.invite;
-        const serverName = btn.dataset.name;
-        if (!inviteCode) return;
-
-        btn.disabled = true;
-        btn.innerHTML = 'Katılınıyor...';
-
-        const res = window.dataStore.joinByInviteCode(inviteCode);
-        if (res && res.success) {
-          showToast(`🎉 ${serverName || 'Sunucu'} sunucusuna başarıyla katıldın!`);
-          btn.className = 'btn-ps-joined';
-          btn.innerHTML = '<i data-lucide="check" style="width:15px; height:15px;"></i> Katıldın.';
-          refreshIcons(btn);
-          renderServers();
-        } else if (res && res.error) {
-          showToast(res.error);
-          btn.disabled = false;
-          btn.innerHTML = '<i data-lucide="user-plus" style="width:15px; height:15px;"></i> Katıl';
-          refreshIcons(btn);
+        `;
+        refreshIcons(grid);
+        const emptyBtn = document.getElementById('btn-empty-create-server');
+        if (emptyBtn && typeof openCreateServerModal === 'function') {
+          emptyBtn.addEventListener('click', openCreateServerModal);
         }
+        return;
+      }
+
+      grid.innerHTML = filtered.map(srv => {
+        const isMember = myServers.some(ms => ms.inviteCode === srv.inviteCode || ms.id === srv.inviteCode || ms.id === srv.serverId) ||
+          (typeof window.dataStore?.isServerMember === 'function' && window.dataStore.isServerMember(srv.inviteCode));
+        const members = window.dataStore?.getServerMembers(srv.inviteCode) || [];
+        const totalMembers = Math.max(members.length, srv.memberCount || 1);
+
+        // Canlı çevrim içi / çevrim dışı üye hesaplama
+        let onlineCount = 0;
+        members.forEach(m => {
+          if (!m || !m.handle) return;
+          const cleanH = m.handle.toLowerCase().replace('@', '');
+          const fullH = '@' + cleanH;
+          const dirUser = window.__globalUserDirectory && (window.__globalUserDirectory[fullH] || window.__globalUserDirectory[cleanH]);
+          const isOnline = onlineHandles.has(cleanH) || onlineHandles.has(fullH) || (dirUser && dirUser.status && dirUser.status.type !== 'offline');
+          if (isOnline) onlineCount++;
+        });
+        if (onlineCount === 0 && totalMembers > 0) onlineCount = 1;
+        const offlineCount = Math.max(0, totalMembers - onlineCount);
+
+        // Sunucu ikonu
+        let avatarHtml = '';
+        if (srv.icon && (srv.icon.startsWith('http') || srv.icon.startsWith('/uploads') || srv.icon.startsWith('data:image/'))) {
+          avatarHtml = `<img src="${escapeHtml(normalizeMediaUrl(srv.icon))}" class="ps-card-avatar-img" alt="${escapeHtml(srv.name)}">`;
+        } else {
+          const initials = (srv.icon || srv.name.substring(0, 2)).toUpperCase();
+          avatarHtml = `<div class="ps-card-avatar-text">${escapeHtml(initials)}</div>`;
+        }
+
+        // Banner
+        const bannerStyle = srv.banner && (srv.banner.startsWith('http') || srv.banner.startsWith('/uploads') || srv.banner.startsWith('data:image/'))
+          ? `background-image: url('${escapeHtml(normalizeMediaUrl(srv.banner))}');`
+          : '';
+
+        const actionBtnHtml = isMember
+          ? `<button class="btn-ps-joined" disabled title="Bu sunucunun zaten üyesisiniz"><i data-lucide="check" style="width:15px; height:15px;"></i> Katıldın.</button>`
+          : `<button class="btn-ps-join" data-invite="${escapeHtml(srv.inviteCode)}" data-name="${escapeHtml(srv.name)}"><i data-lucide="user-plus" style="width:15px; height:15px;"></i> Katıl</button>`;
+
+        return `
+          <div class="ps-server-card" data-invite="${escapeHtml(srv.inviteCode)}">
+            <div class="ps-card-banner" style="${bannerStyle}">
+              <div class="ps-card-banner-overlay"></div>
+            </div>
+            <div class="ps-card-body">
+              <div class="ps-card-avatar-wrap">
+                ${avatarHtml}
+              </div>
+              <h3 class="ps-card-name" title="${escapeHtml(srv.name)}">${escapeHtml(srv.name)}</h3>
+              <p class="ps-card-desc" title="${escapeHtml(srv.description)}">${escapeHtml(srv.description || 'Topluluk ve sohbet sunucusu.')}</p>
+              <div class="ps-card-stats">
+                <span class="ps-stat-pill"><i data-lucide="users" style="width:13px; height:13px;"></i> ${totalMembers} üye</span>
+                <span class="ps-stat-pill"><span class="ps-dot ps-dot-online"></span> ${onlineCount} Çevrim İçi</span>
+                <span class="ps-stat-pill"><span class="ps-dot ps-dot-offline"></span> ${offlineCount} Çevrim Dışı</span>
+              </div>
+              <div class="ps-card-footer">
+                ${actionBtnHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      refreshIcons(grid);
+
+      // Join button listeners
+      grid.querySelectorAll('.btn-ps-join').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const inviteCode = btn.dataset.invite;
+          const serverName = btn.dataset.name;
+          if (!inviteCode) return;
+
+          btn.disabled = true;
+          btn.innerHTML = 'Katılınıyor...';
+
+          const res = window.dataStore.joinByInviteCode(inviteCode);
+          if (res && res.success) {
+            showToast(`🎉 ${serverName || 'Sunucu'} sunucusuna başarıyla katıldın!`);
+            btn.className = 'btn-ps-joined';
+            btn.innerHTML = '<i data-lucide="check" style="width:15px; height:15px;"></i> Katıldın.';
+            refreshIcons(btn);
+            renderServers();
+          } else if (res && res.error) {
+            showToast(res.error);
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="user-plus" style="width:15px; height:15px;"></i> Katıl';
+            refreshIcons(btn);
+          }
+        });
       });
-    });
+    } catch (err) {
+      console.error('[RenderPublicServers Error]:', err);
+    }
   }
   window.renderPublicServers = renderPublicServers;
 
