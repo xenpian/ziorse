@@ -233,6 +233,36 @@ app.use((err, req, res, next) => {
 
 // ── PERSISTENT GLOBAL SYNC STORES & DB ───────────────────────
 const dbFilePath = path.join(__dirname, 'server-sync-db.json');
+const DB_TXT_DIR = path.join(__dirname, 'database_txt');
+const SYSTEM_TXT_DIR = path.join(DB_TXT_DIR, 'system');
+const POSTS_TXT_DIR = path.join(DB_TXT_DIR, 'posts');
+const DMS_TXT_DIR = path.join(DB_TXT_DIR, 'dms');
+
+function ensureDbTxtDirs() {
+  [DB_TXT_DIR, SYSTEM_TXT_DIR, POSTS_TXT_DIR, DMS_TXT_DIR].forEach(dir => {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  });
+}
+
+function saveServerMembersTxt(code) {
+  if (!code || !globalServerMembers[code]) return;
+  try {
+    ensureDbTxtDirs();
+    const memFilePath = path.join(SYSTEM_TXT_DIR, `ziorse_srv_members_${encodeURIComponent(code)}.txt`);
+    fs.writeFileSync(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8');
+  } catch (e) {
+    console.error('[Ziorse DB] Server members txt kaydetme hatasi:', e);
+  }
+}
+
+function saveInviteRegistryTxt() {
+  try {
+    ensureDbTxtDirs();
+    fs.writeFileSync(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[Ziorse DB] Invite registry txt kaydetme hatasi:', e);
+  }
+}
 
 let serverPosts = [];
 let globalInviteRegistry = {};
@@ -303,7 +333,7 @@ function loadSyncDb() {
       }
 
       // Merge invite registry from txt database
-      const txtInvitePath = path.join(__dirname, 'database_txt', 'system', 'ziorse_invite_registry.txt');
+      const txtInvitePath = path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt');
       if (fs.existsSync(txtInvitePath)) {
         try {
           const rawInvite = JSON.parse(fs.readFileSync(txtInvitePath, 'utf8'));
@@ -312,6 +342,32 @@ function loadSyncDb() {
           }
         } catch (e) { }
       }
+
+      // Merge all server members from database_txt/system/
+      try {
+        ensureDbTxtDirs();
+        const sysMemFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.startsWith('ziorse_srv_members_') && f.endsWith('.txt'));
+        sysMemFiles.forEach(f => {
+          const code = decodeURIComponent(f.replace('ziorse_srv_members_', '').replace(/\.txt$/, ''));
+          try {
+            const rawMembers = JSON.parse(fs.readFileSync(path.join(SYSTEM_TXT_DIR, f), 'utf8'));
+            if (Array.isArray(rawMembers)) {
+              if (!globalServerMembers[code]) globalServerMembers[code] = [];
+              rawMembers.forEach(rm => {
+                if (rm && rm.handle) {
+                  const cleanH = rm.handle.toLowerCase();
+                  const existingIdx = globalServerMembers[code].findIndex(m => m.handle.toLowerCase() === cleanH);
+                  if (existingIdx === -1) {
+                    globalServerMembers[code].push(rm);
+                  } else {
+                    globalServerMembers[code][existingIdx] = { ...globalServerMembers[code][existingIdx], ...rm };
+                  }
+                }
+              });
+            }
+          } catch (e) { }
+        });
+      } catch (e) { }
 
       // Reconcile and ensure all server members (owners, past posters, registry members) are preserved in globalServerMembers
       Object.keys(globalInviteRegistry).forEach(code => {
@@ -1183,6 +1239,8 @@ io.on('connection', (socket) => {
         globalInviteRegistry[data.inviteCode].memberCount = globalServerMembers[data.inviteCode].length;
       }
       saveSyncDb();
+      saveServerMembersTxt(data.inviteCode);
+      saveInviteRegistryTxt();
       io.emit('server-members-updated', globalServerMembers);
       io.emit('invite-registry-updated', globalInviteRegistry);
       io.emit('server-member-joined-event', {
@@ -1277,6 +1335,10 @@ io.on('connection', (socket) => {
       });
       if (changed) {
         saveSyncDb();
+        items.forEach(it => {
+          if (it && it.inviteCode) saveServerMembersTxt(it.inviteCode);
+        });
+        saveInviteRegistryTxt();
         io.emit('server-members-updated', globalServerMembers);
         io.emit('invite-registry-updated', globalInviteRegistry);
       }
@@ -1413,6 +1475,8 @@ io.on('connection', (socket) => {
         1
       );
       saveSyncDb();
+      saveInviteRegistryTxt();
+      if (data.code) saveServerMembersTxt(data.code);
       io.emit('invite-registry-updated', globalInviteRegistry);
       io.emit('public-servers-updated', globalInviteRegistry);
       io.emit('server-members-updated', globalServerMembers);
@@ -1544,6 +1608,7 @@ io.on('connection', (socket) => {
         globalInviteRegistry[data.inviteCode].serverDescription = data.description;
       }
       saveSyncDb();
+      saveInviteRegistryTxt();
       io.emit('server-structure-updated', data);
       io.emit('invite-registry-updated', globalInviteRegistry);
       io.emit('public-servers-updated', globalInviteRegistry);
@@ -1563,6 +1628,7 @@ io.on('connection', (socket) => {
         globalInviteRegistry[data.inviteCode].memberRoles = data.memberRoles;
       }
       saveSyncDb();
+      saveInviteRegistryTxt();
       io.emit('server-roles-updated', data);
       io.emit('invite-registry-updated', globalInviteRegistry);
     }
