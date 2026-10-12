@@ -466,7 +466,11 @@ document.addEventListener('DOMContentLoaded', () => {
       window.__globalServerMembers = membersMap || {};
       if (membersMap && typeof membersMap === 'object') {
         Object.keys(membersMap).forEach(code => {
-          ziorseSetStorage('ziorse_srv_members_' + code, membersMap[code]);
+          const key = 'ziorse_srv_members_' + code;
+          if (window._ziorseMemCache) window._ziorseMemCache.set(key, JSON.stringify(membersMap[code]));
+          if (window._ziorseParsedCache) window._ziorseParsedCache.set(key, membersMap[code]);
+          try { localStorage.setItem(key, JSON.stringify(membersMap[code])); } catch (e) { }
+
           const mems = membersMap[code];
           const mLen = Array.isArray(mems) ? mems.length : 0;
           if (mLen > 0) {
@@ -485,17 +489,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       updateRightSidebar();
+      renderOnlineMembers();
       renderFeed();
       renderDMs();
     });
 
     socket.on('server-member-joined-event', (data) => {
+      if (!data) return;
       if (!window.__globalServerMembers) window.__globalServerMembers = {};
-      window.__globalServerMembers[data.inviteCode] = data.members;
+      if (data.inviteCode) window.__globalServerMembers[data.inviteCode] = data.members;
+      if (data.serverId) window.__globalServerMembers[data.serverId] = data.members;
+
       if (data.inviteCode && data.members) {
-        ziorseSetStorage('ziorse_srv_members_' + data.inviteCode, data.members);
+        const key = 'ziorse_srv_members_' + data.inviteCode;
+        if (window._ziorseMemCache) window._ziorseMemCache.set(key, JSON.stringify(data.members));
+        if (window._ziorseParsedCache) window._ziorseParsedCache.set(key, data.members);
+        try { localStorage.setItem(key, JSON.stringify(data.members)); } catch (e) { }
+
+        if (data.serverId) {
+          const sKey = 'ziorse_srv_members_' + data.serverId;
+          if (window._ziorseMemCache) window._ziorseMemCache.set(sKey, JSON.stringify(data.members));
+          if (window._ziorseParsedCache) window._ziorseParsedCache.set(sKey, data.members);
+          try { localStorage.setItem(sKey, JSON.stringify(data.members)); } catch (e) { }
+        }
+
         const mLen = Array.isArray(data.members) ? data.members.length : 0;
-        const s = (window.dataStore?.servers || []).find(srv => srv.inviteCode === data.inviteCode || srv.id === data.inviteCode);
+        const s = (window.dataStore?.servers || []).find(srv => 
+          srv.inviteCode === data.inviteCode || 
+          srv.id === data.inviteCode || 
+          (data.serverId && srv.id === data.serverId)
+        );
         if (s) {
           s.members = data.members;
           s.memberCount = mLen;
@@ -505,10 +528,15 @@ document.addEventListener('DOMContentLoaded', () => {
           window.__globalInviteRegistry[data.inviteCode].memberCount = mLen;
         }
       }
+
+      // Üye listesini anında güncelle
       updateRightSidebar();
+      renderOnlineMembers();
       renderFeed();
       renderDMs();
-      showToast(`🎉 ${data.member.name} (${data.member.handle}) sunucuya katıldı!`);
+      if (data.member && data.member.name) {
+        showToast(`🎉 ${data.member.name} (${data.member.handle}) sunucuya katıldı!`);
+      }
     });
 
     socket.on('online-users-updated', (handles) => {
