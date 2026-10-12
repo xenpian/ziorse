@@ -20,15 +20,15 @@
     "bio": "fdffa",
     "followers": 0,
     "following": 0,
-    "fontStyle": "",
-    "fontWeight": "",
-    "nameColor": "",
-    "nameEffects": "",
-    "avatarFrame": "",
-    "memberTheme": "",
+    "fontStyle": "outfit",
+    "fontWeight": "700",
+    "nameColor": "#ffffff",
+    "nameEffects": [],
+    "avatarFrame": "none",
+    "memberTheme": "none",
     "status": {
-      "type": "online",
-      "text": ""
+      "type": "idle",
+      "text": "porno"
     }
   },
   "@saf": {

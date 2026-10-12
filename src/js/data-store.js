@@ -2548,13 +2548,23 @@ class DataStore {
       srv.memberRoles = {};
     }
 
-    const cleanH = handle.startsWith('@') ? handle.toLowerCase() : '@' + handle.toLowerCase();
-    if (!Array.isArray(srv.memberRoles[cleanH])) {
-      srv.memberRoles[cleanH] = [];
+    const withAt = handle.startsWith('@') ? handle.toLowerCase() : '@' + handle.toLowerCase();
+    const withoutAt = withAt.replace('@', '');
+
+    if (!Array.isArray(srv.memberRoles[withAt])) srv.memberRoles[withAt] = [];
+    if (!Array.isArray(srv.memberRoles[withoutAt])) srv.memberRoles[withoutAt] = [];
+
+    let changed = false;
+    if (!srv.memberRoles[withAt].includes(roleId)) {
+      srv.memberRoles[withAt].push(roleId);
+      changed = true;
+    }
+    if (!srv.memberRoles[withoutAt].includes(roleId)) {
+      srv.memberRoles[withoutAt].push(roleId);
+      changed = true;
     }
 
-    if (!srv.memberRoles[cleanH].includes(roleId)) {
-      srv.memberRoles[cleanH].push(roleId);
+    if (changed) {
       this.saveServers();
       this._syncServerRoles(srv);
       this.notify();
@@ -2566,12 +2576,22 @@ class DataStore {
     const srv = this.servers.find(s => s.id === serverId || s.inviteCode === serverId);
     if (!srv || !srv.memberRoles || !handle || !roleId) return false;
 
-    const cleanH = handle.startsWith('@') ? handle.toLowerCase() : '@' + handle.toLowerCase();
-    if (Array.isArray(srv.memberRoles[cleanH])) {
-      srv.memberRoles[cleanH] = srv.memberRoles[cleanH].filter(id => id !== roleId);
-      if (srv.memberRoles[cleanH].length === 0) {
-        delete srv.memberRoles[cleanH];
-      }
+    const withAt = handle.startsWith('@') ? handle.toLowerCase() : '@' + handle.toLowerCase();
+    const withoutAt = withAt.replace('@', '');
+
+    let changed = false;
+    if (Array.isArray(srv.memberRoles[withAt])) {
+      srv.memberRoles[withAt] = srv.memberRoles[withAt].filter(id => id !== roleId);
+      if (srv.memberRoles[withAt].length === 0) delete srv.memberRoles[withAt];
+      changed = true;
+    }
+    if (Array.isArray(srv.memberRoles[withoutAt])) {
+      srv.memberRoles[withoutAt] = srv.memberRoles[withoutAt].filter(id => id !== roleId);
+      if (srv.memberRoles[withoutAt].length === 0) delete srv.memberRoles[withoutAt];
+      changed = true;
+    }
+
+    if (changed) {
       this.saveServers();
       this._syncServerRoles(srv);
       this.notify();
@@ -2609,18 +2629,19 @@ class DataStore {
 
   _syncServerRoles(srv) {
     if (!srv) return;
-    if (srv.inviteCode) {
+    const code = srv.inviteCode || srv.id;
+    if (code) {
       const registry = this._loadInviteRegistry();
-      if (!registry[srv.inviteCode]) registry[srv.inviteCode] = {};
-      registry[srv.inviteCode].roles = JSON.parse(JSON.stringify(srv.roles || []));
-      registry[srv.inviteCode].memberRoles = JSON.parse(JSON.stringify(srv.memberRoles || {}));
+      if (!registry[code]) registry[code] = {};
+      registry[code].roles = JSON.parse(JSON.stringify(srv.roles || []));
+      registry[code].memberRoles = JSON.parse(JSON.stringify(srv.memberRoles || {}));
       ziorseSetStorage('ziorse_invite_registry', registry);
     }
     const sock = window.socket || (window.parent && window.parent.socket) || (window.top && window.top.socket);
     if (sock) {
       sock.emit('sync-server-roles', {
         serverId: srv.id,
-        inviteCode: srv.inviteCode,
+        inviteCode: srv.inviteCode || code,
         roles: srv.roles || [],
         memberRoles: srv.memberRoles || {}
       });
@@ -2637,15 +2658,27 @@ class DataStore {
 
     if (this.activeServerId !== 'home') {
       const srv = this.servers.find(s => s.id === this.activeServerId || s.inviteCode === this.activeServerId);
-      const serverScopeId = (srv && (srv.inviteCode || srv.id)) || this.activeServerId;
-      const targetScopeKey = serverScopeId + ':' + (this.activeChannelId || 'genel');
+      const possibleServerIds = new Set([
+        this.activeServerId,
+        srv ? srv.id : null,
+        srv ? srv.inviteCode : null
+      ].filter(Boolean));
+
+      // Registry fallback
+      const reg = this._loadInviteRegistry();
+      if (reg) {
+        if (srv && srv.inviteCode && reg[srv.inviteCode]?.serverId) possibleServerIds.add(reg[srv.inviteCode].serverId);
+        if (srv && srv.id && reg[srv.id]?.inviteCode) possibleServerIds.add(reg[srv.id].inviteCode);
+      }
+
+      const activeCh = this.activeChannelId || 'genel';
       return list.filter(p => {
         if (!p.serverChannelKey) return false;
-        if (p.serverChannelKey === targetScopeKey) return true;
-        // Geriye dönük uyumluluk: srv.id veya srv.inviteCode ile gönderilmiş olanlar
-        if (srv && p.serverChannelKey === (srv.id + ':' + (this.activeChannelId || 'genel'))) return true;
-        if (srv && srv.inviteCode && p.serverChannelKey === (srv.inviteCode + ':' + (this.activeChannelId || 'genel'))) return true;
-        return false;
+        const parts = p.serverChannelKey.split(':');
+        const pSrv = parts[0];
+        const pCh = parts[1] || 'genel';
+        if (pCh !== activeCh) return false;
+        return possibleServerIds.has(pSrv);
       });
     }
 
