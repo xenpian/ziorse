@@ -306,9 +306,24 @@ function schedulePersistentStoreSave(key) {
   }, 400);
 }
 
-// Synchronous Store Bridge (0ms Instant RAM IPC)
+// Synchronous Store Bridge (0ms Instant RAM IPC with live disk parity)
 ipcMain.on('store-get-sync', (event, key) => {
   const store = readPersistentStore();
+  if (key) {
+    const safeKey = encodeURIComponent(key);
+    const filePath = path.join(SYSTEM_DIR, `${safeKey}.txt`);
+    try {
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, 'utf8');
+        try {
+          const parsed = JSON.parse(content);
+          if (parsed !== null && parsed !== undefined) store[key] = parsed;
+        } catch {
+          if (content && content !== 'null') store[key] = content;
+        }
+      }
+    } catch (e) { }
+  }
   event.returnValue = store[key] !== undefined ? store[key] : null;
 });
 
@@ -329,7 +344,12 @@ ipcMain.on('store-set-sync', (event, key, val) => {
 });
 
 ipcMain.on('store-get-all-sync', (event) => {
-  event.returnValue = readPersistentStore();
+  event.returnValue = readPersistentStore(true);
+});
+
+ipcMain.on('store-reload-sync', (event) => {
+  readPersistentStore(true);
+  event.returnValue = true;
 });
 
 // Async Store Bridge
