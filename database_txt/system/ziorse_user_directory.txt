@@ -22,7 +22,7 @@
     "following": 0,
     "fontStyle": "outfit",
     "fontWeight": "700",
-    "nameColor": "#ffffff",
+    "nameColor": "#000000",
     "nameEffects": [],
     "avatarFrame": "none",
     "memberTheme": "none",
