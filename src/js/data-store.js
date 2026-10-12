@@ -788,6 +788,19 @@ class DataStore {
       }
     }
 
+    // Switch storage keys to guest FIRST so no accidental save overwrites real user's files!
+    this.storageKeyServers = 'ziorse_real_servers_v14_guest';
+    this.storageKeyFriends = 'ziorse_friends_v2_guest';
+    this.storageKeyFriendRequests = 'ziorse_friend_requests_v2_guest';
+    this.storageKeyBlocked = 'ziorse_blocked_v1_guest';
+    this.storageKeyNotifications = 'ziorse_notifications_v1_guest';
+    this.storageKeyStatus = 'ziorse_status_v1_guest';
+
+    // Clear in-memory caches so nothing leaks into next logged in user
+    _ziorseMemCache.clear();
+    _ziorseParsedCache.clear();
+    _memCacheLoaded = false;
+
     this.servers = [];
     this.friends = [];
     this.friendRequests = { incoming: [], outgoing: [] };
