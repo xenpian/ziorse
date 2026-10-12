@@ -200,8 +200,9 @@ function ziorseSetStorage(key, val) {
   }
 
   // Cross-environment server sync: keep Express server.js memory & disk in full parity
-  // DO NOT sync client-local user session to the global Express backend!
-  if (key !== 'ziorse_real_user_v14' && key !== 'ziorse_jwt_token' && key !== 'ziorse_user') {
+  // DO NOT sync client-local user session or full posts array via HTTP /api/store/set
+  // Posts are already broadcast instantly over socket (new-post-broadcast) and persisted by server!
+  if (key !== 'ziorse_real_user_v14' && key !== 'ziorse_jwt_token' && key !== 'ziorse_user' && key !== 'ziorse_real_posts_v14') {
     try {
       const srvUrl = getZiorseServerUrl();
       fetch(srvUrl + '/api/store/set', {
