@@ -4210,6 +4210,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const insertIdx = placeBefore ? targetIdx : targetIdx + 1;
       remaining.splice(insertIdx, 0, ...moving);
     }
+
+    // ziorse.com daima ilk başta sabit kalır!
+    const zIdx = remaining.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse');
+    if (zIdx > 0) {
+      const [zSrv] = remaining.splice(zIdx, 1);
+      remaining.unshift(zSrv);
+    }
+
     window.dataStore.servers = remaining;
     window.dataStore.saveServers();
   }
@@ -4218,15 +4226,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderServers() {
     if (!serversListContainer) return;
-    const allServers = window.dataStore.servers || [];
+    let allServers = window.dataStore.servers || [];
     let folders = window.dataStore.loadServerFolders() || [];
 
-    // Geçersiz sunucu ID'lerini temizle
+    // ziorse.com daima en başta olmalı (Index 0)
+    const zIdx = allServers.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse');
+    if (zIdx > 0) {
+      const [zSrv] = allServers.splice(zIdx, 1);
+      allServers.unshift(zSrv);
+      window.dataStore.servers = allServers;
+    }
+
+    // Geçersiz sunucu ID'lerini temizle ve ziorse.com'u klasörlerden çıkar
     const validServerIds = new Set(allServers.map(s => s.id));
     let cleaned = false;
     folders.forEach(f => {
       const origLen = f.serverIds.length;
-      f.serverIds = (f.serverIds || []).filter(id => validServerIds.has(id));
+      f.serverIds = (f.serverIds || []).filter(id => validServerIds.has(id) && id !== 'srv-ziorse-official');
       if (f.serverIds.length !== origLen) cleaned = true;
     });
     const validFolders = folders.filter(f => f.serverIds.length >= 2);
