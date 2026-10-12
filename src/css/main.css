@@ -180,8 +180,8 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 }
 
 .srv-badge-verified svg {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   display: block;
 }
 
