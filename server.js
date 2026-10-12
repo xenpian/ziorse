@@ -474,6 +474,24 @@ function loadSyncDb() {
         }
       });
 
+      // Sanitize large base64 in globalInviteRegistry to prevent socket choke
+      if (globalInviteRegistry && typeof globalInviteRegistry === 'object') {
+        for (const code in globalInviteRegistry) {
+          const reg = globalInviteRegistry[code];
+          if (reg) {
+            if (reg.serverBanner && reg.serverBanner.startsWith('data:image/')) {
+              reg.serverBanner = extractDataUrlToUpload(reg.serverBanner, 'server_banner');
+            }
+            if (reg.serverIcon && reg.serverIcon.startsWith('data:image/')) {
+              reg.serverIcon = extractDataUrlToUpload(reg.serverIcon, 'server_icon');
+            }
+            if (reg.ownerAvatar && reg.ownerAvatar.startsWith('data:image/')) {
+              reg.ownerAvatar = extractDataUrlToUpload(reg.ownerAvatar, 'owner_avatar');
+            }
+          }
+        }
+      }
+
       console.log(`[Ziorse Server DB] Yüklendi: ${globalAccounts.length} hesap, ${Object.keys(globalUserDirectory).length} kullanıcı dizini, ${Object.keys(globalServerMembers).length} sunucu üye havuzu.`);
     }
   } catch (err) {
