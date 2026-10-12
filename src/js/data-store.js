@@ -1345,14 +1345,43 @@ class DataStore {
           }
         } catch (e) { }
       }
-    } catch (e) {
-      console.error('[DataStore] Reconciler error:', e);
-    }
+    // ── HER ZAMAN ZIORSE.COM ANA RESMİ SUNUCUSUNU GARANTİLE ──────
+    list = this._ensureOfficialServer(list);
 
     if (reconciled && list.length > 0) {
       ziorseSetStorage(this.storageKeyServers, list);
     }
 
+    return list;
+  }
+
+  _ensureOfficialServer(list) {
+    if (!Array.isArray(list)) list = [];
+    const existingIdx = list.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || (s.name && s.name.toLowerCase() === 'ziorse.com'));
+    if (existingIdx !== -1) {
+      const existing = list[existingIdx];
+      existing.name = 'ziorse.com';
+      existing.isOfficial = true;
+      existing.isPublic = true;
+      existing.serverType = 'community';
+      if (!existing.id) existing.id = 'srv-ziorse-official';
+      if (!existing.inviteCode) existing.inviteCode = 'ziorse';
+      if (!existing.icon) existing.icon = 'logo.png';
+      if (existingIdx !== 0) {
+        list.splice(existingIdx, 1);
+        list.unshift(existing);
+      }
+    } else {
+      const copy = JSON.parse(JSON.stringify(OFFICIAL_ZIORSE_SERVER));
+      list.unshift(copy);
+    }
+
+    // Kullanıcıyı resmi sunucu üye listesine otomatik kaydet
+    if (this.currentUser && this.currentUser.handle && this.currentUser.handle !== 'guest') {
+      try {
+        this._addServerMember('ziorse', this.currentUser);
+      } catch (e) { }
+    }
     return list;
   }
 
