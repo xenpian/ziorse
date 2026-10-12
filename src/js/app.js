@@ -4086,16 +4086,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const srv = window.dataStore.servers.find(s => s.id === serverId);
     if (!srv) return;
 
+    const cu = window.dataStore.currentUser || { handle: '' };
     const isOwner = window.dataStore.isServerOwner(serverId);
+    const canManageServer = isOwner || (window.dataStore.checkServerPermission && window.dataStore.checkServerPermission(serverId, cu.handle, 'manage_server'));
+    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
     const folders = window.dataStore.loadServerFolders() || [];
     const parentFolder = folders.find(f => f.serverIds.includes(serverId));
 
     const menu = document.createElement('div');
     menu.className = 'ch-ctx-menu';
     menu.innerHTML = `
-      <button class="ch-ctx-item" id="ctx-srv-settings">
-        <i data-lucide="settings" style="width:13px;height:13px;"></i> Sunucu Ayarları
-      </button>
+      ${canManageServer ? `
+        <button class="ch-ctx-item" id="ctx-srv-settings">
+          <i data-lucide="settings" style="width:13px;height:13px;"></i> Sunucu Ayarları
+        </button>
+      ` : ''}
       <button class="ch-ctx-item" id="ctx-srv-invite">
         <i data-lucide="user-plus" style="width:13px;height:13px;"></i> İnsanları Davet Et
       </button>
@@ -4104,10 +4109,17 @@ document.addEventListener('DOMContentLoaded', () => {
           <i data-lucide="folder-minus" style="width:13px;height:13px;"></i> Klasörden Çıkar
         </button>
       ` : ''}
-      <div style="height:1px; background:var(--border-color); margin:4px 0;"></div>
-      <button class="ch-ctx-item ch-ctx-item--danger" id="ctx-srv-delete">
-        <i data-lucide="${isOwner ? 'trash-2' : 'log-out'}" style="width:13px;height:13px;"></i> ${isOwner ? 'Sunucuyu Sil' : 'Sunucudan Ayrıl'}
-      </button>
+      ${isOfficial ? (isOwner ? `
+        <div style="height:1px; background:var(--border-color); margin:4px 0;"></div>
+        <button class="ch-ctx-item ch-ctx-item--danger" id="ctx-srv-delete">
+          <i data-lucide="trash-2" style="width:13px;height:13px;"></i> Sunucuyu Sıfırla
+        </button>
+      ` : '') : `
+        <div style="height:1px; background:var(--border-color); margin:4px 0;"></div>
+        <button class="ch-ctx-item ch-ctx-item--danger" id="ctx-srv-delete">
+          <i data-lucide="${isOwner ? 'trash-2' : 'log-out'}" style="width:13px;height:13px;"></i> ${isOwner ? 'Sunucuyu Sil' : 'Sunucudan Ayrıl'}
+        </button>
+      `}
     `;
 
     let top = e.clientY;
@@ -4120,10 +4132,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(menu);
     refreshIcons(menu);
 
-    menu.querySelector('#ctx-srv-settings').addEventListener('click', () => {
-      menu.remove();
-      window.openModalView(`server-settings.html?serverId=${encodeURIComponent(serverId)}`);
-    });
+    const btnSettings = menu.querySelector('#ctx-srv-settings');
+    if (btnSettings) {
+      btnSettings.addEventListener('click', () => {
+        menu.remove();
+        window.openModalView(`server-settings.html?serverId=${encodeURIComponent(serverId)}`);
+      });
+    }
 
     menu.querySelector('#ctx-srv-invite').addEventListener('click', () => {
       menu.remove();
@@ -4140,7 +4155,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    menu.querySelector('#ctx-srv-delete').addEventListener('click', () => {
+    const btnDelete = menu.querySelector('#ctx-srv-delete');
+    if (btnDelete) {
+      btnDelete.addEventListener('click', () => {
       menu.remove();
       if (isOwner) {
         if (confirm(`"${srv.name}" sunucusunu kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`)) {
