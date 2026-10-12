@@ -2509,9 +2509,20 @@ class DataStore {
   getMemberRoles(serverId, handle) {
     if (!serverId || !handle) return [];
     const srv = this.servers.find(s => s.id === serverId || s.inviteCode === serverId);
-    if (!srv || !srv.memberRoles) return [];
-    const cleanH = handle.toLowerCase();
-    const roleIds = srv.memberRoles[cleanH] || srv.memberRoles['@' + cleanH.replace('@', '')] || [];
+    const cleanH = handle.toLowerCase().replace('@', '');
+    const withAt = '@' + cleanH;
+
+    let memberRolesMap = (srv && srv.memberRoles && typeof srv.memberRoles === 'object') ? srv.memberRoles : null;
+    if (!memberRolesMap || Object.keys(memberRolesMap).length === 0) {
+      const reg = this._loadInviteRegistry();
+      const code = (srv && srv.inviteCode) || serverId;
+      if (reg && reg[code] && reg[code].memberRoles) {
+        memberRolesMap = reg[code].memberRoles;
+      }
+    }
+    if (!memberRolesMap) return [];
+
+    const roleIds = memberRolesMap[cleanH] || memberRolesMap[withAt] || [];
     const allRoles = this.getServerRoles(serverId);
     return allRoles.filter(r => roleIds.includes(r.id));
   }
@@ -2600,14 +2611,14 @@ class DataStore {
     if (!srv) return;
     if (srv.inviteCode) {
       const registry = this._loadInviteRegistry();
-      if (registry[srv.inviteCode]) {
-        registry[srv.inviteCode].roles = JSON.parse(JSON.stringify(srv.roles || []));
-        registry[srv.inviteCode].memberRoles = JSON.parse(JSON.stringify(srv.memberRoles || {}));
-        ziorseSetStorage('ziorse_invite_registry', registry);
-      }
+      if (!registry[srv.inviteCode]) registry[srv.inviteCode] = {};
+      registry[srv.inviteCode].roles = JSON.parse(JSON.stringify(srv.roles || []));
+      registry[srv.inviteCode].memberRoles = JSON.parse(JSON.stringify(srv.memberRoles || {}));
+      ziorseSetStorage('ziorse_invite_registry', registry);
     }
-    if (window.socket) {
-      window.socket.emit('sync-server-roles', {
+    const sock = window.socket || (window.parent && window.parent.socket) || (window.top && window.top.socket);
+    if (sock) {
+      sock.emit('sync-server-roles', {
         serverId: srv.id,
         inviteCode: srv.inviteCode,
         roles: srv.roles || [],
