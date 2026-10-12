@@ -456,6 +456,11 @@ document.addEventListener('DOMContentLoaded', () => {
           currentRoleOriginal = JSON.parse(JSON.stringify(currentRoleDraft));
           renderRoles();
           renderMembers();
+          const pWinRole = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
+          if (pWinRole) {
+            if (typeof pWinRole.updateRightSidebar === 'function') pWinRole.updateRightSidebar();
+            if (typeof pWinRole.renderFeed === 'function') pWinRole.renderFeed();
+          }
           anySaved = true;
         }
       }
