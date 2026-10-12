@@ -2,7 +2,7 @@
   {
     "handle": "@sa",
     "name": "ziorse creator",
-    "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+    "avatar": "http://localhost:3001/uploads/avatar_1791669449956_gcbyr.png"
   },
   {
     "handle": "@fafafa",
@@ -12,6 +12,6 @@
   {
     "handle": "@fas",
     "name": "fas",
-    "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
+    "avatar": "http://localhost:3001/uploads/avatar_1789671526343_sdcd7.png"
   }
 ]
