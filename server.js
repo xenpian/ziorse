@@ -250,7 +250,7 @@ function saveServerMembersTxt(code) {
   try {
     ensureDbTxtDirs();
     const memFilePath = path.join(SYSTEM_TXT_DIR, `ziorse_srv_members_${encodeURIComponent(code)}.txt`);
-    fs.writeFile(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8', () => {});
+    fs.writeFile(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8', () => { });
   } catch (e) {
     console.error('[Ziorse DB] Server members txt kaydetme hatasi:', e);
   }
@@ -259,7 +259,7 @@ function saveServerMembersTxt(code) {
 function saveInviteRegistryTxt() {
   try {
     ensureDbTxtDirs();
-    fs.writeFile(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8', () => {});
+    fs.writeFile(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8', () => { });
   } catch (e) {
     console.error('[Ziorse DB] Invite registry txt kaydetme hatasi:', e);
   }
@@ -509,7 +509,7 @@ function extractDataUrlToUpload(dataUrl, prefix = 'avatar') {
     if (base64Data.length < 5000) return dataUrl;
     const filename = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
     const filePath = path.join(uploadsDir, filename);
-    fs.writeFile(filePath, Buffer.from(base64Data, 'base64'), () => {});
+    fs.writeFile(filePath, Buffer.from(base64Data, 'base64'), () => { });
     return `/uploads/${filename}`;
   } catch (err) {
     console.error('[Upload] Failed to extract dataUrl to upload:', err);
@@ -546,7 +546,7 @@ function ensureOfficialServerBackend() {
   if (!globalInviteRegistry[officialCode]) {
     globalInviteRegistry[officialCode] = {
       serverName: 'ziorse.com',
-      serverDescription: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+      serverDescription: 'Welcome to Ziorse.',
       isPublic: true,
       isOfficial: true,
       serverType: 'community',
@@ -910,7 +910,7 @@ app.post('/api/store/set', (req, res) => {
     }
 
     const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
-    fs.writeFile(filePath, strVal, 'utf8', () => {});
+    fs.writeFile(filePath, strVal, 'utf8', () => { });
 
     if (key === 'ziorse_invite_registry' && typeof val === 'object') {
       globalInviteRegistry = Object.assign(globalInviteRegistry, val);
