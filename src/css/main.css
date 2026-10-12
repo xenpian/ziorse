@@ -163,6 +163,7 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
   color: #ffffff;
   padding: 2px 3px;
   border-radius: 50%;
+  background: rgb(47, 103, 255);
   display: inline-flex;
   align-items: center;
   justify-content: center;
