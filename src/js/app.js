@@ -2115,10 +2115,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const onlineHandles = window.__activeOnlineHandles || new Set();
 
       const q = (filterQuery || '').toLowerCase().trim();
-      const filtered = allPublic.filter(s => {
+      let filtered = allPublic.filter(s => {
         if (!q) return true;
         return (s.name || '').toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q);
       });
+
+      // Ziorse.com resmi sunucusunu keşfette DAİMA ilk başa sabitle (Hiçbir sunucu önüne geçemez)
+      const zIdx = filtered.findIndex(s => s.serverId === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || ((s.name || '').toLowerCase() === 'ziorse.com'));
+      if (zIdx !== -1) {
+        const [zCard] = filtered.splice(zIdx, 1);
+        zCard.isOfficial = true;
+        filtered.unshift(zCard);
+      }
 
       if (filtered.length === 0) {
         grid.innerHTML = `
