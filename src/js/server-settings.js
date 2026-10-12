@@ -830,6 +830,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             dd.remove();
             renderMembers();
+            const pWin = (window.parent && window.parent !== window) ? window.parent : (window.opener || null);
+            if (pWin) {
+              if (typeof pWin.updateRightSidebar === 'function') pWin.updateRightSidebar();
+              if (typeof pWin.renderFeed === 'function') pWin.renderFeed();
+            }
           });
         });
 
