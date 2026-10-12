@@ -1501,7 +1501,7 @@
       }
     ],
     "serverBanner": "",
-    "description": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
+    "description": "gods lonely programmer.",
     "roles": [],
     "memberRoles": {}
   }

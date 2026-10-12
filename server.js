@@ -1248,11 +1248,11 @@ io.on('connection', (socket) => {
   socket.on('sync-user-profile', (data) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
-      const cleanH = h.toLowerCase();
+      const cleanH = h.toLowerCase().replace('@', '');
       socketHandleMap.set(socket.id, cleanH);
       activeOnlineHandles.add(cleanH);
       socket.join(cleanH);
-      socket.join(cleanH.replace('@', ''));
+      socket.join(h.toLowerCase());
 
       if (data.avatar) data.avatar = extractDataUrlToUpload(data.avatar, 'avatar');
       if (data.banner && data.banner.startsWith('data:image/')) data.banner = extractDataUrlToUpload(data.banner, 'banner');
