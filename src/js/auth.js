@@ -114,10 +114,26 @@ function initLogin() {
   setupCloseBtn();
   setupEnterKey(['login-email', 'login-password'], 'btn-login-submit');
 
-  // Zaten giris yapilmissa direkt ana sayfaya yonlendir
-  if (window.dataStore && window.dataStore.isLoggedIn()) {
-    window.location.replace('index.html');
-    return;
+  // Zaten giris yapilmissa direkt ana sayfaya yonlendir (acik logout istegi yoksa)
+  const isExplicitLogout = window.location.search.includes('logout');
+  if (isExplicitLogout) {
+    if (window.dataStore) {
+      window.dataStore.currentUser = null;
+    }
+    if (typeof ziorseRemoveStorage === 'function') {
+      ziorseRemoveStorage('ziorse_real_user_v14');
+    }
+    try { localStorage.removeItem('ziorse_real_user_v14'); } catch (e) { }
+    try { localStorage.removeItem('ziorse_jwt_token'); } catch (e) { }
+    try { localStorage.removeItem('ziorse_user'); } catch (e) { }
+    try {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (e) { }
+  } else {
+    if (window.dataStore && window.dataStore.isLoggedIn()) {
+      window.location.replace('index.html');
+      return;
+    }
   }
 
   const btnSubmit = document.getElementById('btn-login-submit');
@@ -203,10 +219,26 @@ function initRegister() {
   setupCloseBtn();
   setupEnterKey(['reg-name', 'reg-handle', 'reg-email', 'reg-password'], 'btn-register-submit');
 
-  // Zaten giris yapilmissa direkt ana sayfaya yonlendir
-  if (window.dataStore && window.dataStore.isLoggedIn()) {
-    window.location.replace('index.html');
-    return;
+  // Zaten giris yapilmissa direkt ana sayfaya yonlendir (acik logout istegi yoksa)
+  const isExplicitLogout = window.location.search.includes('logout');
+  if (isExplicitLogout) {
+    if (window.dataStore) {
+      window.dataStore.currentUser = null;
+    }
+    if (typeof ziorseRemoveStorage === 'function') {
+      ziorseRemoveStorage('ziorse_real_user_v14');
+    }
+    try { localStorage.removeItem('ziorse_real_user_v14'); } catch (e) { }
+    try { localStorage.removeItem('ziorse_jwt_token'); } catch (e) { }
+    try { localStorage.removeItem('ziorse_user'); } catch (e) { }
+    try {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (e) { }
+  } else {
+    if (window.dataStore && window.dataStore.isLoggedIn()) {
+      window.location.replace('index.html');
+      return;
+    }
   }
 
   const btnSubmit = document.getElementById('btn-register-submit');
