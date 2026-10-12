@@ -2243,12 +2243,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!file) return;
 
     try {
+      const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
       const formData = new FormData();
       formData.append('file', file);
-      const resp = await fetch('http://localhost:3000/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(6000) });
+      const resp = await fetch((srv ? srv : '') + '/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(6000) });
       const data = await resp.json();
       if (data && data.success && data.url) {
-        attachedImageDataUrl = data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url);
+        attachedImageDataUrl = window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url;
         imagePreviewImg.src = attachedImageDataUrl;
         imagePreviewBar.style.display = 'block';
         showToast('Fotoğraf eklendi');
@@ -2294,12 +2295,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!file) return;
 
     try {
+      const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
       const formData = new FormData();
       formData.append('file', file);
-      const resp = await fetch('http://localhost:3000/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
+      const resp = await fetch((srv ? srv : '') + '/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
       const data = await resp.json();
       if (data && data.success && data.url) {
-        attachedVideoDataUrl = data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url);
+        attachedVideoDataUrl = window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url;
         if (filePreviewBar && filePreviewName) {
           filePreviewName.textContent = `🎬 Video: ${file.name} (${formatBytes(file.size)})`;
           filePreviewBar.style.display = 'flex';
@@ -2329,12 +2331,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!file) return;
 
     try {
+      const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
       const formData = new FormData();
       formData.append('file', file);
-      const resp = await fetch('http://localhost:3000/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
+      const resp = await fetch((srv ? srv : '') + '/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
       const data = await resp.json();
       if (data && data.success && data.url) {
-        attachedFileData = { name: file.name, size: file.size, url: (data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url)), mimetype: file.type };
+        attachedFileData = { name: file.name, size: file.size, url: (window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url), mimetype: file.type };
         if (filePreviewBar && filePreviewName) {
           filePreviewName.textContent = `📎 Dosya: ${file.name} (${formatBytes(file.size)})`;
           filePreviewBar.style.display = 'flex';
