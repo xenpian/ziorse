@@ -1,5 +1,10 @@
 [
   {
+    "handle": "@ziorse",
+    "name": "Ziorse Official",
+    "avatar": "logo.png"
+  },
+  {
     "handle": "@kurtv_dev",
     "name": "Kurtv",
     "avatar": "https://i.imgur.com/w3OhOmW.jpeg"

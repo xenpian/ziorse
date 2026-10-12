@@ -1467,7 +1467,7 @@
     "ownerHandle": "@ziorse",
     "ownerName": "Ziorse Official",
     "ownerAvatar": "logo.png",
-    "memberCount": 12,
+    "memberCount": 13,
     "categories": [
       {
         "id": "cat-ziorse-genel",

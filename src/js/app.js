@@ -2124,7 +2124,10 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="ps-card-avatar-wrap">
                 ${avatarHtml}
               </div>
-              <h3 class="ps-card-name" title="${escapeHtml(srv.name)}">${escapeHtml(srv.name)}</h3>
+              <h3 class="ps-card-name" title="${escapeHtml(srv.name)}" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span>${escapeHtml(srv.name)}</span>
+                ${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv) : ''}
+              </h3>
               <p class="ps-card-desc" title="${escapeHtml(srv.description)}">${escapeHtml(srv.description || 'Topluluk ve sohbet sunucusu.')}</p>
               <div class="ps-card-stats">
                 <span class="ps-stat-pill"><i data-lucide="users" style="width:13px; height:13px;"></i> ${totalMembers} üye</span>
