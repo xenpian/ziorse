@@ -1694,19 +1694,25 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+// ── MULTI-PORT SERVER ENGINE (3000: Tarayıcı, 3001: Uygulama, 3002-3005: Farklı Tarayıcılar) ──
+const PORTS = [3000, 3001, 3002, 3003, 3004, 3005];
+const serverInstances = [server];
 
-function startServer(port) {
-  server.listen(port, () => {
-    console.log(`[Ziorse Server] Backend & Socket.io http://localhost:${port} üzerinde çalışıyor.`);
-  }).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.log(`[Ziorse Server] Port ${port} meşgul, ${port + 1} deneniyor...`);
-      startServer(port + 1);
-    } else {
-      console.error('[Ziorse Server] Hata:', err);
-    }
-  });
+for (let i = 1; i < PORTS.length; i++) {
+  const s = http.createServer(app);
+  io.attach(s);
+  serverInstances.push(s);
 }
 
-startServer(PORT);
+PORTS.forEach((port, idx) => {
+  const srv = serverInstances[idx];
+  srv.listen(port, () => {
+    console.log(`[Ziorse Server] Port ${port} hazır -> http://localhost:${port}`);
+  }).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`[Ziorse Server] Port ${port} meşgul, diğer portlar çalışmaya devam ediyor.`);
+    } else {
+      console.error(`[Ziorse Server] Port ${port} hatası:`, err.message);
+    }
+  });
+});
