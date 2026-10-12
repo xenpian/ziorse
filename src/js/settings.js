@@ -1352,6 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.electronAPI && typeof window.electronAPI.getMemberThemes === 'function') {
         const res = await window.electronAPI.getMemberThemes();
         themes = (res && res.themes) || [];
+      } else {
         const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
         const res = await fetch((srv ? srv : '') + '/api/member-themes').catch(() => fetch('/api/member-themes'));
         const data = await res.json();
