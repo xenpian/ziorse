@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       elAvatar.style.display = 'block';
       let avUrl = profile.avatar;
-      if (avUrl && avUrl.startsWith('/uploads/')) avUrl = 'http://localhost:3000' + avUrl;
+      if (avUrl && (avUrl.startsWith('/uploads/') || avUrl.startsWith('http://localhost:3000/uploads/'))) avUrl = (window.formatMediaUrl ? window.formatMediaUrl(avUrl) : avUrl);
       elAvatar.src = (avUrl && avUrl !== 'https://i.imgur.com/w3OhOmW.jpeg') ? avUrl : window.DEFAULT_AVATAR;
       elAvatar.onerror = () => { elAvatar.src = window.DEFAULT_AVATAR; };
     }
