@@ -3,15 +3,9 @@
     "id": "srv-1786999944719",
     "name": "sa",
     "icon": "http://localhost:3000/uploads/migrated_1789652001731_wxlq8.png",
-    "banner": "http://localhost:3000/uploads/migrated_1789652001735_vpjjl.jpg",
     "inviteCode": "vcyj4drhz0",
-    "memberCount": 3,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 3,
     "categories": [
       {
         "id": "cat-1787001503309",
@@ -90,6 +84,27 @@
         "icon": "http://localhost:3000/uploads/migrated_1789652001745_0lfdq.png"
       }
     ],
+    "description": "",
+    "banner": "http://localhost:3000/uploads/migrated_1789652001735_vpjjl.jpg",
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      },
+      {
+        "handle": "@fafafa",
+        "name": "fafafa",
+        "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
+      },
+      {
+        "handle": "@fas",
+        "name": "fas",
+        "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
+      }
+    ],
     "roles": [
       {
         "id": "role_1787396024739_d1d0",
@@ -139,15 +154,9 @@
     "id": "srv-1787393085774",
     "name": "mc",
     "icon": "http://localhost:3000/uploads/avatar_user.jpg",
-    "banner": "",
     "inviteCode": "rnmeyd8bhs",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787393085775",
@@ -172,62 +181,27 @@
         ]
       }
     ],
-    "roles": [],
-    "memberRoles": {}
-  },
-  {
-    "id": "srv-1787397261579",
-    "name": "afsa",
-    "icon": "http://localhost:3000/uploads/migrated_1787418809695_kjo6os16zj.png",
-    "banner": "",
-    "inviteCode": "91a1wwmu7z",
-    "memberCount": 1,
-    "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
-    "categories": [
+    "members": [
       {
-        "id": "cat-1787397261579",
-        "name": "METİN KANALLARI",
-        "collapsed": false,
-        "channels": [
-          {
-            "id": "genel",
-            "name": "genel-sohbet",
-            "type": "text"
-          },
-          {
-            "id": "duyurular",
-            "name": "duyurular",
-            "type": "text"
-          },
-          {
-            "id": "kod-paylasim",
-            "name": "kod-paylasimi",
-            "type": "text"
-          }
-        ]
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808383_bcmtl4btsmq.jpg",
     "roles": [],
+    "description": "",
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787397255223",
     "name": "g",
     "icon": "http://localhost:3000/uploads/migrated_1787418809700_5hhsehxvif.png",
-    "banner": "",
     "inviteCode": "h6g6f3m5qe",
-    "memberCount": 2,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 2,
     "categories": [
       {
         "id": "cat-1787397255224",
@@ -252,6 +226,20 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      },
+      {
+        "handle": "@fas",
+        "name": "fas",
+        "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
+      }
+    ],
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "roles": [
       {
         "id": "role_1789671647047_3dsy",
@@ -305,6 +293,7 @@
         }
       }
     ],
+    "description": "",
     "memberRoles": {
       "@fas": [
         "role_1789671647047_3dsy",
@@ -313,21 +302,16 @@
       "@sa": [
         "role_1789671647047_3dsy"
       ]
-    }
+    },
+    "banner": ""
   },
   {
     "id": "srv-1787397257516",
     "name": "gf",
     "icon": "http://localhost:3000/uploads/avatar_user.jpg",
-    "banner": "",
     "inviteCode": "qovl7ick5m",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787397257516",
@@ -352,22 +336,72 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808393_rbvumhnm5pg.jpg",
     "roles": [],
+    "description": "",
+    "banner": "",
+    "memberRoles": {}
+  },
+  {
+    "id": "srv-1787397261579",
+    "name": "afsa",
+    "icon": "http://localhost:3000/uploads/migrated_1787418809695_kjo6os16zj.png",
+    "inviteCode": "91a1wwmu7z",
+    "ownerHandle": "@sa",
+    "memberCount": 1,
+    "categories": [
+      {
+        "id": "cat-1787397261579",
+        "name": "METİN KANALLARI",
+        "collapsed": false,
+        "channels": [
+          {
+            "id": "genel",
+            "name": "genel-sohbet",
+            "type": "text"
+          },
+          {
+            "id": "duyurular",
+            "name": "duyurular",
+            "type": "text"
+          },
+          {
+            "id": "kod-paylasim",
+            "name": "kod-paylasimi",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418808385_4fi4g9eim55.jpg",
+    "roles": [],
+    "description": "",
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787397259393",
     "name": "gfhgf",
     "icon": "http://localhost:3000/uploads/avatar_user.webp",
-    "banner": "",
     "inviteCode": "dyecoc3t33",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787397259393",
@@ -392,22 +426,27 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418809710_n25xavg3jg.jpg",
     "roles": [],
+    "description": "",
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787398053441",
     "name": "h",
     "icon": "H",
-    "banner": "",
     "inviteCode": "u0au9h8xvh",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787398053441",
@@ -432,22 +471,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418809712_pmrwk9a09w.jpg",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787398055468",
     "name": "fdg",
     "icon": "FD",
-    "banner": "",
     "inviteCode": "w9867ltw40",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787398055468",
@@ -472,22 +515,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418809715_wkrhc4nwgfr.jpg",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787398051318",
     "name": "h",
     "icon": "http://localhost:3000/uploads/migrated_1787418809716_w0jwczml0yg.jpg",
-    "banner": "",
     "inviteCode": "0rstnp3gq1",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787398051318",
@@ -512,22 +559,27 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "sa",
+    "ownerAvatar": "http://localhost:3000/uploads/migrated_1787418809718_ye6zq2r736m.jpg",
     "roles": [],
+    "description": "",
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787429613421",
     "name": "f",
     "icon": "http://localhost:3000/uploads/migrated_1789652001748_q1w6y.jpg",
-    "banner": "",
     "inviteCode": "fmospv2b7a",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787429613421",
@@ -552,22 +604,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787429789318",
     "name": "f",
     "icon": "http://localhost:3000/uploads/migrated_1789652001749_zv6qm.png",
-    "banner": "",
     "inviteCode": "7dit1n5mak",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787429789318",
@@ -592,22 +648,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787429791131",
     "name": "f",
     "icon": "http://localhost:3000/uploads/migrated_1789652001750_m5qx2.png",
-    "banner": "",
     "inviteCode": "o2czq80toh",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787429791131",
@@ -632,22 +692,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787429793357",
     "name": "f",
     "icon": "http://localhost:3000/uploads/migrated_1789652001758_i5mcz.jpg",
-    "banner": "",
     "inviteCode": "oihyrvdfwb",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787429793357",
@@ -672,22 +736,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787429795124",
     "name": "f",
     "icon": "http://localhost:3000/uploads/migrated_1789652001763_pjbxq.gif",
-    "banner": "",
     "inviteCode": "5wvi4xjoc3",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787429795124",
@@ -712,22 +780,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1787429797593",
     "name": "f",
     "icon": "http://localhost:3000/uploads/migrated_1789652001768_tfsy4.jpg",
-    "banner": "",
     "inviteCode": "3wl1ubi2xm",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1787429797593",
@@ -752,22 +824,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/ziorse_1787405100607_2bnoz5go5zg.gif",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587862199",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001770_kuqfy.jpg",
-    "banner": "",
     "inviteCode": "snvoap0nbq",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587862199",
@@ -792,22 +868,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587864303",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001773_tp75z.gif",
-    "banner": "",
     "inviteCode": "ac5wb2scwu",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587864303",
@@ -832,22 +912,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587866119",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001778_ed595.gif",
-    "banner": "",
     "inviteCode": "3k6oai9i0i",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587866119",
@@ -872,22 +956,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587867741",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001781_fq77e.jpg",
-    "banner": "",
     "inviteCode": "l27xh2hy56",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587867741",
@@ -912,22 +1000,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587870043",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001783_g00qh.jpg",
-    "banner": "",
     "inviteCode": "8pn5fgp7ee",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587870043",
@@ -952,22 +1044,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587871741",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001784_egote.jpg",
-    "banner": "",
     "inviteCode": "lqbs5ylu1l",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587871741",
@@ -992,22 +1088,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587873670",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001785_z0jp5.jpg",
-    "banner": "",
     "inviteCode": "hf5tmv367c",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587873670",
@@ -1032,22 +1132,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587876108",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001787_6h1re.jpg",
-    "banner": "",
     "inviteCode": "dnbslhmdiz",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587876108",
@@ -1072,22 +1176,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587877712",
     "name": "s",
     "icon": "http://localhost:3000/uploads/migrated_1789652001789_wr010.jpg",
-    "banner": "",
     "inviteCode": "hjktp5ci3q",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587877712",
@@ -1112,22 +1220,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587879173",
     "name": "s",
     "icon": "S",
-    "banner": "",
     "inviteCode": "3loo0g206i",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587879173",
@@ -1152,22 +1264,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587881094",
     "name": "s",
     "icon": "S",
-    "banner": "",
     "inviteCode": "w3zoj98f4f",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587881094",
@@ -1192,22 +1308,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587883087",
     "name": "s",
     "icon": "S",
-    "banner": "",
     "inviteCode": "o7m1y870hq",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587883087",
@@ -1232,22 +1352,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789587889390",
     "name": "s",
     "icon": "S",
-    "banner": "",
     "inviteCode": "28ufosbzg1",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789587889390",
@@ -1272,22 +1396,23 @@
         ]
       }
     ],
-    "roles": [],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789588695965",
     "name": "r",
     "icon": "R",
-    "banner": "",
     "inviteCode": "d8h0c4j5oa",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789588695965",
@@ -1312,22 +1437,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789588699573",
     "name": "gf",
     "icon": "GF",
-    "banner": "",
     "inviteCode": "vrqlh84i4z",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789588699573",
@@ -1352,22 +1481,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789588701720",
     "name": "gfd",
     "icon": "GF",
-    "banner": "",
     "inviteCode": "37xaf2hj6o",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789588701720",
@@ -1392,22 +1525,26 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "fasfsad",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1789572179599_o2cy0.png",
     "roles": [],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1789588704409",
     "name": "f",
     "icon": "F",
-    "banner": "",
     "inviteCode": "c4b6m4pu46",
-    "memberCount": 1,
     "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": false,
-    "description": "Topluluk ve sohbet sunucusu.",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1789588704410",
@@ -1432,22 +1569,25 @@
         ]
       }
     ],
-    "roles": [],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "banner": "",
     "memberRoles": {}
   },
   {
     "id": "srv-1791673454076",
     "name": "patates",
-    "icon": "PA",
-    "banner": "",
-    "inviteCode": "7vzxbedy1u",
-    "memberCount": 1,
-    "ownerHandle": "@sa",
-    "ownerName": "ziorse creator",
-    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-    "joined": false,
-    "isPublic": true,
     "description": "ananın amı",
+    "isPublic": true,
+    "icon": "PA",
+    "inviteCode": "7vzxbedy1u",
+    "ownerHandle": "@sa",
+    "memberCount": 1,
     "categories": [
       {
         "id": "cat-1791673454076",
@@ -1472,75 +1612,17 @@
         ]
       }
     ],
+    "members": [
+      {
+        "handle": "@sa",
+        "name": "ziorse creator",
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
+      }
+    ],
+    "ownerName": "ziorse creator",
+    "ownerAvatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
     "roles": [],
-    "memberRoles": {}
-  },
-  {
-    "id": "srv-aa37ozy7no",
-    "name": "Sunucu",
-    "icon": "Z",
     "banner": "",
-    "inviteCode": "aa37ozy7no",
-    "memberCount": 1,
-    "ownerHandle": "",
-    "ownerName": "",
-    "ownerAvatar": "",
-    "joined": true,
-    "isPublic": true,
-    "description": "",
-    "categories": [],
-    "roles": [],
-    "memberRoles": {}
-  },
-  {
-    "id": "srv-egnrb4r3et",
-    "name": "Sunucu",
-    "icon": "Z",
-    "banner": "",
-    "inviteCode": "egnrb4r3et",
-    "memberCount": 1,
-    "ownerHandle": "",
-    "ownerName": "",
-    "ownerAvatar": "",
-    "joined": true,
-    "isPublic": true,
-    "description": "",
-    "categories": [],
-    "roles": [],
-    "memberRoles": {}
-  },
-  {
-    "id": "srv-qhpg32vz6k",
-    "name": "Sunucu",
-    "icon": "Z",
-    "banner": "",
-    "inviteCode": "qhpg32vz6k",
-    "memberCount": 1,
-    "ownerHandle": "",
-    "ownerName": "",
-    "ownerAvatar": "",
-    "joined": true,
-    "isPublic": true,
-    "description": "",
-    "categories": [],
-    "roles": [],
-    "memberRoles": {}
-  },
-  {
-    "id": "srv-vw27097hao",
-    "name": "Sunucu",
-    "icon": "Z",
-    "banner": "",
-    "inviteCode": "vw27097hao",
-    "memberCount": 1,
-    "ownerHandle": "",
-    "ownerName": "",
-    "ownerAvatar": "",
-    "joined": true,
-    "isPublic": true,
-    "description": "",
-    "categories": [],
-    "roles": [],
     "memberRoles": {}
   }
 ]
