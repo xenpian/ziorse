@@ -805,7 +805,7 @@ app.post('/api/store/set', (req, res) => {
     }
 
     const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
-    fs.writeFileSync(filePath, strVal, 'utf8');
+    fs.writeFile(filePath, strVal, 'utf8', () => {});
 
     if (key === 'ziorse_invite_registry' && typeof val === 'object') {
       globalInviteRegistry = Object.assign(globalInviteRegistry, val);
