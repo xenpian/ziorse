@@ -272,7 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let socket = null;
   if (typeof io !== 'undefined') {
     const srvUrl = (window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:3001'));
-    socket = io(srvUrl);
+    socket = io(srvUrl, {
+      transports: ['websocket', 'polling'],
+      upgrade: true,
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      timeout: 10000
+    });
     window.socket = socket;
 
     socket.on('invite-registry-updated', (registry) => {
