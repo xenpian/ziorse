@@ -2639,7 +2639,8 @@ document.addEventListener('DOMContentLoaded', () => {
     gifFetchAbortController = new AbortController();
 
     try {
-      const resp = await fetch(`http://localhost:3000/api/gifs?source=${encodeURIComponent(source)}&q=${encodeURIComponent(query)}`, {
+      const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
+      const resp = await fetch((srv ? srv : '') + `/api/gifs?source=${encodeURIComponent(source)}&q=${encodeURIComponent(query)}`, {
         signal: gifFetchAbortController.signal
       });
       const data = await resp.json();
