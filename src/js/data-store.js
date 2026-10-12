@@ -2654,6 +2654,29 @@ class DataStore {
     const targetH = handle ? (handle.startsWith('@') ? handle.toLowerCase() : '@' + handle.toLowerCase()) : (this.currentUser ? this.currentUser.handle.toLowerCase() : '');
     const cleanTarget = targetH.replace('@', '');
 
+    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
+    if (isOfficial) {
+      // @sa her şeyde tam yetkilidir
+      if (cleanTarget === 'sa') return true;
+      // Diğer kişilerin ziorse.com sunucusunda hiçbir yönetim yetkisi olamaz
+      const managementPerms = [
+        'manage_server',
+        'manage_channels',
+        'manage_roles',
+        'kick_ban_members',
+        'manage_messages',
+        'manage_categories',
+        'manage_webhooks',
+        'administrator'
+      ];
+      if (managementPerms.includes(permKey)) return false;
+      // Normal üyeler için temel chat izinleri
+      if (permKey === 'send_messages' || permKey === 'connect_voice' || permKey === 'speak_voice' || permKey === 'read_messages') {
+        return true;
+      }
+      return false;
+    }
+
     // Sunucu sahibi her zaman tam yetkilidir
     if (this.isServerOwner(srv.id, targetH)) return true;
 
