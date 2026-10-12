@@ -364,6 +364,7 @@ class LinkPreviewSystem {
 
   async fetchPreview(url) {
     if (this._cache[url]) return this._cache[url];
+    try {
       const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
       const res = await fetch((srv ? srv : '') + `/api/og-preview?url=${encodeURIComponent(url)}`);
       const data = await res.json();
