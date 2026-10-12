@@ -305,12 +305,11 @@ class DataStore {
     if (saved) {
       try {
         const u = typeof saved === 'string' ? JSON.parse(saved) : saved;
-        if (u && u.loggedIn === true && u.handle) {
-          if (u.avatar && u.avatar.startsWith('/uploads/')) {
-            u.avatar = 'http://localhost:3000' + u.avatar;
+          if (u.avatar && (u.avatar.startsWith('/uploads/') || u.avatar.startsWith('http://localhost:3000/uploads/'))) {
+            u.avatar = formatMediaUrl(u.avatar);
           }
-          if (u.banner && u.banner.startsWith('/uploads/')) {
-            u.banner = 'http://localhost:3000' + u.banner;
+          if (u.banner && (u.banner.startsWith('/uploads/') || u.banner.startsWith('http://localhost:3000/uploads/'))) {
+            u.banner = formatMediaUrl(u.banner);
           }
           if (!u.avatar || u.avatar.includes('photo-1535713875002-d1d0cf377fde')) {
             u.avatar = DEFAULT_AVATAR;
