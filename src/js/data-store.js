@@ -1764,6 +1764,9 @@ class DataStore {
       ownerName: info.ownerName || '',
       ownerAvatar: info.ownerAvatar || '',
       joined: true,
+      serverType: info.serverType || 'community',
+      isOfficial: info.isOfficial === true || code === 'ziorse',
+      isPublic: info.isPublic === true,
       categories: ownerCategories ? JSON.parse(JSON.stringify(ownerCategories)) : this._makeDefaultCategories(),
       roles: Array.isArray(info.roles) ? JSON.parse(JSON.stringify(info.roles)) : [],
       memberRoles: (info.memberRoles && typeof info.memberRoles === 'object') ? JSON.parse(JSON.stringify(info.memberRoles)) : {}
