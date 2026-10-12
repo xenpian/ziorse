@@ -173,6 +173,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
+
+  function isUserHandleOnline(handle) {
+    if (!handle) return false;
+    const clean = handle.toLowerCase().replace('@', '');
+    const cu = window.dataStore?.currentUser;
+    const isSelf = cu && (cu.handle || '').toLowerCase().replace('@', '') === clean;
+    if (isSelf) {
+      const myStatus = window.dataStore?.userStatus || { type: 'online' };
+      return myStatus.type !== 'invisible' && myStatus.type !== 'offline';
+    }
+    const onlineList = (window.__globalOnlineHandles || []).map(h => (h || '').toLowerCase().replace('@', ''));
+    if (!onlineList.includes(clean)) return false;
+    const prof = window.dataStore?.getUserProfile(handle);
+    const stType = prof?.status?.type;
+    if (stType === 'invisible' || stType === 'offline') return false;
+    return true;
+  }
+  window.isUserHandleOnline = isUserHandleOnline;
+
+  function getUserEffectiveStatus(handle) {
+    if (!handle) return { type: 'offline', text: '', isOnline: false };
+    const clean = handle.toLowerCase().replace('@', '');
+    const isOnline = isUserHandleOnline(clean);
+    const cu = window.dataStore?.currentUser;
+    const isSelf = cu && (cu.handle || '').toLowerCase().replace('@', '') === clean;
+    const rawStatus = isSelf
+      ? (window.dataStore?.userStatus || { type: 'online', text: '' })
+      : (window.dataStore?.getUserProfile(handle)?.status || { type: 'offline', text: '' });
+    const stType = isOnline
+      ? ((rawStatus.type && rawStatus.type !== 'offline' && rawStatus.type !== 'invisible') ? rawStatus.type : 'online')
+      : 'offline';
+    return {
+      type: stType,
+      text: rawStatus.text || '',
+      isOnline: isOnline
+    };
+  }
+  window.getUserEffectiveStatus = getUserEffectiveStatus;
+
   let currentViewingProfileHandle = null;
   let activeReplyTarget = null;
   let expandedCommentsPosts = {};
