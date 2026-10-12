@@ -68,7 +68,7 @@ function renderServerBadgesHtml(srv) {
   if (isOfficial) {
     // 1. Mavi Tik Rozeti (ziorse.com Resmi Doğrulanmış Sunucu)
     return `
-      <span class="srv-badges-wrap" title="Doğrulanmış Resmi Sunucu (ziorse.com)">
+      <span class="srv-badges-wrap2" title="Doğrulanmış Resmi Sunucu (ziorse.com)">
         <span class="srv-badge srv-badge-verified">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
@@ -2239,15 +2239,15 @@ class DataStore {
 
     let local = [];
     try {
-      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode)) || 
-                  (srv && srv.inviteCode ? ziorseGetStorage(this._serverMembersKey(srv.inviteCode)) : null) ||
-                  (srv && srv.id ? ziorseGetStorage(this._serverMembersKey(srv.id)) : null);
+      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode)) ||
+        (srv && srv.inviteCode ? ziorseGetStorage(this._serverMembersKey(srv.inviteCode)) : null) ||
+        (srv && srv.id ? ziorseGetStorage(this._serverMembersKey(srv.id)) : null);
       local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
     } catch { local = []; }
 
     const globalList = (window.__globalServerMembers && (
-      window.__globalServerMembers[inviteCode] || 
-      (srv && srv.inviteCode && window.__globalServerMembers[srv.inviteCode]) || 
+      window.__globalServerMembers[inviteCode] ||
+      (srv && srv.inviteCode && window.__globalServerMembers[srv.inviteCode]) ||
       (srv && window.__globalServerMembers[srv.id])
     )) || [];
 
