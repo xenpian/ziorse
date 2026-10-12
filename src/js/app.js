@@ -4816,17 +4816,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (friends.length === 0) {
         dmTabFriends.innerHTML = `<div class="dm-empty">Henuz arkadasiniz yok.<br>+ butonuna basarak istek gonderin.</div>`;
       } else {
-        const onlineHandles = (window.__globalOnlineHandles || []).map(h => h.toLowerCase());
         const statusColors = { online: '#22c55e', idle: '#eab308', dnd: '#ef4444', invisible: '#737373', offline: '#737373' };
 
         dmTabFriends.innerHTML = friends.map(f => {
-          const cleanH = f.handle.toLowerCase();
-          const fProfile = ds.getUserProfile(f.handle);
+          const fProfile = ds.getUserProfile(f.handle) || {};
           const fAvatar = fProfile.avatar || window.DEFAULT_AVATAR;
-          const otherSt = fProfile.status || { type: 'offline', text: '' };
-          const isOnline = onlineHandles.includes(cleanH) && otherSt.type !== 'invisible';
-          const stType = isOnline ? ((otherSt.type && otherSt.type !== 'offline' && otherSt.type !== 'invisible') ? otherSt.type : 'online') : 'offline';
-          const dotColor = statusColors[stType] || (isOnline ? '#22c55e' : '#737373');
+          const isOnline = isUserHandleOnline(f.handle);
+          const effStatus = getUserEffectiveStatus(f.handle);
+          const dotColor = statusColors[effStatus.type] || (isOnline ? '#22c55e' : '#737373');
 
           const msgs = ds.getThreadMessages(f.handle);
           const lastMsg = msgs.length > 0 ? (msgs[msgs.length - 1].text || 'Sunucu daveti') : 'Sohbet baslatmak icin tiklayin';
