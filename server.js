@@ -11,6 +11,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*' },
+  transports: ['websocket', 'polling'],
   maxHttpBufferSize: 50 * 1024 * 1024 // 50MB for image/voice data sync
 });
 
