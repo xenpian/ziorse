@@ -163,7 +163,7 @@ function initLogin() {
     // Yerelde bulunamadıysa sunucu API'sine sorgu at (farklı tarayıcı/istemci desteği)
     if (!found) {
       try {
-        const loginUrl = window.location.protocol.startsWith('http') ? '/api/login' : 'http://localhost:3000/api/login';
+        const loginUrl = window.location.protocol.startsWith('http') ? '/api/login' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/login');
         const resp = await fetch(loginUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
