@@ -250,7 +250,7 @@ function saveServerMembersTxt(code) {
   try {
     ensureDbTxtDirs();
     const memFilePath = path.join(SYSTEM_TXT_DIR, `ziorse_srv_members_${encodeURIComponent(code)}.txt`);
-    fs.writeFileSync(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8');
+    fs.writeFile(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8', () => {});
   } catch (e) {
     console.error('[Ziorse DB] Server members txt kaydetme hatasi:', e);
   }
@@ -259,7 +259,7 @@ function saveServerMembersTxt(code) {
 function saveInviteRegistryTxt() {
   try {
     ensureDbTxtDirs();
-    fs.writeFileSync(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8');
+    fs.writeFile(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8', () => {});
   } catch (e) {
     console.error('[Ziorse DB] Invite registry txt kaydetme hatasi:', e);
   }
