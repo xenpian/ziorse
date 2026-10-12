@@ -1120,21 +1120,169 @@ class DataStore {
   }
 
   loadServers() {
-    // Use parsed cache fast path to avoid re-JSON.parse
-    const cached = ziorseGetStorageParsed(this.storageKeyServers);
-    const list = Array.isArray(cached) ? cached : [];
+    if (!this.currentUser || !this.currentUser.handle || this.currentUser.handle === 'guest') {
+      return [];
+    }
+    const cleanUser = this.currentUser.handle.toLowerCase().replace('@', '');
+    const targetHandle = '@' + cleanUser;
+
+    // Check primary key first
+    let cached = ziorseGetStorageParsed(this.storageKeyServers);
+    if (!cached || !Array.isArray(cached) || cached.length === 0) {
+      // Fallback check without '@' or with '@'
+      const altKey = this.storageKeyServers.includes('@')
+        ? this.storageKeyServers.replace('@', '')
+        : this.storageKeyServers.replace('_v14_', '_v14_@');
+      cached = ziorseGetStorageParsed(altKey);
+    }
+
+    let list = Array.isArray(cached) ? [...cached] : [];
+    const existingInviteCodes = new Set();
+    const existingServerIds = new Set();
     list.forEach(s => {
+      if (s.inviteCode) existingInviteCodes.add(s.inviteCode);
+      if (s.id) existingServerIds.add(String(s.id));
       if (Array.isArray(s.members) && s.members.length > 0) {
         if (!s.memberCount || s.memberCount < s.members.length) {
           s.memberCount = s.members.length;
         }
       }
     });
+
+    // ── DATABASE RECONCILER & SELF-HEALING ENGINE ──────────────
+    // Cross-reference ziorse_invite_registry & globalServerMembers to ensure
+    // any owned or joined servers are NEVER lost, even across logouts or app restarts.
+    let reconciled = false;
+    try {
+      const registry = this._loadInviteRegistry();
+
+      // 1. Recover servers owned by this user
+      for (const [code, info] of Object.entries(registry)) {
+        if (!info) continue;
+        const oHandle = (info.ownerHandle || '').toLowerCase().replace('@', '');
+        if (oHandle === cleanUser) {
+          const alreadyInList = existingInviteCodes.has(code) || (info.serverId && existingServerIds.has(String(info.serverId)));
+          if (!alreadyInList) {
+            const restoredSrv = {
+              id: info.serverId || 'srv-' + code,
+              name: info.serverName || 'Sunucu',
+              icon: info.serverIcon || 'Z',
+              banner: info.serverBanner || '',
+              inviteCode: code,
+              memberCount: info.memberCount || 1,
+              ownerHandle: info.ownerHandle || targetHandle,
+              ownerName: info.ownerName || (this.currentUser ? this.currentUser.name : '') || '',
+              ownerAvatar: info.ownerAvatar || (this.currentUser ? this.currentUser.avatar : '') || '',
+              joined: false,
+              isPublic: info.isPublic !== false,
+              description: info.serverDescription || info.description || '',
+              categories: Array.isArray(info.categories) && info.categories.length > 0 ? JSON.parse(JSON.stringify(info.categories)) : this._makeDefaultCategories(),
+              roles: Array.isArray(info.roles) ? JSON.parse(JSON.stringify(info.roles)) : [],
+              memberRoles: (info.memberRoles && typeof info.memberRoles === 'object') ? JSON.parse(JSON.stringify(info.memberRoles)) : {}
+            };
+            this._migrateServerCategories(restoredSrv);
+            list.push(restoredSrv);
+            existingInviteCodes.add(code);
+            existingServerIds.add(String(restoredSrv.id));
+            reconciled = true;
+          }
+        }
+      }
+
+      // 2. Recover servers where this user is recorded as a member
+      const checkAndRestoreMemberServer = (code, membersList) => {
+        if (!code || !Array.isArray(membersList)) return;
+        const isMem = membersList.some(m => m && (m.handle || '').toLowerCase().replace('@', '') === cleanUser);
+        if (isMem) {
+          const info = registry[code] || {};
+          const alreadyInList = existingInviteCodes.has(code) || (info.serverId && existingServerIds.has(String(info.serverId)));
+          if (!alreadyInList) {
+            const restoredSrv = {
+              id: info.serverId || 'srv-' + code,
+              name: info.serverName || 'Sunucu',
+              icon: info.serverIcon || 'Z',
+              banner: info.serverBanner || '',
+              inviteCode: code,
+              memberCount: Math.max(info.memberCount || 1, membersList.length),
+              ownerHandle: info.ownerHandle || '',
+              ownerName: info.ownerName || '',
+              ownerAvatar: info.ownerAvatar || '',
+              joined: true,
+              isPublic: info.isPublic !== false,
+              description: info.serverDescription || info.description || '',
+              categories: Array.isArray(info.categories) && info.categories.length > 0 ? JSON.parse(JSON.stringify(info.categories)) : this._makeDefaultCategories(),
+              roles: Array.isArray(info.roles) ? JSON.parse(JSON.stringify(info.roles)) : [],
+              memberRoles: (info.memberRoles && typeof info.memberRoles === 'object') ? JSON.parse(JSON.stringify(info.memberRoles)) : {}
+            };
+            this._migrateServerCategories(restoredSrv);
+            list.push(restoredSrv);
+            existingInviteCodes.add(code);
+            existingServerIds.add(String(restoredSrv.id));
+            reconciled = true;
+          }
+        }
+      };
+
+      if (window.__globalServerMembers && typeof window.__globalServerMembers === 'object') {
+        for (const [code, mList] of Object.entries(window.__globalServerMembers)) {
+          checkAndRestoreMemberServer(code, mList);
+        }
+      }
+
+      // Check all server member storage keys
+      for (const code of Object.keys(registry)) {
+        try {
+          const memsRaw = ziorseGetStorage(this._serverMembersKey(code));
+          const mems = (typeof memsRaw === 'string' ? JSON.parse(memsRaw) : memsRaw) || [];
+          if (Array.isArray(mems) && mems.length > 0) {
+            checkAndRestoreMemberServer(code, mems);
+          }
+        } catch (e) { }
+      }
+    } catch (e) {
+      console.error('[DataStore] Reconciler error:', e);
+    }
+
+    if (reconciled && list.length > 0) {
+      ziorseSetStorage(this.storageKeyServers, list);
+    }
+
     return list;
   }
 
   saveServers() {
+    if (!this.currentUser || !this.currentUser.loggedIn || !this.currentUser.handle || this.currentUser.handle === 'guest') {
+      return;
+    }
+    if (this.storageKeyServers.endsWith('_guest')) return;
     ziorseSetStorage(this.storageKeyServers, this.servers);
+  }
+
+  isServerMember(inviteCode, userHandle) {
+    if (!inviteCode) return false;
+    const h = userHandle || (this.currentUser && this.currentUser.handle);
+    if (!h) return false;
+    const cleanUser = h.toLowerCase().replace('@', '');
+
+    // 1. In current servers list
+    if (Array.isArray(this.servers) && this.servers.some(s => s.inviteCode === inviteCode || s.id === inviteCode)) {
+      return true;
+    }
+
+    // 2. Is owner in registry?
+    const registry = this._loadInviteRegistry();
+    const info = registry[inviteCode];
+    if (info && info.ownerHandle && (info.ownerHandle.toLowerCase().replace('@', '') === cleanUser)) {
+      return true;
+    }
+
+    // 3. In server members list?
+    const members = this.getServerMembers(inviteCode);
+    if (Array.isArray(members) && members.some(m => (m.handle || '').toLowerCase().replace('@', '') === cleanUser)) {
+      return true;
+    }
+
+    return false;
   }
 
   // -------------------------------------------------------
