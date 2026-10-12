@@ -241,7 +241,7 @@ async function flushPersistentStoreAsync() {
 
   // 3. Save only modified system metadata keys
   for (const key of keysToSave) {
-    if (key === 'ziorse_real_posts_v14' || key === 'ziorse_real_dms_v14') continue;
+    if (key === 'ziorse_real_posts_v14' || key === 'ziorse_real_dms_v14' || key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
     const val = memoryStore[key];
     if (val === undefined) continue;
     const safeKey = encodeURIComponent(key);
