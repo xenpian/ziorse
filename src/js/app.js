@@ -343,8 +343,16 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('store-synced', (data) => {
       if (data && data.key) {
         try {
-          if (window._ziorseMemCache) window._ziorseMemCache.set(data.key, typeof data.val === 'object' ? JSON.stringify(data.val) : String(data.val));
-          if (window._ziorseParsedCache && typeof data.val === 'object') window._ziorseParsedCache.set(data.key, data.val);
+          if (data.val === null || data.val === undefined || data.val === 'null') {
+            if (window._ziorseMemCache) window._ziorseMemCache.delete(data.key);
+            if (window._ziorseParsedCache) window._ziorseParsedCache.delete(data.key);
+            if (window.dataStore && data.key === window.dataStore.storageKeyUser) {
+              window.dataStore.currentUser = null;
+            }
+          } else {
+            if (window._ziorseMemCache) window._ziorseMemCache.set(data.key, typeof data.val === 'object' ? JSON.stringify(data.val) : String(data.val));
+            if (window._ziorseParsedCache && typeof data.val === 'object') window._ziorseParsedCache.set(data.key, data.val);
+          }
         } catch (e) { }
         if (data.key === 'ziorse_invite_registry' && typeof renderPublicServers === 'function') {
           renderPublicServers();
