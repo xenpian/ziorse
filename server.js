@@ -1685,16 +1685,24 @@ io.on('connection', (socket) => {
       if (post.codeSnippet && typeof post.codeSnippet === 'string' && post.codeSnippet.length > 8000) {
         post.codeSnippet = post.codeSnippet.substring(0, 8000) + '\n// ... (kod boyutu optimize edildi)';
       }
-      // ÖNCE ANINDA SIFIR GECİKMEYLE TÜM İSTEMCİLERE İLET!
-      io.emit('new-post-event', post);
-
-      // Veritabanı ve medya işlemlerini arka planda yürüt
       if (post.avatar && post.avatar.startsWith('data:image/')) {
         post.avatar = extractDataUrlToUpload(post.avatar, 'avatar');
       }
       if (post.image && post.image.startsWith('data:image/')) {
         post.image = extractDataUrlToUpload(post.image, 'post');
       }
+      if (post.invite) {
+        if (post.invite.serverIcon && post.invite.serverIcon.startsWith('data:image/')) {
+          post.invite.serverIcon = extractDataUrlToUpload(post.invite.serverIcon, 'srv_icon');
+        }
+        if (post.invite.serverBanner && post.invite.serverBanner.startsWith('data:image/')) {
+          post.invite.serverBanner = extractDataUrlToUpload(post.invite.serverBanner, 'srv_banner');
+        }
+      }
+
+      // Anında hafifletilmiş payload ile sıfır gecikmeli emit
+      io.emit('new-post-event', post);
+
       serverPosts = serverPosts.filter(p => p.id !== post.id);
       serverPosts.unshift(post);
       saveSyncDb();
