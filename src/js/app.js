@@ -8112,7 +8112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   syncUserDisplay();
   const initUrlParams = new URLSearchParams(window.location.search);
   const initServerId = initUrlParams.get('serverId') || initUrlParams.get('server') || initUrlParams.get('id');
-  const initChannelId = initUrlParams.get('channelId') || initUrlParams.get('channel') || 'genel';
+  const initChannelId = initUrlParams.get('channelId') || initUrlParams.get('channel') || null;
 
   if (initServerId && initServerId !== 'home' && window.dataStore.servers.some(s => s.id === initServerId)) {
     switchToServer(initServerId, initChannelId);
