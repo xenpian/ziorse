@@ -1345,6 +1345,10 @@ class DataStore {
           }
         } catch (e) { }
       }
+    } catch (e) {
+      console.warn('loadServers reconciliation error:', e);
+    }
+
     // ── HER ZAMAN ZIORSE.COM ANA RESMİ SUNUCUSUNU GARANTİLE ──────
     list = this._ensureOfficialServer(list);
 
