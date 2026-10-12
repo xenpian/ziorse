@@ -4968,13 +4968,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!file) return;
 
       try {
+        const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
         const formData = new FormData();
         formData.append('file', file);
-        const resp = await fetch('http://localhost:3000/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(6000) });
+        const resp = await fetch((srv ? srv : '') + '/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(6000) });
         const data = await resp.json();
         if (data && data.success && data.url) {
           clearDmAttachment();
-          dmAttachedImage = data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url);
+          dmAttachedImage = window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url;
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
             dmAttachPreviewContent.innerHTML = `<img src="${escapeHtml(dmAttachedImage)}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;margin-right:6px;"> <span>Fotoğraf: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})</span>`;
             dmAttachPreviewBar.style.display = 'flex';
@@ -5023,13 +5024,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!file) return;
 
       try {
+        const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
         const formData = new FormData();
         formData.append('file', file);
-        const resp = await fetch('http://localhost:3000/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
+        const resp = await fetch((srv ? srv : '') + '/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
         const data = await resp.json();
         if (data && data.success && data.url) {
           clearDmAttachment();
-          dmAttachedVideo = data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url);
+          dmAttachedVideo = window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url;
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
             dmAttachPreviewContent.innerHTML = `🎬 Video: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
             dmAttachPreviewBar.style.display = 'flex';
@@ -5061,13 +5063,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!file) return;
 
       try {
+        const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
         const formData = new FormData();
         formData.append('file', file);
-        const resp = await fetch('http://localhost:3000/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
+        const resp = await fetch((srv ? srv : '') + '/api/upload', { method: 'POST', body: formData, signal: AbortSignal.timeout(10000) });
         const data = await resp.json();
         if (data && data.success && data.url) {
           clearDmAttachment();
-          dmAttachedFile = { name: file.name, size: file.size, url: (data.url.startsWith('http') ? data.url : ('http://localhost:3000' + (data.url.startsWith('/') ? '' : '/') + data.url)) };
+          dmAttachedFile = { name: file.name, size: file.size, url: (window.formatMediaUrl ? window.formatMediaUrl(data.url) : data.url) };
           if (dmAttachPreviewBar && dmAttachPreviewContent) {
             dmAttachPreviewContent.innerHTML = `📎 Dosya: <strong>${escapeHtml(file.name)}</strong> (${formatBytes(file.size)})`;
             dmAttachPreviewBar.style.display = 'flex';
