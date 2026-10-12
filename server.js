@@ -491,7 +491,7 @@ function extractDataUrlToUpload(dataUrl, prefix = 'avatar') {
     const filename = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
     const filePath = path.join(uploadsDir, filename);
     fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));
-    return `http://localhost:3000/uploads/${filename}`;
+    return `/uploads/${filename}`;
   } catch (err) {
     console.error('[Upload] Failed to extract dataUrl to upload:', err);
     return dataUrl;
