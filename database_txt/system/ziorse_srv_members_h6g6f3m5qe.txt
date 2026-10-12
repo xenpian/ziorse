@@ -7,6 +7,6 @@
   {
     "handle": "@fas",
     "name": "fas",
-    "avatar": "http://localhost:3001/uploads/avatar_1789671526343_sdcd7.png"
+    "avatar": "http://localhost:3002/uploads/avatar_1789671526343_sdcd7.png"
   }
 ]

@@ -1552,15 +1552,17 @@ class DataStore {
     return server;
   }
 
-  addServer(name, isPublic = true, description = '') {
+  addServer(name, isPublic = true, description = '', serverType = 'community') {
     if (!name.trim() || !this.currentUser) return;
     const initials = name.trim().substring(0, 2).toUpperCase();
     const inviteCode = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 6);
+    const resolvedType = serverType === 'friends' ? 'friends' : 'community';
     const newServer = {
       id: 'srv-' + Date.now(),
       name: name.trim(),
       description: (description || '').trim(),
       isPublic: isPublic === true,
+      serverType: resolvedType,
       icon: initials,
       inviteCode: inviteCode,
       ownerHandle: this.currentUser.handle,
@@ -1576,6 +1578,7 @@ class DataStore {
       serverName: newServer.name,
       serverDescription: newServer.description,
       isPublic: newServer.isPublic,
+      serverType: newServer.serverType,
       serverIcon: newServer.icon,
       memberCount: 1,
       serverId: newServer.id,
