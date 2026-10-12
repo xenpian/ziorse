@@ -2406,12 +2406,16 @@ class DataStore {
   getServerRoles(serverId) {
     if (!serverId) return [];
     const srv = this.servers.find(s => s.id === serverId || s.inviteCode === serverId);
-    if (!srv) return [];
-    if (!Array.isArray(srv.roles)) {
-      srv.roles = [];
+    let roles = (srv && Array.isArray(srv.roles) && srv.roles.length > 0) ? srv.roles : null;
+    if (!roles || roles.length === 0) {
+      const reg = this._loadInviteRegistry();
+      const code = (srv && srv.inviteCode) || serverId;
+      if (reg && reg[code] && Array.isArray(reg[code].roles)) {
+        roles = reg[code].roles;
+      }
     }
-    // Return sorted by position (0 is highest ranking)
-    return [...srv.roles].sort((a, b) => (a.position ?? 999) - (b.position ?? 999));
+    if (!roles) return [];
+    return [...roles].sort((a, b) => (a.position ?? 999) - (b.position ?? 999));
   }
 
   saveServerRole(serverId, roleData) {
