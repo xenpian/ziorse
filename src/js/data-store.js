@@ -1616,7 +1616,7 @@ class DataStore {
     // Yeni sunucu kaydı oluştur
     const ownerCategories = info.categories || null;
     const newServer = {
-      id: 'srv-' + Date.now(),
+      id: info.serverId || ('srv-' + code),
       name: info.serverName,
       icon: info.serverIcon,
       banner: info.serverBanner || '',
@@ -2078,16 +2078,16 @@ class DataStore {
 
   getServerMembers(inviteCode) {
     if (!inviteCode) return [];
-    let local = [];
-    try {
-      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode));
-      local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
-    } catch { local = []; }
-
     const srv = this.servers.find(s => s.inviteCode === inviteCode || s.id === inviteCode);
     const srvMembers = (srv && Array.isArray(srv.members)) ? srv.members : [];
 
-    const globalList = (window.__globalServerMembers && (window.__globalServerMembers[inviteCode] || (srv && window.__globalServerMembers[srv.inviteCode]))) || [];
+    let local = [];
+    try {
+      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode)) || (srv && srv.inviteCode ? ziorseGetStorage(this._serverMembersKey(srv.inviteCode)) : null);
+      local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
+    } catch { local = []; }
+
+    const globalList = (window.__globalServerMembers && (window.__globalServerMembers[inviteCode] || (srv && srv.inviteCode && window.__globalServerMembers[srv.inviteCode]) || (srv && window.__globalServerMembers[srv.id]))) || [];
 
     const registry = this._loadInviteRegistry();
     const inviteInfo = registry[inviteCode] || (srv && srv.inviteCode ? registry[srv.inviteCode] : null);
@@ -2183,6 +2183,18 @@ class DataStore {
           });
         }
       });
+    }
+
+    // 5. Ensure current user is in map if they are a member of this server
+    if (this.currentUser && this.currentUser.handle && srv) {
+      const myClean = (this.currentUser.handle || '').toLowerCase();
+      if (myClean && !map.has(myClean)) {
+        map.set(myClean, {
+          handle: this.currentUser.handle.startsWith('@') ? this.currentUser.handle : '@' + this.currentUser.handle,
+          name: this.currentUser.name || this.currentUser.handle.replace('@', ''),
+          avatar: this.currentUser.avatar || DEFAULT_AVATAR
+        });
+      }
     }
 
     const result = Array.from(map.values());
@@ -2420,14 +2432,15 @@ class DataStore {
     }
 
     if (this.activeServerId !== 'home') {
-      const srv = this.servers.find(s => s.id === this.activeServerId);
+      const srv = this.servers.find(s => s.id === this.activeServerId || s.inviteCode === this.activeServerId);
       const serverScopeId = (srv && (srv.inviteCode || srv.id)) || this.activeServerId;
       const targetScopeKey = serverScopeId + ':' + (this.activeChannelId || 'genel');
       return list.filter(p => {
         if (!p.serverChannelKey) return false;
         if (p.serverChannelKey === targetScopeKey) return true;
-        // Eski kayıtlı mesajlar için geriye dönük uyumluluk
+        // Geriye dönük uyumluluk: srv.id veya srv.inviteCode ile gönderilmiş olanlar
         if (srv && p.serverChannelKey === (srv.id + ':' + (this.activeChannelId || 'genel'))) return true;
+        if (srv && srv.inviteCode && p.serverChannelKey === (srv.inviteCode + ':' + (this.activeChannelId || 'genel'))) return true;
         return false;
       });
     }
