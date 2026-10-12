@@ -1231,7 +1231,8 @@ io.on('connection', (socket) => {
   socket.on('server-member-joined', (data) => {
     if (data && data.inviteCode && data.member) {
       if (!globalServerMembers[data.inviteCode]) globalServerMembers[data.inviteCode] = [];
-      const mHandle = data.member.handle.toLowerCase();
+      const mHandle = (data.member.handle || '').toLowerCase();
+      const cleanH = mHandle.replace('@', '');
       const idx = globalServerMembers[data.inviteCode].findIndex(m => m.handle.toLowerCase() === mHandle);
       if (idx === -1) {
         globalServerMembers[data.inviteCode].push(data.member);
@@ -1241,16 +1242,42 @@ io.on('connection', (socket) => {
           ...data.member
         };
       }
+
+      // serverId eşleşmesi varsa senkronize tut
+      const reg = globalInviteRegistry[data.inviteCode];
+      const srvId = (reg && reg.serverId) || data.serverId;
+      if (srvId && srvId !== data.inviteCode) {
+        globalServerMembers[srvId] = globalServerMembers[data.inviteCode];
+        saveServerMembersTxt(srvId);
+      }
+
       if (globalInviteRegistry[data.inviteCode]) {
         globalInviteRegistry[data.inviteCode].memberCount = globalServerMembers[data.inviteCode].length;
       }
+
+      // Kullanıcı dizinini güncelle
+      const fullH = mHandle.startsWith('@') ? mHandle : '@' + mHandle;
+      globalUserDirectory[fullH] = {
+        ...(globalUserDirectory[fullH] || {}),
+        ...data.member,
+        handle: fullH
+      };
+
+      // Katılan üyeyi anında online listesine de ekle
+      activeOnlineHandles.add(mHandle);
+      activeOnlineHandles.add(cleanH);
+
       saveSyncDb();
       saveServerMembersTxt(data.inviteCode);
       saveInviteRegistryTxt();
+
       io.emit('server-members-updated', globalServerMembers);
       io.emit('invite-registry-updated', globalInviteRegistry);
+      io.emit('user-directory-updated', globalUserDirectory);
+      io.emit('online-users-updated', Array.from(activeOnlineHandles));
       io.emit('server-member-joined-event', {
         inviteCode: data.inviteCode,
+        serverId: srvId,
         member: data.member,
         members: globalServerMembers[data.inviteCode]
       });
