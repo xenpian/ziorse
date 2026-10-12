@@ -3981,7 +3981,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function switchToServer(serverId, targetChannelId = 'genel') {
+  function switchToServer(serverId, targetChannelId = null) {
     navRailIcons.forEach(i => i.classList.remove('active'));
     window.dataStore.activeServerId = serverId;
     window.dataStore.activeFilter = 'for-you';
@@ -3992,7 +3992,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const srvObj = window.dataStore.servers.find(s => s.id === serverId);
     if (srvObj) {
-      renderServerChannels(srvObj, targetChannelId);
+      const isOfficial = srvObj.id === 'srv-ziorse-official' || srvObj.inviteCode === 'ziorse';
+      const chIdToUse = targetChannelId || (isOfficial ? 'chat' : 'genel');
+      renderServerChannels(srvObj, chIdToUse);
     }
     if (feedPostsContainer) feedPostsContainer.style.display = '';
     if (composerCard) composerCard.style.display = 'flex';
