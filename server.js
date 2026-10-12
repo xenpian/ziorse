@@ -522,6 +522,68 @@ function saveSyncDb() {
 
 loadSyncDb();
 
+function ensureOfficialServerBackend() {
+  const officialCode = 'ziorse';
+  const officialId = 'srv-ziorse-official';
+  if (!globalInviteRegistry[officialCode]) {
+    globalInviteRegistry[officialCode] = {
+      serverName: 'ziorse.com',
+      serverDescription: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+      isPublic: true,
+      isOfficial: true,
+      serverType: 'community',
+      serverIcon: 'logo.png',
+      serverId: officialId,
+      ownerHandle: '@ziorse',
+      ownerName: 'Ziorse Official',
+      ownerAvatar: 'logo.png',
+      memberCount: 1,
+      categories: [
+        {
+          id: 'cat-ziorse-genel',
+          name: 'BİLGİLENDİRME & SOHBET',
+          channels: [
+            { id: 'ch-ziorse-duyurular', name: 'duyurular', type: 'text', topic: 'Resmi duyurular ve güncellemeler' },
+            { id: 'genel', name: 'genel-sohbet', type: 'text', topic: 'Tüm Ziorse kullanıcıları için genel sohbet' },
+            { id: 'ch-ziorse-yardim', name: 'yardim-destek', type: 'text', topic: 'Soru, öneri ve destek kanalı' },
+            { id: 'ch-ziorse-ses', name: 'Genel Ses Odası', type: 'voice' }
+          ]
+        }
+      ]
+    };
+  } else {
+    globalInviteRegistry[officialCode].serverName = 'ziorse.com';
+    globalInviteRegistry[officialCode].isOfficial = true;
+    globalInviteRegistry[officialCode].serverType = 'community';
+    if (!globalInviteRegistry[officialCode].serverId) globalInviteRegistry[officialCode].serverId = officialId;
+  }
+
+  if (!globalServerMembers[officialCode]) globalServerMembers[officialCode] = [];
+  globalServerMembers[officialId] = globalServerMembers[officialCode];
+
+  // Mevcut tüm hesapları otomatik olarak ziorse.com sunucusuna üye yap
+  if (Array.isArray(globalAccounts)) {
+    globalAccounts.forEach(acc => {
+      if (acc && acc.handle) {
+        const cleanH = acc.handle.toLowerCase();
+        if (!globalServerMembers[officialCode].some(m => m.handle.toLowerCase() === cleanH)) {
+          globalServerMembers[officialCode].push({
+            handle: acc.handle,
+            name: acc.name || acc.handle.replace('@', ''),
+            avatar: acc.avatar || ''
+          });
+        }
+      }
+    });
+  }
+
+  globalInviteRegistry[officialCode].memberCount = Math.max(globalServerMembers[officialCode].length, 1);
+  saveInviteRegistryTxt();
+  saveServerMembersTxt(officialCode);
+  saveServerMembersTxt(officialId);
+}
+ensureOfficialServerBackend();
+
 // ── AUTH & ACCOUNTS REST API ───────────────────────────────────
 app.get('/api/accounts', (req, res) => {
   res.json({ accounts: globalAccounts });
@@ -560,6 +622,25 @@ app.post(['/api/register', '/api/auth/register'], (req, res) => {
     following: 0,
     status: { type: 'online', text: '' }
   };
+
+  // Yeni hesabı anında resmi ziorse.com sunucusuna üye yap
+  if (!globalServerMembers['ziorse']) globalServerMembers['ziorse'] = [];
+  if (!globalServerMembers['ziorse'].some(m => m.handle.toLowerCase() === cleanHandle.toLowerCase())) {
+    globalServerMembers['ziorse'].push({
+      handle: acc.handle,
+      name: acc.name,
+      avatar: acc.avatar || ''
+    });
+    globalServerMembers['srv-ziorse-official'] = globalServerMembers['ziorse'];
+    if (globalInviteRegistry['ziorse']) {
+      globalInviteRegistry['ziorse'].memberCount = globalServerMembers['ziorse'].length;
+    }
+    saveServerMembersTxt('ziorse');
+    saveServerMembersTxt('srv-ziorse-official');
+    saveInviteRegistryTxt();
+    io.emit('server-members-updated', globalServerMembers);
+    io.emit('invite-registry-updated', globalInviteRegistry);
+  }
 
   saveSyncDb();
   io.emit('accounts-updated', globalAccounts);
