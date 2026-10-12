@@ -2,7 +2,7 @@
   {
     "id": "srv-ziorse-official",
     "name": "ziorse.comf",
-    "description": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
+    "description": "Welcome to Ziorse.",
     "icon": "logo.png",
     "banner": "",
     "inviteCode": "ziorse",

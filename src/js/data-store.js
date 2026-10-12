@@ -33,7 +33,7 @@ const DEFAULT_AVATAR = window.DEFAULT_AVATAR;
 const OFFICIAL_ZIORSE_SERVER = {
   id: 'srv-ziorse-official',
   name: 'ziorse.com',
-  description: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+  description: 'Welcome to Ziorse.',
   icon: 'logo.png',
   banner: '',
   inviteCode: 'ziorse',
