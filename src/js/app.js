@@ -625,9 +625,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('online-users-updated', (handles) => {
-      window.__globalOnlineHandles = handles || [];
+      window.__globalOnlineHandles = (handles || []).map(h => (h || '').toLowerCase().replace('@', ''));
       renderOnlineMembers();
       updateRightSidebar();
+      renderDMs();
+      if (typeof renderDMFriendsSidebar === 'function') renderDMFriendsSidebar();
     });
 
     socket.on('voice-users-updated', (rooms) => {
