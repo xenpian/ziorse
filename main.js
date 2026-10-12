@@ -148,9 +148,14 @@ function readPersistentStore() {
       const key = decodeURIComponent(file.replace(/\.txt$/, ''));
       const content = fs.readFileSync(path.join(SYSTEM_DIR, file), 'utf8');
       try {
-        memoryStore[key] = JSON.parse(content);
+        const parsed = JSON.parse(content);
+        if (parsed !== null && parsed !== undefined) {
+          memoryStore[key] = parsed;
+        }
       } catch {
-        memoryStore[key] = content;
+        if (content && content !== 'null' && content !== 'undefined') {
+          memoryStore[key] = content;
+        }
       }
     }
   } catch (err) {
