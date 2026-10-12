@@ -2151,11 +2151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let onlineCount = 0;
         members.forEach(m => {
           if (!m || !m.handle) return;
-          const cleanH = m.handle.toLowerCase().replace('@', '');
-          const fullH = '@' + cleanH;
-          const dirUser = window.__globalUserDirectory && (window.__globalUserDirectory[fullH] || window.__globalUserDirectory[cleanH]);
-          const isOnline = onlineHandles.has(cleanH) || onlineHandles.has(fullH) || (dirUser && dirUser.status && dirUser.status.type !== 'offline');
-          if (isOnline) onlineCount++;
+          if (isUserHandleOnline(m.handle)) onlineCount++;
         });
         if (onlineCount === 0 && totalMembers > 0) onlineCount = 1;
         const offlineCount = Math.max(0, totalMembers - onlineCount);
