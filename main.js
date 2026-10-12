@@ -612,6 +612,9 @@ function createMainWindow() {
 
   mainWindow.loadFile(path.join(__dirname, 'src/index.html'));
   mainWindow.webContents.openDevTools();
+  mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    console.log(`[Renderer Console L${level}] ${sourceId}:${line} -> ${message}`);
+  });
   mainWindow.on('resize', () => saveWindowBounds(mainWindow.getBounds()));
   mainWindow.on('move', () => saveWindowBounds(mainWindow.getBounds()));
   mainWindow.on('maximize', () => mainWindow.webContents.send('window-maximized-state', true));
