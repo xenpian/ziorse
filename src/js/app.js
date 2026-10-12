@@ -5763,14 +5763,14 @@ document.addEventListener('DOMContentLoaded', () => {
               brandContainer.innerHTML = `
                 <div class="header-server-badge">
                   <img class="header-server-icon" src="${escapeHtml(srv.icon)}" alt="${escapeHtml(srv.name)}" onerror="this.style.display='none'">
-                  <span class="header-server-name">${escapeHtml(srv.name)}</span>
+                  <span class="header-server-name">${escapeHtml(srv.name)}</span>${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv) : ''}
                 </div>`;
             } else {
               const initials = escapeHtml((srv.name || 'S').substring(0, 2).toUpperCase());
               brandContainer.innerHTML = `
                 <div class="header-server-badge">
                   <span class="header-server-icon-placeholder">${initials}</span>
-                  <span class="header-server-name">${escapeHtml(srv.name)}</span>
+                  <span class="header-server-name">${escapeHtml(srv.name)}</span>${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv) : ''}
                 </div>`;
             }
           }
