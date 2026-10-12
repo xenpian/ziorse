@@ -14,8 +14,14 @@ window.getZiorseServerUrl = getZiorseServerUrl;
 function formatMediaUrl(url) {
   if (!url || typeof url !== 'string') return url;
   const srv = getZiorseServerUrl();
+  while (url.includes('http://localhost:3000http://localhost:3000/')) {
+    url = url.replace('http://localhost:3000http://localhost:3000/', 'http://localhost:3000/');
+  }
   if (url.startsWith('http://localhost:3000/uploads/')) {
     return srv + url.substring('http://localhost:3000'.length);
+  }
+  if (url.startsWith('http://localhost:3001/uploads/')) {
+    return srv + url.substring('http://localhost:3001'.length);
   }
   if (url.startsWith('/uploads/')) {
     return srv + url;
