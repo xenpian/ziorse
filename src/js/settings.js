@@ -1352,8 +1352,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.electronAPI && typeof window.electronAPI.getMemberThemes === 'function') {
         const res = await window.electronAPI.getMemberThemes();
         themes = (res && res.themes) || [];
-      } else {
-        const res = await fetch('http://localhost:3000/api/member-themes').catch(() => fetch('/api/member-themes'));
+        const srv = window.getZiorseServerUrl ? window.getZiorseServerUrl() : '';
+        const res = await fetch((srv ? srv : '') + '/api/member-themes').catch(() => fetch('/api/member-themes'));
         const data = await res.json();
         themes = (data && data.themes) || [];
       }
