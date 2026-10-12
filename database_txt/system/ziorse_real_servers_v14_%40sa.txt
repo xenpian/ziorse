@@ -92,13 +92,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       },
       {
         "handle": "@fafafa",
@@ -191,13 +185,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -242,13 +230,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       },
       {
         "handle": "@fas",
@@ -358,13 +340,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -409,13 +385,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -460,13 +430,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -511,13 +475,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -561,13 +519,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -611,13 +563,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "sa",
@@ -662,13 +608,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -712,13 +652,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -762,13 +696,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -812,13 +740,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -862,13 +784,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "ziorse creator",
@@ -912,13 +828,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -962,13 +872,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1012,13 +916,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1062,13 +960,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1112,13 +1004,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1162,13 +1048,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1212,13 +1092,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1262,13 +1136,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1312,13 +1180,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1362,13 +1224,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1412,13 +1268,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1462,13 +1312,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1512,13 +1356,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1562,13 +1400,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "banner": "",
@@ -1609,13 +1441,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1659,13 +1485,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1709,13 +1529,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "fasfsad",
@@ -1759,13 +1573,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "banner": "",
@@ -1808,13 +1616,7 @@
       {
         "handle": "@sa",
         "name": "ziorse creator",
-        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png",
-        "fontStyle": "righteous",
-        "fontWeight": "900",
-        "nameColor": "#18181b",
-        "nameEffects": [],
-        "avatarFrame": "assets/avatar-frames/Liaz.png",
-        "memberTheme": "assets/member-themes/6819940_2156718_ericj2711_untitled-6819940.d3de68853fa0f9673b3dff773b332faa.gif"
+        "avatar": "http://localhost:3000/uploads/avatar_1791669449956_gcbyr.png"
       }
     ],
     "ownerName": "ziorse creator",
