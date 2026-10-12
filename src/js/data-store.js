@@ -3,6 +3,30 @@
  * Features: editPost, togglePin, blockUser, setStatus, notifications
  */
 
+function getZiorseServerUrl() {
+  if (typeof window !== 'undefined' && window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
+    return window.location.origin;
+  }
+  return 'http://localhost:3001';
+}
+window.getZiorseServerUrl = getZiorseServerUrl;
+
+function formatMediaUrl(url) {
+  if (!url || typeof url !== 'string') return url;
+  const srv = getZiorseServerUrl();
+  if (url.startsWith('http://localhost:3000/uploads/')) {
+    return srv + url.substring('http://localhost:3000'.length);
+  }
+  if (url.startsWith('/uploads/')) {
+    return srv + url;
+  }
+  if (url.startsWith('uploads/')) {
+    return srv + '/' + url;
+  }
+  return url;
+}
+window.formatMediaUrl = formatMediaUrl;
+
 window.DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E";
 const DEFAULT_AVATAR = window.DEFAULT_AVATAR;
 
@@ -47,13 +71,15 @@ function _initMemCacheOnce(forceReload = false) {
     // Browser Parity: Synchronously hydrate memory cache from server DB API
     try {
       const xhr = new XMLHttpRequest();
-      const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
+      const srvUrl = getZiorseServerUrl();
       xhr.open('GET', srvUrl + '/api/store/all', false);
       xhr.send();
       if (xhr.status === 200) {
         const all = JSON.parse(xhr.responseText);
         if (all && typeof all === 'object') {
           for (const [k, v] of Object.entries(all)) {
+            // Client session state is strictly local to each browser window/port and never overwritten by server
+            if (k === 'ziorse_real_user_v14' || k === 'ziorse_jwt_token' || k === 'ziorse_user') continue;
             if (v === null || v === undefined || v === 'null') {
               _ziorseMemCache.delete(k);
               _ziorseParsedCache.delete(k);
@@ -127,14 +153,16 @@ function ziorseRemoveStorage(key) {
     window.electronAPI.storeSet(key, null).catch(() => { });
   }
 
-  // Cross-environment server delete (synchronous so it completes before any navigation or unload)
-  try {
-    const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', srvUrl + '/api/store/delete', false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({ key }));
-  } catch (e) { }
+  // Cross-environment server delete (never delete client session keys globally)
+  if (key !== 'ziorse_real_user_v14' && key !== 'ziorse_jwt_token' && key !== 'ziorse_user') {
+    try {
+      const srvUrl = getZiorseServerUrl();
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', srvUrl + '/api/store/delete', false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({ key }));
+    } catch (e) { }
+  }
 
   if (window.parent && window.parent !== window) {
     try {
@@ -172,14 +200,17 @@ function ziorseSetStorage(key, val) {
   }
 
   // Cross-environment server sync: keep Express server.js memory & disk in full parity
-  try {
-    const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
-    fetch(srvUrl + '/api/store/set', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key, val: isObj ? val : strVal })
-    }).catch(() => { });
-  } catch (e) { }
+  // DO NOT sync client-local user session to the global Express backend!
+  if (key !== 'ziorse_real_user_v14' && key !== 'ziorse_jwt_token' && key !== 'ziorse_user') {
+    try {
+      const srvUrl = getZiorseServerUrl();
+      fetch(srvUrl + '/api/store/set', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, val: isObj ? val : strVal })
+      }).catch(() => { });
+    } catch (e) { }
+  }
 
   // Cross-frame sync: If inside an iframe/modal, sync directly to parent window's in-memory store
   if (window.parent && window.parent !== window) {
