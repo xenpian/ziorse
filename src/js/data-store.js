@@ -25,6 +25,11 @@ function _initMemCacheOnce() {
       const all = window.electronAPI.storeGetAllSync();
       if (all && typeof all === 'object') {
         for (const [k, v] of Object.entries(all)) {
+          if (v === null || v === undefined || v === 'null') {
+            _ziorseMemCache.delete(k);
+            _ziorseParsedCache.delete(k);
+            continue;
+          }
           if (typeof v === 'object' && v !== null) {
             _ziorseMemCache.set(k, JSON.stringify(v));
             _ziorseParsedCache.set(k, v);
@@ -45,6 +50,11 @@ function _initMemCacheOnce() {
         const all = JSON.parse(xhr.responseText);
         if (all && typeof all === 'object') {
           for (const [k, v] of Object.entries(all)) {
+            if (v === null || v === undefined || v === 'null') {
+              _ziorseMemCache.delete(k);
+              _ziorseParsedCache.delete(k);
+              continue;
+            }
             if (typeof v === 'object' && v !== null) {
               _ziorseMemCache.set(k, JSON.stringify(v));
               _ziorseParsedCache.set(k, v);
@@ -112,10 +122,27 @@ function ziorseRemoveStorage(key) {
   } else if (window.electronAPI?.storeSet) {
     window.electronAPI.storeSet(key, null).catch(() => { });
   }
+
+  // Cross-environment server delete (synchronous so it completes before any navigation or unload)
+  try {
+    const srvUrl = (window.location && window.location.protocol.startsWith('http')) ? '' : 'http://localhost:3000';
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', srvUrl + '/api/store/delete', false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({ key }));
+  } catch (e) { }
+
   if (window.parent && window.parent !== window) {
     try {
       if (typeof window.parent.ziorseRemoveStorage === 'function') {
         window.parent.ziorseRemoveStorage(key);
+      }
+    } catch (e) { }
+  }
+  if (window.top && window.top !== window && window.top !== window.parent) {
+    try {
+      if (typeof window.top.ziorseRemoveStorage === 'function') {
+        window.top.ziorseRemoveStorage(key);
       }
     } catch (e) { }
   }
@@ -739,6 +766,21 @@ class DataStore {
     ziorseRemoveStorage(userKey);
     try { localStorage.removeItem(userKey); } catch (e) { }
     try { localStorage.removeItem('ziorse_jwt_token'); } catch (e) { }
+    try { localStorage.removeItem('ziorse_user'); } catch (e) { }
+
+    if (window.parent && window.parent !== window && window.parent.dataStore) {
+      window.parent.dataStore.currentUser = null;
+      if (typeof window.parent.ziorseRemoveStorage === 'function') {
+        window.parent.ziorseRemoveStorage(userKey);
+      }
+    }
+    if (window.top && window.top !== window && window.top.dataStore) {
+      window.top.dataStore.currentUser = null;
+      if (typeof window.top.ziorseRemoveStorage === 'function') {
+        window.top.ziorseRemoveStorage(userKey);
+      }
+    }
+
     this.servers = [];
     this.friends = [];
     this.friendRequests = { incoming: [], outgoing: [] };
@@ -750,7 +792,7 @@ class DataStore {
 
     // Hedef pencere: iframe içindeyse en üst pencereyi (window.top) yönlendir
     const targetWin = (window.top && window.top.location) ? window.top : window;
-    targetWin.location.replace('login.html');
+    targetWin.location.replace('login.html?logout=1');
   }
 
   loadFollowed() {
