@@ -33,27 +33,24 @@ const DEFAULT_AVATAR = window.DEFAULT_AVATAR;
 const OFFICIAL_ZIORSE_SERVER = {
   id: 'srv-ziorse-official',
   name: 'ziorse.com',
-  description: 'Welcome to Ziorse.',
-  icon: 'logo.png',
-  banner: '',
+  description: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+  icon: '/uploads/srv_icon_1791843284247_wagh8.png',
+  banner: '/uploads/srv_banner_1791843284248_6kbj4.png',
   inviteCode: 'ziorse',
   isOfficial: true,
   isPublic: true,
   serverType: 'community',
-  ownerHandle: '@ziorse',
-  ownerName: 'Ziorse Official',
+  ownerHandle: '@sa',
+  ownerName: 'sa',
   ownerAvatar: 'logo.png',
   memberCount: 1,
   categories: [
     {
       id: 'cat-ziorse-genel',
-      name: 'BİLGİLENDİRME & SOHBET',
+      name: 'METİN KANALLARI',
       collapsed: false,
       channels: [
-        { id: 'ch-ziorse-duyurular', name: 'duyurular', type: 'text', topic: 'Resmi duyurular ve güncellemeler' },
-        { id: 'genel', name: 'genel-sohbet', type: 'text', topic: 'Tüm Ziorse kullanıcıları için genel sohbet' },
-        { id: 'ch-ziorse-yardim', name: 'yardim-destek', type: 'text', topic: 'Soru, öneri ve destek kanalı' },
-        { id: 'ch-ziorse-ses', name: 'Genel Ses Odası', type: 'voice' }
+        { id: 'chat', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
       ]
     }
   ]
