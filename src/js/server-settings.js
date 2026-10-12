@@ -735,8 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isSelf = m.handle === ds.currentUser.handle;
       const profile = ds.getUserProfile(m.handle);
       const name = profile.name || m.name || m.handle;
-      let avatar = profile.avatar || m.avatar || window.DEFAULT_AVATAR;
-      if (avatar && avatar.startsWith('/uploads/')) avatar = 'http://localhost:3000' + avatar;
+      if (avatar && (avatar.startsWith('/uploads/') || avatar.startsWith('http://localhost:3000/uploads/'))) avatar = (window.formatMediaUrl ? window.formatMediaUrl(avatar) : avatar);
       const memberRoles = ds.getServerRoles ? ds.getMemberRoles(server.id, m.handle) : [];
       const highestRole = ds.getMemberHighestRole ? ds.getMemberHighestRole(server.id, m.handle) : null;
       const nameColorStyle = highestRole ? `style="color:${highestRole.color}; font-weight:700;"` : '';
