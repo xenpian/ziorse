@@ -68,5 +68,15 @@
     "handle": "@testbot",
     "name": "Test Bot",
     "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E"
+  },
+  {
+    "handle": "@saf",
+    "name": "safsfdsvv",
+    "avatar": "http://localhost:3000/uploads/avatar_saf.png"
+  },
+  {
+    "handle": "@fas",
+    "name": "fas",
+    "avatar": "http://localhost:3000/uploads/avatar_1789671526343_sdcd7.png"
   }
 ]
