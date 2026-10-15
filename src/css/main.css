@@ -1442,10 +1442,11 @@ body.dark-mode .header-server-badge {
 }
 
 .stt-banner {
-  height: 50px;
+  height: 54px;
   width: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   background-color: var(--bg-sidebar);
 }
@@ -1479,12 +1480,14 @@ body.dark-mode .header-server-badge {
   font-family: var(--font-montserrat);
   font-size: 0.95rem;
   color: var(--text-main);
+  box-shadow: 0 0 0 3px var(--bg-card);
 }
 
 .stt-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .stt-avatar-initials {
