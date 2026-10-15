@@ -2,8 +2,6 @@
    ZIORSE - DISCORD-STYLE RICH PROFILE EDIT STYLES
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Russo+One&display=swap');
-
 /* Reset and ensure transparent frame background */
 *, *::before, *::after {
   box-sizing: border-box;
