@@ -3650,7 +3650,7 @@ body.dark-mode .draw-color-picker-btn:hover {
   border-radius: var(--radius-lg);
   width: 460px;
   max-width: 90vw;
-  max-height: 85vh;
+  max-height: 60vh;
   overflow-y: auto;
   padding: 24px;
   display: flex;
