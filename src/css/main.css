@@ -213,8 +213,14 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 }
 
 /* ── SADE BUTON SİSTEMİ ─────────────────────────────────────────── */
-button {
+button,
+input,
+textarea,
+select {
   font-family: inherit;
+}
+
+button {
   cursor: pointer;
 }
 
