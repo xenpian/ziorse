@@ -1702,7 +1702,7 @@
     },
     "ziorse": {
       "serverName": "ziorse.com",
-      "serverDescription": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
+      "serverDescription": "welcome.",
       "serverIcon": "/uploads/srv_icon_1791843284247_wagh8.png",
       "serverBanner": "/uploads/srv_banner_1791843284248_6kbj4.png",
       "memberCount": 13,
@@ -1726,7 +1726,7 @@
         }
       ],
       "isPublic": true,
-      "description": "Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!",
+      "description": "welcome.",
       "roles": [],
       "memberRoles": {},
       "isOfficial": true,
