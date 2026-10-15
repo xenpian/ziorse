@@ -546,7 +546,8 @@ function ensureOfficialServerBackend() {
   if (!globalInviteRegistry[officialCode]) {
     globalInviteRegistry[officialCode] = {
       serverName: 'ziorse.com',
-      serverDescription: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+      serverDescription: 'welcome.',
+      description: 'welcome.',
       isPublic: true,
       isOfficial: true,
       serverType: 'community',
@@ -575,6 +576,18 @@ function ensureOfficialServerBackend() {
     globalInviteRegistry[officialCode].isOfficial = true;
     if (!globalInviteRegistry[officialCode].serverName) globalInviteRegistry[officialCode].serverName = 'ziorse.com';
     if (!globalInviteRegistry[officialCode].serverId) globalInviteRegistry[officialCode].serverId = officialId;
+    if (!globalInviteRegistry[officialCode].serverIcon || globalInviteRegistry[officialCode].serverIcon === 'logo.png') {
+      globalInviteRegistry[officialCode].serverIcon = '/uploads/srv_icon_1791843284247_wagh8.png';
+    }
+    if (!globalInviteRegistry[officialCode].serverBanner) {
+      globalInviteRegistry[officialCode].serverBanner = '/uploads/srv_banner_1791843284248_6kbj4.png';
+    }
+    if (globalInviteRegistry[officialCode].serverDescription === 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' || !globalInviteRegistry[officialCode].serverDescription) {
+      globalInviteRegistry[officialCode].serverDescription = 'welcome.';
+    }
+    if (globalInviteRegistry[officialCode].description === 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' || !globalInviteRegistry[officialCode].description) {
+      globalInviteRegistry[officialCode].description = 'welcome.';
+    }
     
     // Eski 4 kanallı yapı varsa tek 'chat' kanalına güncelle
     const cats = globalInviteRegistry[officialCode].categories;
