@@ -1,10 +1,10 @@
 [
   {
     "id": "srv-ziorse-official",
-    "name": "ziorse.comf",
-    "description": "Welcome to Ziorse.",
-    "icon": "logo.png",
-    "banner": "",
+    "name": "ziorse.com",
+    "description": "welcome.",
+    "icon": "/uploads/srv_icon_1791843284247_wagh8.png",
+    "banner": "/uploads/srv_banner_1791843284248_6kbj4.png",
     "inviteCode": "ziorse",
     "isOfficial": true,
     "isPublic": true,
