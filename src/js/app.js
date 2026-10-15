@@ -6545,8 +6545,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderInviteIconHtml(iconVal, nameVal) {
-    if (iconVal && (iconVal.startsWith('data:image') || iconVal.startsWith('http'))) {
-      return `<img src="${escapeHtml(iconVal)}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`;
+    const isImg = iconVal && (
+      iconVal.startsWith('data:image') ||
+      iconVal.startsWith('http') ||
+      iconVal.startsWith('/uploads') ||
+      iconVal.startsWith('uploads') ||
+      iconVal.includes('/') ||
+      /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(iconVal)
+    );
+    if (isImg) {
+      return `<img src="${escapeHtml(normalizeMediaUrl(iconVal))}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`;
     }
     let initials = 'SR';
     if (iconVal && iconVal.length <= 4) {
@@ -6582,9 +6590,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sunucuda zaten var mıyız?
     const isMember = !!srv || (typeof window.dataStore?.isServerMember === 'function' && window.dataStore.isServerMember(code));
 
-    const bannerStyle = banner
-      ? `background-image: url('${escapeHtml(banner)}');`
-      : `background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);`;
+    const hasBanner = banner && (
+      banner.startsWith('data:image') ||
+      banner.startsWith('http') ||
+      banner.startsWith('/uploads') ||
+      banner.startsWith('uploads') ||
+      banner.includes('/') ||
+      /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(banner)
+    );
+    const bannerStyle = hasBanner
+      ? `background-image: url('${escapeHtml(normalizeMediaUrl(banner))}');`
+      : (banner && (banner.startsWith('#') || banner.startsWith('rgb') || banner.startsWith('linear-gradient'))
+          ? `background: ${escapeHtml(banner)};`
+          : `background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);`);
 
     return `
       <div class="dm-invite-card">
