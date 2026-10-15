@@ -39,7 +39,7 @@ const DEFAULT_AVATAR = window.DEFAULT_AVATAR;
 const OFFICIAL_ZIORSE_SERVER = {
   id: 'srv-ziorse-official',
   name: 'ziorse.com',
-  description: 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!',
+  description: 'welcome.',
   icon: '/uploads/srv_icon_1791843284247_wagh8.png',
   banner: '/uploads/srv_banner_1791843284248_6kbj4.png',
   inviteCode: 'ziorse',
@@ -1416,12 +1416,37 @@ class DataStore {
     else if (!officialSrv.name) officialSrv.name = 'ziorse.com';
 
     if (regOfficial.serverIcon) officialSrv.icon = regOfficial.serverIcon;
-    else if (!officialSrv.icon) officialSrv.icon = OFFICIAL_ZIORSE_SERVER.icon || '';
+    else if (!officialSrv.icon || officialSrv.icon === 'logo.png' || officialSrv.icon === 'SR' || officialSrv.icon === 'ZI') officialSrv.icon = OFFICIAL_ZIORSE_SERVER.icon || '/uploads/srv_icon_1791843284247_wagh8.png';
 
-    if (regOfficial.serverBanner !== undefined) officialSrv.banner = regOfficial.serverBanner;
-    else if (!officialSrv.banner) officialSrv.banner = OFFICIAL_ZIORSE_SERVER.banner || '';
+    if (regOfficial.serverBanner !== undefined && regOfficial.serverBanner) officialSrv.banner = regOfficial.serverBanner;
+    else if (!officialSrv.banner) officialSrv.banner = OFFICIAL_ZIORSE_SERVER.banner || '/uploads/srv_banner_1791843284248_6kbj4.png';
 
-    if (regOfficial.description !== undefined) officialSrv.description = regOfficial.description;
+    if (!officialSrv.icon || officialSrv.icon === 'logo.png' || officialSrv.icon === 'SR' || officialSrv.icon === 'ZI') {
+      officialSrv.icon = OFFICIAL_ZIORSE_SERVER.icon || '/uploads/srv_icon_1791843284247_wagh8.png';
+    }
+    if (!officialSrv.banner) {
+      officialSrv.banner = OFFICIAL_ZIORSE_SERVER.banner || '/uploads/srv_banner_1791843284248_6kbj4.png';
+    }
+
+    // Açıklama: Sadece 'welcome.' olsun
+    if (regOfficial.serverDescription !== undefined && regOfficial.serverDescription !== 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' && regOfficial.serverDescription !== 'Welcome to Ziorse.') {
+      officialSrv.description = regOfficial.serverDescription;
+    } else if (regOfficial.description !== undefined && regOfficial.description !== 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' && regOfficial.description !== 'Welcome to Ziorse.') {
+      officialSrv.description = regOfficial.description;
+    } else {
+      officialSrv.description = 'welcome.';
+    }
+
+    if (officialSrv.description === 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' || officialSrv.description === 'Welcome to Ziorse.' || !officialSrv.description) {
+      officialSrv.description = 'welcome.';
+    }
+
+    if (regOfficial.serverDescription === 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' || regOfficial.description === 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' || !regOfficial.serverDescription) {
+      regOfficial.serverDescription = 'welcome.';
+      regOfficial.description = 'welcome.';
+      registry['ziorse'] = regOfficial;
+      if (typeof ziorseSetStorage === 'function') ziorseSetStorage('ziorse_invite_registry', registry);
+    }
     if (regOfficial.isPublic !== undefined) officialSrv.isPublic = regOfficial.isPublic;
     if (regOfficial.serverType) officialSrv.serverType = regOfficial.serverType;
     if (Array.isArray(regOfficial.roles)) officialSrv.roles = regOfficial.roles;
