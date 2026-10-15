@@ -175,7 +175,25 @@ function _initMemCacheOnce(forceReload = false) {
   }
 }
 
+// Oturum anahtarları pencereye özeldir (iki pencerede farklı hesap açılabilsin diye)
+const _ZIORSE_SESSION_KEYS = new Set(['ziorse_real_user_v14', 'ziorse_jwt_token', 'ziorse_user']);
+
 function ziorseGetStorage(key) {
+  if (_ZIORSE_SESSION_KEYS.has(key)) {
+    try {
+      const s = sessionStorage.getItem(key);
+      if (s !== null && s !== undefined) return s;
+    } catch (e) { }
+    const v = _ziorseGetStoragePersistent(key);
+    if (v !== null && v !== undefined) {
+      try { sessionStorage.setItem(key, typeof v === 'string' ? v : JSON.stringify(v)); } catch (e) { }
+    }
+    return v;
+  }
+  return _ziorseGetStoragePersistent(key);
+}
+
+function _ziorseGetStoragePersistent(key) {
   _initMemCacheOnce();
   if (_ziorseMemCache.has(key)) {
     return _ziorseMemCache.get(key);
@@ -223,6 +241,9 @@ function ziorseRemoveStorage(key) {
   _memCacheLoaded = true;
   _ziorseMemCache.delete(key);
   _ziorseParsedCache.delete(key);
+  if (_ZIORSE_SESSION_KEYS.has(key)) {
+    try { sessionStorage.removeItem(key); } catch (e) { }
+  }
   try { localStorage.removeItem(key); } catch (e) { }
   if (window.electronAPI?.storeSetSync) {
     try { window.electronAPI.storeSetSync(key, null); } catch (e) { }
@@ -268,6 +289,9 @@ function ziorseSetStorage(key, val) {
     _ziorseParsedCache.set(key, val); // Update parsed cache too
   } else {
     _ziorseParsedCache.delete(key);
+  }
+  if (_ZIORSE_SESSION_KEYS.has(key)) {
+    try { sessionStorage.setItem(key, strVal); } catch (e) { }
   }
   try { localStorage.setItem(key, strVal); } catch (e) { }
   if (window.electronAPI?.storeSetSync) {
@@ -315,15 +339,10 @@ function ziorseSetStorage(key, val) {
 // Storage event listener for cross-window / cross-process cache invalidation
 try {
   window.addEventListener('storage', (e) => {
-    if (e.key) {
+    // Oturum anahtarları pencereye özeldir; başka penceredeki giriş bu pencereyi etkilememeli
+    if (e.key && !_ZIORSE_SESSION_KEYS.has(e.key)) {
       _ziorseMemCache.delete(e.key);
       _ziorseParsedCache.delete(e.key);
-      if (window.dataStore && e.key === window.dataStore.storageKeyUser) {
-        window.dataStore.currentUser = window.dataStore.loadUser();
-        if (typeof window.syncUserDisplay === 'function') {
-          window.syncUserDisplay();
-        }
-      }
     }
   });
 } catch (e) { }
