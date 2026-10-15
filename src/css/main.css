@@ -10287,8 +10287,8 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 
 
 .privacy-option-card.active {
-  background: #DEDEDE;
-  border-color: #f8f8f8;
+  background: #E3E3E3;
+  border-color: #DEDEDE;
 }
 
 .poc-header {
