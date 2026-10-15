@@ -10287,7 +10287,7 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 
 
 .privacy-option-card.active {
-  background: black;
+  background: #999999;
   border-color: #f8f8f8;
 }
 
