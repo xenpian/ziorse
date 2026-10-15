@@ -193,6 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.isUserHandleOnline = isUserHandleOnline;
 
+  function presenceDotHtml(statusType, isOnline) {
+    const colors = { online: '#22c55e', idle: '#eab308', dnd: '#ef4444', invisible: '#737373', offline: '#737373' };
+    const t = isOnline ? (statusType || 'online') : 'offline';
+    const color = colors[t] || (isOnline ? '#22c55e' : '#737373');
+    return `<span class="user-status-dot" data-status="${t}" style="position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:${color};border:2px solid var(--bg-card,#18181b);box-sizing:border-box;z-index:3;"></span>`;
+  }
+
   function getUserEffectiveStatus(handle) {
     if (!handle) return { type: 'offline', text: '', isOnline: false };
     const clean = handle.toLowerCase().replace('@', '');
@@ -4794,8 +4801,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return `
         <div class="user-member-item" data-handle="${u.handle}">
           ${themeBgHtml}
-          <div class="avatar-wrapper-status">
+          <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
             <img class="user-avatar-sm" src="${u.avatar}" alt="${escapeHtml(u.name)}">
+            ${presenceDotHtml(stType, true)}
           </div>
           <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
             <span class="user-member-name">${escapeHtml(u.name)}${u.isSelf ? ' <span style="font-size:0.68rem;color:var(--text-muted)">(sen)</span>' : ''}</span>
@@ -4813,8 +4821,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
         <div class="user-member-item" style="opacity:0.55;" data-handle="${u.handle}">
           ${themeBgHtml}
-          <div class="avatar-wrapper-status">
+          <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
             <img class="user-avatar-sm" src="${u.avatar}" alt="${escapeHtml(u.name)}">
+            ${presenceDotHtml('offline', false)}
           </div>
           <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
             <span class="user-member-name">${escapeHtml(u.name)}</span>
@@ -6124,8 +6133,9 @@ document.addEventListener('DOMContentLoaded', () => {
           style="display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;${!item.isOnline ? 'opacity:0.55;' : ''}">
           ${themeBgHtml}
           <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-            <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0;">
+            <div class="avatar-wrapper-status" style="position:relative; width:32px; height:32px; border-radius:50%; overflow:visible; flex-shrink:0;">
               ${renderMediaAvatarHtml(avatar, 'user-avatar-sm')}
+              ${presenceDotHtml(stType, item.isOnline)}
             </div>
             <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
               <span class="user-member-name">${escapeHtml(name)}</span>
