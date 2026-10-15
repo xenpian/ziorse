@@ -2170,7 +2170,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!m || !m.handle) return;
           if (isUserHandleOnline(m.handle)) onlineCount++;
         });
-        if (onlineCount === 0 && totalMembers > 0) onlineCount = 1;
         const offlineCount = Math.max(0, totalMembers - onlineCount);
 
         // Sunucu ikonu
