@@ -25,10 +25,10 @@
     "nameColor": "#000000",
     "nameEffects": [],
     "avatarFrame": "none",
-    "memberTheme": "none",
+    "memberTheme": "assets/member-themes/giphy.gif",
     "status": {
-      "type": "online",
-      "text": ""
+      "type": "idle",
+      "text": "porno"
     }
   },
   "@saf": {

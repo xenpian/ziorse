@@ -4035,17 +4035,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const srv = window.dataStore.servers.find(s => s.id === serverId);
     if (!srv) return;
 
+    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
+
+    // Resmi ziorse.com sunucusu garantisi
+    if (isOfficial) {
+      if (!srv.icon || srv.icon === 'logo.png' || srv.icon === 'SR' || srv.icon === 'ZI') {
+        srv.icon = window.OFFICIAL_ZIORSE_SERVER?.icon || '/uploads/srv_icon_1791843284247_wagh8.png';
+      }
+      if (!srv.banner) {
+        srv.banner = window.OFFICIAL_ZIORSE_SERVER?.banner || '/uploads/srv_banner_1791843284248_6kbj4.png';
+      }
+      if (!srv.description || srv.description === 'Ziorse Resmi Topluluk Sunucusu. Hoş geldiniz!' || srv.description === 'Welcome to Ziorse.') {
+        srv.description = 'welcome.';
+      }
+    }
+
     const el = ensureServerTooltip();
     const initials = srv.name ? srv.name.trim().substring(0, 2).toUpperCase() : 'SR';
-    const isImg = srv.icon && (srv.icon.startsWith('data:image') || srv.icon.startsWith('http'));
-    const iconHtml = isImg
-      ? `<img src="${srv.icon}" class="stt-avatar-img">`
-      : `<span class="stt-avatar-initials">${escapeHtml(srv.icon && srv.icon.length <= 4 ? srv.icon : initials)}</span>`;
 
-    const hasBanner = srv.banner && (srv.banner.startsWith('data:image') || srv.banner.startsWith('http'));
-    const bannerStyle = hasBanner
-      ? `background-image: url('${escapeHtml(srv.banner)}');`
-      : `background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);`;
+    // Sunucu İkonu Kontrolü ve Normalizasyonu (/uploads, data:image, http vb.)
+    const iconVal = srv.icon || (isOfficial ? (window.OFFICIAL_ZIORSE_SERVER?.icon || '/uploads/srv_icon_1791843284247_wagh8.png') : '');
+    const isImg = iconVal && (
+      iconVal.startsWith('data:image') ||
+      iconVal.startsWith('http') ||
+      iconVal.startsWith('/uploads') ||
+      iconVal.startsWith('uploads') ||
+      iconVal.includes('/') ||
+      /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(iconVal)
+    );
+    const iconSrc = isImg ? normalizeMediaUrl(iconVal) : '';
+    const iconHtml = isImg
+      ? `<img src="${escapeHtml(iconSrc)}" class="stt-avatar-img" onerror="this.onerror=null;this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='flex';">
+         <span class="stt-avatar-initials" style="display:none;">${escapeHtml(initials)}</span>`
+      : `<span class="stt-avatar-initials">${escapeHtml(iconVal && iconVal.length <= 4 ? iconVal : initials)}</span>`;
+
+    // Sunucu Banner Kontrolü ve Normalizasyonu (/uploads, data:image, http vb.)
+    const bannerVal = srv.banner || (isOfficial ? (window.OFFICIAL_ZIORSE_SERVER?.banner || '/uploads/srv_banner_1791843284248_6kbj4.png') : '');
+    const hasBanner = bannerVal && (
+      bannerVal.startsWith('data:image') ||
+      bannerVal.startsWith('http') ||
+      bannerVal.startsWith('/uploads') ||
+      bannerVal.startsWith('uploads') ||
+      bannerVal.includes('/') ||
+      /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(bannerVal)
+    );
+    const bannerSrc = hasBanner ? normalizeMediaUrl(bannerVal) : '';
+    let bannerStyle = '';
+    if (hasBanner) {
+      bannerStyle = `background-image: url('${escapeHtml(bannerSrc)}');`;
+    } else if (bannerVal && (bannerVal.startsWith('#') || bannerVal.startsWith('rgb') || bannerVal.startsWith('linear-gradient'))) {
+      bannerStyle = `background: ${escapeHtml(bannerVal)};`;
+    } else {
+      bannerStyle = `background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);`;
+    }
 
     const allMembers = window.dataStore.getServerMembers(srv.inviteCode || srv.id);
     const memberCount = (allMembers && allMembers.length > 0) ? allMembers.length : (srv.memberCount || 1);
