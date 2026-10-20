@@ -1797,7 +1797,7 @@ class DataStore {
     ];
   }
 
-  _migrateServerCategories(server) {
+  _migrateServerCategories(server, autoSave = false) {
     if (!server) return;
     if (server.inviteCode) {
       const info = this.getInviteInfo(server.inviteCode);
@@ -1811,7 +1811,7 @@ class DataStore {
     if (!server.categories || server.categories.length === 0) {
       server.categories = this._makeDefaultCategories();
       delete server.channels;
-      this.saveServers();
+      if (autoSave && Array.isArray(this.servers)) this.saveServers();
     } else {
       let modified = false;
       server.categories.forEach((cat) => {
@@ -1828,7 +1828,7 @@ class DataStore {
           });
         }
       });
-      if (modified) {
+      if (modified && autoSave && Array.isArray(this.servers)) {
         this.saveServers();
       }
     }
@@ -1849,15 +1849,18 @@ class DataStore {
       icon: initials,
       inviteCode: inviteCode,
       ownerHandle: this.currentUser.handle,
+      ownerName: this.currentUser.name || '',
+      ownerAvatar: this.currentUser.avatar || '',
+      joined: true,
       memberCount: 1,
       categories: this._makeDefaultCategories()
     };
     this.servers.push(newServer);
     this.saveServers();
 
-    // Invite registry'e kaydet
+    // Invite registry'e kaydet (hem inviteCode hem serverId ile dual-index)
     const registry = this._loadInviteRegistry();
-    registry[inviteCode] = {
+    const regPayload = {
       serverName: newServer.name,
       serverDescription: newServer.description,
       isPublic: newServer.isPublic,
@@ -1870,6 +1873,8 @@ class DataStore {
       ownerAvatar: this.currentUser.avatar,
       categories: JSON.parse(JSON.stringify(newServer.categories || []))
     };
+    registry[inviteCode] = regPayload;
+    registry[newServer.id] = regPayload;
     ziorseSetStorage('ziorse_invite_registry', registry);
 
     if (window.socket) {
