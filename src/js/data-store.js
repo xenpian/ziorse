@@ -2053,7 +2053,17 @@ class DataStore {
       const raw = ziorseGetStorage('ziorse_invite_registry');
       local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || {};
     } catch { local = {}; }
-    return Object.assign({}, local, window.__globalInviteRegistry || {});
+    const combined = Object.assign({}, local, window.__globalInviteRegistry || {});
+    const clean = {};
+    for (const [k, v] of Object.entries(combined)) {
+      if (!v) continue;
+      // 15 haneli ID anahtarı olup v.inviteCode farklıysa atla (çift anahtarı temizle)
+      if (v.inviteCode && k !== v.inviteCode && /^\d{15}$/.test(k)) {
+        continue;
+      }
+      clean[k] = v;
+    }
+    return clean;
   }
 
   getInviteInfo(code) {
