@@ -9817,43 +9817,49 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   padding-bottom: 4px;
 }
 
-.pvm-btn {
-  padding: 7px 15px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
+/* SADECE İKON BUTONLAR (Arkadaş Ekle & Mesaj) */
+.pvm-action-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--bg-card-hover, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+  color: var(--text-main, #ffffff);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
-  border: 1px solid var(--border-dark);
-  font-family: inherit;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  flex-shrink: 0;
 }
 
-.pvm-btn-primary {
-  background: var(--accent-primary, #646464);
-  color: #ffffff;
-  border-color: transparent;
+.pvm-action-icon-btn:hover {
+  background: var(--bg-input, rgba(255, 255, 255, 0.16));
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.pvm-btn-primary:hover {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
+.pvm-action-icon-btn.is-friend {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #10b981;
 }
 
-.pvm-btn-secondary {
-  background: var(--bg-card-hover);
-  color: var(--text-main);
+.pvm-action-icon-btn.is-friend:hover {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(16, 185, 129, 0.5);
 }
 
-.pvm-btn-secondary:hover {
-  background: var(--bg-input);
-  transform: translateY(-1px);
+.pvm-action-icon-btn.is-pending {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
 }
 
 .pvm-body {
-  padding: 12px 20px 20px;
+  padding: 14px 22px 22px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -9868,15 +9874,16 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 .pvm-name {
   font-size: 1.35rem;
   font-weight: 800;
-  color: var(--text-main);
+  color: #000000 !important;
   line-height: 1.25;
   margin: 0;
+  letter-spacing: -0.2px;
 }
 
 .pvm-handle {
   font-size: 0.85rem;
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-mono, monospace);
   font-weight: 600;
 }
 
@@ -9895,45 +9902,112 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .pvm-bio {
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   color: var(--text-main);
   line-height: 1.5;
   margin: 0;
   word-break: break-word;
 }
 
-.pvm-stats {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 10px 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+/* ORTAK SUNUCULAR VE ORTAK ARKADAŞLAR KARTLARI */
+.pvm-mutual-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
 }
 
-.pvm-stat-item {
+.pvm-mutual-card {
+  background: var(--bg-input, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  padding: 10px 12px;
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.pvm-mutual-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.pvm-mutual-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pvm-mutual-label {
+  line-height: 1;
+}
+
+.pvm-mutual-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+}
+
+.pvm-mutual-avatars-wrap {
+  display: flex;
+  align-items: center;
   gap: 6px;
 }
 
-.pvm-stat-num {
-  font-size: 0.98rem;
+.pvm-mutual-avatar-item {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #252836;
+  border: 2px solid var(--bg-card, #12131a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 800;
-  color: var(--text-main);
+  font-size: 0.72rem;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
 }
 
-.pvm-stat-lbl {
-  font-size: 0.75rem;
-  font-weight: 600;
+.pvm-mutual-avatar-item:hover {
+  transform: scale(1.1);
+  z-index: 5;
+}
+
+.pvm-mutual-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pvm-mutual-plus-indicator {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  padding: 3px 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.pvm-mutual-empty {
+  font-size: 0.76rem;
   color: var(--text-muted);
-}
-
-.pvm-stat-divider {
-  width: 1px;
-  height: 16px;
-  background: var(--border-dark);
+  font-style: italic;
 }
 
 .pvm-roles-section {
