@@ -1459,12 +1459,21 @@ class DataStore {
     try {
       const registry = this._loadInviteRegistry();
 
-      // 1. Recover servers owned by this user
+      const isOfficialCodeOrId = (code, srvId, info) => {
+        const c = String(code || '').toLowerCase().trim();
+        const id = String(srvId || '').trim();
+        const n = String((info && (info.serverName || info.name)) || '').toLowerCase().trim();
+        return c === 'ziorse' || id === 'srv-ziorse-official' || id === '100000000000001' || id === '917925262809914' || n === 'ziorse.com';
+      };
+
+      // 1. Recover servers owned by this user (ziorse.com hariç - resmi sunucu ayrı yönetilir)
       for (const [code, info] of Object.entries(registry)) {
         if (!info) continue;
+        const srvId = info.serverId ? String(info.serverId) : null;
+        if (isOfficialCodeOrId(code, srvId, info)) continue;
+
         const oHandle = (info.ownerHandle || '').toLowerCase().replace('@', '');
         if (oHandle === cleanUser) {
-          const srvId = info.serverId ? String(info.serverId) : null;
           const alreadyInList = existingInviteCodes.has(code) || (srvId && existingServerIds.has(srvId));
           if (!alreadyInList) {
             const restoredSrv = {
@@ -1493,13 +1502,15 @@ class DataStore {
         }
       }
 
-      // 2. Recover servers where this user is recorded as a member
+      // 2. Recover servers where this user is recorded as a member (ziorse.com hariç)
       const checkAndRestoreMemberServer = (code, membersList) => {
         if (!code || !Array.isArray(membersList)) return;
+        const info = registry[code] || (window.__globalInviteRegistry && window.__globalInviteRegistry[code]) || {};
+        const srvId = info.serverId ? String(info.serverId) : null;
+        if (isOfficialCodeOrId(code, srvId, info)) return;
+
         const isMem = membersList.some(m => m && (m.handle || '').toLowerCase().replace('@', '') === cleanUser);
         if (isMem) {
-          const info = registry[code] || (window.__globalInviteRegistry && window.__globalInviteRegistry[code]) || {};
-          const srvId = info.serverId ? String(info.serverId) : null;
           const alreadyInList = existingInviteCodes.has(code) || (srvId && existingServerIds.has(srvId));
           if (!alreadyInList) {
             const restoredSrv = {
@@ -1573,14 +1584,30 @@ class DataStore {
       }
     } catch (e) { }
 
-    // ── GARANTİLİ TEKİLLEŞTİRME (De-duplication by inviteCode & id) ──
+    // ── GARANTİLİ TEKİLLEŞTİRME (De-duplication by inviteCode, id & name) ──
     const seenCodes = new Set();
     const seenIds = new Set();
+    let ziorseIncluded = false;
     const origLenBeforeDedup = list.length;
     list = list.filter(s => {
       if (!s) return false;
-      const codeKey = s.inviteCode ? s.inviteCode.toLowerCase() : null;
-      const idKey = s.id ? String(s.id) : null;
+      const sName = (s.name || s.serverName || '').toLowerCase().trim();
+      const codeKey = s.inviteCode ? s.inviteCode.toLowerCase().trim() : null;
+      const idKey = s.id ? String(s.id).trim() : null;
+
+      const isZiorse = s.isOfficial === true ||
+        codeKey === 'ziorse' ||
+        idKey === 'srv-ziorse-official' ||
+        idKey === '100000000000001' ||
+        idKey === '917925262809914' ||
+        sName === 'ziorse.com';
+
+      if (isZiorse) {
+        if (ziorseIncluded) return false;
+        ziorseIncluded = true;
+        return true;
+      }
+
       if (codeKey && seenCodes.has(codeKey)) return false;
       if (idKey && seenIds.has(idKey)) return false;
       if (codeKey) seenCodes.add(codeKey);
@@ -1600,17 +1627,26 @@ class DataStore {
 
   _ensureOfficialServer(list) {
     if (!Array.isArray(list)) list = [];
-    const existingIdx = list.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || (s.name && s.name.toLowerCase() === 'ziorse.com'));
+    const isZiorse = s => s && (
+      s.isOfficial === true ||
+      s.id === 'srv-ziorse-official' ||
+      s.id === '100000000000001' ||
+      s.id === '917925262809914' ||
+      (s.inviteCode && s.inviteCode.toLowerCase().trim() === 'ziorse') ||
+      (s.name && s.name.toLowerCase().trim() === 'ziorse.com')
+    );
+
+    // Listede zaten olan ziorse sunucusunu yakala
+    let officialSrv = list.find(isZiorse) || null;
+
+    // Listeden ziorse.com ile ilgili TÜM kopyaları tamamen temizle!
+    list = list.filter(s => !isZiorse(s));
 
     // Registry'den güncel ve dinamik ayarları çek (hiçbir şey sabit olmasın, @sa her şeyi değiştirebilsin)
     const registry = this._loadInviteRegistry();
     const regOfficial = registry['ziorse'] || {};
 
-    let officialSrv = null;
-    if (existingIdx !== -1) {
-      officialSrv = list[existingIdx];
-      list.splice(existingIdx, 1);
-    } else {
+    if (!officialSrv) {
       officialSrv = JSON.parse(JSON.stringify(OFFICIAL_ZIORSE_SERVER));
     }
 
