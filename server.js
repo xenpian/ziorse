@@ -271,6 +271,9 @@ async function loadSyncDb() {
     // MySQL veritabanını başlat (gusgon) ve 15 saniyede bir ping at
     await mysqlDb.initDatabase();
 
+    // Veritabanından silinmiş tüm kullanıcıları otomatik tespit edip diğer tablolardan temizle
+    await mysqlDb.reconcileAndPruneDeletedAccounts();
+
     const accs = await mysqlDb.getAllAccounts();
     globalAccounts = Array.isArray(accs) ? accs : [];
 
@@ -350,9 +353,40 @@ function saveSyncDb() {
 
 loadSyncDb();
 
+// ── OTOMATİK VERİTABANI İZLEYİCİ & CANLI SENKRONİZASYON ────────
+// Veritabanından (phpMyAdmin / MySQL CLI) bir hesap silindiğinde tüm sistemden otomatik ve anında temizler
+setInterval(async () => {
+  try {
+    const accs = await mysqlDb.getAllAccounts();
+    const currentHandles = new Set(accs.map(a => (a.handle || '').toLowerCase()));
+    const knownHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+
+    let changed = false;
+    if (currentHandles.size !== knownHandles.size) {
+      changed = true;
+    } else {
+      for (const h of knownHandles) {
+        if (!currentHandles.has(h)) { changed = true; break; }
+      }
+    }
+
+    if (changed) {
+      console.log('[Ziorse MySQL Watcher] Hesap silinmesi/eklenmesi algılandı. Otomatik arındırma ve senkronizasyon yapılıyor...');
+      await loadSyncDb();
+      io.emit('accounts-updated', globalAccounts);
+      io.emit('user-directory-updated', globalUserDirectory);
+      io.emit('server-members-updated', globalServerMembers);
+      io.emit('online-users-updated', Array.from(activeOnlineHandles));
+      io.emit('invite-registry-updated', globalInviteRegistry);
+    }
+  } catch (e) { }
+}, 2500);
+
 function ensureOfficialServerBackend() {
   const officialCode = 'ziorse';
   const officialId = 'srv-ziorse-official';
+  const primaryAdmin = (globalAccounts && globalAccounts.length > 0) ? globalAccounts[0] : { handle: '@justawp', name: 'justawp', avatar: '' };
+
   if (!globalInviteRegistry[officialCode]) {
     globalInviteRegistry[officialCode] = {
       serverName: 'ziorse.com',
@@ -364,9 +398,9 @@ function ensureOfficialServerBackend() {
       serverIcon: '/uploads/srv_icon_1791843284247_wagh8.png',
       serverBanner: '/uploads/srv_banner_1791843284248_6kbj4.png',
       serverId: officialId,
-      ownerHandle: '@sa',
-      ownerName: 'sa',
-      ownerAvatar: 'logo.png',
+      ownerHandle: primaryAdmin.handle,
+      ownerName: primaryAdmin.name,
+      ownerAvatar: primaryAdmin.avatar || '',
       memberCount: 1,
       categories: [
         {
@@ -380,9 +414,12 @@ function ensureOfficialServerBackend() {
       ]
     };
   } else {
-    // Sunucu sahibi kesinlikle @sa olacak
-    globalInviteRegistry[officialCode].ownerHandle = '@sa';
-    globalInviteRegistry[officialCode].ownerName = 'sa';
+    const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+    if (!validHandles.has((globalInviteRegistry[officialCode].ownerHandle || '').toLowerCase())) {
+      globalInviteRegistry[officialCode].ownerHandle = primaryAdmin.handle;
+      globalInviteRegistry[officialCode].ownerName = primaryAdmin.name;
+      globalInviteRegistry[officialCode].ownerAvatar = primaryAdmin.avatar || '';
+    }
     globalInviteRegistry[officialCode].isOfficial = true;
     if (!globalInviteRegistry[officialCode].serverName) globalInviteRegistry[officialCode].serverName = 'ziorse.com';
     if (!globalInviteRegistry[officialCode].serverId) globalInviteRegistry[officialCode].serverId = officialId;
