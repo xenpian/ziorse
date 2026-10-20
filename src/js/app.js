@@ -9047,6 +9047,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.initSidebarMessageSearch = initSidebarMessageSearch;
   initMentionAutocomplete();
   initSidebarMessageSearch();
+  updateHeaderLocation();
 });
 
 // ── GLOBAL HELPERS ────────────────────────────────────────────
