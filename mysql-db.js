@@ -307,6 +307,111 @@ async function createTables() {
   } catch (trgErr) {
     console.warn('[MySQL Triggers Uyarısı]:', trgErr.message);
   }
+
+  // Otomatik sütun yükseltmeleri (19-haneli gizli user_id vb.)
+  try { await p.query('ALTER TABLE accounts ADD COLUMN user_id VARCHAR(30) DEFAULT NULL UNIQUE'); } catch (e) {}
+  try { await p.query('ALTER TABLE user_directory ADD COLUMN user_id VARCHAR(30) DEFAULT NULL'); } catch (e) {}
+
+  // Mevcut tüm kayıtların ID uzunluklarını standartlaştır (19 user, 18 kanal, 17 kategori, 15 sunucu, 14 post)
+  await ensureStrictEntityIds();
+}
+
+/**
+ * Veritabanındaki tüm ID'leri standart uzunluklara geçirir:
+ * - Kullanıcı: 19 hane
+ * - Kanal: 18 hane
+ * - Kategori: 17 hane
+ * - Sunucu: 15 hane
+ * - Post: 14 hane
+ */
+async function ensureStrictEntityIds() {
+  const p = getPool();
+  try {
+    // 1. ACCOUNTS (19 Haneli Gizli User ID)
+    const [accounts] = await p.query('SELECT id, handle, user_id FROM accounts');
+    const handleToUid = {};
+    for (const acc of accounts) {
+      let uid = acc.user_id;
+      if (!uid || String(uid).length !== 19 || !/^\d{19}$/.test(String(uid))) {
+        uid = generateStrictId(19);
+        await p.query('UPDATE accounts SET user_id = ? WHERE id = ?', [uid, acc.id]);
+        console.log(`[MySQL ID Standardı] ${acc.handle} kullanıcısına 19-haneli ID atandı: ${uid}`);
+      }
+      handleToUid[acc.handle.toLowerCase()] = uid;
+    }
+
+    // 2. USER_DIRECTORY (19 Haneli User ID)
+    const [directory] = await p.query('SELECT handle, user_id FROM user_directory');
+    for (const u of directory) {
+      let uid = u.user_id;
+      const matched = handleToUid[u.handle.toLowerCase()];
+      if (matched) {
+        if (uid !== matched) {
+          await p.query('UPDATE user_directory SET user_id = ? WHERE handle = ?', [matched, u.handle]);
+        }
+      } else if (!uid || String(uid).length !== 19 || !/^\d{19}$/.test(String(uid))) {
+        uid = generateStrictId(19);
+        await p.query('UPDATE user_directory SET user_id = ? WHERE handle = ?', [uid, u.handle]);
+      }
+    }
+
+    // 3. SERVERS (15 Haneli Sunucu ID, 17 Haneli Kategori ID, 18 Haneli Kanal ID)
+    const [servers] = await p.query('SELECT invite_code, server_id, categories FROM servers');
+    for (const srv of servers) {
+      let srvId = srv.server_id;
+      let srvUpdated = false;
+      if (!srvId || String(srvId).length !== 15 || !/^\d{15}$/.test(String(srvId))) {
+        srvId = generateStrictId(15);
+        srvUpdated = true;
+      }
+
+      let cats = [];
+      try {
+        cats = typeof srv.categories === 'string' ? JSON.parse(srv.categories) : (srv.categories || []);
+      } catch (e) { cats = []; }
+
+      let catsModified = false;
+      if (Array.isArray(cats)) {
+        cats.forEach(cat => {
+          // 17 haneli kategori ID
+          if (!cat.id || String(cat.id).length !== 17 || !/^\d{17}$/.test(String(cat.id))) {
+            cat.id = generateStrictId(17);
+            catsModified = true;
+          }
+          // 18 haneli kanal ID
+          if (Array.isArray(cat.channels)) {
+            cat.channels.forEach(ch => {
+              if (!ch.id || String(ch.id).length !== 18 || !/^\d{18}$/.test(String(ch.id))) {
+                ch.id = generateStrictId(18);
+                catsModified = true;
+              }
+            });
+          }
+        });
+      }
+
+      if (srvUpdated || catsModified) {
+        await p.query('UPDATE servers SET server_id = ?, categories = ? WHERE invite_code = ?', [
+          srvId,
+          JSON.stringify(cats),
+          srv.invite_code
+        ]);
+        console.log(`[MySQL ID Standardı] ${srv.invite_code} sunucusuna 15-haneli ID (${srvId}) ve standart kategori/kanallar atandı.`);
+      }
+    }
+
+    // 4. POSTS (14 Haneli Post ID)
+    const [posts] = await p.query('SELECT id FROM posts');
+    for (const post of posts) {
+      if (!post.id || String(post.id).length !== 14 || !/^\d{14}$/.test(String(post.id))) {
+        const newPostId = generateStrictId(14);
+        await p.query('UPDATE posts SET id = ? WHERE id = ?', [newPostId, post.id]);
+        console.log(`[MySQL ID Standardı] Post ${post.id} -> 14-haneli ID (${newPostId}) olarak güncellendi.`);
+      }
+    }
+  } catch (err) {
+    console.error('[MySQL ID Standardizasyon Hatası]:', err.message);
+  }
 }
 
 /**
@@ -316,7 +421,7 @@ async function ensureOfficialServerAndDefaults() {
   const p = getPool();
 
   const officialCode = 'ziorse';
-  const officialId = 'srv-ziorse-official';
+  const officialId = '100000000000001'; // 15 haneli resmi sunucu ID
 
   // Mevcut ilk geçerli hesabı al
   const [accs] = await p.query('SELECT handle, name, avatar FROM accounts ORDER BY id ASC LIMIT 1');
