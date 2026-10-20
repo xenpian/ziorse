@@ -1709,13 +1709,32 @@ io.on('connection', (socket) => {
         (data.info && data.info.memberCount) || 0,
         1
       );
+      mysqlDb.upsertServer(data.code, data.info).catch(() => {});
       saveSyncDb();
-      saveInviteRegistryTxt();
       if (data.code) saveServerMembersTxt(data.code);
       io.emit('invite-registry-updated', globalInviteRegistry);
       io.emit('public-servers-updated', globalInviteRegistry);
       io.emit('server-members-updated', globalServerMembers);
     }
+  });
+
+  // Sunucu Silme Senkronizasyonu
+  socket.on('delete-server', async (data) => {
+    if (!data) return;
+    const code = data.inviteCode || data.serverId;
+    if (!code || code === 'ziorse' || code === 'srv-ziorse-official') return;
+    console.log('[Ziorse Socket] Sunucu silme talebi alındı:', code);
+    await mysqlDb.deleteServer(code).catch(() => {});
+    const srvId = globalInviteRegistry[code]?.serverId || code;
+    delete globalInviteRegistry[code];
+    if (srvId) delete globalInviteRegistry[srvId];
+    delete globalServerMembers[code];
+    if (srvId) delete globalServerMembers[srvId];
+
+    io.emit('server-deleted', { inviteCode: code, serverId: srvId });
+    io.emit('invite-registry-updated', globalInviteRegistry);
+    io.emit('public-servers-updated', globalInviteRegistry);
+    io.emit('server-members-updated', globalServerMembers);
   });
 
   socket.on('get-invites', () => {
