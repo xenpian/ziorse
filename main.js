@@ -101,7 +101,17 @@ async function flushPersistentStoreAsync() {
   if (keysToSave.size === 0) return;
 
   for (const key of keysToSave) {
-    if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user' || key === 'ziorse_accounts' || key === 'ziorse_user_directory' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_')) continue;
+    if (
+      key === 'ziorse_real_user_v14' ||
+      key === 'ziorse_jwt_token' ||
+      key === 'ziorse_user' ||
+      key === 'ziorse_accounts' ||
+      key === 'ziorse_user_directory' ||
+      key === 'ziorse_invite_registry' ||
+      key === 'ziorse_real_posts_v14' ||
+      key.startsWith('ziorse_srv_members_') ||
+      key.startsWith('ziorse_real_servers_')
+    ) continue;
     const val = memoryStore[key];
     if (val === undefined || val === null) {
       mysqlDb.deleteStoreValue(key).catch(() => {});
