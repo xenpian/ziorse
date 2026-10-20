@@ -7709,8 +7709,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Avatar Frame Overlay
     const elFrameOverlay = document.getElementById('pvm-avatar-frame-overlay');
     if (elFrameOverlay) {
-      if (profile.avatarFrame && profile.avatarFrame !== 'none') {
-        let frameSrc = profile.avatarFrame;
+      const frameVal = profile.avatarFrame;
+      if (frameVal && frameVal !== 'none' && String(frameVal).trim() !== '' && frameVal !== 'null' && frameVal !== 'undefined') {
+        let frameSrc = frameVal;
         if (!frameSrc.includes('/') && !frameSrc.startsWith('data:')) {
           frameSrc = `assets/avatar-frames/${frameSrc}`;
         }
@@ -7719,8 +7720,13 @@ document.addEventListener('DOMContentLoaded', () => {
         elFrameOverlay.style.width = `${scale}%`;
         elFrameOverlay.style.height = `${scale}%`;
         elFrameOverlay.style.display = 'block';
+        elFrameOverlay.onerror = () => {
+          elFrameOverlay.style.display = 'none';
+          elFrameOverlay.removeAttribute('src');
+        };
       } else {
         elFrameOverlay.style.display = 'none';
+        elFrameOverlay.removeAttribute('src');
       }
     }
 
