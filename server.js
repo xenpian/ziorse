@@ -797,8 +797,13 @@ app.get('/api/posts', (req, res) => {
 
 app.post('/api/posts', (req, res) => {
   const post = req.body;
+  if (!post.id || String(post.id).length !== 14 || !/^\d{14}$/.test(String(post.id))) {
+    post.id = generateStrictId(14);
+  }
   if (!post.timestamp) post.timestamp = new Date().toISOString();
+  serverPosts = serverPosts.filter(p => p.id !== post.id);
   serverPosts.unshift(post);
+  mysqlDb.savePost(post).catch(() => {});
   io.emit('new-post-event', post);
   res.json({ success: true, post });
 });
