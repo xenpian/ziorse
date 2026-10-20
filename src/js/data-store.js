@@ -309,7 +309,8 @@ function ziorseSetStorage(key, val) {
     'ziorse_user',
     'ziorse_real_posts_v14',
     'ziorse_invite_registry',
-    'ziorse_user_directory'
+    'ziorse_user_directory',
+    'ziorse_accounts'
   ]);
   if (!_SKIP_REMOTE_STORE_KEYS.has(key) && !key.startsWith('ziorse_srv_members_') && !key.startsWith('ziorse_real_servers_v14_')) {
     try {
