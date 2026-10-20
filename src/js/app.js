@@ -6397,23 +6397,49 @@ document.addEventListener('DOMContentLoaded', () => {
       : (srv.members || []);
     const members = rawMembers ? [...rawMembers] : [];
 
-    // Resmi topluluk sunucusunda (ziorse.com) çevrimiçi olan tüm kullanıcıları üye listesinde göster
+    // Resmi topluluk sunucusunda (ziorse.com) tüm kayıtlı ve çevrimiçi kullanıcıları üye listesinde göster
     const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse';
-    const srvDir = window.dataStore ? window.dataStore._loadGlobalDirectory() : {};
-    if (isOfficial && Array.isArray(window.__globalOnlineHandles)) {
-      window.__globalOnlineHandles.forEach(h => {
-        const cleanH = (h || '').toLowerCase().replace('@', '');
+    const ghostHandles = new Set(['sa', 'deneme_99', 'test_user_99', 'aliveli']);
+    if (isOfficial && window.dataStore) {
+      const validAccs = window.dataStore._getValidAccountsList ? window.dataStore._getValidAccountsList() : [];
+      validAccs.forEach(acc => {
+        if (!acc || !acc.handle) return;
+        const cleanH = acc.handle.toLowerCase().replace('@', '');
+        if (ghostHandles.has(cleanH)) return;
         const fullH = '@' + cleanH;
-        if (!srvDir[fullH] && !srvDir[cleanH]) return;
         if (!members.some(m => (m.handle || '').toLowerCase().replace('@', '') === cleanH)) {
-          const uProf = window.dataStore.getUserProfile(fullH) || {};
+          const uProf = window.dataStore.getUserProfile(fullH) || acc;
           members.push({
             handle: fullH,
-            name: uProf.name || cleanH,
-            avatar: uProf.avatar || window.DEFAULT_AVATAR
+            name: uProf.name || acc.name || cleanH,
+            avatar: uProf.avatar || acc.avatar || window.DEFAULT_AVATAR
           });
         }
       });
+      if (Array.isArray(window.__globalOnlineHandles)) {
+        window.__globalOnlineHandles.forEach(h => {
+          const cleanH = (h || '').toLowerCase().replace('@', '');
+          if (ghostHandles.has(cleanH)) return;
+          const fullH = '@' + cleanH;
+          if (!members.some(m => (m.handle || '').toLowerCase().replace('@', '') === cleanH)) {
+            const uProf = window.dataStore.getUserProfile(fullH) || {};
+            members.push({
+              handle: fullH,
+              name: uProf.name || cleanH,
+              avatar: uProf.avatar || window.DEFAULT_AVATAR
+            });
+          }
+        });
+      }
+    }
+
+    // Kesin temizlik: Hayalet hesapları (sa, deneme_99 vb.) üye listesinden tamamen çıkar
+    for (let i = members.length - 1; i >= 0; i--) {
+      const m = members[i];
+      const cleanH = (m?.handle || '').toLowerCase().replace('@', '');
+      if (ghostHandles.has(cleanH)) {
+        members.splice(i, 1);
+      }
     }
 
     // En üstteki rol (küçük position / 0) en başta olacak şekilde hiyerarşik sırala
