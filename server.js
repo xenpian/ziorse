@@ -1463,8 +1463,11 @@ io.on('connection', (socket) => {
       let changed = false;
       items.forEach(it => {
         if (it && it.inviteCode) {
-          // Sunucu registry'de yoksa kesinlikle diriltme; sadece kayıtlı sunucuları güncelle
-          if (!globalInviteRegistry[it.inviteCode]) return;
+          // Sunucu registry'de yoksa kesinlikle diriltme; client'a anında silindiğini bildir ve temizlet
+          if (!globalInviteRegistry[it.inviteCode]) {
+            socket.emit('server-deleted', { inviteCode: it.inviteCode, serverId: it.serverId || it.inviteCode });
+            return;
+          }
 
           if (!globalServerMembers[it.inviteCode]) globalServerMembers[it.inviteCode] = [];
 
