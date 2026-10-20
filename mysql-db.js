@@ -270,6 +270,14 @@ async function createTables() {
       FOR EACH ROW
       DELETE FROM friend_requests WHERE LOWER(target_handle) = LOWER(OLD.handle) OR LOWER(from_handle) = LOWER(OLD.handle)
     `);
+
+    await p.query('DROP TRIGGER IF EXISTS trg_servers_cascade_members');
+    await p.query(`
+      CREATE TRIGGER trg_servers_cascade_members
+      AFTER DELETE ON servers
+      FOR EACH ROW
+      DELETE FROM server_members WHERE server_code = OLD.invite_code OR server_code = OLD.server_id
+    `);
   } catch (trgErr) {
     console.warn('[MySQL Triggers Uyarısı]:', trgErr.message);
   }
@@ -662,6 +670,13 @@ async function upsertServer(code, info) {
   ]);
 }
 
+async function deleteServer(serverCodeOrId) {
+  if (!serverCodeOrId || serverCodeOrId === 'ziorse' || serverCodeOrId === 'srv-ziorse-official') return;
+  const p = getPool();
+  await p.query('DELETE FROM servers WHERE invite_code = ? OR server_id = ?', [serverCodeOrId, serverCodeOrId]);
+  await p.query('DELETE FROM server_members WHERE server_code = ? OR server_code = ?', [serverCodeOrId, serverCodeOrId]);
+}
+
 // ─────────────────────────────────────────────────────────────
 // SERVER MEMBERS CRUD
 // ─────────────────────────────────────────────────────────────
@@ -1046,6 +1061,7 @@ module.exports = {
   // Servers
   getAllServers,
   upsertServer,
+  deleteServer,
 
   // Members
   getAllServerMembers,
