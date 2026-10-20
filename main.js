@@ -89,7 +89,7 @@ async function flushPersistentStoreAsync() {
   if (keysToSave.size === 0) return;
 
   for (const key of keysToSave) {
-    if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user' || key === 'ziorse_accounts' || key.startsWith('ziorse_real_servers_v14_')) continue;
+    if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user' || key === 'ziorse_accounts' || key === 'ziorse_user_directory' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_')) continue;
     const val = memoryStore[key];
     if (val === undefined || val === null) {
       mysqlDb.deleteStoreValue(key).catch(() => {});
@@ -155,16 +155,17 @@ ipcMain.on('store-set-sync', (event, key, val) => {
     event.returnValue = true;
     return;
   }
+  const isRelationalKey = key === 'ziorse_accounts' || key === 'ziorse_user_directory' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_');
   const store = readPersistentStore();
   if (val === null || val === undefined) {
     delete store[key];
     dirtyKeys.delete(key);
-    if (!key.startsWith('ziorse_real_servers_v14_') && key !== 'ziorse_accounts') {
+    if (!isRelationalKey) {
       mysqlDb.deleteStoreValue(key).catch(() => {});
     }
   } else {
     store[key] = val;
-    if (!key.startsWith('ziorse_real_servers_v14_') && key !== 'ziorse_accounts') {
+    if (!isRelationalKey) {
       schedulePersistentStoreSave(key);
     }
   }
