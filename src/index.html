@@ -20,6 +20,11 @@
   </script>
   <script src="js/lib/lucide.min.js"></script>
   <script src="js/lib/socket.io.min.js"></script>
+  <script>
+    if (typeof io === 'undefined') {
+      document.write('<script src="/socket.io/socket.io.js"><\/script>');
+    }
+  </script>
   <script src="js/data-store.js"></script>
   <script>
     // Iframe containment guard
