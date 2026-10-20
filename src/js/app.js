@@ -6043,9 +6043,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const threads = window.dataStore?.dmThreads || [];
           const activeThread = threads.find(t => t.id === activeDmThreadId);
           if (activeThread && activeThread.user) {
+            const rawAvatar = activeThread.user.avatar || 'logo.png';
+            const avatarUrl = window.normalizeMediaUrl ? window.normalizeMediaUrl(rawAvatar) : (window.formatMediaUrl ? window.formatMediaUrl(rawAvatar) : rawAvatar);
             brandContainer.innerHTML = `
               <div class="header-server-badge">
-                <img class="header-server-icon" src="${escapeHtml(activeThread.user.avatar || 'logo.png')}" alt="" onerror="this.src='logo.png'">
+                <img class="header-server-icon" src="${escapeHtml(avatarUrl)}" alt="" onerror="this.onerror=null;this.src='logo.png';">
                 <span class="header-server-name">@${escapeHtml((activeThread.user.handle || '').replace('@', ''))}</span>
               </div>`;
           } else {
@@ -6059,10 +6061,24 @@ document.addEventListener('DOMContentLoaded', () => {
           const servers = window.dataStore?.servers || [];
           const srv = servers.find(s => s.id === activeServerId);
           if (srv) {
-            if (srv.icon) {
+            const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
+            const rawIcon = srv.icon || (isOfficial ? 'logo.png' : '');
+            let iconUrl = '';
+            if (rawIcon) {
+              iconUrl = window.normalizeMediaUrl ? window.normalizeMediaUrl(rawIcon) : (window.formatMediaUrl ? window.formatMediaUrl(rawIcon) : rawIcon);
+            }
+            const fallbackIcon = isOfficial ? 'logo.png' : '';
+            if (iconUrl) {
               brandContainer.innerHTML = `
                 <div class="header-server-badge">
-                  <img class="header-server-icon" src="${escapeHtml(srv.icon)}" alt="${escapeHtml(srv.name)}" onerror="this.style.display='none'">
+                  <img class="header-server-icon" src="${escapeHtml(iconUrl)}" alt="${escapeHtml(srv.name)}" onerror="this.onerror=null;if('${fallbackIcon}'){this.src='${fallbackIcon}';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}">
+                  <span class="header-server-icon-placeholder" style="display:none;">${escapeHtml((srv.name || 'S').substring(0, 2).toUpperCase())}</span>
+                  <span class="header-server-name">${escapeHtml(srv.name)}</span>${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv) : ''}
+                </div>`;
+            } else if (isOfficial) {
+              brandContainer.innerHTML = `
+                <div class="header-server-badge">
+                  <img class="header-server-icon" src="logo.png" alt="${escapeHtml(srv.name)}">
                   <span class="header-server-name">${escapeHtml(srv.name)}</span>${window.renderServerBadgesHtml ? window.renderServerBadgesHtml(srv) : ''}
                 </div>`;
             } else {
