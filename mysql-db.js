@@ -970,7 +970,14 @@ async function getStoreValue(key) {
 async function setStoreValue(key, val) {
   if (!key) return;
   // Block any pollution of system_store with relational tables
-  if (key === 'ziorse_accounts' || key === 'ziorse_user_directory' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_')) {
+  if (
+    key === 'ziorse_accounts' ||
+    key === 'ziorse_user_directory' ||
+    key === 'ziorse_invite_registry' ||
+    key === 'ziorse_real_posts_v14' ||
+    key.startsWith('ziorse_srv_members_') ||
+    key.startsWith('ziorse_real_servers_')
+  ) {
     await deleteStoreValue(key);
     return;
   }
@@ -995,7 +1002,14 @@ async function getAllStoreValues() {
   const store = {};
   rows.forEach(r => {
     const k = r.store_key || '';
-    if (k === 'ziorse_accounts' || k === 'ziorse_user_directory' || k.startsWith('ziorse_srv_members_') || k.startsWith('ziorse_real_servers_v14_')) {
+    if (
+      k === 'ziorse_accounts' ||
+      k === 'ziorse_user_directory' ||
+      k === 'ziorse_invite_registry' ||
+      k === 'ziorse_real_posts_v14' ||
+      k.startsWith('ziorse_srv_members_') ||
+      k.startsWith('ziorse_real_servers_')
+    ) {
       getPool().query('DELETE FROM system_store WHERE store_key = ?', [k]).catch(() => {});
       return;
     }
@@ -1016,7 +1030,7 @@ async function reconcileAndPruneDeletedAccounts() {
   const p = getPool();
   try {
     // 1. system_store içindeki eski dump kalıntılarını sil
-    await p.query("DELETE FROM system_store WHERE store_key LIKE 'ziorse_srv_members%' OR store_key = 'ziorse_user_directory' OR store_key = 'ziorse_accounts'");
+    await p.query("DELETE FROM system_store WHERE store_key LIKE 'ziorse_srv_members%' OR store_key LIKE 'ziorse_real_servers%' OR store_key IN ('ziorse_user_directory', 'ziorse_accounts', 'ziorse_invite_registry', 'ziorse_real_posts_v14')");
 
     // 2. Accounts tablosunda olmayan üyeleri server_members'dan sil
     await p.query("DELETE FROM server_members WHERE LOWER(handle) NOT IN (SELECT LOWER(handle) FROM accounts)");
