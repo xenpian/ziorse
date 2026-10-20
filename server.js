@@ -839,21 +839,43 @@ app.post('/api/invite/register', (req, res) => {
   res.json({ success: true, registry: globalInviteRegistry });
 });
 
+function cleanupDuplicateRegistryKeys() {
+  if (!globalInviteRegistry || typeof globalInviteRegistry !== 'object') return;
+  const keysToDelete = [];
+  for (const [k, v] of Object.entries(globalInviteRegistry)) {
+    if (!v) continue;
+    if (v.inviteCode && k !== v.inviteCode && /^\d{15}$/.test(k)) {
+      keysToDelete.push(k);
+    }
+  }
+  keysToDelete.forEach(k => {
+    delete globalInviteRegistry[k];
+    delete globalServerMembers[k];
+  });
+}
+
 // ── HERKESE AÇIK SUNUCULAR (PUBLIC SERVERS) API ───────────────
 app.get('/api/public-servers', (req, res) => {
+  cleanupDuplicateRegistryKeys();
   const publicList = [];
-  const seenKeys = new Set();
+  const seenIds = new Set();
+  const seenCodes = new Set();
+  const seenNames = new Set();
 
   Object.keys(globalInviteRegistry).forEach(code => {
     const info = globalInviteRegistry[code];
     if (info && info.isPublic === true) {
-      // Eğer anahtar 15 haneli serverId ise ve asıl inviteCode zaten varsa atla
-      const inviteCode = info.inviteCode || code;
-      const serverId = info.serverId ? String(info.serverId) : String(code);
-      const dedupKey = inviteCode.toLowerCase();
-      if (seenKeys.has(dedupKey) || seenKeys.has(serverId)) return;
-      seenKeys.add(dedupKey);
-      seenKeys.add(serverId);
+      const inviteCode = (info.inviteCode || code).trim();
+      const serverId = (info.serverId || code).toString().trim();
+      const srvName = (info.serverName || info.name || '').trim().toLowerCase();
+
+      // De-duplication: inviteCode, serverId veya ziorse.com adıyla tekilleştir
+      if (seenCodes.has(inviteCode.toLowerCase()) || (serverId && seenIds.has(serverId)) || (srvName === 'ziorse.com' && seenNames.has('ziorse.com'))) {
+        return;
+      }
+      seenCodes.add(inviteCode.toLowerCase());
+      if (serverId) seenIds.add(serverId);
+      if (srvName) seenNames.add(srvName);
 
       const members = globalServerMembers[inviteCode] || globalServerMembers[code] || [];
       const memberCount = Math.max(members.length, info.memberCount || 1);
