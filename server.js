@@ -1739,7 +1739,13 @@ io.on('connection', (socket) => {
   socket.on('register-server-invite', (data) => {
     if (data && data.code && data.info) {
       globalInviteRegistry[data.code] = data.info;
+      if (data.info.serverId) {
+        globalInviteRegistry[data.info.serverId] = data.info;
+      }
       if (!globalServerMembers[data.code]) globalServerMembers[data.code] = [];
+      if (data.info.serverId && !globalServerMembers[data.info.serverId]) {
+        globalServerMembers[data.info.serverId] = globalServerMembers[data.code];
+      }
       if (data.info.ownerHandle) {
         const oHandle = data.info.ownerHandle.startsWith('@') ? data.info.ownerHandle : '@' + data.info.ownerHandle;
         const cleanH = oHandle.toLowerCase();
