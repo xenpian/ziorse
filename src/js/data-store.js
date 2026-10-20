@@ -581,18 +581,49 @@ class DataStore {
     }
   }
 
+  _getValidAccountHandles() {
+    let accs = window.__globalAccounts;
+    if (!accs || !Array.isArray(accs) || accs.length === 0) {
+      try {
+        const raw = ziorseGetStorage('ziorse_accounts');
+        accs = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
+      } catch { accs = []; }
+    }
+    const set = new Set();
+    if (Array.isArray(accs)) {
+      accs.forEach(a => {
+        if (a && a.handle) {
+          const clean = (a.handle || '').toLowerCase().replace('@', '');
+          set.add(clean);
+          set.add('@' + clean);
+        }
+      });
+    }
+    return set;
+  }
+
   _loadGlobalDirectory() {
+    let source = {};
     if (window.__globalUserDirectory && Object.keys(window.__globalUserDirectory).length > 0) {
-      return Object.assign({}, window.__globalUserDirectory);
+      source = Object.assign({}, window.__globalUserDirectory);
+    } else {
+      try {
+        const saved = ziorseGetStorage('ziorse_user_directory');
+        source = (typeof saved === 'string' ? JSON.parse(saved) : saved) || {};
+      } catch { source = {}; }
     }
 
-    let local = {};
-    try {
-      const saved = ziorseGetStorage('ziorse_user_directory');
-      local = (typeof saved === 'string' ? JSON.parse(saved) : saved) || {};
-    } catch { local = {}; }
+    const validHandles = this._getValidAccountHandles();
+    if (validHandles.size === 0) return source;
 
-    return local;
+    const filtered = {};
+    for (const [k, v] of Object.entries(source)) {
+      const clean = k.toLowerCase().replace('@', '');
+      if (validHandles.has(clean) || validHandles.has('@' + clean)) {
+        filtered[k] = v;
+      }
+    }
+    return filtered;
   }
 
   // -------------------------------------------------------
