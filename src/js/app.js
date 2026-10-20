@@ -1315,7 +1315,7 @@ document.addEventListener('DOMContentLoaded', () => {
       styles.push(`font-weight:${prof.fontWeight}`);
     }
     const isGradient = prof?.nameColor && typeof prof.nameColor === 'string' && prof.nameColor.startsWith('linear-gradient');
-    const userColor = (!isGradient && prof?.nameColor && prof.nameColor !== 'none') ? prof.nameColor : '#8b5cf6';
+    const userColor = (!isGradient && prof?.nameColor && prof.nameColor !== 'none') ? prof.nameColor : '#000000';
 
     if (isGradient) {
       styles.push(`background-image:${prof.nameColor}`);
