@@ -257,13 +257,8 @@ function saveServerMembersTxt(code) {
 }
 
 function saveInviteRegistryTxt() {
-  try {
-    Object.entries(globalInviteRegistry).forEach(([code, info]) => {
-      mysqlDb.upsertServer(code, info).catch(() => {});
-    });
-  } catch (e) {
-    console.error('[Ziorse MySQL] Invite registry kaydetme hatasi:', e);
-  }
+  // Sunucular oluşturulduklarında veya güncellendiklerinde doğrudan MySQL'e yazılır.
+  // Burada tüm kayıtların kör döngü ile yeniden yazılması MySQL'den silinen sunucuları diriltmemesi için engellenmiştir.
 }
 
 async function loadSyncDb() {
@@ -321,29 +316,18 @@ function saveSyncDb() {
   saveDbTimer = setTimeout(async () => {
     saveDbTimer = null;
     try {
-      // 1. User Directory senkronizasyonu
+      // 1. User Directory senkronizasyonu (sadece mevcut gerçek hesaplar)
+      const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
       for (const [h, prof] of Object.entries(globalUserDirectory)) {
-        mysqlDb.upsertUserProfile(h, prof).catch(() => {});
-      }
-      // 2. Sunucu davet kayıtları (Servers)
-      for (const [code, info] of Object.entries(globalInviteRegistry)) {
-        mysqlDb.upsertServer(code, info).catch(() => {});
-      }
-      // 3. Sunucu üyeleri
-      for (const [code, members] of Object.entries(globalServerMembers)) {
-        if (Array.isArray(members)) {
-          members.forEach(m => mysqlDb.addServerMember(code, m).catch(() => {}));
+        if (validHandles.has(h.toLowerCase())) {
+          mysqlDb.upsertUserProfile(h, prof).catch(() => {});
         }
       }
-      // 4. Arkadaşlık istekleri
+      // 2. Arkadaşlık istekleri
       for (const [th, reqs] of Object.entries(globalFriendRequests)) {
         if (Array.isArray(reqs)) {
           reqs.forEach(r => mysqlDb.saveFriendRequest(th, r).catch(() => {}));
         }
-      }
-      // 5. Gönderiler (Posts)
-      if (Array.isArray(serverPosts)) {
-        serverPosts.slice(0, 50).forEach(p => mysqlDb.savePost(p).catch(() => {}));
       }
     } catch (err) {
       console.error('[Ziorse MySQL] DB Kayıt Hatası:', err);
@@ -353,32 +337,33 @@ function saveSyncDb() {
 
 loadSyncDb();
 
-// ── OTOMATİK VERİTABANI İZLEYİCİ & CANLI SENKRONİZASYON ────────
-// Veritabanından (phpMyAdmin / MySQL CLI) bir hesap veya sunucu silindiğinde tüm sistemden otomatik ve anında temizler
+// ── OTOMATİK VERİTABANI İZLEYİCİ & CANLI SENKRONİZASYON (500ms) ────────
+// Veritabanından (phpMyAdmin / MySQL CLI) bir hesap, sunucu veya gönderi silindiğinde tüm sistemden anında temizler
+let isWatcherRunning = false;
 setInterval(async () => {
+  if (isWatcherRunning) return;
+  isWatcherRunning = true;
   try {
     // 1. HESAP İZLEYİCİSİ
     const accs = await mysqlDb.getAllAccounts();
     const currentHandles = new Set(accs.map(a => (a.handle || '').toLowerCase()));
     const knownHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
 
-    let changed = false;
+    let accountsChanged = false;
     if (currentHandles.size !== knownHandles.size) {
-      changed = true;
+      accountsChanged = true;
     } else {
       for (const h of knownHandles) {
-        if (!currentHandles.has(h)) { changed = true; break; }
+        if (!currentHandles.has(h)) { accountsChanged = true; break; }
       }
     }
 
-    if (changed) {
+    if (accountsChanged) {
       console.log('[Ziorse MySQL Watcher] Hesap silinmesi/eklenmesi algılandı. Otomatik arındırma ve senkronizasyon yapılıyor...');
-      // Silinen hesapları tespit et ve zorla çıkış yaptır
       const deletedHandles = [...knownHandles].filter(h => !currentHandles.has(h));
       deletedHandles.forEach(dh => {
         const cleanDh = dh.replace('@', '');
         activeOnlineHandles.delete(cleanDh);
-        // O hesaba ait açık olan soket varsa anında zorla çıkış yaptır
         io.to(cleanDh).emit('force-logout', { handle: dh, reason: 'account_deleted' });
         io.to(dh).emit('force-logout', { handle: dh, reason: 'account_deleted' });
         io.emit('account-deleted', { handle: dh });
@@ -393,7 +378,7 @@ setInterval(async () => {
       io.emit('public-servers-updated', globalInviteRegistry);
     }
 
-    // 2. SUNUCU İZLEYİCİSİ (MySQL servers tablosundan doğrudan bir sunucu silinirse anında arındır)
+    // 2. SUNUCU İZLEYİCİSİ (MySQL servers tablosundan doğrudan sunucu silinmesi/eklenmesi)
     const dbServers = await mysqlDb.getAllServers();
     const currentServerCodes = new Set(Object.keys(dbServers));
     const knownServerCodes = new Set(Object.keys(globalInviteRegistry));
@@ -408,14 +393,21 @@ setInterval(async () => {
       }
     }
 
+    // MySQL'de yeni eklenen sunucuları da algıla
+    for (const code of currentServerCodes) {
+      if (!knownServerCodes.has(code)) {
+        serversChanged = true;
+      }
+    }
+
     if (serversChanged) {
-      console.log('[Ziorse MySQL Watcher] Sunucu silinmesi algılandı. Anında temizleniyor:', deletedServerCodes);
+      console.log('[Ziorse MySQL Watcher] Sunucu değişikliği algılandı. Silinenler:', deletedServerCodes);
       for (const code of deletedServerCodes) {
         const srvId = globalInviteRegistry[code]?.serverId || code;
         delete globalInviteRegistry[code];
-        delete globalInviteRegistry[srvId];
+        if (srvId) delete globalInviteRegistry[srvId];
         delete globalServerMembers[code];
-        delete globalServerMembers[srvId];
+        if (srvId) delete globalServerMembers[srvId];
 
         io.emit('server-deleted', { inviteCode: code, serverId: srvId });
       }
@@ -427,8 +419,30 @@ setInterval(async () => {
       io.emit('public-servers-updated', globalInviteRegistry);
       io.emit('server-members-updated', globalServerMembers);
     }
-  } catch (e) { }
-}, 1000);
+
+    // 3. GÖNDERİ İZLEYİCİSİ (MySQL posts tablosundan doğrudan gönderi silinmesi)
+    const [dbPostRows] = await mysqlDb.getPool().query('SELECT id FROM posts');
+    const currentPostIds = new Set(dbPostRows.map(r => r.id));
+    const deletedPostIds = [];
+    serverPosts.forEach(p => {
+      if (p && p.id && !currentPostIds.has(p.id)) {
+        deletedPostIds.push(p.id);
+      }
+    });
+
+    if (deletedPostIds.length > 0) {
+      console.log('[Ziorse MySQL Watcher] Gönderi silinmesi algılandı:', deletedPostIds);
+      serverPosts = serverPosts.filter(p => !deletedPostIds.includes(p.id));
+      deletedPostIds.forEach(id => {
+        io.emit('delete-post-event', { id });
+      });
+      io.emit('sync-all-posts', serverPosts);
+    }
+  } catch (e) {
+  } finally {
+    isWatcherRunning = false;
+  }
+}, 500);
 
 function ensureOfficialServerBackend() {
   const officialCode = 'ziorse';
