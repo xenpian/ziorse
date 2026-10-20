@@ -737,7 +737,7 @@ async function readAllStoreData() {
 
   const store = {};
   for (const [k, v] of Object.entries(memorySystemStore)) {
-    if (!k.startsWith('ziorse_real_servers_v14_') && k !== 'ziorse_accounts') {
+    if (!k.startsWith('ziorse_real_servers_v14_') && k !== 'ziorse_accounts' && !k.startsWith('ziorse_srv_members_') && k !== 'ziorse_user_directory') {
       store[k] = v;
     }
   }
@@ -747,6 +747,12 @@ async function readAllStoreData() {
   store['ziorse_invite_registry'] = globalInviteRegistry;
   store['ziorse_user_directory'] = globalUserDirectory;
   store['ziorse_accounts'] = globalAccounts;
+  Object.keys(globalServerMembers).forEach(code => {
+    store['ziorse_srv_members_' + code] = globalServerMembers[code];
+  });
+  if (globalServerMembers['ziorse']) {
+    store['ziorse_srv_members_srv-ziorse-official'] = globalServerMembers['ziorse'];
+  }
 
   return store;
 }
@@ -760,6 +766,21 @@ app.get('/api/store/get/:key', async (req, res) => {
   const key = req.params.key;
   if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
     return res.json({ key, value: null });
+  }
+
+  if (key === 'ziorse_accounts') {
+    return res.json({ key, value: globalAccounts });
+  }
+  if (key === 'ziorse_user_directory') {
+    return res.json({ key, value: globalUserDirectory });
+  }
+  if (key === 'ziorse_invite_registry') {
+    return res.json({ key, value: globalInviteRegistry });
+  }
+  if (key.startsWith('ziorse_srv_members_')) {
+    const code = key.replace('ziorse_srv_members_', '');
+    const mems = globalServerMembers[code] || (code === 'srv-ziorse-official' ? globalServerMembers['ziorse'] : []) || [];
+    return res.json({ key, value: mems });
   }
 
   let val = memorySystemStore[key];
@@ -787,7 +808,7 @@ app.post('/api/store/set', async (req, res) => {
   }
 
   // Relational entities have their own MySQL tables; do NOT pollute system store with old client dumps
-  if (key === 'ziorse_accounts' || key.startsWith('ziorse_real_servers_v14_')) {
+  if (key === 'ziorse_accounts' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_')) {
     return res.json({ success: true, ignored: true });
   }
 
@@ -807,12 +828,15 @@ app.post('/api/store/set', async (req, res) => {
       io.emit('invite-registry-updated', globalInviteRegistry);
       io.emit('public-servers-updated', globalInviteRegistry);
     } else if (key === 'ziorse_user_directory' && typeof val === 'object') {
-      globalUserDirectory = Object.assign(globalUserDirectory, val);
+      const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+      const filteredDir = {};
+      for (const [dh, du] of Object.entries(val)) {
+        if (validHandles.has(dh.toLowerCase())) {
+          filteredDir[dh] = du;
+        }
+      }
+      globalUserDirectory = Object.assign(globalUserDirectory, filteredDir);
       io.emit('user-directory-updated', globalUserDirectory);
-    } else if (key.startsWith('ziorse_srv_members_') && Array.isArray(val)) {
-      const code = key.replace('ziorse_srv_members_', '');
-      globalServerMembers[code] = val;
-      io.emit('server-members-updated', globalServerMembers);
     }
 
     io.emit('store-synced', { key, val });
