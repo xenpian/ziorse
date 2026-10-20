@@ -738,13 +738,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     syncWithSocketServer();
 
+    // 12 saniyede bir aktiflik ve varlık pingi gönder
+    setInterval(() => {
+      if (socket && socket.connected && window.dataStore && window.dataStore.currentUser) {
+        socket.emit('client-presence-ping', {
+          handle: window.dataStore.currentUser.handle,
+          status: window.dataStore.userStatus || { type: 'online' }
+        });
+      }
+    }, 12000);
+
     socket.on('new-post-event', (post) => {
       if (post && post.id) {
-        const exists = (window.dataStore.posts || []).some(p => p.id === post.id);
-        if (!exists) {
+        const idx = (window.dataStore.posts || []).findIndex(p => p.id === post.id);
+        if (idx === -1) {
           window.dataStore.posts.unshift(post);
-          window.dataStore.savePosts();
+        } else {
+          window.dataStore.posts[idx] = post;
         }
+        window.dataStore.savePosts();
       }
       renderFeed(true);
       if (window.dataStore.activeServerId !== 'home' && feedPostsContainer) {
@@ -4782,6 +4794,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Aktif soket online listesinde bulunan tüm kullanıcıları çevrimiçi olarak ekle
+    (window.__globalOnlineHandles || []).forEach(h => {
+      const cleanH = (h || '').toLowerCase().replace('@', '');
+      if (!cleanH || cleanH === cu.handle.toLowerCase().replace('@', '')) return;
+      if (!allUsersMap.has(cleanH) || !allUsersMap.get(cleanH).isOnline) {
+        const fullH = '@' + cleanH;
+        const uProf = window.dataStore.getUserProfile(fullH) || {};
+        allUsersMap.set(cleanH, {
+          handle: fullH,
+          name: uProf.name || cleanH,
+          avatar: uProf.avatar || window.DEFAULT_AVATAR,
+          status: { type: 'online', text: '' },
+          memberTheme: uProf.memberTheme || '',
+          isOnline: true,
+          isSelf: false
+        });
+      }
+    });
+
     const userList = Array.from(allUsersMap.values());
     const on = userList.filter(u => u.isOnline);
     const off = userList.filter(u => !u.isOnline);
@@ -6255,9 +6286,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const srv = window.dataStore.servers.find(s => s.id === window.dataStore.activeServerId);
     if (!srv) return;
 
-    const members = (typeof window.dataStore.getServerMembers === 'function')
+    let rawMembers = (typeof window.dataStore.getServerMembers === 'function')
       ? window.dataStore.getServerMembers(srv.inviteCode || srv.id)
       : (srv.members || []);
+    const members = rawMembers ? [...rawMembers] : [];
+
+    // Resmi topluluk sunucusunda (ziorse.com) çevrimiçi olan tüm kullanıcıları üye listesinde göster
+    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse';
+    if (isOfficial && Array.isArray(window.__globalOnlineHandles)) {
+      window.__globalOnlineHandles.forEach(h => {
+        const cleanH = (h || '').toLowerCase().replace('@', '');
+        if (!members.some(m => (m.handle || '').toLowerCase().replace('@', '') === cleanH)) {
+          const fullH = '@' + cleanH;
+          const uProf = window.dataStore.getUserProfile(fullH) || {};
+          members.push({
+            handle: fullH,
+            name: uProf.name || cleanH,
+            avatar: uProf.avatar || window.DEFAULT_AVATAR
+          });
+        }
+      });
+    }
+
     // En üstteki rol (küçük position / 0) en başta olacak şekilde hiyerarşik sırala
     const serverRoles = (window.dataStore.getServerRoles
       ? window.dataStore.getServerRoles(srv.id)

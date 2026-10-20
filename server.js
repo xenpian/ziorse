@@ -240,29 +240,8 @@ let globalInviteRegistry = {};
 let globalFriendRequests = {}; // targetHandle -> array of requests
 let globalServerMembers = {};  // inviteCode -> array of member objects
 let globalVoiceRooms = {};     // channelId -> array of { socketId, handle, name, avatar, isSpeaking, isMuted, isDeafened }
-let globalAccounts = [
-  {
-    name: 'Kurtv',
-    handle: '@kurtv_dev',
-    email: 'kurtv@ziorse.dev',
-    password: '123',
-    avatar: 'https://i.imgur.com/w3OhOmW.jpeg',
-    banner: '#999999',
-    bio: 'Ziorse Creator'
-  }
-];
-let globalUserDirectory = {
-  '@kurtv_dev': {
-    name: 'Kurtv',
-    handle: '@kurtv_dev',
-    avatar: 'https://i.imgur.com/w3OhOmW.jpeg',
-    banner: '#999999',
-    bio: 'Ziorse Developer',
-    followers: 128,
-    following: 42,
-    status: { type: 'online', text: 'Kod yazıyor...' }
-  }
-};
+let globalAccounts = [];
+let globalUserDirectory = {};
 
 function saveServerMembersTxt(code) {
   if (!code || !globalServerMembers[code]) return;
@@ -293,34 +272,22 @@ async function loadSyncDb() {
     await mysqlDb.initDatabase();
 
     const accs = await mysqlDb.getAllAccounts();
-    if (Array.isArray(accs) && accs.length > 0) {
-      globalAccounts = accs;
-    }
+    globalAccounts = Array.isArray(accs) ? accs : [];
 
     const uDir = await mysqlDb.getUserDirectory();
-    if (uDir && Object.keys(uDir).length > 0) {
-      globalUserDirectory = Object.assign({}, globalUserDirectory, uDir);
-    }
+    globalUserDirectory = (uDir && typeof uDir === 'object') ? uDir : {};
 
     const srvs = await mysqlDb.getAllServers();
-    if (srvs && Object.keys(srvs).length > 0) {
-      globalInviteRegistry = srvs;
-    }
+    globalInviteRegistry = (srvs && typeof srvs === 'object') ? srvs : {};
 
     const mems = await mysqlDb.getAllServerMembers();
-    if (mems && Object.keys(mems).length > 0) {
-      globalServerMembers = mems;
-    }
+    globalServerMembers = (mems && typeof mems === 'object') ? mems : {};
 
     const reqs = await mysqlDb.getAllFriendRequests();
-    if (reqs && Object.keys(reqs).length > 0) {
-      globalFriendRequests = reqs;
-    }
+    globalFriendRequests = (reqs && typeof reqs === 'object') ? reqs : {};
 
     const psts = await mysqlDb.getAllPosts();
-    if (Array.isArray(psts) && psts.length > 0) {
-      serverPosts = psts;
-    }
+    serverPosts = Array.isArray(psts) ? psts : [];
 
     ensureOfficialServerBackend();
     console.log(`[Ziorse Server MySQL (gusgon)] Başarıyla yüklendi: ${globalAccounts.length} hesap, ${Object.keys(globalUserDirectory).length} kullanıcı dizini, ${Object.keys(globalInviteRegistry).length} sunucu, ${serverPosts.length} gönderi.`);
@@ -330,21 +297,8 @@ async function loadSyncDb() {
 }
 
 function extractDataUrlToUpload(dataUrl, prefix = 'avatar') {
-  if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) return dataUrl;
-  try {
-    const matches = dataUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
-    if (!matches) return dataUrl;
-    const ext = matches[1] === 'jpeg' ? 'jpg' : (matches[1] || 'png');
-    const base64Data = matches[2];
-    if (base64Data.length < 5000) return dataUrl;
-    const filename = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
-    const filePath = path.join(uploadsDir, filename);
-    fs.writeFile(filePath, Buffer.from(base64Data, 'base64'), () => { });
-    return `/uploads/${filename}`;
-  } catch (err) {
-    console.error('[Upload] Failed to extract dataUrl to upload:', err);
-    return dataUrl;
-  }
+  // Veritabanında atılan tüm görseller, videolar ve mesajlar kod (base64 data URL) olarak tutulur
+  return dataUrl;
 }
 
 let saveDbTimer = null;
@@ -492,113 +446,142 @@ function ensureOfficialServerBackend() {
 ensureOfficialServerBackend();
 
 // ── AUTH & ACCOUNTS REST API ───────────────────────────────────
-app.get('/api/accounts', (req, res) => {
-  res.json({ accounts: globalAccounts });
+app.get('/api/accounts', async (req, res) => {
+  try {
+    const accs = await mysqlDb.getAllAccounts();
+    res.json({ accounts: accs });
+  } catch (err) {
+    res.json({ accounts: globalAccounts });
+  }
 });
 
-app.post(['/api/register', '/api/auth/register'], (req, res) => {
-  const { name, handle, email, password, avatar, banner, bio } = req.body;
-  if (!email || !password) return res.status(400).json({ error: 'E-posta ve şifre zorunludur.' });
-  const cleanHandle = handle ? (handle.startsWith('@') ? handle : '@' + handle) : ('@' + email.split('@')[0]);
-  const cleanEmail = email.toLowerCase().trim();
-  const cleanPass = String(password).trim();
+app.post(['/api/register', '/api/auth/register'], async (req, res) => {
+  try {
+    const { name, handle, email, password, avatar, banner, bio } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'E-posta ve şifre zorunludur.' });
+    const cleanHandle = handle ? (handle.startsWith('@') ? handle : '@' + handle) : ('@' + email.split('@')[0]);
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanPass = String(password).trim();
 
-  let acc = globalAccounts.find(a => a.email.toLowerCase() === cleanEmail || a.handle.toLowerCase() === cleanHandle.toLowerCase());
-  if (acc) {
-    return res.status(400).json({ error: 'Bu kullanıcı adı veya e-posta adresi zaten kullanılıyor.' });
-  }
-
-  acc = {
-    name: name || cleanEmail.split('@')[0],
-    handle: cleanHandle,
-    email: cleanEmail,
-    password: cleanPass,
-    avatar: avatar || '',
-    banner: banner || '#999999',
-    bio: bio || ''
-  };
-  globalAccounts.push(acc);
-
-  globalUserDirectory[cleanHandle] = {
-    name: acc.name,
-    handle: cleanHandle,
-    avatar: acc.avatar || '',
-    banner: acc.banner || '#999999',
-    bio: acc.bio || '',
-    followers: 0,
-    following: 0,
-    status: { type: 'online', text: '' }
-  };
-
-  // Yeni hesabı anında resmi ziorse.com sunucusuna üye yap
-  if (!globalServerMembers['ziorse']) globalServerMembers['ziorse'] = [];
-  if (!globalServerMembers['ziorse'].some(m => m.handle.toLowerCase() === cleanHandle.toLowerCase())) {
-    globalServerMembers['ziorse'].push({
-      handle: acc.handle,
-      name: acc.name,
-      avatar: acc.avatar || ''
-    });
-    globalServerMembers['srv-ziorse-official'] = globalServerMembers['ziorse'];
-    if (globalInviteRegistry['ziorse']) {
-      globalInviteRegistry['ziorse'].memberCount = globalServerMembers['ziorse'].length;
+    // 1. MySQL'de e-posta veya kullanıcı adı var mı kontrol et
+    const existingEmail = await mysqlDb.getAccountByLogin(cleanEmail).catch(() => null);
+    const existingHandle = await mysqlDb.getAccountByLogin(cleanHandle).catch(() => null);
+    if (existingEmail || existingHandle) {
+      return res.status(400).json({ error: 'Bu kullanıcı adı veya e-posta adresi zaten kullanılıyor.' });
     }
-    saveServerMembersTxt('ziorse');
-    saveServerMembersTxt('srv-ziorse-official');
-    saveInviteRegistryTxt();
-    io.emit('server-members-updated', globalServerMembers);
-    io.emit('invite-registry-updated', globalInviteRegistry);
-    io.emit('server-member-joined-event', {
-      inviteCode: 'ziorse',
-      serverId: 'srv-ziorse-official',
-      member: { handle: acc.handle, name: acc.name, avatar: acc.avatar || '' },
-      members: globalServerMembers['ziorse']
-    });
-  }
 
-  saveSyncDb();
-  io.emit('accounts-updated', globalAccounts);
-  io.emit('user-directory-updated', globalUserDirectory);
-  const token = jwt.sign({ handle: acc.handle, email: acc.email }, JWT_SECRET, { expiresIn: '7d' });
-  res.json({ success: true, account: acc, user: acc, token });
-});
+    const newAcc = {
+      name: name || cleanEmail.split('@')[0],
+      handle: cleanHandle,
+      email: cleanEmail,
+      password: cleanPass,
+      avatar: avatar || '',
+      banner: banner || '#999999',
+      bio: bio || ''
+    };
 
-app.post(['/api/login', '/api/auth/login'], (req, res) => {
-  const { identifier, email, handle, password } = req.body;
-  const loginId = (identifier || email || handle || '').trim().toLowerCase();
-  const cleanId = loginId.replace('@', '');
-  const pass = String(password || '').trim();
-  if (!loginId || !pass) return res.status(400).json({ error: 'Giriş bilgileri eksik.' });
+    // 2. MySQL veritabanına doğrudan kaydet (accounts, user_directory ve resmi sunucu üyeliği)
+    const created = await mysqlDb.createAccount(newAcc);
+    const fullAcc = { ...newAcc, id: created?.id };
 
-  const found = globalAccounts.find(a =>
-    (a.email && a.email.toLowerCase() === loginId) ||
-    (a.handle && a.handle.toLowerCase() === loginId) ||
-    (a.handle && a.handle.toLowerCase().replace('@', '') === cleanId)
-  );
+    // 3. Bellek listelerini güncelle
+    globalAccounts = globalAccounts.filter(a => a.handle.toLowerCase() !== cleanHandle.toLowerCase() && a.email.toLowerCase() !== cleanEmail);
+    globalAccounts.push(fullAcc);
 
-  if (!found) {
-    return res.status(404).json({ error: 'Bu kullanıcı adı veya e-posta ile kayıtlı hesap bulunamadı.' });
-  }
-  if (found.password !== pass) {
-    return res.status(401).json({ error: 'Şifre yanlış.' });
-  }
-
-  if (!globalUserDirectory[found.handle]) {
-    globalUserDirectory[found.handle] = {
-      name: found.name,
-      handle: found.handle,
-      avatar: found.avatar || '',
-      banner: found.banner || '#999999',
-      bio: found.bio || '',
+    globalUserDirectory[cleanHandle] = {
+      name: fullAcc.name,
+      handle: cleanHandle,
+      avatar: fullAcc.avatar || '',
+      banner: fullAcc.banner || '#999999',
+      bio: fullAcc.bio || '',
       followers: 0,
       following: 0,
       status: { type: 'online', text: '' }
     };
-    saveSyncDb();
-    io.emit('user-directory-updated', globalUserDirectory);
-  }
 
-  const token = jwt.sign({ handle: found.handle, email: found.email }, JWT_SECRET, { expiresIn: '7d' });
-  res.json({ success: true, account: found, user: found, token });
+    // 4. Resmi sunucu üyelerine ekle
+    if (!globalServerMembers['ziorse']) globalServerMembers['ziorse'] = [];
+    if (!globalServerMembers['ziorse'].some(m => m.handle.toLowerCase() === cleanHandle.toLowerCase())) {
+      globalServerMembers['ziorse'].push({
+        handle: fullAcc.handle,
+        name: fullAcc.name,
+        avatar: fullAcc.avatar || ''
+      });
+      globalServerMembers['srv-ziorse-official'] = globalServerMembers['ziorse'];
+      if (globalInviteRegistry['ziorse']) {
+        globalInviteRegistry['ziorse'].memberCount = globalServerMembers['ziorse'].length;
+      }
+      saveServerMembersTxt('ziorse');
+      saveServerMembersTxt('srv-ziorse-official');
+      saveInviteRegistryTxt();
+    }
+
+    saveSyncDb();
+    io.emit('accounts-updated', globalAccounts);
+    io.emit('user-directory-updated', globalUserDirectory);
+    io.emit('server-members-updated', globalServerMembers);
+
+    const token = jwt.sign({ handle: fullAcc.handle, email: fullAcc.email }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ success: true, account: fullAcc, user: fullAcc, token });
+  } catch (err) {
+    console.error('[Register Error]:', err);
+    return res.status(500).json({ error: 'Kayıt sırasında veritabanı hatası oluştu: ' + err.message });
+  }
+});
+
+app.post(['/api/login', '/api/auth/login'], async (req, res) => {
+  try {
+    const { identifier, email, handle, password } = req.body;
+    const loginId = (identifier || email || handle || '').trim().toLowerCase();
+    const cleanId = loginId.replace('@', '');
+    const pass = String(password || '').trim();
+    if (!loginId || !pass) return res.status(400).json({ error: 'Giriş bilgileri eksik.' });
+
+    // Doğrudan MySQL veritabanından sorgula
+    let found = await mysqlDb.getAccountByLogin(loginId).catch(() => null);
+    if (!found) {
+      found = await mysqlDb.getAccountByLogin('@' + cleanId).catch(() => null);
+    }
+    if (!found) {
+      found = globalAccounts.find(a =>
+        (a.email && a.email.toLowerCase() === loginId) ||
+        (a.handle && a.handle.toLowerCase() === loginId) ||
+        (a.handle && a.handle.toLowerCase().replace('@', '') === cleanId)
+      );
+    }
+
+    if (!found) {
+      return res.status(404).json({ error: 'Bu kullanıcı adı veya e-posta ile kayıtlı hesap bulunamadı.' });
+    }
+    if (String(found.password) !== pass) {
+      return res.status(401).json({ error: 'Şifre yanlış.' });
+    }
+
+    if (!globalAccounts.some(a => a.handle.toLowerCase() === found.handle.toLowerCase())) {
+      globalAccounts.push(found);
+    }
+
+    if (!globalUserDirectory[found.handle]) {
+      globalUserDirectory[found.handle] = {
+        name: found.name,
+        handle: found.handle,
+        avatar: found.avatar || '',
+        banner: found.banner || '#999999',
+        bio: found.bio || '',
+        followers: 0,
+        following: 0,
+        status: { type: 'online', text: '' }
+      };
+      saveSyncDb();
+      io.emit('user-directory-updated', globalUserDirectory);
+    }
+
+    const token = jwt.sign({ handle: found.handle, email: found.email }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ success: true, account: found, user: found, token });
+  } catch (err) {
+    console.error('[Login Error]:', err);
+    return res.status(500).json({ error: 'Giriş sırasında veritabanı hatası oluştu: ' + err.message });
+  }
 });
 
 // ── JWT HELPERS ───────────────────────────────────────────────
@@ -739,7 +722,12 @@ async function readAllStoreData() {
     }
   } catch (e) { }
 
-  const store = { ...memorySystemStore };
+  const store = {};
+  for (const [k, v] of Object.entries(memorySystemStore)) {
+    if (!k.startsWith('ziorse_real_servers_v14_') && k !== 'ziorse_accounts') {
+      store[k] = v;
+    }
+  }
   if (serverPosts && serverPosts.length > 0) {
     store['ziorse_real_posts_v14'] = serverPosts;
   }
@@ -781,9 +769,13 @@ app.get('/api/store/get/:key', async (req, res) => {
 app.post('/api/store/set', async (req, res) => {
   const { key, val } = req.body;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
-  // Client session keys are isolated per browser/application instance
   if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
     return res.json({ success: true, localOnly: true });
+  }
+
+  // Relational entities have their own MySQL tables; do NOT pollute system store with old client dumps
+  if (key === 'ziorse_accounts' || key.startsWith('ziorse_real_servers_v14_')) {
+    return res.json({ success: true, ignored: true });
   }
 
   try {
@@ -804,30 +796,10 @@ app.post('/api/store/set', async (req, res) => {
     } else if (key === 'ziorse_user_directory' && typeof val === 'object') {
       globalUserDirectory = Object.assign(globalUserDirectory, val);
       io.emit('user-directory-updated', globalUserDirectory);
-    } else if (key === 'ziorse_accounts' && Array.isArray(val)) {
-      globalAccounts = val;
     } else if (key.startsWith('ziorse_srv_members_') && Array.isArray(val)) {
       const code = key.replace('ziorse_srv_members_', '');
       globalServerMembers[code] = val;
       io.emit('server-members-updated', globalServerMembers);
-    } else if (key.startsWith('ziorse_real_servers_v14_') && Array.isArray(val)) {
-      val.forEach(s => {
-        if (s && s.inviteCode && !globalInviteRegistry[s.inviteCode]) {
-          globalInviteRegistry[s.inviteCode] = {
-            serverName: s.name,
-            serverIcon: s.icon,
-            serverBanner: s.banner || '',
-            memberCount: s.memberCount || 1,
-            serverId: s.id,
-            ownerHandle: s.ownerHandle || '',
-            ownerName: s.ownerName || '',
-            ownerAvatar: s.ownerAvatar || '',
-            categories: s.categories || [],
-            roles: s.roles || [],
-            memberRoles: s.memberRoles || {}
-          };
-        }
-      });
     }
 
     io.emit('store-synced', { key, val });
@@ -1140,6 +1112,23 @@ io.on('connection', (socket) => {
     socket.emit('online-users-updated', Array.from(activeOnlineHandles));
   });
 
+  // İstemci periyodik aktiflik / varlık pingi
+  socket.on('client-presence-ping', (data) => {
+    if (data && data.handle) {
+      const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
+      const cleanH = h.toLowerCase().replace('@', '');
+      socketHandleMap.set(socket.id, cleanH);
+      socket.join(cleanH);
+      socket.join(h.toLowerCase());
+      socket.join('@' + cleanH);
+      const wasOnline = activeOnlineHandles.has(cleanH);
+      activeOnlineHandles.add(cleanH);
+      if (!wasOnline) {
+        io.emit('online-users-updated', Array.from(activeOnlineHandles));
+      }
+    }
+  });
+
   socket.on('sync-user-profile', (data) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
@@ -1148,10 +1137,9 @@ io.on('connection', (socket) => {
       activeOnlineHandles.add(cleanH);
       socket.join(cleanH);
       socket.join(h.toLowerCase());
+      socket.join('@' + cleanH);
 
-      if (data.avatar) data.avatar = extractDataUrlToUpload(data.avatar, 'avatar');
-      if (data.banner && data.banner.startsWith('data:image/')) data.banner = extractDataUrlToUpload(data.banner, 'banner');
-
+      // Veritabanında ve dizinde görsel ve videoları doğrudan kod/data URL olarak tut
       globalUserDirectory[h] = {
         ...(globalUserDirectory[h] || {}),
         ...data,
@@ -1159,7 +1147,7 @@ io.on('connection', (socket) => {
       };
 
       // Also update account in globalAccounts
-      const acc = globalAccounts.find(a => a.handle.toLowerCase() === cleanH);
+      const acc = globalAccounts.find(a => (a.handle || '').toLowerCase().replace('@', '') === cleanH);
       if (acc) {
         if (data.avatar) acc.avatar = data.avatar;
         if (data.banner) acc.banner = data.banner;
@@ -1175,7 +1163,7 @@ io.on('connection', (socket) => {
 
       // Üyenin profil fotoğrafı/adı değiştiğinde tüm sunucu üye listelerini güncelle
       Object.keys(globalServerMembers).forEach(invCode => {
-        const mIdx = globalServerMembers[invCode].findIndex(m => m.handle.toLowerCase() === cleanH);
+        const mIdx = globalServerMembers[invCode].findIndex(m => (m.handle || '').toLowerCase().replace('@', '') === cleanH);
         if (mIdx !== -1) {
           if (data.avatar) globalServerMembers[invCode][mIdx].avatar = data.avatar;
           if (data.name) globalServerMembers[invCode][mIdx].name = data.name;
@@ -1187,6 +1175,17 @@ io.on('connection', (socket) => {
           if (data.memberTheme) globalServerMembers[invCode][mIdx].memberTheme = data.memberTheme;
         }
       });
+
+      // Resmi sunucuya (ziorse) otomatik üyelik kaydını garantile
+      const officialCode = 'ziorse';
+      if (!globalServerMembers[officialCode]) globalServerMembers[officialCode] = [];
+      if (!globalServerMembers[officialCode].some(m => (m.handle || '').toLowerCase().replace('@', '') === cleanH)) {
+        globalServerMembers[officialCode].push({
+          handle: h,
+          name: data.name || cleanH,
+          avatar: data.avatar || ''
+        });
+      }
 
       // Sunucu davet listesindeki sahip bilgilerini güncelle
       Object.keys(globalInviteRegistry).forEach(code => {
@@ -1294,6 +1293,9 @@ io.on('connection', (socket) => {
       let changed = false;
       items.forEach(it => {
         if (it && it.inviteCode) {
+          // Sunucu registry'de yoksa kesinlikle diriltme; sadece kayıtlı sunucuları güncelle
+          if (!globalInviteRegistry[it.inviteCode]) return;
+
           if (!globalServerMembers[it.inviteCode]) globalServerMembers[it.inviteCode] = [];
 
           if (it.member && it.member.handle) {
@@ -1458,18 +1460,35 @@ io.on('connection', (socket) => {
     if (!data) return;
     if (!data.timestamp) data.timestamp = new Date().toISOString();
 
-    mysqlDb.saveDM(data).catch(() => {});
-
     const toH = data.toHandle ? data.toHandle.toLowerCase() : '';
     const fromH = data.fromHandle ? data.fromHandle.toLowerCase() : '';
     const cleanTo = toH.replace('@', '');
     const cleanFrom = fromH.replace('@', '');
 
+    mysqlDb.saveDM({
+      id: data.message?.id || ('dm-' + Date.now()),
+      fromHandle: data.fromHandle || fromH,
+      toHandle: data.toHandle || toH,
+      content: data.message?.text || data.content || '',
+      media: data.message?.image || data.message?.video || data.message?.media || data.media || null,
+      timestamp: data.message?.timestamp || data.timestamp,
+      raw_data: JSON.stringify(data)
+    }).catch(err => {
+      console.error('[MySQL Error] DM kaydedilemedi:', err.message);
+    });
+
     if (cleanTo) {
-      io.to(toH).to(cleanTo).emit('receive-dm-live', data);
+      io.to(toH).to(cleanTo).to('@' + cleanTo).emit('receive-dm-live', data);
     }
     if (cleanFrom && cleanFrom !== cleanTo) {
-      io.to(fromH).to(cleanFrom).emit('receive-dm-live', data);
+      io.to(fromH).to(cleanFrom).to('@' + cleanFrom).emit('receive-dm-live', data);
+    }
+
+    // Doğrudan bağlı soketleri de kontrol ederek garantili iletim yap
+    for (const [sId, handle] of socketHandleMap.entries()) {
+      if (handle === cleanTo || handle === toH) {
+        io.to(sId).emit('receive-dm-live', data);
+      }
     }
   });
 
@@ -1597,30 +1616,14 @@ io.on('connection', (socket) => {
   socket.on('new-post-broadcast', (post) => {
     if (post) {
       if (!post.timestamp) post.timestamp = new Date().toISOString();
-      if (post.codeSnippet && typeof post.codeSnippet === 'string' && post.codeSnippet.length > 8000) {
-        post.codeSnippet = post.codeSnippet.substring(0, 8000) + '\n// ... (kod boyutu optimize edildi)';
-      }
-      if (post.avatar && post.avatar.startsWith('data:image/')) {
-        post.avatar = extractDataUrlToUpload(post.avatar, 'avatar');
-      }
-      if (post.image && post.image.startsWith('data:image/')) {
-        post.image = extractDataUrlToUpload(post.image, 'post');
-      }
-      if (post.invite) {
-        if (post.invite.serverIcon && post.invite.serverIcon.startsWith('data:image/')) {
-          post.invite.serverIcon = extractDataUrlToUpload(post.invite.serverIcon, 'srv_icon');
-        }
-        if (post.invite.serverBanner && post.invite.serverBanner.startsWith('data:image/')) {
-          post.invite.serverBanner = extractDataUrlToUpload(post.invite.serverBanner, 'srv_banner');
-        }
-      }
-
-      // Anında hafifletilmiş payload ile sıfır gecikmeli emit
+      // Tüm görseller, videolar ve kodlar doğrudan string/kod olarak MySQL'de saklanır
       io.emit('new-post-event', post);
 
       serverPosts = serverPosts.filter(p => p.id !== post.id);
       serverPosts.unshift(post);
-      mysqlDb.savePost(post).catch(() => {});
+      mysqlDb.savePost(post).catch(err => {
+        console.error('[MySQL Error] Post kaydedilemedi:', err.message);
+      });
       saveSyncDb();
     }
   });

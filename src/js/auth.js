@@ -79,20 +79,7 @@ function getAccounts() {
     accounts = typeof raw === 'string' ? JSON.parse(raw || '[]') : (raw || []);
   } catch { accounts = []; }
 
-  // Varsayılan Geliştirici Hesabı (kurtv@ziorse.dev / 123) her zaman mevcut olsun
-  if (!accounts.find(a => a.email.toLowerCase() === 'kurtv@ziorse.dev')) {
-    accounts.unshift({
-      name: 'Kurtv',
-      handle: '@kurtv_dev',
-      avatar: 'https://i.imgur.com/w3OhOmW.jpeg',
-      banner: '',
-      bio: 'Fullstack Developer & Ziorse Creator',
-      email: 'kurtv@ziorse.dev',
-      password: '123'
-    });
-    saveAccounts(accounts);
-  }
-  return accounts;
+  return Array.isArray(accounts) ? accounts : [];
 }
 
 function saveAccounts(accounts) {
@@ -152,6 +139,51 @@ function initLogin() {
     btnSubmit.disabled = true;
     btnSubmit.textContent = 'Giriş yapılıyor...';
 
+    // 1. Önce doğrudan MySQL Sunucu API'sine giriş isteği gönder
+    try {
+      const loginUrl = window.location.protocol.startsWith('http') ? '/api/login' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/login');
+      const resp = await fetch(loginUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, password }),
+        signal: AbortSignal.timeout(5000)
+      }).catch(() => null);
+
+      if (resp) {
+        const data = await resp.json().catch(() => null);
+        if (resp.ok && data && data.success && data.account) {
+          const found = data.account;
+          if (data.token) localStorage.setItem('ziorse_jwt_token', data.token);
+          const accounts = getAccounts();
+          const cleanAccounts = accounts.filter(a => a.handle.toLowerCase() !== found.handle.toLowerCase());
+          cleanAccounts.push(found);
+          saveAccounts(cleanAccounts);
+
+          const userToSave = {
+            name: found.name || 'Kullanıcı',
+            handle: found.handle,
+            avatar: found.avatar || window.DEFAULT_AVATAR,
+            banner: found.banner || '#999999',
+            bio: found.bio || '',
+            email: found.email || email,
+            loggedIn: true
+          };
+          window.dataStore.saveUser(userToSave);
+          showAuthToast('Hoş geldin, ' + userToSave.name);
+          setTimeout(() => {
+            window.location.replace('index.html');
+          }, 200);
+          return;
+        } else if (data && data.error) {
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Giriş Yap';
+          showAuthError(data.error);
+          return;
+        }
+      }
+    } catch {}
+
+    // 2. Çevrimdışı / Yerel önbellek sorgusu
     const accounts = getAccounts();
     const cleanId = email.toLowerCase().replace('@', '');
     let found = accounts.find(a => 
@@ -159,26 +191,6 @@ function initLogin() {
       (a.handle && a.handle.toLowerCase() === email.toLowerCase()) ||
       (a.handle && a.handle.toLowerCase().replace('@', '') === cleanId)
     );
-
-    // Yerelde bulunamadıysa sunucu API'sine sorgu at (farklı tarayıcı/istemci desteği)
-    if (!found) {
-      try {
-        const loginUrl = window.location.protocol.startsWith('http') ? '/api/login' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/login');
-        const resp = await fetch(loginUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ identifier: email, password }),
-          signal: AbortSignal.timeout(4000)
-        });
-        const data = await resp.json();
-        if (data && data.success && data.account) {
-          found = data.account;
-          accounts.push(found);
-          saveAccounts(accounts);
-          if (data.token) localStorage.setItem('ziorse_jwt_token', data.token);
-        }
-      } catch {}
-    }
 
     if (!found) {
       btnSubmit.disabled = false;
@@ -193,7 +205,6 @@ function initLogin() {
       return;
     }
 
-    // Giriş başarılı - Kullanıcıyı dataStore'a kaydet
     const userToSave = {
       name: found.name || 'Kullanıcı',
       handle: found.handle || ('@' + email.split('@')[0]),
@@ -219,7 +230,6 @@ function initRegister() {
   setupCloseBtn();
   setupEnterKey(['reg-name', 'reg-handle', 'reg-email', 'reg-password'], 'btn-register-submit');
 
-  // Zaten giris yapilmissa direkt ana sayfaya yonlendir (acik logout istegi yoksa)
   const isExplicitLogout = window.location.search.includes('logout');
   if (isExplicitLogout) {
     if (window.dataStore) {
@@ -266,21 +276,6 @@ function initRegister() {
     btnSubmit.disabled = true;
     btnSubmit.textContent = 'Kayıt yapılıyor...';
 
-    const accounts = getAccounts();
-
-    if (accounts.find(a => a.email.toLowerCase() === email.toLowerCase())) {
-      btnSubmit.disabled = false;
-      btnSubmit.textContent = 'Kayıt Ol';
-      showAuthError('Bu e-posta adresi zaten kullanılıyor.');
-      return;
-    }
-    if (accounts.find(a => a.handle.toLowerCase() === cleanHandle.toLowerCase())) {
-      btnSubmit.disabled = false;
-      btnSubmit.textContent = 'Kayıt Ol';
-      showAuthError('Bu kullanıcı adı zaten alınmış.');
-      return;
-    }
-
     const newAccount = {
       name: name,
       handle: cleanHandle,
@@ -290,45 +285,64 @@ function initRegister() {
       banner: '#999999',
       bio: ''
     };
-    accounts.push(newAccount);
-    saveAccounts(accounts);
 
-    // Sunucuya bildir
+    // Doğrudan MySQL API'sine kayıt yap
     try {
       const regUrl = window.location.protocol.startsWith('http') ? '/api/register' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/register');
       const resp = await fetch(regUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAccount),
-        signal: AbortSignal.timeout(4000)
-      }).catch(() => null);
+        signal: AbortSignal.timeout(6000)
+      }).catch(err => {
+        return { ok: false, errorStr: 'Sunucuya bağlanılamadı: ' + err.message };
+      });
 
-      if (resp && !resp.ok) {
-        const errData = await resp.json().catch(() => null);
-        if (errData && errData.error) {
-          btnSubmit.disabled = false;
-          btnSubmit.textContent = 'Kayıt Ol';
-          showAuthError(errData.error);
-          return;
+      if (!resp || !resp.ok) {
+        let errMsg = 'Kayıt oluşturulamadı.';
+        if (resp && typeof resp.json === 'function') {
+          const errData = await resp.json().catch(() => null);
+          if (errData && errData.error) errMsg = errData.error;
+        } else if (resp && resp.errorStr) {
+          errMsg = resp.errorStr;
         }
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Kayıt Ol';
+        showAuthError(errMsg);
+        return;
       }
-    } catch {}
 
-    // Otomatik giriş yap
-    const userToSave = {
-      name: newAccount.name,
-      handle: newAccount.handle,
-      avatar: newAccount.avatar,
-      banner: newAccount.banner,
-      bio: newAccount.bio,
-      email: newAccount.email,
-      loggedIn: true
-    };
-    window.dataStore.saveUser(userToSave);
+      const resData = await resp.json().catch(() => ({}));
+      if (resData && resData.token) {
+        localStorage.setItem('ziorse_jwt_token', resData.token);
+      }
+      const createdAcc = resData.account || resData.user || newAccount;
 
-    showAuthToast('Hesap oluşturuldu, hoş geldin ' + name);
-    setTimeout(() => {
-      window.location.replace('index.html');
-    }, 250);
+      // Yerel hesap önbelleğine de ekle
+      const accounts = getAccounts();
+      accounts.push(createdAcc);
+      saveAccounts(accounts);
+
+      // Otomatik giriş yap
+      const userToSave = {
+        name: createdAcc.name,
+        handle: createdAcc.handle,
+        avatar: createdAcc.avatar,
+        banner: createdAcc.banner,
+        bio: createdAcc.bio,
+        email: createdAcc.email,
+        loggedIn: true
+      };
+      window.dataStore.saveUser(userToSave);
+
+      showAuthToast('Hesap başarıyla oluşturuldu, hoş geldin ' + name);
+      setTimeout(() => {
+        window.location.replace('index.html');
+      }, 300);
+    } catch (err) {
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = 'Kayıt Ol';
+      showAuthError('Kayıt sırasında beklenmeyen hata: ' + err.message);
+    }
   });
 }

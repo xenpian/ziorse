@@ -178,6 +178,9 @@ async function createTables() {
       timestamp VARCHAR(50) NOT NULL,
       server_channel_key VARCHAR(100) DEFAULT NULL,
       image LONGTEXT,
+      video LONGTEXT,
+      media LONGTEXT,
+      file LONGTEXT,
       code_snippet LONGTEXT,
       code_language VARCHAR(50) DEFAULT NULL,
       likes INT DEFAULT 0,
@@ -192,6 +195,11 @@ async function createTables() {
       INDEX idx_handle (handle)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   `);
+
+  // Kolon kontrolü ve otomatik yükseltme (Mevcut tablolar için)
+  try { await p.query('ALTER TABLE posts ADD COLUMN video LONGTEXT DEFAULT NULL AFTER image'); } catch (e) {}
+  try { await p.query('ALTER TABLE posts ADD COLUMN media LONGTEXT DEFAULT NULL AFTER video'); } catch (e) {}
+  try { await p.query('ALTER TABLE posts ADD COLUMN file LONGTEXT DEFAULT NULL AFTER media'); } catch (e) {}
 
   // 6. DMS TABLOSU
   await p.query(`
@@ -669,6 +677,12 @@ async function getAllServerMembers() {
   return map;
 }
 
+async function getServerMembers(serverCode) {
+  if (!serverCode) return [];
+  const map = await getAllServerMembers();
+  return map[serverCode] || [];
+}
+
 async function addServerMember(serverCode, member) {
   if (!serverCode || !member || !member.handle) return;
   const p = getPool();
@@ -726,17 +740,20 @@ async function getAllPosts() {
   return rows.map(r => {
     if (r.raw_data) {
       try {
-        return JSON.parse(r.raw_data);
+        const parsed = JSON.parse(r.raw_data);
+        if (parsed && parsed.id) return parsed;
       } catch (e) {}
     }
     let likedBy = [];
     let reactions = {};
     let comments = [];
     let invite = null;
+    let file = null;
     try { likedBy = typeof r.liked_by === 'string' ? JSON.parse(r.liked_by) : (r.liked_by || []); } catch (e) {}
     try { reactions = typeof r.reactions === 'string' ? JSON.parse(r.reactions) : (r.reactions || {}); } catch (e) {}
     try { comments = typeof r.comments === 'string' ? JSON.parse(r.comments) : (r.comments || []); } catch (e) {}
     try { invite = typeof r.invite === 'string' ? JSON.parse(r.invite) : (r.invite || null); } catch (e) {}
+    try { file = typeof r.file === 'string' ? JSON.parse(r.file) : (r.file || null); } catch (e) {}
 
     return {
       id: r.id,
@@ -747,6 +764,9 @@ async function getAllPosts() {
       timestamp: r.timestamp,
       serverChannelKey: r.server_channel_key,
       image: r.image,
+      video: r.video,
+      media: r.media,
+      file: file,
       codeSnippet: r.code_snippet,
       codeLanguage: r.code_language,
       likes: r.likes || 0,
@@ -766,9 +786,9 @@ async function savePost(post) {
   await p.query(`
     INSERT INTO posts (
       id, handle, author, avatar, content, timestamp,
-      server_channel_key, image, code_snippet, code_language,
+      server_channel_key, image, video, media, file, code_snippet, code_language,
       likes, liked_by, reactions, comments, invite, raw_data
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
       handle = VALUES(handle),
       author = VALUES(author),
@@ -777,6 +797,9 @@ async function savePost(post) {
       timestamp = VALUES(timestamp),
       server_channel_key = VALUES(server_channel_key),
       image = VALUES(image),
+      video = VALUES(video),
+      media = VALUES(media),
+      file = VALUES(file),
       code_snippet = VALUES(code_snippet),
       code_language = VALUES(code_language),
       likes = VALUES(likes),
@@ -794,6 +817,9 @@ async function savePost(post) {
     post.timestamp || new Date().toISOString(),
     post.serverChannelKey || null,
     post.image || null,
+    post.video || null,
+    post.media || null,
+    post.file ? (typeof post.file === 'string' ? post.file : JSON.stringify(post.file)) : null,
     post.codeSnippet || null,
     post.codeLanguage || null,
     post.likes || 0,
@@ -816,7 +842,7 @@ async function deletePost(postId) {
 async function saveDM(dm) {
   if (!dm) return;
   const p = getPool();
-  const raw = JSON.stringify(dm);
+  const raw = typeof dm.raw_data === 'string' ? dm.raw_data : JSON.stringify(dm);
   await p.query(`
     INSERT INTO dms (dm_id, from_handle, to_handle, content, media, timestamp, raw_data)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -825,7 +851,7 @@ async function saveDM(dm) {
     dm.fromHandle || dm.from || '',
     dm.toHandle || dm.to || '',
     dm.content || dm.text || '',
-    dm.media || dm.image || null,
+    dm.media || dm.image || dm.video || null,
     dm.timestamp || new Date().toISOString(),
     raw
   ]);

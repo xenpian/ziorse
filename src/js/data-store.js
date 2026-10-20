@@ -2812,14 +2812,42 @@ class DataStore {
         if (srv && srv.id && reg[srv.id]?.inviteCode) possibleServerIds.add(reg[srv.id].inviteCode);
       }
 
-      const activeCh = this.activeChannelId || 'genel';
+      // Resmi sunucu aliaslarını her iki tarafta da senkron tut
+      if (possibleServerIds.has('ziorse') || possibleServerIds.has('srv-ziorse-official')) {
+        possibleServerIds.add('ziorse');
+        possibleServerIds.add('srv-ziorse-official');
+      }
+
+      // Aktif geçerli metin kanalını çözümle
+      let activeCh = this.activeChannelId;
+      if (srv && Array.isArray(srv.categories) && srv.categories.length > 0) {
+        const textChannels = srv.categories.flatMap(c => c.channels || []).filter(c => c.type !== 'voice');
+        const channelExists = textChannels.some(c => c.id === activeCh);
+        if (!channelExists && textChannels.length > 0) {
+          activeCh = textChannels[0].id;
+          this.activeChannelId = activeCh;
+        }
+      }
+      if (!activeCh) activeCh = 'genel';
+
       return list.filter(p => {
         if (!p.serverChannelKey) return false;
         const parts = p.serverChannelKey.split(':');
         const pSrv = parts[0];
         const pCh = parts[1] || 'genel';
-        if (pCh !== activeCh) return false;
-        return possibleServerIds.has(pSrv);
+
+        // Kanal eşleşmesi (genel <-> chat varsayılan kanal esnekliği dahil)
+        const chMatches = (pCh === activeCh) || 
+                          ((pCh === 'chat' || pCh === 'genel') && (activeCh === 'chat' || activeCh === 'genel'));
+        if (!chMatches) return false;
+
+        // Sunucu ID eşleşmesi
+        if (possibleServerIds.has(pSrv)) return true;
+        if ((possibleServerIds.has('ziorse') || possibleServerIds.has('srv-ziorse-official')) &&
+            (pSrv === 'ziorse' || pSrv === 'srv-ziorse-official')) {
+          return true;
+        }
+        return false;
       });
     }
 
@@ -2852,9 +2880,21 @@ class DataStore {
     if (!this.currentUser) return null;
     let scopeKey = null;
     if (this.activeServerId !== 'home') {
-      const srv = this.servers.find(s => s.id === this.activeServerId);
-      const serverScopeId = (srv && (srv.inviteCode || srv.id)) || this.activeServerId;
-      scopeKey = serverScopeId + ':' + (this.activeChannelId || 'genel');
+      const srv = this.servers.find(s => s.id === this.activeServerId || s.inviteCode === this.activeServerId);
+      let serverScopeId = (srv && (srv.inviteCode || srv.id)) || this.activeServerId;
+      if (serverScopeId === 'srv-ziorse-official') serverScopeId = 'ziorse';
+
+      let activeCh = this.activeChannelId;
+      if (srv && Array.isArray(srv.categories) && srv.categories.length > 0) {
+        const textChannels = srv.categories.flatMap(c => c.channels || []).filter(c => c.type !== 'voice');
+        const channelExists = textChannels.some(c => c.id === activeCh);
+        if (!channelExists && textChannels.length > 0) {
+          activeCh = textChannels[0].id;
+          this.activeChannelId = activeCh;
+        }
+      }
+      if (!activeCh) activeCh = 'genel';
+      scopeKey = serverScopeId + ':' + activeCh;
     }
     const safeCodeSnippet = (codeSnippet && typeof codeSnippet === 'string' && codeSnippet.length > 8000)
       ? codeSnippet.substring(0, 8000) + '\n// ... (kod boyutu optimize edildi)'
@@ -2865,7 +2905,7 @@ class DataStore {
       author: this.currentUser.name || 'Kullanıcı',
       handle: this.currentUser.handle || '@kullanici',
       avatar: this.currentUser.avatar || DEFAULT_AVATAR,
-      content: content,
+      content: content || '',
       timestamp: new Date().toISOString(),
       likes: 0,
       reposts: 0,
@@ -2875,12 +2915,13 @@ class DataStore {
       isSaved: false,
       category: this.activeFilter,
       serverChannelKey: scopeKey,
-      image: image,
-      video: video,
-      file: file,
-      codeSnippet: safeCodeSnippet,
-      audio: audio,
-      replyingTo: replyingTo,
+      image: image || null,
+      video: video || null,
+      media: (video || image) || null,
+      file: file || null,
+      codeSnippet: safeCodeSnippet || null,
+      audio: audio || null,
+      replyingTo: replyingTo || null,
       reactions: {},
       userReactions: [],
       comments: []
