@@ -1422,6 +1422,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isOwnerMe) {
         ds.servers = ds.servers.filter(s => s.id !== server.id);
         ds.saveServers();
+        try {
+          const sock = window.__ziorseSocket || (window.parent && window.parent.__ziorseSocket);
+          if (sock) sock.emit('delete-server', { serverId: server.id, inviteCode: server.inviteCode });
+        } catch (e) {}
         showToast('Sunucu silindi');
       } else {
         // Üye ayrılıyor
