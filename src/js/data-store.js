@@ -2827,10 +2827,10 @@ class DataStore {
     const targetH = handle ? (handle.startsWith('@') ? handle.toLowerCase() : '@' + handle.toLowerCase()) : (this.currentUser ? this.currentUser.handle.toLowerCase() : '');
     const cleanTarget = targetH.replace('@', '');
 
-    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
+    const isOfficial = srv.id === '100000000000001' || srv.id === '917925262809914' || srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
     if (isOfficial) {
-      // @justawp ve @xenpian tam yetkilidir
-      if (cleanTarget === 'justawp' || cleanTarget === 'xenpian') return true;
+      // ziorse.com resmi sunucusunda SADECE @justawp tam yetkilidir
+      if (cleanTarget === 'justawp') return true;
       // Diğer kişilerin ziorse.com sunucusunda hiçbir yönetim yetkisi olamaz
       const managementPerms = [
         'manage_server',
