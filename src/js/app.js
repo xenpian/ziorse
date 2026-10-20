@@ -8540,6 +8540,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── BAŞLANGIÇ DURUMU (INIT) ───────────────────────────────────
   syncUserDisplay();
+  try {
+    const srvUrl = (typeof getZiorseServerUrl === 'function' ? getZiorseServerUrl() : '');
+    fetch(srvUrl + '/api/store/get/ziorse_invite_registry')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.value && typeof data.value === 'object') {
+          window.__globalInviteRegistry = { ...(window.__globalInviteRegistry || {}), ...data.value };
+          ziorseSetStorage('ziorse_invite_registry', window.__globalInviteRegistry);
+          if (window.dataStore) {
+            window.dataStore.servers = window.dataStore.loadServers();
+            renderServers();
+          }
+        }
+      }).catch(() => {});
+  } catch (e) {}
+
   const initUrlParams = new URLSearchParams(window.location.search);
   const initServerId = initUrlParams.get('serverId') || initUrlParams.get('server') || initUrlParams.get('id');
   const initChannelId = initUrlParams.get('channelId') || initUrlParams.get('channel') || null;
