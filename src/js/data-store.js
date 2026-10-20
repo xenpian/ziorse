@@ -1874,7 +1874,6 @@ class DataStore {
       categories: JSON.parse(JSON.stringify(newServer.categories || []))
     };
     registry[inviteCode] = regPayload;
-    registry[newServer.id] = regPayload;
     ziorseSetStorage('ziorse_invite_registry', registry);
 
     if (window.socket) {
