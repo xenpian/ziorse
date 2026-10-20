@@ -979,6 +979,11 @@ async function getAllStoreValues() {
   const [rows] = await getPool().query('SELECT * FROM system_store');
   const store = {};
   rows.forEach(r => {
+    const k = r.store_key || '';
+    if (k === 'ziorse_accounts' || k === 'ziorse_user_directory' || k.startsWith('ziorse_srv_members_') || k.startsWith('ziorse_real_servers_v14_')) {
+      getPool().query('DELETE FROM system_store WHERE store_key = ?', [k]).catch(() => {});
+      return;
+    }
     try {
       store[r.store_key] = JSON.parse(r.store_value);
     } catch (e) {

@@ -694,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (Array.isArray(accounts)) {
         ziorseSetStorage('ziorse_accounts', accounts);
         const cu = window.dataStore?.currentUser;
-        if (cu && !accounts.some(a => (a.handle || '').toLowerCase() === (cu.handle || '').toLowerCase())) {
+        if (cu && accounts.length > 0 && !accounts.some(a => (a.handle || '').toLowerCase() === (cu.handle || '').toLowerCase())) {
           console.warn('[Ziorse Auth] Hesabınız veritabanından kaldırıldı. Oturum kapatılıyor...');
           try { window.dataStore.logout(); } catch (e) {}
           window.location.replace('login.html');

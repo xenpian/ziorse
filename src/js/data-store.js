@@ -581,7 +581,7 @@ class DataStore {
     }
   }
 
-  _getValidAccountHandles() {
+  _getValidAccountsList() {
     let accs = window.__globalAccounts;
     if (!accs || !Array.isArray(accs) || accs.length === 0) {
       try {
@@ -589,16 +589,23 @@ class DataStore {
         accs = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
       } catch { accs = []; }
     }
-    const set = new Set();
+    const ghostHandles = new Set(['sa', 'deneme_99', 'test_user_99', 'aliveli']);
     if (Array.isArray(accs)) {
-      accs.forEach(a => {
-        if (a && a.handle) {
-          const clean = (a.handle || '').toLowerCase().replace('@', '');
-          set.add(clean);
-          set.add('@' + clean);
-        }
-      });
+      accs = accs.filter(a => a && a.handle && !ghostHandles.has(a.handle.toLowerCase().replace('@', '')));
     }
+    return Array.isArray(accs) ? accs : [];
+  }
+
+  _getValidAccountHandles() {
+    const accs = this._getValidAccountsList();
+    const set = new Set();
+    accs.forEach(a => {
+      if (a && a.handle) {
+        const clean = (a.handle || '').toLowerCase().replace('@', '');
+        set.add(clean);
+        set.add('@' + clean);
+      }
+    });
     return set;
   }
 
@@ -613,16 +620,38 @@ class DataStore {
       } catch { source = {}; }
     }
 
+    const ghostHandles = new Set(['sa', 'deneme_99', 'test_user_99', 'aliveli']);
+    const validAccs = this._getValidAccountsList();
     const validHandles = this._getValidAccountHandles();
-    if (validHandles.size === 0) return source;
 
     const filtered = {};
     for (const [k, v] of Object.entries(source)) {
       const clean = k.toLowerCase().replace('@', '');
-      if (validHandles.has(clean) || validHandles.has('@' + clean)) {
+      if (ghostHandles.has(clean)) continue;
+      if (validHandles.size === 0 || validHandles.has(clean) || validHandles.has('@' + clean)) {
         filtered[k] = v;
       }
     }
+
+    // Her kayıtlı hesabı dizinde garanti et (diğer pencerelerde oluşturulmuş olsa bile)
+    validAccs.forEach(a => {
+      if (a && a.handle) {
+        const clean = a.handle.toLowerCase().replace('@', '');
+        if (ghostHandles.has(clean)) return;
+        const fullH = '@' + clean;
+        if (!filtered[fullH] && !filtered[clean]) {
+          filtered[fullH] = {
+            name: a.name || clean,
+            handle: fullH,
+            avatar: a.avatar || '',
+            banner: a.banner || '',
+            bio: a.bio || '',
+            status: { type: 'online', text: '' }
+          };
+        }
+      }
+    });
+
     return filtered;
   }
 

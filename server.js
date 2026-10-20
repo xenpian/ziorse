@@ -384,7 +384,7 @@ setInterval(async () => {
       });
 
       await loadSyncDb();
-      io.emit('accounts-updated', globalAccounts);
+      io.emit('accounts-updated', publicAccounts());
       io.emit('user-directory-updated', globalUserDirectory);
       io.emit('server-members-updated', globalServerMembers);
       io.emit('online-users-updated', Array.from(activeOnlineHandles));
@@ -510,9 +510,9 @@ ensureOfficialServerBackend();
 app.get('/api/accounts', async (req, res) => {
   try {
     const accs = await mysqlDb.getAllAccounts();
-    res.json({ accounts: accs });
+    res.json({ accounts: accs.map(({ password, ...rest }) => rest) });
   } catch (err) {
-    res.json({ accounts: globalAccounts });
+    res.json({ accounts: publicAccounts() });
   }
 });
 
@@ -578,7 +578,7 @@ app.post(['/api/register', '/api/auth/register'], async (req, res) => {
     }
 
     saveSyncDb();
-    io.emit('accounts-updated', globalAccounts);
+    io.emit('accounts-updated', publicAccounts());
     io.emit('user-directory-updated', globalUserDirectory);
     io.emit('server-members-updated', globalServerMembers);
 
@@ -794,7 +794,7 @@ async function readAllStoreData() {
   }
   store['ziorse_invite_registry'] = globalInviteRegistry;
   store['ziorse_user_directory'] = globalUserDirectory;
-  store['ziorse_accounts'] = globalAccounts;
+  store['ziorse_accounts'] = publicAccounts();
   Object.keys(globalServerMembers).forEach(code => {
     store['ziorse_srv_members_' + code] = globalServerMembers[code];
   });
@@ -817,7 +817,7 @@ app.get('/api/store/get/:key', async (req, res) => {
   }
 
   if (key === 'ziorse_accounts') {
-    return res.json({ key, value: globalAccounts });
+    return res.json({ key, value: publicAccounts() });
   }
   if (key === 'ziorse_user_directory') {
     return res.json({ key, value: globalUserDirectory });
@@ -972,7 +972,7 @@ app.get('/api/db/stats', async (req, res) => {
 app.post('/api/db/reconcile', async (req, res) => {
   try {
     await loadSyncDb();
-    io.emit('accounts-updated', globalAccounts);
+    io.emit('accounts-updated', publicAccounts());
     io.emit('user-directory-updated', globalUserDirectory);
     io.emit('server-members-updated', globalServerMembers);
     io.emit('invite-registry-updated', globalInviteRegistry);
@@ -1174,11 +1174,20 @@ app.get('/api/gifs', async (req, res) => {
 let socketHandleMap = new Map(); // socket.id -> handle
 let activeOnlineHandles = new Set();
 
+// İstemcilere gönderilen hesap listesi asla şifre içermez
+function publicAccounts() {
+  return (globalAccounts || []).map(a => {
+    const { password, ...rest } = a || {};
+    return rest;
+  });
+}
+
 // ── SOCKET.IO & WEBRTC SIGNALING ─────────────────────────────
 io.on('connection', (socket) => {
   console.log(`[Socket] Bağlandı: ${socket.id}`);
 
-  // Yeni bağlanan istemciye güncel verileri ilet
+  // Yeni bağlanan istemciye güncel verileri ilet (önce hesaplar: istemci filtrelemesi buna dayanır)
+  socket.emit('accounts-updated', publicAccounts());
   socket.emit('invite-registry-updated', globalInviteRegistry);
   socket.emit('public-servers-updated', globalInviteRegistry);
   socket.emit('user-directory-updated', globalUserDirectory);

@@ -48,34 +48,46 @@ let saveDebounceTimer = null;
 const dirtyKeys = new Set();
 
 function readPersistentStore(forceRefresh = false) {
-  if (memoryStore === null || forceRefresh) {
-    if (!memoryStore) memoryStore = {};
-    // Asynchronous background hydration from MySQL
-    mysqlDb.getAllStoreValues().then(storeVals => {
-      if (storeVals && typeof storeVals === 'object') {
-        memoryStore = Object.assign({}, storeVals, memoryStore);
-      }
-    }).catch(() => {});
-  }
+  if (memoryStore === null) memoryStore = {};
+  if (forceRefresh) refreshRelationalFromMySQL().catch(() => {});
   return memoryStore;
+}
+
+// İlişkisel veriler (hesaplar, dizin, sunucular, üyeler) için TEK doğruluk kaynağı MySQL'dir.
+// RAM'deki kopya her 2 saniyede bir veritabanından tamamen yenilenir; silinen hesaplar anında düşer.
+async function refreshRelationalFromMySQL() {
+  const [servers, uDir, accs, members] = await Promise.all([
+    mysqlDb.getAllServers().catch(() => null),
+    mysqlDb.getUserDirectory().catch(() => null),
+    mysqlDb.getAllAccounts().catch(() => null),
+    mysqlDb.getAllServerMembers().catch(() => null)
+  ]);
+  if (!memoryStore) memoryStore = {};
+  if (accs) memoryStore['ziorse_accounts'] = accs.map(({ password, ...rest }) => rest);
+  if (uDir) memoryStore['ziorse_user_directory'] = uDir;
+  if (servers) memoryStore['ziorse_invite_registry'] = servers;
+  if (members) {
+    for (const k of Object.keys(memoryStore)) {
+      if (k.startsWith('ziorse_srv_members_')) delete memoryStore[k];
+    }
+    for (const [code, list] of Object.entries(members)) {
+      memoryStore['ziorse_srv_members_' + code] = list;
+    }
+  }
 }
 
 // Initial hydration from MySQL
 (async () => {
   try {
     await mysqlDb.initDatabase();
-    const [storeVals, posts, servers, uDir, accs] = await Promise.all([
+    const [storeVals, posts] = await Promise.all([
       mysqlDb.getAllStoreValues().catch(() => ({})),
-      mysqlDb.getAllPosts().catch(() => []),
-      mysqlDb.getAllServers().catch(() => ({})),
-      mysqlDb.getUserDirectory().catch(() => ({})),
-      mysqlDb.getAllAccounts().catch(() => [])
+      mysqlDb.getAllPosts().catch(() => [])
     ]);
-    memoryStore = { ...storeVals };
+    memoryStore = { ...(memoryStore || {}), ...storeVals };
     if (posts && posts.length > 0) memoryStore['ziorse_real_posts_v14'] = posts;
-    if (servers && Object.keys(servers).length > 0) memoryStore['ziorse_invite_registry'] = servers;
-    if (uDir && Object.keys(uDir).length > 0) memoryStore['ziorse_user_directory'] = uDir;
-    if (accs && accs.length > 0) memoryStore['ziorse_accounts'] = accs;
+    await refreshRelationalFromMySQL();
+    setInterval(() => refreshRelationalFromMySQL().catch(() => {}), 2000);
     console.log('[Main Process MySQL (gusgon)] RAM önbellek başarıyla yüklendi.');
   } catch (err) {
     console.warn('[Main Process MySQL] Başlatma uyarısı:', err.message);
