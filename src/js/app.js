@@ -2272,13 +2272,36 @@ document.addEventListener('DOMContentLoaded', () => {
       let allPublic = (window.dataStore?.getPublicServers() || []);
       if (Array.isArray(window.__livePublicServers) && window.__livePublicServers.length > 0) {
         const map = new Map();
-        allPublic.forEach(s => map.set(s.inviteCode, s));
+        allPublic.forEach(s => {
+          if (s && s.inviteCode) map.set(s.inviteCode.toLowerCase(), s);
+        });
         window.__livePublicServers.forEach(s => {
-          const existing = map.get(s.inviteCode) || {};
-          map.set(s.inviteCode, { ...existing, ...s });
+          if (s && s.inviteCode) {
+            const key = s.inviteCode.toLowerCase();
+            const existing = map.get(key) || {};
+            map.set(key, { ...existing, ...s });
+          }
         });
         allPublic = Array.from(map.values());
       }
+
+      // ── GARANTİLİ TEKİLLEŞTİRME (De-duplication) ──
+      const seenIds = new Set();
+      const seenCodes = new Set();
+      const seenNames = new Set();
+      allPublic = allPublic.filter(s => {
+        if (!s) return false;
+        const code = (s.inviteCode || '').toLowerCase().trim();
+        const id = s.serverId ? String(s.serverId).trim() : null;
+        const name = (s.name || '').toLowerCase().trim();
+        if (seenCodes.has(code) || (id && seenIds.has(id)) || (name === 'ziorse.com' && seenNames.has('ziorse.com'))) {
+          return false;
+        }
+        if (code) seenCodes.add(code);
+        if (id) seenIds.add(id);
+        if (name) seenNames.add(name);
+        return true;
+      });
 
       const myServers = window.dataStore?.servers || [];
       const onlineHandles = window.__activeOnlineHandles || new Set();
