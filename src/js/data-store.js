@@ -2353,44 +2353,63 @@ class DataStore {
     const srv = this.servers.find(s => s.inviteCode === inviteCode || s.id === inviteCode);
     const srvMembers = (srv && Array.isArray(srv.members)) ? srv.members : [];
 
-    let local = [];
-    try {
-      const raw = ziorseGetStorage(this._serverMembersKey(inviteCode)) ||
-        (srv && srv.inviteCode ? ziorseGetStorage(this._serverMembersKey(srv.inviteCode)) : null) ||
-        (srv && srv.id ? ziorseGetStorage(this._serverMembersKey(srv.id)) : null);
-      local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
-    } catch { local = []; }
-
+    // 1. Authoritative global server members map from server.js / MySQL
     const globalList = (window.__globalServerMembers && (
       window.__globalServerMembers[inviteCode] ||
       (srv && srv.inviteCode && window.__globalServerMembers[srv.inviteCode]) ||
       (srv && window.__globalServerMembers[srv.id])
     )) || [];
 
-    const registry = this._loadInviteRegistry();
-    const inviteInfo = registry[inviteCode] || (srv && srv.inviteCode ? registry[srv.inviteCode] : null) || (srv && srv.id ? registry[srv.id] : null);
-    const inviteMembers = (inviteInfo && Array.isArray(inviteInfo.members)) ? inviteInfo.members : [];
+    const dir = this._loadGlobalDirectory();
+    const validHandles = new Set(Object.keys(dir).map(h => h.toLowerCase()));
 
     const map = new Map();
 
-    // 1. Storage & Global List & Server Object & Invite Registry
-    [...local, ...srvMembers, ...globalList, ...inviteMembers].forEach(m => {
-      if (m && m.handle) {
-        const cleanH = m.handle.toLowerCase();
-        const prof = this.getUserProfile(m.handle);
-        map.set(cleanH, {
-          handle: m.handle.startsWith('@') ? m.handle : '@' + m.handle,
-          name: prof.name || m.name || m.handle.replace('@', ''),
-          avatar: prof.avatar || m.avatar || DEFAULT_AVATAR
-        });
-      }
-    });
+    // If globalList is available from server, it is the primary authoritative source
+    if (Array.isArray(globalList) && globalList.length > 0) {
+      globalList.forEach(m => {
+        if (m && m.handle) {
+          const cleanH = m.handle.toLowerCase();
+          if (validHandles.size === 0 || validHandles.has(cleanH) || (cleanH.replace('@', '') && validHandles.has('@' + cleanH.replace('@', '')))) {
+            const prof = this.getUserProfile(m.handle) || m;
+            map.set(cleanH, {
+              handle: m.handle.startsWith('@') ? m.handle : '@' + m.handle,
+              name: prof.name || m.name || m.handle.replace('@', ''),
+              avatar: prof.avatar || m.avatar || DEFAULT_AVATAR
+            });
+          }
+        }
+      });
+    } else {
+      // Fallback only if server has not sent globalServerMembers yet
+      let local = [];
+      try {
+        const raw = ziorseGetStorage(this._serverMembersKey(inviteCode));
+        local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
+      } catch { local = []; }
+
+      [...local, ...srvMembers].forEach(m => {
+        if (m && m.handle) {
+          const cleanH = m.handle.toLowerCase();
+          if (validHandles.size === 0 || validHandles.has(cleanH) || (cleanH.replace('@', '') && validHandles.has('@' + cleanH.replace('@', '')))) {
+            const prof = this.getUserProfile(m.handle) || m;
+            map.set(cleanH, {
+              handle: m.handle.startsWith('@') ? m.handle : '@' + m.handle,
+              name: prof.name || m.name || m.handle.replace('@', ''),
+              avatar: prof.avatar || m.avatar || DEFAULT_AVATAR
+            });
+          }
+        }
+      });
+    }
 
     // 2. Server Owner
+    const registry = this._loadInviteRegistry();
+    const inviteInfo = registry[inviteCode] || (srv && srv.inviteCode ? registry[srv.inviteCode] : null) || (srv && srv.id ? registry[srv.id] : null);
     const ownerHandle = (inviteInfo && inviteInfo.ownerHandle) || (srv && srv.ownerHandle);
     if (ownerHandle) {
       const cleanH = ownerHandle.toLowerCase();
-      if (!map.has(cleanH)) {
+      if (!map.has(cleanH) && (validHandles.size === 0 || validHandles.has(cleanH) || (cleanH.replace('@', '') && validHandles.has('@' + cleanH.replace('@', ''))))) {
         const prof = this.getUserProfile(ownerHandle);
         map.set(cleanH, {
           handle: ownerHandle.startsWith('@') ? ownerHandle : '@' + ownerHandle,
@@ -2400,73 +2419,10 @@ class DataStore {
       }
     }
 
-    // 3. Scan posts in this server to discover members who posted in channels
-    if (Array.isArray(this.posts) && (inviteCode || (srv && srv.id))) {
-      const sCode = inviteCode;
-      const sId = srv ? srv.id : null;
-      this.posts.forEach(p => {
-        if (p && p.handle && p.serverChannelKey) {
-          const parts = p.serverChannelKey.split(':');
-          const pServer = parts[0];
-          if (pServer === sCode || pServer === sId) {
-            const cleanH = p.handle.toLowerCase();
-            if (!map.has(cleanH)) {
-              const prof = this.getUserProfile(p.handle);
-              map.set(cleanH, {
-                handle: p.handle.startsWith('@') ? p.handle : '@' + p.handle,
-                name: prof.name || p.name || p.handle.replace('@', ''),
-                avatar: prof.avatar || p.avatar || DEFAULT_AVATAR
-              });
-            }
-          }
-        }
-      });
-    }
-
-    // 4. Scan channel / category permissions for added members
-    if (srv && Array.isArray(srv.categories)) {
-      srv.categories.forEach(cat => {
-        if (cat && cat.permissions) {
-          Object.keys(cat.permissions).forEach(target => {
-            if (target.startsWith('@')) {
-              const cleanH = target.toLowerCase();
-              if (!map.has(cleanH)) {
-                const prof = this.getUserProfile(target);
-                map.set(cleanH, {
-                  handle: target,
-                  name: prof.name || target.replace('@', ''),
-                  avatar: prof.avatar || DEFAULT_AVATAR
-                });
-              }
-            }
-          });
-        }
-        if (cat && Array.isArray(cat.channels)) {
-          cat.channels.forEach(ch => {
-            if (ch && ch.permissions) {
-              Object.keys(ch.permissions).forEach(target => {
-                if (target.startsWith('@')) {
-                  const cleanH = target.toLowerCase();
-                  if (!map.has(cleanH)) {
-                    const prof = this.getUserProfile(target);
-                    map.set(cleanH, {
-                      handle: target,
-                      name: prof.name || target.replace('@', ''),
-                      avatar: prof.avatar || DEFAULT_AVATAR
-                    });
-                  }
-                }
-              });
-            }
-          });
-        }
-      });
-    }
-
-    // 5. Ensure current user is in map if they are a member of this server
+    // 3. Current User
     if (this.currentUser && this.currentUser.handle && srv) {
       const myClean = (this.currentUser.handle || '').toLowerCase();
-      if (myClean && !map.has(myClean)) {
+      if (myClean && !map.has(myClean) && (validHandles.size === 0 || validHandles.has(myClean))) {
         map.set(myClean, {
           handle: this.currentUser.handle.startsWith('@') ? this.currentUser.handle : '@' + this.currentUser.handle,
           name: this.currentUser.name || this.currentUser.handle.replace('@', ''),
@@ -2475,9 +2431,8 @@ class DataStore {
       }
     }
 
-    // 6. Resmi sunucu (ziorse.com) için tüm kayıtlı kullanıcıları üye listesine ekle
+    // 4. Resmi sunucu (ziorse.com) için tüm kayıtlı kullanıcıları üye listesine ekle
     if (inviteCode === 'ziorse' || inviteCode === 'srv-ziorse-official' || (srv && (srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse'))) {
-      const dir = this._loadGlobalDirectory();
       Object.keys(dir).forEach(k => {
         const u = dir[k];
         if (u && u.handle) {
@@ -2493,14 +2448,11 @@ class DataStore {
       });
     }
 
-    const result = Array.from(map.values());
+    // Kesin filtreleme: Üye listesinde sadece ve sadece kayıtlı hesaplar kalır
+    const result = Array.from(map.values()).filter(m => m && m.handle && (validHandles.size === 0 || validHandles.has(m.handle.toLowerCase())));
 
-    // Sync back to local storage cache and server object
-    if (result.length > 0) {
-      ziorseSetStorage(this._serverMembersKey(inviteCode), result);
-      if (srv && (!srv.members || srv.members.length !== result.length)) {
-        srv.members = result;
-      }
+    if (srv && (!srv.members || srv.members.length !== result.length)) {
+      srv.members = result;
     }
 
     return result;
