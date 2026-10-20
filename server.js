@@ -923,30 +923,17 @@ app.get('/api/db/stats', async (req, res) => {
 
 app.post('/api/db/reconcile', async (req, res) => {
   try {
-    let restoredCount = 0;
-    for (const [code, info] of Object.entries(globalInviteRegistry)) {
-      if (!globalServerMembers[code]) globalServerMembers[code] = [];
-      if (info.ownerHandle) {
-        const oHandle = info.ownerHandle.startsWith('@') ? info.ownerHandle : '@' + info.ownerHandle;
-        const cleanH = oHandle.toLowerCase();
-        if (!globalServerMembers[code].some(m => m.handle && m.handle.toLowerCase() === cleanH)) {
-          const userProf = globalUserDirectory[oHandle] || {};
-          const ownerMem = {
-            handle: oHandle,
-            name: info.ownerName || oHandle.replace('@', ''),
-            avatar: info.ownerAvatar || ''
-          };
-          globalServerMembers[code].unshift(ownerMem);
-          await mysqlDb.addServerMember(code, ownerMem);
-          restoredCount++;
-        }
-      }
-      await mysqlDb.upsertServer(code, info);
-    }
-
+    await loadSyncDb();
+    io.emit('accounts-updated', globalAccounts);
+    io.emit('user-directory-updated', globalUserDirectory);
     io.emit('server-members-updated', globalServerMembers);
     io.emit('invite-registry-updated', globalInviteRegistry);
-    res.json({ success: true, reconciledMembers: restoredCount });
+    res.json({
+      success: true,
+      accounts: globalAccounts.length,
+      members: globalServerMembers['ziorse'] ? globalServerMembers['ziorse'].length : 0,
+      userDirectory: Object.keys(globalUserDirectory).length
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
