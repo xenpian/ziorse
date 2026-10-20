@@ -46,9 +46,9 @@ const OFFICIAL_ZIORSE_SERVER = {
   isOfficial: true,
   isPublic: true,
   serverType: 'community',
-  ownerHandle: '@sa',
-  ownerName: 'sa',
-  ownerAvatar: 'logo.png',
+  ownerHandle: '@justawp',
+  ownerName: 'justawp',
+  ownerAvatar: '',
   memberCount: 1,
   categories: [
     {
