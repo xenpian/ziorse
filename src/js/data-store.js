@@ -1777,13 +1777,13 @@ class DataStore {
   _makeDefaultCategories() {
     return [
       {
-        id: 'cat-' + Date.now(),
+        id: generateStrictId(17),
         name: 'METİN KANALLARI',
         collapsed: false,
         channels: [
-          { id: 'genel', name: 'genel-sohbet', type: 'text' },
-          { id: 'duyurular', name: 'duyurular', type: 'text' },
-          { id: 'kod-paylasim', name: 'kod-paylasimi', type: 'text' }
+          { id: generateStrictId(18), name: 'genel-sohbet', type: 'text' },
+          { id: generateStrictId(18), name: 'duyurular', type: 'text' },
+          { id: generateStrictId(18), name: 'kod-paylasimi', type: 'text' }
         ]
       }
     ];
@@ -1801,27 +1801,23 @@ class DataStore {
     }
     // Eski sunucular düz channels listesine sahipse categories'e dönüştür
     if (!server.categories || server.categories.length === 0) {
-      const channels = server.channels || [
-        { id: 'genel', name: 'genel-sohbet', type: 'text' },
-        { id: 'duyurular', name: 'duyurular', type: 'text' },
-        { id: 'kod-paylasim', name: 'kod-paylasimi', type: 'text' }
-      ];
-      server.categories = [
-        {
-          id: 'cat-default-' + (server.id || 'main'),
-          name: 'METİN KANALLARI',
-          collapsed: false,
-          channels: channels.map(c => ({ ...c, type: c.type || 'text' }))
-        }
-      ];
+      server.categories = this._makeDefaultCategories();
       delete server.channels;
       this.saveServers();
     } else {
       let modified = false;
-      server.categories.forEach((cat, idx) => {
-        if (!cat.id) {
-          cat.id = 'cat-' + (server.id || 'srv') + '-' + idx;
+      server.categories.forEach((cat) => {
+        if (!cat.id || String(cat.id).length !== 17 || !/^\d{17}$/.test(String(cat.id))) {
+          cat.id = generateStrictId(17);
           modified = true;
+        }
+        if (Array.isArray(cat.channels)) {
+          cat.channels.forEach(ch => {
+            if (!ch.id || String(ch.id).length !== 18 || !/^\d{18}$/.test(String(ch.id))) {
+              ch.id = generateStrictId(18);
+              modified = true;
+            }
+          });
         }
       });
       if (modified) {
@@ -1837,7 +1833,7 @@ class DataStore {
     const inviteCode = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 6);
     const resolvedType = serverType === 'friends' ? 'friends' : 'community';
     const newServer = {
-      id: 'srv-' + Date.now(),
+      id: generateStrictId(15),
       name: name.trim(),
       description: (description || '').trim(),
       isPublic: isPublic === true,
