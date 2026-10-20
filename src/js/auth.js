@@ -141,13 +141,25 @@ function initLogin() {
 
     // 1. Önce doğrudan MySQL Sunucu API'sine giriş isteği gönder
     try {
-      const loginUrl = window.location.protocol.startsWith('http') ? '/api/login' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/login');
-      const resp = await fetch(loginUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: email, password }),
-        signal: AbortSignal.timeout(5000)
-      }).catch(() => null);
+      const srvCandidate = (window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:3001'));
+      const endpoints = Array.from(new Set([
+        srvCandidate + '/api/login',
+        'http://localhost:3001/api/login',
+        'http://localhost:3000/api/login'
+      ]));
+
+      let resp = null;
+      for (const ep of endpoints) {
+        try {
+          resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identifier: email, password }),
+            signal: AbortSignal.timeout(5000)
+          });
+          if (resp && (resp.ok || resp.status < 500)) break;
+        } catch {}
+      }
 
       if (resp) {
         const data = await resp.json().catch(() => null);
@@ -244,11 +256,6 @@ function initRegister() {
     try {
       window.history.replaceState({}, document.title, window.location.pathname);
     } catch (e) { }
-  } else {
-    if (window.dataStore && window.dataStore.isLoggedIn()) {
-      window.location.replace('index.html');
-      return;
-    }
   }
 
   const btnSubmit = document.getElementById('btn-register-submit');
@@ -286,25 +293,38 @@ function initRegister() {
       bio: ''
     };
 
-    // Doğrudan MySQL API'sine kayıt yap
+    // Doğrudan MySQL API'sine kayıt yap (tüm olası portları dene)
     try {
-      const regUrl = window.location.protocol.startsWith('http') ? '/api/register' : ((window.getZiorseServerUrl ? window.getZiorseServerUrl() : 'http://localhost:3001') + '/api/register');
-      const resp = await fetch(regUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newAccount),
-        signal: AbortSignal.timeout(6000)
-      }).catch(err => {
-        return { ok: false, errorStr: 'Sunucuya bağlanılamadı: ' + err.message };
-      });
+      const srvCandidate = (window.getZiorseServerUrl ? window.getZiorseServerUrl() : (window.location.protocol.startsWith('http') ? window.location.origin : 'http://localhost:3001'));
+      const endpoints = Array.from(new Set([
+        srvCandidate + '/api/register',
+        'http://localhost:3001/api/register',
+        'http://localhost:3000/api/register'
+      ]));
+
+      let resp = null;
+      let lastErrStr = '';
+      for (const ep of endpoints) {
+        try {
+          resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newAccount),
+            signal: AbortSignal.timeout(6000)
+          });
+          if (resp && (resp.ok || resp.status < 500)) break;
+        } catch (e) {
+          lastErrStr = e.message;
+        }
+      }
 
       if (!resp || !resp.ok) {
         let errMsg = 'Kayıt oluşturulamadı.';
         if (resp && typeof resp.json === 'function') {
           const errData = await resp.json().catch(() => null);
           if (errData && errData.error) errMsg = errData.error;
-        } else if (resp && resp.errorStr) {
-          errMsg = resp.errorStr;
+        } else if (lastErrStr) {
+          errMsg = 'Sunucuya bağlanılamadı: ' + lastErrStr;
         }
         btnSubmit.disabled = false;
         btnSubmit.textContent = 'Kayıt Ol';
@@ -322,6 +342,13 @@ function initRegister() {
       const accounts = getAccounts();
       accounts.push(createdAcc);
       saveAccounts(accounts);
+
+      // Yeni kullanıcı için eski sunucu artıklarını temizle
+      const hClean = createdAcc.handle.toLowerCase();
+      try {
+        localStorage.removeItem('ziorse_real_servers_v14_' + hClean);
+        localStorage.removeItem('ziorse_real_servers_v14_guest');
+      } catch (e) {}
 
       // Otomatik giriş yap
       const userToSave = {
