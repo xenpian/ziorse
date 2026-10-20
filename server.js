@@ -1154,6 +1154,9 @@ io.on('connection', (socket) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
       const cleanH = h.toLowerCase().replace('@', '');
+      const validCleanHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase().replace('@', '')));
+      if (!validCleanHandles.has(cleanH)) return;
+
       socketHandleMap.set(socket.id, cleanH);
       socket.join(cleanH);
       socket.join(h.toLowerCase());
@@ -1170,6 +1173,9 @@ io.on('connection', (socket) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
       const cleanH = h.toLowerCase().replace('@', '');
+      const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+      if (!validHandles.has(h.toLowerCase())) return;
+
       socketHandleMap.set(socket.id, cleanH);
       activeOnlineHandles.add(cleanH);
       socket.join(cleanH);
@@ -1265,7 +1271,10 @@ io.on('connection', (socket) => {
 
   // Sunucu Üyeleri Canlı Senkronizasyonu
   socket.on('server-member-joined', (data) => {
-    if (data && data.inviteCode && data.member) {
+    if (data && data.inviteCode && data.member && data.member.handle) {
+      const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+      if (!validHandles.has(data.member.handle.toLowerCase())) return;
+
       if (!globalServerMembers[data.inviteCode]) globalServerMembers[data.inviteCode] = [];
       const mHandle = (data.member.handle || '').toLowerCase();
       const cleanH = mHandle.replace('@', '');
@@ -1321,11 +1330,16 @@ io.on('connection', (socket) => {
 
   socket.on('sync-my-server-memberships', (items) => {
     if (Array.isArray(items) && items.length > 0) {
+      const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+      const validCleanHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase().replace('@', '')));
+
       if (items[0]?.member?.handle) {
         const cleanH = items[0].member.handle.toLowerCase().replace('@', '');
-        socketHandleMap.set(socket.id, cleanH);
-        activeOnlineHandles.add(cleanH);
-        io.emit('online-users-updated', Array.from(activeOnlineHandles));
+        if (validCleanHandles.has(cleanH)) {
+          socketHandleMap.set(socket.id, cleanH);
+          activeOnlineHandles.add(cleanH);
+          io.emit('online-users-updated', Array.from(activeOnlineHandles));
+        }
       }
       let changed = false;
       items.forEach(it => {
@@ -1335,7 +1349,7 @@ io.on('connection', (socket) => {
 
           if (!globalServerMembers[it.inviteCode]) globalServerMembers[it.inviteCode] = [];
 
-          if (it.member && it.member.handle) {
+          if (it.member && it.member.handle && validHandles.has(it.member.handle.toLowerCase())) {
             const mHandle = it.member.handle.toLowerCase();
             const idx = globalServerMembers[it.inviteCode].findIndex(m => m.handle.toLowerCase() === mHandle);
             if (idx === -1) {
@@ -1352,7 +1366,7 @@ io.on('connection', (socket) => {
 
           if (Array.isArray(it.members)) {
             it.members.forEach(mem => {
-              if (mem && mem.handle) {
+              if (mem && mem.handle && validHandles.has(mem.handle.toLowerCase())) {
                 const memHandle = mem.handle.toLowerCase();
                 const mIdx = globalServerMembers[it.inviteCode].findIndex(m => m.handle.toLowerCase() === memHandle);
                 if (mIdx === -1) {
@@ -1368,6 +1382,9 @@ io.on('connection', (socket) => {
               }
             });
           }
+
+          // Her zaman geçerli hesaplara göre filtrele
+          globalServerMembers[it.inviteCode] = globalServerMembers[it.inviteCode].filter(m => m && m.handle && validHandles.has(m.handle.toLowerCase()));
 
           if (it.serverInfo) {
             if (!globalInviteRegistry[it.inviteCode]) {
