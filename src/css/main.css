@@ -9820,6 +9820,19 @@ body:not(.dark-mode) .sidebar-msg-search-count {
   padding-bottom: 4px;
 }
 
+.server-header-dropdown .shd-divider[hidden] {
+  display: none !important;
+}
+
+#pvm-avatar-frame-overlay[style*="display: none"],
+#pvm-avatar-frame-overlay:not([src]),
+#pvm-avatar-frame-overlay[src=""] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* SADECE İKON BUTONLAR (Arkadaş Ekle & Mesaj) */
 .pvm-action-icon-btn {
   width: 38px;
