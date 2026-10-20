@@ -4475,21 +4475,46 @@ document.addEventListener('DOMContentLoaded', () => {
     let folders = window.dataStore.loadServerFolders() || [];
 
     // Garantili Tekilleştirme (De-duplication)
-    const seenServerKeys = new Set();
+    let officialFound = false;
+    const seenServerCodes = new Set();
+    const seenServerIds = new Set();
+
     allServers = allServers.filter(s => {
       if (!s) return false;
-      const key = (s.inviteCode || s.id || '').toLowerCase();
-      if (!key || seenServerKeys.has(key)) return false;
-      seenServerKeys.add(key);
+      const sName = (s.name || s.serverName || '').toLowerCase().trim();
+      const sCode = (s.inviteCode || '').toLowerCase().trim();
+      const sId = String(s.id || '').trim();
+
+      const isZiorse = s.isOfficial === true ||
+        sCode === 'ziorse' ||
+        sId === 'srv-ziorse-official' ||
+        sId === '100000000000001' ||
+        sId === '917925262809914' ||
+        sName === 'ziorse.com';
+
+      if (isZiorse) {
+        if (officialFound) return false;
+        officialFound = true;
+        return true;
+      }
+
+      if (sCode && seenServerCodes.has(sCode)) return false;
+      if (sId && seenServerIds.has(sId)) return false;
+      if (sCode) seenServerCodes.add(sCode);
+      if (sId) seenServerIds.add(sId);
       return true;
     });
-    if (window.dataStore) window.dataStore.servers = allServers;
 
     // ziorse.com daima en başta olmalı (Index 0)
-    const zIdx = allServers.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse');
-    if (zIdx > 0) {
+    const zIdx = allServers.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || ((s.name || '').toLowerCase() === 'ziorse.com') || s.isOfficial === true);
+    if (zIdx !== -1) {
       const [zSrv] = allServers.splice(zIdx, 1);
+      zSrv.id = 'srv-ziorse-official';
+      zSrv.inviteCode = 'ziorse';
+      zSrv.isOfficial = true;
       allServers.unshift(zSrv);
+    }
+    if (window.dataStore) {
       window.dataStore.servers = allServers;
     }
 
