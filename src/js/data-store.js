@@ -404,6 +404,47 @@ class DataStore {
     // Feed pagination state
     this.feedPage = 0;
     this.feedPageSize = 25;
+
+    this._purgeGhostAccounts();
+  }
+
+  _purgeGhostAccounts() {
+    const ghostHandles = ['sa', 'deneme_99', 'test_user_99', 'aliveli'];
+    try {
+      ghostHandles.forEach(gh => {
+        try { localStorage.removeItem('ziorse_user_' + gh); } catch (e) {}
+        try { localStorage.removeItem('ziorse_user_@' + gh); } catch (e) {}
+      });
+      const rawAccs = ziorseGetStorage('ziorse_accounts');
+      if (rawAccs) {
+        let accList = typeof rawAccs === 'string' ? JSON.parse(rawAccs) : rawAccs;
+        if (Array.isArray(accList)) {
+          accList = accList.filter(a => a && a.handle && !ghostHandles.includes(a.handle.toLowerCase().replace('@', '')));
+          ziorseSetStorage('ziorse_accounts', accList);
+        }
+      }
+      const rawDir = ziorseGetStorage('ziorse_user_directory');
+      if (rawDir) {
+        let dirObj = typeof rawDir === 'string' ? JSON.parse(rawDir) : rawDir;
+        if (dirObj && typeof dirObj === 'object') {
+          ghostHandles.forEach(gh => {
+            delete dirObj[gh];
+            delete dirObj['@' + gh];
+          });
+          ziorseSetStorage('ziorse_user_directory', dirObj);
+        }
+      }
+      ['ziorse', 'srv-ziorse-official'].forEach(code => {
+        const rawM = ziorseGetStorage('ziorse_srv_members_' + code);
+        if (rawM) {
+          let mList = typeof rawM === 'string' ? JSON.parse(rawM) : rawM;
+          if (Array.isArray(mList)) {
+            mList = mList.filter(m => m && m.handle && !ghostHandles.includes(m.handle.toLowerCase().replace('@', '')));
+            ziorseSetStorage('ziorse_srv_members_' + code, mList);
+          }
+        }
+      });
+    } catch (e) {}
   }
 
   loadUser() {
@@ -2169,10 +2210,10 @@ class DataStore {
     if (!srv) return false;
     const cleanUser = cu.handle.toLowerCase().replace('@', '');
 
-    // ziorse.com resmi sunucusunun yöneticisi sadece ve sadece @sa olacak!
+    // ziorse.com resmi sunucusunun yöneticisi sadece ve sadece @justawp / @xenpian olacak!
     const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
     if (isOfficial) {
-      return cleanUser === 'sa';
+      return cleanUser === 'justawp' || cleanUser === 'xenpian';
     }
 
     if (srv.ownerHandle) {
@@ -2420,26 +2461,30 @@ class DataStore {
       (srv && window.__globalServerMembers[srv.id])
     )) || [];
 
+    const ghostHandles = new Set(['sa', 'deneme_99', 'test_user_99', 'aliveli']);
     const dir = this._loadGlobalDirectory();
-    const validHandles = new Set(Object.keys(dir).map(h => h.toLowerCase()));
+    const validHandles = this._getValidAccountHandles();
+    const validAccs = this._getValidAccountsList();
 
     const map = new Map();
 
+    const addMemberToMap = (m) => {
+      if (!m || !m.handle) return;
+      const cleanH = m.handle.toLowerCase().replace('@', '');
+      if (ghostHandles.has(cleanH)) return;
+      if (validHandles.size > 0 && !validHandles.has(cleanH) && !validHandles.has('@' + cleanH)) return;
+      const fullH = '@' + cleanH;
+      const prof = this.getUserProfile(fullH) || m;
+      map.set(cleanH, {
+        handle: fullH,
+        name: prof.name || m.name || cleanH,
+        avatar: prof.avatar || m.avatar || DEFAULT_AVATAR
+      });
+    };
+
     // If globalList is available from server, it is the primary authoritative source
     if (Array.isArray(globalList) && globalList.length > 0) {
-      globalList.forEach(m => {
-        if (m && m.handle) {
-          const cleanH = m.handle.toLowerCase();
-          if (validHandles.size === 0 || validHandles.has(cleanH) || (cleanH.replace('@', '') && validHandles.has('@' + cleanH.replace('@', '')))) {
-            const prof = this.getUserProfile(m.handle) || m;
-            map.set(cleanH, {
-              handle: m.handle.startsWith('@') ? m.handle : '@' + m.handle,
-              name: prof.name || m.name || m.handle.replace('@', ''),
-              avatar: prof.avatar || m.avatar || DEFAULT_AVATAR
-            });
-          }
-        }
-      });
+      globalList.forEach(addMemberToMap);
     } else {
       // Fallback only if server has not sent globalServerMembers yet
       let local = [];
@@ -2448,19 +2493,7 @@ class DataStore {
         local = (typeof raw === 'string' ? JSON.parse(raw) : raw) || [];
       } catch { local = []; }
 
-      [...local, ...srvMembers].forEach(m => {
-        if (m && m.handle) {
-          const cleanH = m.handle.toLowerCase();
-          if (validHandles.size === 0 || validHandles.has(cleanH) || (cleanH.replace('@', '') && validHandles.has('@' + cleanH.replace('@', '')))) {
-            const prof = this.getUserProfile(m.handle) || m;
-            map.set(cleanH, {
-              handle: m.handle.startsWith('@') ? m.handle : '@' + m.handle,
-              name: prof.name || m.name || m.handle.replace('@', ''),
-              avatar: prof.avatar || m.avatar || DEFAULT_AVATAR
-            });
-          }
-        }
-      });
+      [...local, ...srvMembers].forEach(addMemberToMap);
     }
 
     // 2. Server Owner
@@ -2468,43 +2501,28 @@ class DataStore {
     const inviteInfo = registry[inviteCode] || (srv && srv.inviteCode ? registry[srv.inviteCode] : null) || (srv && srv.id ? registry[srv.id] : null);
     const ownerHandle = (inviteInfo && inviteInfo.ownerHandle) || (srv && srv.ownerHandle);
     if (ownerHandle) {
-      const cleanH = ownerHandle.toLowerCase();
-      if (!map.has(cleanH) && (validHandles.size === 0 || validHandles.has(cleanH) || (cleanH.replace('@', '') && validHandles.has('@' + cleanH.replace('@', ''))))) {
-        const prof = this.getUserProfile(ownerHandle);
-        map.set(cleanH, {
-          handle: ownerHandle.startsWith('@') ? ownerHandle : '@' + ownerHandle,
-          name: prof.name || (inviteInfo && inviteInfo.ownerName) || (srv && srv.ownerName) || ownerHandle.replace('@', ''),
-          avatar: prof.avatar || (inviteInfo && inviteInfo.ownerAvatar) || (srv && srv.ownerAvatar) || DEFAULT_AVATAR
+      const cleanH = ownerHandle.toLowerCase().replace('@', '');
+      if (!ghostHandles.has(cleanH)) {
+        addMemberToMap({
+          handle: ownerHandle,
+          name: (inviteInfo && inviteInfo.ownerName) || (srv && srv.ownerName) || cleanH,
+          avatar: (inviteInfo && inviteInfo.ownerAvatar) || (srv && srv.ownerAvatar) || DEFAULT_AVATAR
         });
       }
     }
 
     // 3. Current User
     if (this.currentUser && this.currentUser.handle && srv) {
-      const myClean = (this.currentUser.handle || '').toLowerCase();
-      if (myClean && !map.has(myClean) && (validHandles.size === 0 || validHandles.has(myClean))) {
-        map.set(myClean, {
-          handle: this.currentUser.handle.startsWith('@') ? this.currentUser.handle : '@' + this.currentUser.handle,
-          name: this.currentUser.name || this.currentUser.handle.replace('@', ''),
-          avatar: this.currentUser.avatar || DEFAULT_AVATAR
-        });
-      }
+      addMemberToMap(this.currentUser);
     }
 
     // 4. Resmi sunucu (ziorse.com) için tüm kayıtlı kullanıcıları üye listesine ekle
     if (inviteCode === 'ziorse' || inviteCode === 'srv-ziorse-official' || (srv && (srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse'))) {
-      Object.keys(dir).forEach(k => {
-        const u = dir[k];
-        if (u && u.handle) {
-          const cleanH = u.handle.toLowerCase();
-          if (!map.has(cleanH)) {
-            map.set(cleanH, {
-              handle: u.handle.startsWith('@') ? u.handle : '@' + u.handle,
-              name: u.name || u.handle.replace('@', ''),
-              avatar: u.avatar || DEFAULT_AVATAR
-            });
-          }
-        }
+      validAccs.forEach(acc => {
+        addMemberToMap(acc);
+      });
+      Object.values(dir).forEach(u => {
+        addMemberToMap(u);
       });
     }
 
@@ -2513,6 +2531,7 @@ class DataStore {
     const result = Array.from(map.values()).filter(m => {
       if (!m || !m.handle) return false;
       const cleanH = m.handle.toLowerCase().replace('@', '');
+      if (ghostHandles.has(cleanH)) return false;
       return validAccSet.size === 0 || validAccSet.has(cleanH) || validAccSet.has('@' + cleanH);
     });
 
@@ -2733,8 +2752,8 @@ class DataStore {
 
     const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
     if (isOfficial) {
-      // @sa her şeyde tam yetkilidir
-      if (cleanTarget === 'sa') return true;
+      // @justawp ve @xenpian tam yetkilidir
+      if (cleanTarget === 'justawp' || cleanTarget === 'xenpian') return true;
       // Diğer kişilerin ziorse.com sunucusunda hiçbir yönetim yetkisi olamaz
       const managementPerms = [
         'manage_server',
