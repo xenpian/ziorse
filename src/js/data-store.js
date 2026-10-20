@@ -2281,10 +2281,10 @@ class DataStore {
     if (!srv) return false;
     const cleanUser = cu.handle.toLowerCase().replace('@', '');
 
-    // ziorse.com resmi sunucusunun yöneticisi sadece ve sadece @justawp / @xenpian olacak!
-    const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
+    // ziorse.com resmi sunucusunun yöneticisi sadece ve sadece @justawp olacak!
+    const isOfficial = srv.id === '100000000000001' || srv.id === '917925262809914' || srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse' || srv.isOfficial === true || ((srv.name || '').toLowerCase() === 'ziorse.com');
     if (isOfficial) {
-      return cleanUser === 'justawp' || cleanUser === 'xenpian';
+      return cleanUser === 'justawp';
     }
 
     if (srv.ownerHandle) {
