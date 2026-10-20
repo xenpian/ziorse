@@ -1573,6 +1573,24 @@ class DataStore {
       }
     } catch (e) { }
 
+    // ── GARANTİLİ TEKİLLEŞTİRME (De-duplication by inviteCode & id) ──
+    const seenCodes = new Set();
+    const seenIds = new Set();
+    const origLenBeforeDedup = list.length;
+    list = list.filter(s => {
+      if (!s) return false;
+      const codeKey = s.inviteCode ? s.inviteCode.toLowerCase() : null;
+      const idKey = s.id ? String(s.id) : null;
+      if (codeKey && seenCodes.has(codeKey)) return false;
+      if (idKey && seenIds.has(idKey)) return false;
+      if (codeKey) seenCodes.add(codeKey);
+      if (idKey) seenIds.add(idKey);
+      return true;
+    });
+    if (list.length !== origLenBeforeDedup) {
+      reconciled = true;
+    }
+
     if (reconciled && list.length > 0) {
       ziorseSetStorage(this.storageKeyServers, list);
     }
