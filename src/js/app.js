@@ -6306,11 +6306,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Resmi topluluk sunucusunda (ziorse.com) çevrimiçi olan tüm kullanıcıları üye listesinde göster
     const isOfficial = srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse';
+    const srvDir = window.dataStore ? window.dataStore._loadGlobalDirectory() : {};
     if (isOfficial && Array.isArray(window.__globalOnlineHandles)) {
       window.__globalOnlineHandles.forEach(h => {
         const cleanH = (h || '').toLowerCase().replace('@', '');
+        const fullH = '@' + cleanH;
+        if (!srvDir[fullH] && !srvDir[cleanH]) return;
         if (!members.some(m => (m.handle || '').toLowerCase().replace('@', '') === cleanH)) {
-          const fullH = '@' + cleanH;
           const uProf = window.dataStore.getUserProfile(fullH) || {};
           members.push({
             handle: fullH,
