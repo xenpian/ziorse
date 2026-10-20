@@ -26,6 +26,32 @@ let pool = null;
 let pingIntervalTimer = null;
 let isInitialized = false;
 
+/**
+ * Belirli basamak sayısında (digits) garantili benzersiz sayısal ID üretir
+ * Kullanıcı: 19 hane
+ * Kanal: 18 hane
+ * Kategori: 17 hane
+ * Sunucu: 15 hane
+ * Post: 14 hane
+ */
+function generateStrictId(digits) {
+  const firstDigit = String(Math.floor(Math.random() * 9) + 1);
+  const nowStr = String(Date.now());
+  let remaining = digits - 1;
+  let rest = '';
+  if (remaining >= nowStr.length) {
+    rest += nowStr;
+    remaining -= nowStr.length;
+    while (remaining > 0) {
+      rest += String(Math.floor(Math.random() * 10));
+      remaining--;
+    }
+  } else {
+    rest = nowStr.slice(-remaining);
+  }
+  return firstDigit + rest;
+}
+
 function getPool() {
   if (!pool) {
     pool = mysql.createPool(DB_CONFIG);
