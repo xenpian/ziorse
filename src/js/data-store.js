@@ -36,8 +36,35 @@ window.formatMediaUrl = formatMediaUrl;
 window.DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%232b2d31'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2380848e'/%3E%3Cpath d='M22 84c0-15.5 12.5-28 28-28s28 12.5 28 28z' fill='%2380848e'/%3E%3C/svg%3E";
 const DEFAULT_AVATAR = window.DEFAULT_AVATAR;
 
+/**
+ * Belirli basamak sayısında (digits) garantili benzersiz sayısal ID üretir
+ * Kullanıcı: 19 hane
+ * Kanal: 18 hane
+ * Kategori: 17 hane
+ * Sunucu: 15 hane
+ * Post: 14 hane
+ */
+function generateStrictId(digits) {
+  const firstDigit = String(Math.floor(Math.random() * 9) + 1);
+  const nowStr = String(Date.now());
+  let remaining = digits - 1;
+  let rest = '';
+  if (remaining >= nowStr.length) {
+    rest += nowStr;
+    remaining -= nowStr.length;
+    while (remaining > 0) {
+      rest += String(Math.floor(Math.random() * 10));
+      remaining--;
+    }
+  } else {
+    rest = nowStr.slice(-remaining);
+  }
+  return firstDigit + rest;
+}
+window.generateStrictId = generateStrictId;
+
 const OFFICIAL_ZIORSE_SERVER = {
-  id: 'srv-ziorse-official',
+  id: '100000000000001',
   name: 'ziorse.com',
   description: 'welcome.',
   icon: '/uploads/srv_icon_1791843284247_wagh8.png',
@@ -52,11 +79,11 @@ const OFFICIAL_ZIORSE_SERVER = {
   memberCount: 1,
   categories: [
     {
-      id: 'cat-ziorse-genel',
+      id: '10000000000000001',
       name: 'METİN KANALLARI',
       collapsed: false,
       channels: [
-        { id: 'chat', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
+        { id: '100000000000000001', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
       ]
     }
   ]
