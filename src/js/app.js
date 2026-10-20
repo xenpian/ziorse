@@ -615,10 +615,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderServers();
         const activeSrv = window.dataStore.servers.find(s => s.id === window.dataStore.activeServerId);
         if (activeSrv) {
-            renderServerChannels(activeSrv, window.dataStore.activeChannelId);
-          }
-          updateRightSidebar();
+          renderServerChannels(activeSrv, window.dataStore.activeChannelId);
         }
+        updateRightSidebar();
       }
     });
 
