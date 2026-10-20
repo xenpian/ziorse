@@ -7894,6 +7894,10 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = (window.formatMediaUrl ? window.formatMediaUrl(srv.icon) : srv.icon);
             img.alt = srv.name || 'Sunucu';
             img.className = 'pvm-mutual-avatar-img';
+            img.onerror = () => {
+              srvEl.innerHTML = '';
+              srvEl.textContent = (srv.name || 'S').substring(0, 2).toUpperCase();
+            };
             srvEl.appendChild(img);
           } else {
             srvEl.textContent = (srv.name || 'S').substring(0, 2).toUpperCase();
@@ -7937,6 +7941,7 @@ document.addEventListener('DOMContentLoaded', () => {
           img.src = (fr.avatar && fr.avatar !== 'https://i.imgur.com/w3OhOmW.jpeg') ? fr.avatar : window.DEFAULT_AVATAR;
           img.alt = fr.name || fr.handle;
           img.className = 'pvm-mutual-avatar-img';
+          img.onerror = () => { img.src = window.DEFAULT_AVATAR; };
           frEl.appendChild(img);
           avatarsWrap.appendChild(frEl);
         });
