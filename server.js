@@ -907,7 +907,13 @@ app.post('/api/store/set', async (req, res) => {
   }
 
   // Relational entities have their own MySQL tables; do NOT pollute system store with old client dumps
-  if (key === 'ziorse_accounts' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_')) {
+  if (
+    key === 'ziorse_accounts' ||
+    key === 'ziorse_invite_registry' ||
+    key === 'ziorse_real_posts_v14' ||
+    key.startsWith('ziorse_srv_members_') ||
+    key.startsWith('ziorse_real_servers_')
+  ) {
     return res.json({ success: true, ignored: true });
   }
 
@@ -922,11 +928,7 @@ app.post('/api/store/set', async (req, res) => {
     memorySystemStore[key] = val;
     mysqlDb.setStoreValue(key, val).catch(() => {});
 
-    if (key === 'ziorse_invite_registry' && typeof val === 'object') {
-      globalInviteRegistry = Object.assign(globalInviteRegistry, val);
-      io.emit('invite-registry-updated', globalInviteRegistry);
-      io.emit('public-servers-updated', globalInviteRegistry);
-    } else if (key === 'ziorse_user_directory' && typeof val === 'object') {
+    if (key === 'ziorse_user_directory' && typeof val === 'object') {
       const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
       const filteredDir = {};
       for (const [dh, du] of Object.entries(val)) {
