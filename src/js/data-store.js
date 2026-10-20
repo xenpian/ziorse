@@ -1393,7 +1393,7 @@ class DataStore {
   addVoiceChannel(name) {
     if (!name.trim()) return;
     const newChannel = {
-      id: 'vc-' + Date.now(),
+      id: generateStrictId(18),
       name: name.trim(),
       activeUsers: 1
     };
