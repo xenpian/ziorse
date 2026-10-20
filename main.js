@@ -159,10 +159,14 @@ ipcMain.on('store-set-sync', (event, key, val) => {
   if (val === null || val === undefined) {
     delete store[key];
     dirtyKeys.delete(key);
-    mysqlDb.deleteStoreValue(key).catch(() => {});
+    if (!key.startsWith('ziorse_real_servers_v14_') && key !== 'ziorse_accounts') {
+      mysqlDb.deleteStoreValue(key).catch(() => {});
+    }
   } else {
     store[key] = val;
-    schedulePersistentStoreSave(key);
+    if (!key.startsWith('ziorse_real_servers_v14_') && key !== 'ziorse_accounts') {
+      schedulePersistentStoreSave(key);
+    }
   }
   event.returnValue = true;
 });
@@ -206,10 +210,14 @@ ipcMain.handle('store-set', async (event, key, val) => {
   if (val === null || val === undefined) {
     delete store[key];
     dirtyKeys.delete(key);
-    await mysqlDb.deleteStoreValue(key).catch(() => {});
+    if (!key.startsWith('ziorse_real_servers_v14_') && key !== 'ziorse_accounts') {
+      await mysqlDb.deleteStoreValue(key).catch(() => {});
+    }
   } else {
     store[key] = val;
-    await mysqlDb.setStoreValue(key, val).catch(() => {});
+    if (!key.startsWith('ziorse_real_servers_v14_') && key !== 'ziorse_accounts') {
+      await mysqlDb.setStoreValue(key, val).catch(() => {});
+    }
   }
   return true;
 });
