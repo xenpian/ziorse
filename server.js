@@ -1868,6 +1868,9 @@ io.on('connection', (socket) => {
 
   socket.on('new-post-broadcast', (post) => {
     if (post) {
+      if (!post.id || String(post.id).length !== 14 || !/^\d{14}$/.test(String(post.id))) {
+        post.id = generateStrictId(14);
+      }
       if (!post.timestamp) post.timestamp = new Date().toISOString();
       // Tüm görseller, videolar ve kodlar doğrudan string/kod olarak MySQL'de saklanır
       io.emit('new-post-event', post);
