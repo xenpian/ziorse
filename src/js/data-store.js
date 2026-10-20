@@ -2222,16 +2222,22 @@ class DataStore {
   }
 
   deleteServer(serverId) {
-    const srv = this.servers.find(s => s.id === serverId);
+    const srv = this.servers.find(s => s.id === serverId || s.inviteCode === serverId);
     if (!srv) return false;
     if (srv.id === 'srv-ziorse-official' || srv.inviteCode === 'ziorse') return false; // ziorse.com silinemez
-    this.servers = this.servers.filter(s => s.id !== serverId);
+    this.servers = this.servers.filter(s => s.id !== srv.id && s.inviteCode !== srv.inviteCode);
     this.saveServers();
     if (srv.inviteCode) {
       const registry = this._loadInviteRegistry();
       delete registry[srv.inviteCode];
       ziorseSetStorage('ziorse_invite_registry', registry);
     }
+    try {
+      const sock = (typeof window !== 'undefined' && window.__ziorseSocket) ? window.__ziorseSocket : null;
+      if (sock) {
+        sock.emit('delete-server', { serverId: srv.id, inviteCode: srv.inviteCode });
+      }
+    } catch (e) {}
     this.notify();
     return true;
   }
