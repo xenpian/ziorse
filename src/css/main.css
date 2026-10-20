@@ -3452,7 +3452,7 @@ body.dark-mode .draw-color-picker-btn:hover {
 
 .user-category-label {
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 800 !important;
   color: var(--text-muted);
   font-family: var(--font-montserrat);
   letter-spacing: 0.5px;
