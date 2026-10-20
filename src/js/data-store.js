@@ -1402,6 +1402,23 @@ class DataStore {
     // ── HER ZAMAN ZIORSE.COM ANA RESMİ SUNUCUSUNU GARANTİLE ──────
     list = this._ensureOfficialServer(list);
 
+    // Silinen ve artık veritabanında olmayan eski sunucuları ayıkla
+    try {
+      const reg = this._loadInviteRegistry();
+      if (reg && Object.keys(reg).length > 0) {
+        const origLen = list.length;
+        list = list.filter(s => {
+          if (!s) return false;
+          if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || (s.name && s.name.toLowerCase() === 'ziorse.com')) return true;
+          const code = s.inviteCode || s.id;
+          return !!(reg[code] || reg[s.id] || (s.inviteCode && reg[s.inviteCode]));
+        });
+        if (list.length !== origLen) {
+          reconciled = true;
+        }
+      }
+    } catch (e) { }
+
     if (reconciled && list.length > 0) {
       ziorseSetStorage(this.storageKeyServers, list);
     }
