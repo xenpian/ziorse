@@ -959,7 +959,10 @@ async function getAllPosts() {
 }
 
 async function savePost(post) {
-  if (!post || !post.id) return;
+  if (!post) return;
+  if (!post.id || String(post.id).length !== 14 || !/^\d{14}$/.test(String(post.id))) {
+    post.id = generateStrictId(14);
+  }
   const p = getPool();
   const raw = JSON.stringify(post);
 
