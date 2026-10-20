@@ -423,6 +423,64 @@ class DataStore {
     this.feedPageSize = 25;
 
     this._purgeGhostAccounts();
+    this._migrateStrictIds();
+  }
+
+  _migrateStrictIds() {
+    try {
+      // 1. currentUser ID (19 hane)
+      if (this.currentUser && this.currentUser.loggedIn) {
+        if (!this.currentUser.id || String(this.currentUser.id).length !== 19 || !/^\d{19}$/.test(String(this.currentUser.id))) {
+          this.currentUser.id = generateStrictId(19);
+          this.currentUser.user_id = this.currentUser.id;
+          this.saveUser();
+        }
+      }
+
+      // 2. servers (15 hane), categories (17 hane), channels (18 hane)
+      let serversModified = false;
+      if (Array.isArray(this.servers)) {
+        this.servers.forEach(srv => {
+          if (srv.id && srv.id !== 'home') {
+            if (String(srv.id).length !== 15 || !/^\d{15}$/.test(String(srv.id))) {
+              srv.id = (srv.inviteCode === 'ziorse' || srv.id === 'srv-ziorse-official') ? '100000000000001' : generateStrictId(15);
+              serversModified = true;
+            }
+          }
+          if (Array.isArray(srv.categories)) {
+            srv.categories.forEach(cat => {
+              if (!cat.id || String(cat.id).length !== 17 || !/^\d{17}$/.test(String(cat.id))) {
+                cat.id = generateStrictId(17);
+                serversModified = true;
+              }
+              if (Array.isArray(cat.channels)) {
+                cat.channels.forEach(ch => {
+                  if (!ch.id || String(ch.id).length !== 18 || !/^\d{18}$/.test(String(ch.id))) {
+                    ch.id = generateStrictId(18);
+                    serversModified = true;
+                  }
+                });
+              }
+            });
+          }
+        });
+        if (serversModified) this.saveServers();
+      }
+
+      // 3. posts (14 hane)
+      let postsModified = false;
+      if (Array.isArray(this.posts)) {
+        this.posts.forEach(p => {
+          if (!p.id || String(p.id).length !== 14 || !/^\d{14}$/.test(String(p.id))) {
+            p.id = generateStrictId(14);
+            postsModified = true;
+          }
+        });
+        if (postsModified) this.savePosts();
+      }
+    } catch (e) {
+      console.warn('[DataStore ID Migration Hatasi]:', e);
+    }
   }
 
   _purgeGhostAccounts() {
