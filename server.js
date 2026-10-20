@@ -1192,11 +1192,20 @@ io.on('connection', (socket) => {
   });
 
   // İstemci periyodik aktiflik / varlık pingi
-  socket.on('client-presence-ping', (data) => {
+  socket.on('client-presence-ping', async (data) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
       const cleanH = h.toLowerCase().replace('@', '');
-      const validCleanHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase().replace('@', '')));
+      let validCleanHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase().replace('@', '')));
+      if (!validCleanHandles.has(cleanH)) {
+        try {
+          const acc = await mysqlDb.getAccountByLogin(cleanH);
+          if (acc) {
+            globalAccounts.push(acc);
+            validCleanHandles.add(cleanH);
+          }
+        } catch (e) {}
+      }
       if (!validCleanHandles.has(cleanH)) return;
 
       socketHandleMap.set(socket.id, cleanH);
@@ -1208,11 +1217,20 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('sync-user-profile', (data) => {
+  socket.on('sync-user-profile', async (data) => {
     if (data && data.handle) {
       const h = data.handle.startsWith('@') ? data.handle : '@' + data.handle;
       const cleanH = h.toLowerCase().replace('@', '');
-      const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+      let validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+      if (!validHandles.has(h.toLowerCase())) {
+        try {
+          const acc = await mysqlDb.getAccountByLogin(cleanH);
+          if (acc) {
+            globalAccounts.push(acc);
+            validHandles.add((acc.handle || '').toLowerCase());
+          }
+        } catch (e) {}
+      }
       if (!validHandles.has(h.toLowerCase())) return;
 
       socketHandleMap.set(socket.id, cleanH);
