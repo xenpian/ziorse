@@ -565,27 +565,26 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('invite-registry-updated', (registry) => {
       window.__globalInviteRegistry = registry || {};
       ziorseSetStorage('ziorse_invite_registry', window.__globalInviteRegistry);
-      if (window.dataStore && Array.isArray(window.dataStore.servers)) {
+      if (window.dataStore) {
+        // Eksik sunucuları (yeni oluşturulan veya üye olunan) tam olarak kurtar
+        window.dataStore.servers = window.dataStore.loadServers();
         let serversChanged = false;
         const validCodes = new Set(Object.keys(registry || {}));
-        const origLen = window.dataStore.servers.length;
+        const cuClean = (window.dataStore.currentUser?.handle || '').toLowerCase().replace('@', '');
+
         window.dataStore.servers = window.dataStore.servers.filter(s => {
           if (!s) return false;
           if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || ((s.name || '').toLowerCase() === 'ziorse.com')) return true;
+          // Kendi sahip olduğu sunucuyu asla atma
+          const sOwner = (s.ownerHandle || '').toLowerCase().replace('@', '');
+          if (sOwner && sOwner === cuClean) return true;
           const code = s.inviteCode || s.id;
           return validCodes.has(code) || (s.id && validCodes.has(s.id)) || (s.inviteCode && validCodes.has(s.inviteCode));
         });
-        if (window.dataStore.servers.length !== origLen) {
-          serversChanged = true;
-          if (!validCodes.has(window.dataStore.activeServerId) && window.dataStore.activeServerId !== 'srv-ziorse-official' && window.dataStore.activeServerId !== 'home') {
-            window.dataStore.activeServerId = 'srv-ziorse-official';
-            window.dataStore.activeChannelId = 'chat';
-          }
-        }
 
         window.dataStore.servers.forEach(s => {
-          if (s.inviteCode && registry[s.inviteCode]) {
-            const reg = registry[s.inviteCode];
+          const reg = (s.inviteCode && registry[s.inviteCode]) || (s.id && registry[s.id]);
+          if (reg) {
             if (reg.serverName && s.name !== reg.serverName) {
               s.name = reg.serverName;
               serversChanged = true;
@@ -612,11 +611,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         });
-        if (serversChanged) {
-          window.dataStore.saveServers();
-          renderServers();
-          const activeSrv = window.dataStore.servers.find(s => s.id === window.dataStore.activeServerId);
-          if (activeSrv) {
+        window.dataStore.saveServers();
+        renderServers();
+        const activeSrv = window.dataStore.servers.find(s => s.id === window.dataStore.activeServerId);
+        if (activeSrv) {
             renderServerChannels(activeSrv, window.dataStore.activeChannelId);
           }
           updateRightSidebar();
