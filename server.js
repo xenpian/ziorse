@@ -430,7 +430,9 @@ function ensureOfficialServerBackend() {
     }
   }
 
+  const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
   if (!globalServerMembers[officialCode]) globalServerMembers[officialCode] = [];
+  globalServerMembers[officialCode] = globalServerMembers[officialCode].filter(m => m && m.handle && validHandles.has(m.handle.toLowerCase()));
   globalServerMembers[officialId] = globalServerMembers[officialCode];
 
   // Mevcut tüm hesapları otomatik olarak ziorse.com sunucusuna üye yap
