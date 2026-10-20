@@ -945,6 +945,12 @@ async function getStoreValue(key) {
 }
 
 async function setStoreValue(key, val) {
+  if (!key) return;
+  // Block any pollution of system_store with relational tables
+  if (key === 'ziorse_accounts' || key === 'ziorse_user_directory' || key.startsWith('ziorse_srv_members_') || key.startsWith('ziorse_real_servers_v14_')) {
+    await deleteStoreValue(key);
+    return;
+  }
   const p = getPool();
   if (val === null || val === undefined) {
     return deleteStoreValue(key);
@@ -972,6 +978,40 @@ async function getAllStoreValues() {
     }
   });
   return store;
+}
+
+/**
+ * Veritabanında accounts tablosunda olmayan tüm silinmiş kullanıcıları
+ * server_members, user_directory, friend_requests ve system_store tablolarından otomatik temizler
+ */
+async function reconcileAndPruneDeletedAccounts() {
+  const p = getPool();
+  try {
+    // 1. system_store içindeki eski dump kalıntılarını sil
+    await p.query("DELETE FROM system_store WHERE store_key LIKE 'ziorse_srv_members%' OR store_key = 'ziorse_user_directory' OR store_key = 'ziorse_accounts'");
+
+    // 2. Accounts tablosunda olmayan üyeleri server_members'dan sil
+    await p.query("DELETE FROM server_members WHERE LOWER(handle) NOT IN (SELECT LOWER(handle) FROM accounts)");
+
+    // 3. Accounts tablosunda olmayan profilleri user_directory'den sil
+    await p.query("DELETE FROM user_directory WHERE LOWER(handle) NOT IN (SELECT LOWER(handle) FROM accounts)");
+
+    // 4. Accounts tablosunda olmayan arkadaşlık isteklerini sil
+    await p.query("DELETE FROM friend_requests WHERE LOWER(target_handle) NOT IN (SELECT LOWER(handle) FROM accounts) OR LOWER(from_handle) NOT IN (SELECT LOWER(handle) FROM accounts)");
+
+    // 5. Sunucu sahibi silinmişse sunucu sahibini mevcut ilk geçerli hesaba devret
+    const [accs] = await p.query("SELECT handle, name, avatar FROM accounts ORDER BY id ASC LIMIT 1");
+    if (accs.length > 0) {
+      const primaryAdmin = accs[0];
+      await p.query("UPDATE servers SET owner_handle = ?, owner_name = ?, owner_avatar = ? WHERE LOWER(owner_handle) NOT IN (SELECT LOWER(handle) FROM accounts)", [
+        primaryAdmin.handle,
+        primaryAdmin.name,
+        primaryAdmin.avatar || ''
+      ]);
+    }
+  } catch (err) {
+    console.error('[MySQL Auto-Prune Hatası]:', err.message);
+  }
 }
 
 module.exports = {
