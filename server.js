@@ -354,9 +354,10 @@ function saveSyncDb() {
 loadSyncDb();
 
 // ── OTOMATİK VERİTABANI İZLEYİCİ & CANLI SENKRONİZASYON ────────
-// Veritabanından (phpMyAdmin / MySQL CLI) bir hesap silindiğinde tüm sistemden otomatik ve anında temizler
+// Veritabanından (phpMyAdmin / MySQL CLI) bir hesap veya sunucu silindiğinde tüm sistemden otomatik ve anında temizler
 setInterval(async () => {
   try {
+    // 1. HESAP İZLEYİCİSİ
     const accs = await mysqlDb.getAllAccounts();
     const currentHandles = new Set(accs.map(a => (a.handle || '').toLowerCase()));
     const knownHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
@@ -389,9 +390,45 @@ setInterval(async () => {
       io.emit('server-members-updated', globalServerMembers);
       io.emit('online-users-updated', Array.from(activeOnlineHandles));
       io.emit('invite-registry-updated', globalInviteRegistry);
+      io.emit('public-servers-updated', globalInviteRegistry);
+    }
+
+    // 2. SUNUCU İZLEYİCİSİ (MySQL servers tablosundan doğrudan bir sunucu silinirse anında arındır)
+    const dbServers = await mysqlDb.getAllServers();
+    const currentServerCodes = new Set(Object.keys(dbServers));
+    const knownServerCodes = new Set(Object.keys(globalInviteRegistry));
+
+    let serversChanged = false;
+    const deletedServerCodes = [];
+    for (const code of knownServerCodes) {
+      if (code === 'ziorse' || code === 'srv-ziorse-official') continue;
+      if (!currentServerCodes.has(code)) {
+        serversChanged = true;
+        deletedServerCodes.push(code);
+      }
+    }
+
+    if (serversChanged) {
+      console.log('[Ziorse MySQL Watcher] Sunucu silinmesi algılandı. Anında temizleniyor:', deletedServerCodes);
+      for (const code of deletedServerCodes) {
+        const srvId = globalInviteRegistry[code]?.serverId || code;
+        delete globalInviteRegistry[code];
+        delete globalInviteRegistry[srvId];
+        delete globalServerMembers[code];
+        delete globalServerMembers[srvId];
+
+        io.emit('server-deleted', { inviteCode: code, serverId: srvId });
+      }
+
+      globalInviteRegistry = dbServers;
+      ensureOfficialServerBackend();
+
+      io.emit('invite-registry-updated', globalInviteRegistry);
+      io.emit('public-servers-updated', globalInviteRegistry);
+      io.emit('server-members-updated', globalServerMembers);
     }
   } catch (e) { }
-}, 1200);
+}, 1000);
 
 function ensureOfficialServerBackend() {
   const officialCode = 'ziorse';
