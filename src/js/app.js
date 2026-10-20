@@ -3758,6 +3758,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const canManageChannels = window.dataStore.isServerOwner(activeServerId, cu.handle) || (window.dataStore.checkServerPermission && window.dataStore.checkServerPermission(activeServerId, cu.handle, 'manage_channels'));
         const canManageServer = window.dataStore.isServerOwner(activeServerId, cu.handle) || (window.dataStore.checkServerPermission && window.dataStore.checkServerPermission(activeServerId, cu.handle, 'manage_server'));
 
+        const hasAnyPermission = canManageServer || canManageChannels;
+
         const dd = document.createElement('div');
         dd.id = 'server-header-dropdown';
         dd.className = 'server-header-dropdown';
@@ -3772,7 +3774,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <i data-lucide="folder-plus" style="width:14px;height:14px;"></i> Kategori Oluştur
             </button>
           ` : ''}
-          <div class="shd-divider"></div>
+          ${hasAnyPermission ? '<div class="shd-divider"></div>' : '<div class="shd-divider" hidden style="display:none;"></div>'}
           <button class="shd-item" id="shd-invite">
             <i data-lucide="user-plus" style="width:14px;height:14px;"></i> Sunucuya Davet Et
           </button>`;
