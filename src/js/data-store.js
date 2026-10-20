@@ -3003,7 +3003,7 @@ class DataStore {
       : codeSnippet;
 
     const newPost = {
-      id: 'post-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
+      id: generateStrictId(14),
       author: this.currentUser.name || 'Kullanıcı',
       handle: this.currentUser.handle || '@kullanici',
       avatar: this.currentUser.avatar || DEFAULT_AVATAR,
