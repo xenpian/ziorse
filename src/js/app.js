@@ -349,6 +349,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     window.socket = socket;
 
+    socket.on('connect', () => {
+      try {
+        localStorage.removeItem('ziorse_srv_members_ziorse');
+        localStorage.removeItem('ziorse_srv_members_srv-ziorse-official');
+        if (window._ziorseMemCache) {
+          window._ziorseMemCache.delete('ziorse_srv_members_ziorse');
+          window._ziorseMemCache.delete('ziorse_srv_members_srv-ziorse-official');
+        }
+        if (window._ziorseParsedCache) {
+          window._ziorseParsedCache.delete('ziorse_srv_members_ziorse');
+          window._ziorseParsedCache.delete('ziorse_srv_members_srv-ziorse-official');
+        }
+      } catch (e) { }
+    });
+
     socket.on('invite-registry-updated', (registry) => {
       window.__globalInviteRegistry = registry || {};
       if (registry && typeof registry === 'object') {
