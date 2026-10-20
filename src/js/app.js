@@ -508,8 +508,20 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('invite-registry-updated', (registry) => {
       window.__globalInviteRegistry = registry || {};
       ziorseSetStorage('ziorse_invite_registry', window.__globalInviteRegistry);
-      if (window.dataStore && Array.isArray(window.dataStore.servers) && registry) {
+      if (window.dataStore && Array.isArray(window.dataStore.servers) && registry && Object.keys(registry).length > 0) {
         let serversChanged = false;
+        const validCodes = new Set(Object.keys(registry));
+        const origLen = window.dataStore.servers.length;
+        window.dataStore.servers = window.dataStore.servers.filter(s => {
+          if (!s) return false;
+          if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || (s.name && s.name.toLowerCase() === 'ziorse.com')) return true;
+          const code = s.inviteCode || s.id;
+          return validCodes.has(code) || (s.id && validCodes.has(s.id)) || (s.inviteCode && validCodes.has(s.inviteCode));
+        });
+        if (window.dataStore.servers.length !== origLen) {
+          serversChanged = true;
+        }
+
         window.dataStore.servers.forEach(s => {
           if (s.inviteCode && registry[s.inviteCode]) {
             const reg = registry[s.inviteCode];
