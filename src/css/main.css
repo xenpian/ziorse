@@ -9725,7 +9725,10 @@ body:not(.dark-mode) .sidebar-msg-search-count {
 }
 
 .profile-modal-close-btn:hover {
-  background: rgba(239, 68, 68, 0.13);
+  background: rgba(239, 68, 68, 0.85);
+  border-color: rgba(239, 68, 68, 1);
+  color: #ffffff;
+  transform: rotate(90deg) scale(1.05);
 }
 
 .pvm-banner {
