@@ -842,10 +842,20 @@ app.post('/api/invite/register', (req, res) => {
 // ── HERKESE AÇIK SUNUCULAR (PUBLIC SERVERS) API ───────────────
 app.get('/api/public-servers', (req, res) => {
   const publicList = [];
+  const seenKeys = new Set();
+
   Object.keys(globalInviteRegistry).forEach(code => {
     const info = globalInviteRegistry[code];
     if (info && info.isPublic === true) {
-      const members = globalServerMembers[code] || [];
+      // Eğer anahtar 15 haneli serverId ise ve asıl inviteCode zaten varsa atla
+      const inviteCode = info.inviteCode || code;
+      const serverId = info.serverId ? String(info.serverId) : String(code);
+      const dedupKey = inviteCode.toLowerCase();
+      if (seenKeys.has(dedupKey) || seenKeys.has(serverId)) return;
+      seenKeys.add(dedupKey);
+      seenKeys.add(serverId);
+
+      const members = globalServerMembers[inviteCode] || globalServerMembers[code] || [];
       const memberCount = Math.max(members.length, info.memberCount || 1);
 
       let onlineCount = 0;
@@ -860,8 +870,8 @@ app.get('/api/public-servers', (req, res) => {
       const offlineCount = Math.max(0, memberCount - onlineCount);
 
       publicList.push({
-        inviteCode: code,
-        serverId: info.serverId || code,
+        inviteCode: inviteCode,
+        serverId: serverId,
         name: info.serverName || 'Sunucu',
         description: info.serverDescription || info.description || 'Topluluk ve sohbet sunucusu.',
         icon: info.serverIcon || 'Z',
@@ -877,6 +887,14 @@ app.get('/api/public-servers', (req, res) => {
       });
     }
   });
+
+  // Ziorse.com daima en başta olmalı
+  const zIdx = publicList.findIndex(s => s.serverId === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || ((s.name || '').toLowerCase() === 'ziorse.com'));
+  if (zIdx > 0) {
+    const [zCard] = publicList.splice(zIdx, 1);
+    publicList.unshift(zCard);
+  }
+
   res.json({ servers: publicList });
 });
 
