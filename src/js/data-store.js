@@ -1911,15 +1911,27 @@ class DataStore {
 
   getPublicServers() {
     const registry = this._loadInviteRegistry();
-    const mergedMap = new Map();
+    const map = new Map();
+    const seenServerIds = new Set();
+    const seenNames = new Set();
 
     // 1. From Invite Registry
     Object.keys(registry).forEach(code => {
       const reg = registry[code];
       if (reg && reg.isPublic === true) {
-        mergedMap.set(code, {
-          inviteCode: code,
-          serverId: reg.serverId || code,
+        const inviteCode = (reg.inviteCode || code).trim();
+        const serverId = (reg.serverId || code).toString().trim();
+        const srvName = (reg.serverName || reg.name || '').trim().toLowerCase();
+
+        if (map.has(inviteCode.toLowerCase()) || (serverId && seenServerIds.has(serverId)) || (srvName === 'ziorse.com' && seenNames.has('ziorse.com'))) {
+          return;
+        }
+        seenServerIds.add(serverId);
+        if (srvName) seenNames.add(srvName);
+
+        map.set(inviteCode.toLowerCase(), {
+          inviteCode: inviteCode,
+          serverId: serverId,
           name: reg.serverName || 'Sunucu',
           description: reg.serverDescription || reg.description || 'Topluluk ve sohbet sunucusu.',
           icon: reg.serverIcon || 'Z',
@@ -1937,11 +1949,13 @@ class DataStore {
     // 2. From user's servers
     (this.servers || []).forEach(s => {
       if (s && s.isPublic === true && s.inviteCode) {
-        const existing = mergedMap.get(s.inviteCode) || {};
-        mergedMap.set(s.inviteCode, {
+        const inviteCode = s.inviteCode.trim();
+        const codeKey = inviteCode.toLowerCase();
+        const existing = map.get(codeKey) || {};
+        map.set(codeKey, {
           ...existing,
-          inviteCode: s.inviteCode,
-          serverId: s.id,
+          inviteCode: inviteCode,
+          serverId: s.id || existing.serverId,
           name: s.name || existing.name || 'Sunucu',
           description: s.description || existing.description || 'Topluluk ve sohbet sunucusu.',
           icon: s.icon || existing.icon || 'Z',
@@ -1954,7 +1968,7 @@ class DataStore {
       }
     });
 
-    const result = Array.from(mergedMap.values());
+    const result = Array.from(map.values());
     // Ziorse.com keşfette her zaman en başta sabit kalır
     const zIdx = result.findIndex(s => s.serverId === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || ((s.name || '').toLowerCase() === 'ziorse.com'));
     if (zIdx !== -1) {
