@@ -1069,22 +1069,33 @@
           <span id="pvm-custom-status" class="pvm-custom-status-badge" style="display:none;"></span>
         </div>
 
-        <p id="pvm-bio" class="pvm-bio"></p>
+        <p id="pvm-bio" class="pvm-bio" style="display:none;"></p>
 
         <div id="pvm-roles-section" class="pvm-roles-section" style="display:none;">
           <span class="pvm-section-title">ROLLER</span>
           <div id="pvm-roles-container" class="pvm-roles-container"></div>
         </div>
 
-        <div class="pvm-stats">
-          <div class="pvm-stat-item">
-            <span id="pvm-stat-followers" class="pvm-stat-num">0</span>
-            <span class="pvm-stat-lbl">Takipçi</span>
+        <!-- ORTAK SUNUCULAR VE ORTAK ARKADAŞLAR BÖLÜMÜ (Takipçi/Takip edilen kaldırıldı) -->
+        <div class="pvm-mutual-container">
+          <div class="pvm-mutual-card" id="pvm-mutual-servers-card">
+            <div class="pvm-mutual-header">
+              <i data-lucide="server" style="width:13px; height:13px;"></i>
+              <span class="pvm-mutual-label">Ortak Sunucular</span>
+            </div>
+            <div class="pvm-mutual-content" id="pvm-mutual-servers-list">
+              <!-- JS ile render edilir: ilk 2 sunucu fotosu yan yana + X -->
+            </div>
           </div>
-          <div class="pvm-stat-divider"></div>
-          <div class="pvm-stat-item">
-            <span id="pvm-stat-following" class="pvm-stat-num">0</span>
-            <span class="pvm-stat-lbl">Takip Edilen</span>
+
+          <div class="pvm-mutual-card" id="pvm-mutual-friends-card">
+            <div class="pvm-mutual-header">
+              <i data-lucide="users" style="width:13px; height:13px;"></i>
+              <span class="pvm-mutual-label">Ortak Arkadaşlar</span>
+            </div>
+            <div class="pvm-mutual-content" id="pvm-mutual-friends-list">
+              <!-- JS ile render edilir -->
+            </div>
           </div>
         </div>
       </div>
