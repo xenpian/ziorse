@@ -7731,11 +7731,11 @@ document.addEventListener('DOMContentLoaded', () => {
       elStatusDot.className = 'pvm-status-dot ' + sType;
     }
 
-    // 5. Identity: Name (with effect/font styling) & Handle & Custom Status
+    // 5. Identity: Name (with effect/font styling - BLACK default) & Handle & Custom Status
     const elName = document.getElementById('pvm-name');
     if (elName) {
       elName.textContent = profile.name || handle;
-      applyUserNameStyling(elName, profile.fontStyle, profile.nameColor, profile.nameEffects, '#8b5cf6', profile.fontWeight);
+      applyUserNameStyling(elName, profile.fontStyle, profile.nameColor, profile.nameEffects, '#000000', profile.fontWeight);
     }
 
     const elHandle = document.getElementById('pvm-handle');
@@ -7755,51 +7755,158 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // 6. Bio
+    // 6. Bio - Biyografi yoksa kesinlikle yazı olmayacak, tamamen gizlenecek
     const elBio = document.getElementById('pvm-bio');
     if (elBio) {
-      elBio.textContent = profile.bio || 'Henüz bir biyografi eklenmemiş.';
+      if (profile.bio && profile.bio.trim()) {
+        elBio.textContent = profile.bio.trim();
+        elBio.style.display = 'block';
+      } else {
+        elBio.textContent = '';
+        elBio.style.display = 'none';
+      }
     }
 
-    // 7. Stats (Only Takipçi & Takip Edilen - NO posts!)
-    const elFollowers = document.getElementById('pvm-stat-followers');
-    const elFollowing = document.getElementById('pvm-stat-following');
-    if (elFollowers) elFollowers.textContent = profile.followers || 0;
-    if (elFollowing) elFollowing.textContent = profile.following || 0;
-
-    // 8. Actions (Follow/Unfollow, Send DM or Edit Profile)
+    // 7. Actions (Sadece İkon Butonlar: Arkadaş Ekleme İkonu ve Mesaj İkonu)
     const elActions = document.getElementById('pvm-actions');
     if (elActions) {
       elActions.innerHTML = '';
       if (isSelf) {
         const btnEdit = document.createElement('button');
-        btnEdit.className = 'pvm-btn pvm-btn-secondary';
-        btnEdit.innerHTML = '<i data-lucide="edit-3" style="width:14px; height:14px;"></i> Profili Düzenle';
+        btnEdit.className = 'pvm-action-icon-btn';
+        btnEdit.title = 'Profili Düzenle';
+        btnEdit.innerHTML = '<i data-lucide="edit-3" style="width:17px; height:17px;"></i>';
         btnEdit.onclick = () => {
           window.closeProfileView();
           window.openModalView('settings.html');
         };
         elActions.appendChild(btnEdit);
       } else {
-        const isFollowing = Array.isArray(ds.followedHandles) && ds.followedHandles.includes(profile.handle);
-        const btnFollow = document.createElement('button');
-        btnFollow.className = `pvm-btn ${isFollowing ? 'pvm-btn-secondary' : 'pvm-btn-primary'}`;
-        btnFollow.innerHTML = isFollowing
-          ? '<i data-lucide="user-check" style="width:14px; height:14px;"></i> Takibi Bırak'
-          : '<i data-lucide="user-plus" style="width:14px; height:14px;"></i> Takip Et';
-        btnFollow.onclick = () => {
-          ds.toggleFollowUser(profile.handle);
-          window.openProfileView(profile.handle);
-        };
-        elActions.appendChild(btnFollow);
+        const targetClean = (profile.handle || '').toLowerCase();
+        const isFriend = (typeof ds.isFriend === 'function' && ds.isFriend(profile.handle)) ||
+          (Array.isArray(ds.friends) && ds.friends.some(f => (f.handle || '').toLowerCase() === targetClean));
+        const hasSentReq = Array.isArray(ds.outgoingFriendRequests) &&
+          ds.outgoingFriendRequests.some(r => (r.handle || '').toLowerCase() === targetClean);
 
+        // SADECE ARKADAŞ EKLEME İKONU
+        const btnFriend = document.createElement('button');
+        btnFriend.className = `pvm-action-icon-btn ${isFriend ? 'is-friend' : (hasSentReq ? 'is-pending' : '')}`;
+        btnFriend.title = isFriend ? 'Arkadaşınız' : (hasSentReq ? 'İstek Gönderildi' : 'Arkadaş Ekle');
+        btnFriend.innerHTML = isFriend
+          ? '<i data-lucide="user-check" style="width:17px; height:17px;"></i>'
+          : (hasSentReq
+            ? '<i data-lucide="clock" style="width:17px; height:17px;"></i>'
+            : '<i data-lucide="user-plus" style="width:17px; height:17px;"></i>');
+
+        btnFriend.onclick = () => {
+          if (isFriend) {
+            showToast('Bu kullanıcı ile zaten arkadaşsınız.');
+          } else if (hasSentReq) {
+            showToast('Arkadaşlık isteği zaten gönderilmiş.');
+          } else {
+            if (typeof ds.sendFriendRequest === 'function') {
+              ds.sendFriendRequest(profile.handle);
+            }
+            showToast('Arkadaşlık isteği gönderildi');
+            window.openProfileView(profile.handle);
+          }
+        };
+        elActions.appendChild(btnFriend);
+
+        // SADECE MESAJ İKONU
         const btnMsg = document.createElement('button');
-        btnMsg.className = 'pvm-btn pvm-btn-secondary';
-        btnMsg.innerHTML = '<i data-lucide="message-square" style="width:14px; height:14px;"></i> Mesaj';
+        btnMsg.className = 'pvm-action-icon-btn';
+        btnMsg.title = 'Mesaj Gönder';
+        btnMsg.innerHTML = '<i data-lucide="message-square" style="width:17px; height:17px;"></i>';
         btnMsg.onclick = () => {
+          window.closeProfileView();
           openDmWithUser(profile.handle);
         };
         elActions.appendChild(btnMsg);
+      }
+    }
+
+    // 8. Ortak Sunucular (En fazla 2 sunucu profil fotosu yan yana + sağında + ve kalan sayı)
+    const elServersList = document.getElementById('pvm-mutual-servers-list');
+    if (elServersList) {
+      elServersList.innerHTML = '';
+      const mutualServers = (typeof ds.getMutualServers === 'function') ? ds.getMutualServers(profile.handle) : [];
+
+      if (!mutualServers || mutualServers.length === 0) {
+        elServersList.innerHTML = '<span class="pvm-mutual-empty">Ortak sunucu yok</span>';
+      } else {
+        const firstTwo = mutualServers.slice(0, 2);
+        const remaining = mutualServers.length - 2;
+
+        const avatarsWrap = document.createElement('div');
+        avatarsWrap.className = 'pvm-mutual-avatars-wrap';
+
+        firstTwo.forEach(srv => {
+          const srvEl = document.createElement('div');
+          srvEl.className = 'pvm-mutual-avatar-item';
+          srvEl.title = srv.name || 'Sunucu';
+
+          if (srv.icon && (srv.icon.startsWith('http') || srv.icon.startsWith('/uploads/') || srv.icon.startsWith('data:'))) {
+            const img = document.createElement('img');
+            img.src = (window.formatMediaUrl ? window.formatMediaUrl(srv.icon) : srv.icon);
+            img.alt = srv.name || 'Sunucu';
+            img.className = 'pvm-mutual-avatar-img';
+            srvEl.appendChild(img);
+          } else {
+            srvEl.textContent = (srv.name || 'S').substring(0, 2).toUpperCase();
+          }
+          avatarsWrap.appendChild(srvEl);
+        });
+
+        elServersList.appendChild(avatarsWrap);
+
+        if (remaining > 0) {
+          const plusSpan = document.createElement('span');
+          plusSpan.className = 'pvm-mutual-plus-indicator';
+          plusSpan.textContent = `+ ${remaining}`;
+          plusSpan.title = `${remaining} ortak sunucu daha`;
+          elServersList.appendChild(plusSpan);
+        }
+      }
+    }
+
+    // 9. Ortak Arkadaşlar
+    const elFriendsList = document.getElementById('pvm-mutual-friends-list');
+    if (elFriendsList) {
+      elFriendsList.innerHTML = '';
+      const mutualFriends = (typeof ds.getMutualFriends === 'function') ? ds.getMutualFriends(profile.handle) : [];
+
+      if (!mutualFriends || mutualFriends.length === 0) {
+        elFriendsList.innerHTML = '<span class="pvm-mutual-empty">Ortak arkadaş yok</span>';
+      } else {
+        const firstTwoFr = mutualFriends.slice(0, 2);
+        const remainingFr = mutualFriends.length - 2;
+
+        const avatarsWrap = document.createElement('div');
+        avatarsWrap.className = 'pvm-mutual-avatars-wrap';
+
+        firstTwoFr.forEach(fr => {
+          const frEl = document.createElement('div');
+          frEl.className = 'pvm-mutual-avatar-item';
+          frEl.title = fr.name || fr.handle;
+
+          const img = document.createElement('img');
+          img.src = (fr.avatar && fr.avatar !== 'https://i.imgur.com/w3OhOmW.jpeg') ? fr.avatar : window.DEFAULT_AVATAR;
+          img.alt = fr.name || fr.handle;
+          img.className = 'pvm-mutual-avatar-img';
+          frEl.appendChild(img);
+          avatarsWrap.appendChild(frEl);
+        });
+
+        elFriendsList.appendChild(avatarsWrap);
+
+        if (remainingFr > 0) {
+          const plusSpan = document.createElement('span');
+          plusSpan.className = 'pvm-mutual-plus-indicator';
+          plusSpan.textContent = `+ ${remainingFr}`;
+          plusSpan.title = `${remainingFr} ortak arkadaş daha`;
+          elFriendsList.appendChild(plusSpan);
+        }
       }
     }
 
