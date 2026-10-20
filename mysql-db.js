@@ -1058,5 +1058,6 @@ module.exports = {
   getStoreValue,
   setStoreValue,
   deleteStoreValue,
-  getAllStoreValues
+  getAllStoreValues,
+  reconcileAndPruneDeletedAccounts
 };
