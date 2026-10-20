@@ -520,21 +520,63 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    socket.on('server-deleted', (data) => {
+      if (!data) return;
+      const targetCode = data.inviteCode;
+      const targetId = data.serverId;
+      if (window.dataStore && Array.isArray(window.dataStore.servers)) {
+        window.dataStore.servers = window.dataStore.servers.filter(s => {
+          if (!s) return false;
+          if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || ((s.name || '').toLowerCase() === 'ziorse.com')) return true;
+          if (targetCode && (s.inviteCode === targetCode || s.id === targetCode)) return false;
+          if (targetId && (s.id === targetId || s.inviteCode === targetId)) return false;
+          return true;
+        });
+        window.dataStore.saveServers();
+        if (window.dataStore.activeServerId === targetCode || window.dataStore.activeServerId === targetId) {
+          window.dataStore.activeServerId = 'srv-ziorse-official';
+          window.dataStore.activeChannelId = 'chat';
+        }
+      }
+      if (window.__globalInviteRegistry) {
+        if (targetCode) delete window.__globalInviteRegistry[targetCode];
+        if (targetId) delete window.__globalInviteRegistry[targetId];
+        ziorseSetStorage('ziorse_invite_registry', window.__globalInviteRegistry);
+      }
+      if (window.__globalServerMembers) {
+        if (targetCode) delete window.__globalServerMembers[targetCode];
+        if (targetId) delete window.__globalServerMembers[targetId];
+      }
+      renderServers();
+      updateRightSidebar();
+      const actSrv = window.dataStore?.servers.find(s => s.id === window.dataStore?.activeServerId);
+      if (actSrv) {
+        renderServerChannels(actSrv, window.dataStore.activeChannelId);
+      }
+      updateHeaderLocation();
+      updateActiveServerInRail(window.dataStore.activeServerId);
+      if (typeof renderPublicServers === 'function') renderPublicServers();
+    });
+
     socket.on('invite-registry-updated', (registry) => {
       window.__globalInviteRegistry = registry || {};
       ziorseSetStorage('ziorse_invite_registry', window.__globalInviteRegistry);
-      if (window.dataStore && Array.isArray(window.dataStore.servers) && registry && Object.keys(registry).length > 0) {
+      if (window.dataStore && Array.isArray(window.dataStore.servers)) {
         let serversChanged = false;
-        const validCodes = new Set(Object.keys(registry));
+        const validCodes = new Set(Object.keys(registry || {}));
         const origLen = window.dataStore.servers.length;
         window.dataStore.servers = window.dataStore.servers.filter(s => {
           if (!s) return false;
-          if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || (s.name && s.name.toLowerCase() === 'ziorse.com')) return true;
+          if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || ((s.name || '').toLowerCase() === 'ziorse.com')) return true;
           const code = s.inviteCode || s.id;
           return validCodes.has(code) || (s.id && validCodes.has(s.id)) || (s.inviteCode && validCodes.has(s.inviteCode));
         });
         if (window.dataStore.servers.length !== origLen) {
           serversChanged = true;
+          if (!validCodes.has(window.dataStore.activeServerId) && window.dataStore.activeServerId !== 'srv-ziorse-official' && window.dataStore.activeServerId !== 'home') {
+            window.dataStore.activeServerId = 'srv-ziorse-official';
+            window.dataStore.activeChannelId = 'chat';
+          }
         }
 
         window.dataStore.servers.forEach(s => {
