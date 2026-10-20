@@ -2479,8 +2479,13 @@ class DataStore {
       });
     }
 
-    // Kesin filtreleme: Üye listesinde sadece ve sadece kayıtlı hesaplar kalır
-    const result = Array.from(map.values()).filter(m => m && m.handle && (validHandles.size === 0 || validHandles.has(m.handle.toLowerCase())));
+    // Kesin filtreleme: Üye listesinde sadece ve sadece kayıtlı gerçek hesaplar kalır
+    const validAccSet = this._getValidAccountHandles();
+    const result = Array.from(map.values()).filter(m => {
+      if (!m || !m.handle) return false;
+      const cleanH = m.handle.toLowerCase().replace('@', '');
+      return validAccSet.size === 0 || validAccSet.has(cleanH) || validAccSet.has('@' + cleanH);
+    });
 
     if (srv && (!srv.members || srv.members.length !== result.length)) {
       srv.members = result;
