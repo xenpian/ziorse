@@ -1192,11 +1192,8 @@ io.on('connection', (socket) => {
       socket.join(cleanH);
       socket.join(h.toLowerCase());
       socket.join('@' + cleanH);
-      const wasOnline = activeOnlineHandles.has(cleanH);
       activeOnlineHandles.add(cleanH);
-      if (!wasOnline) {
-        io.emit('online-users-updated', Array.from(activeOnlineHandles));
-      }
+      io.emit('online-users-updated', Array.from(activeOnlineHandles));
     }
   });
 
