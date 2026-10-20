@@ -630,7 +630,10 @@ app.post(['/api/register', '/api/auth/register'], async (req, res) => {
       return res.status(400).json({ error: 'Bu kullanıcı adı veya e-posta adresi zaten kullanılıyor.' });
     }
 
+    const userId = generateStrictId(19);
     const newAcc = {
+      id: userId,
+      user_id: userId,
       name: name || cleanEmail.split('@')[0],
       handle: cleanHandle,
       email: cleanEmail,
@@ -642,13 +645,15 @@ app.post(['/api/register', '/api/auth/register'], async (req, res) => {
 
     // 2. MySQL veritabanına doğrudan kaydet (accounts, user_directory ve resmi sunucu üyeliği)
     const created = await mysqlDb.createAccount(newAcc);
-    const fullAcc = { ...newAcc, id: created?.id };
+    const fullAcc = { ...newAcc, id: userId, user_id: userId };
 
     // 3. Bellek listelerini güncelle
     globalAccounts = globalAccounts.filter(a => a.handle.toLowerCase() !== cleanHandle.toLowerCase() && a.email.toLowerCase() !== cleanEmail);
     globalAccounts.push(fullAcc);
 
     globalUserDirectory[cleanHandle] = {
+      id: userId,
+      user_id: userId,
       name: fullAcc.name,
       handle: cleanHandle,
       avatar: fullAcc.avatar || '',
