@@ -71,13 +71,7 @@ function renderServerBadgesHtml(srv) {
   if (isOfficial) {
     // 1. Mavi Tik Rozeti (ziorse.com Resmi Doğrulanmış Sunucu)
     return `
-      <span class="srv-badges-wrap2" title="Doğrulanmış Resmi Sunucu (ziorse.com)">
-        <span class="srv-badge srv-badge-verified">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-          </svg>
-        </span>
-      </span>
+
     `;
   }
 
@@ -412,8 +406,8 @@ class DataStore {
     const ghostHandles = ['sa', 'deneme_99', 'test_user_99', 'aliveli'];
     try {
       ghostHandles.forEach(gh => {
-        try { localStorage.removeItem('ziorse_user_' + gh); } catch (e) {}
-        try { localStorage.removeItem('ziorse_user_@' + gh); } catch (e) {}
+        try { localStorage.removeItem('ziorse_user_' + gh); } catch (e) { }
+        try { localStorage.removeItem('ziorse_user_@' + gh); } catch (e) { }
       });
       const rawAccs = ziorseGetStorage('ziorse_accounts');
       if (rawAccs) {
@@ -444,7 +438,7 @@ class DataStore {
           }
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   }
 
   loadUser() {
@@ -1501,7 +1495,7 @@ class DataStore {
   _ensureOfficialServer(list) {
     if (!Array.isArray(list)) list = [];
     const existingIdx = list.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse' || (s.name && s.name.toLowerCase() === 'ziorse.com'));
-    
+
     // Registry'den güncel ve dinamik ayarları çek (hiçbir şey sabit olmasın, @sa her şeyi değiştirebilsin)
     const registry = this._loadInviteRegistry();
     const regOfficial = registry['ziorse'] || {};
@@ -2862,14 +2856,14 @@ class DataStore {
         const pCh = parts[1] || 'genel';
 
         // Kanal eşleşmesi (genel <-> chat varsayılan kanal esnekliği dahil)
-        const chMatches = (pCh === activeCh) || 
-                          ((pCh === 'chat' || pCh === 'genel') && (activeCh === 'chat' || activeCh === 'genel'));
+        const chMatches = (pCh === activeCh) ||
+          ((pCh === 'chat' || pCh === 'genel') && (activeCh === 'chat' || activeCh === 'genel'));
         if (!chMatches) return false;
 
         // Sunucu ID eşleşmesi
         if (possibleServerIds.has(pSrv)) return true;
         if ((possibleServerIds.has('ziorse') || possibleServerIds.has('srv-ziorse-official')) &&
-            (pSrv === 'ziorse' || pSrv === 'srv-ziorse-official')) {
+          (pSrv === 'ziorse' || pSrv === 'srv-ziorse-official')) {
           return true;
         }
         return false;
