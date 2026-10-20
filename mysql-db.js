@@ -244,16 +244,49 @@ async function createTables() {
       INDEX idx_store_key (store_key)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
   `);
+
+  // 9. OTOMATİK CASCADE TEMİZLEME TETİKLEYİCİLERİ (Hesap veritabanından silindiğinde her yerden anında silinir)
+  try {
+    await p.query('DROP TRIGGER IF EXISTS trg_accounts_cascade_members');
+    await p.query(`
+      CREATE TRIGGER trg_accounts_cascade_members
+      AFTER DELETE ON accounts
+      FOR EACH ROW
+      DELETE FROM server_members WHERE LOWER(handle) = LOWER(OLD.handle)
+    `);
+
+    await p.query('DROP TRIGGER IF EXISTS trg_accounts_cascade_directory');
+    await p.query(`
+      CREATE TRIGGER trg_accounts_cascade_directory
+      AFTER DELETE ON accounts
+      FOR EACH ROW
+      DELETE FROM user_directory WHERE LOWER(handle) = LOWER(OLD.handle)
+    `);
+
+    await p.query('DROP TRIGGER IF EXISTS trg_accounts_cascade_friendreqs');
+    await p.query(`
+      CREATE TRIGGER trg_accounts_cascade_friendreqs
+      AFTER DELETE ON accounts
+      FOR EACH ROW
+      DELETE FROM friend_requests WHERE LOWER(target_handle) = LOWER(OLD.handle) OR LOWER(from_handle) = LOWER(OLD.handle)
+    `);
+  } catch (trgErr) {
+    console.warn('[MySQL Triggers Uyarısı]:', trgErr.message);
+  }
 }
 
 /**
- * Resmi ziorse.com topluluk sunucusunu ve varsayılan resmi hesabı garantiler
+ * Resmi ziorse.com topluluk sunucusunu garantiler (sahibi mevcut ilk hesaba dinamik atanır)
  */
 async function ensureOfficialServerAndDefaults() {
   const p = getPool();
 
   const officialCode = 'ziorse';
   const officialId = 'srv-ziorse-official';
+
+  // Mevcut ilk geçerli hesabı al
+  const [accs] = await p.query('SELECT handle, name, avatar FROM accounts ORDER BY id ASC LIMIT 1');
+  const primaryAdmin = accs.length > 0 ? accs[0] : { handle: '@justawp', name: 'justawp', avatar: '' };
 
   // 1. Resmi sunucunun varlığını kontrol et
   const [existingServers] = await p.query('SELECT * FROM servers WHERE invite_code = ? OR server_id = ?', [officialCode, officialId]);
@@ -284,46 +317,21 @@ async function ensureOfficialServerAndDefaults() {
       'welcome.',
       '/uploads/srv_icon_1791843284247_wagh8.png',
       '/uploads/srv_banner_1791843284248_6kbj4.png',
-      '@sa',
-      'sa',
-      'logo.png',
+      primaryAdmin.handle,
+      primaryAdmin.name,
+      primaryAdmin.avatar || '',
       JSON.stringify(defaultCategories)
     ]);
-    console.log('[MySQL] Resmi ziorse.com sunucusu oluşturuldu.');
-  }
-
-  // 2. Resmi geliştirici/kurucu hesabı kontrol et
-  const [existingAcc] = await p.query('SELECT * FROM accounts WHERE handle = ?', ['@sa']);
-  if (existingAcc.length === 0) {
-    await p.query(`
-      INSERT INTO accounts (handle, name, email, password, avatar, banner, bio)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, [
-      '@sa',
-      'sa',
-      'sa@ziorse.com',
-      '123456',
-      'logo.png',
-      '/uploads/srv_banner_1791843284248_6kbj4.png',
-      'Ziorse Creator'
+    console.log(`[MySQL] Resmi ziorse.com sunucusu oluşturuldu (Sahip: ${primaryAdmin.handle}).`);
+  } else {
+    // Mevcut sunucunun sahibi silinmiş bir hesapsa güncelle
+    await p.query('UPDATE servers SET owner_handle = ?, owner_name = ?, owner_avatar = ? WHERE (invite_code = ? OR server_id = ?) AND LOWER(owner_handle) NOT IN (SELECT LOWER(handle) FROM accounts)', [
+      primaryAdmin.handle,
+      primaryAdmin.name,
+      primaryAdmin.avatar || '',
+      officialCode,
+      officialId
     ]);
-
-    await p.query(`
-      INSERT INTO user_directory (handle, name, avatar, banner, bio, followers, following, status_type, status_text)
-      VALUES (?, ?, ?, ?, ?, 1, 0, 'online', 'welcome.')
-      ON DUPLICATE KEY UPDATE name=VALUES(name), avatar=VALUES(avatar)
-    `, [
-      '@sa',
-      'sa',
-      'logo.png',
-      '/uploads/srv_banner_1791843284248_6kbj4.png',
-      'Ziorse Creator'
-    ]);
-
-    await p.query(`
-      INSERT IGNORE INTO server_members (server_code, handle, name, avatar)
-      VALUES (?, ?, ?, ?)
-    `, [officialCode, '@sa', 'sa', 'logo.png']);
   }
 }
 
