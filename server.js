@@ -324,8 +324,30 @@ async function loadSyncDb() {
     const psts = await mysqlDb.getAllPosts();
     serverPosts = Array.isArray(psts) ? psts : [];
 
+    // Bellekteki tüm ID'leri standart uzunluklara eşle
+    globalAccounts.forEach(acc => {
+      if (!acc.id || String(acc.id).length !== 19 || !/^\d{19}$/.test(String(acc.id))) {
+        acc.id = generateStrictId(19);
+        acc.user_id = acc.id;
+      }
+    });
+
+    Object.values(globalUserDirectory).forEach(u => {
+      if (!u.id || String(u.id).length !== 19 || !/^\d{19}$/.test(String(u.id))) {
+        const matched = globalAccounts.find(a => (a.handle || '').toLowerCase() === (u.handle || '').toLowerCase());
+        u.id = matched ? matched.id : generateStrictId(19);
+        u.user_id = u.id;
+      }
+    });
+
+    serverPosts.forEach(p => {
+      if (!p.id || String(p.id).length !== 14 || !/^\d{14}$/.test(String(p.id))) {
+        p.id = generateStrictId(14);
+      }
+    });
+
     ensureOfficialServerBackend();
-    console.log(`[Ziorse Server MySQL (gusgon)] Başarıyla yüklendi: ${globalAccounts.length} hesap, ${Object.keys(globalUserDirectory).length} kullanıcı dizini, ${Object.keys(globalInviteRegistry).length} sunucu, ${serverPosts.length} gönderi.`);
+    console.log(`[Ziorse Server MySQL (gusgon)] Başarıyla yüklendi ve ID'ler doğrulandı: ${globalAccounts.length} hesap, ${Object.keys(globalUserDirectory).length} kullanıcı dizini, ${Object.keys(globalInviteRegistry).length} sunucu, ${serverPosts.length} gönderi.`);
   } catch (err) {
     console.error('[Ziorse Server MySQL] DB Yükleme Hatası:', err);
   }
