@@ -689,6 +689,73 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    socket.on('accounts-updated', (accounts) => {
+      window.__globalAccounts = accounts || [];
+      if (Array.isArray(accounts)) {
+        ziorseSetStorage('ziorse_accounts', accounts);
+        const cu = window.dataStore?.currentUser;
+        if (cu && !accounts.some(a => (a.handle || '').toLowerCase() === (cu.handle || '').toLowerCase())) {
+          console.warn('[Ziorse Auth] Hesabınız veritabanından kaldırıldı. Oturum kapatılıyor...');
+          try { window.dataStore.logout(); } catch (e) {}
+          window.location.replace('login.html');
+          return;
+        }
+      }
+      renderOnlineMembers();
+      updateRightSidebar();
+    });
+
+    socket.on('force-logout', (data) => {
+      const cu = window.dataStore?.currentUser;
+      if (cu && data && data.handle && (cu.handle.toLowerCase() === data.handle.toLowerCase() || cu.handle.toLowerCase().replace('@', '') === data.handle.toLowerCase().replace('@', ''))) {
+        console.warn('[Ziorse Auth] Hesabınız veritabanından tamamen silindi. Oturum sonlandırılıyor...');
+        try { window.dataStore.logout(); } catch (e) {}
+        window.location.replace('login.html');
+      }
+    });
+
+    socket.on('account-deleted', (data) => {
+      if (!data || !data.handle) return;
+      const cleanH = data.handle.toLowerCase().replace('@', '');
+      const fullH = '@' + cleanH;
+
+      const cu = window.dataStore?.currentUser;
+      if (cu && (cu.handle.toLowerCase() === fullH || cu.handle.toLowerCase().replace('@', '') === cleanH)) {
+        try { window.dataStore.logout(); } catch (e) {}
+        window.location.replace('login.html');
+        return;
+      }
+
+      if (Array.isArray(window.__globalOnlineHandles)) {
+        window.__globalOnlineHandles = window.__globalOnlineHandles.filter(h => (h || '').toLowerCase().replace('@', '') !== cleanH);
+      }
+
+      if (window.__globalUserDirectory) {
+        delete window.__globalUserDirectory[fullH];
+        delete window.__globalUserDirectory[cleanH];
+      }
+
+      if (window.__globalServerMembers) {
+        Object.keys(window.__globalServerMembers).forEach(k => {
+          if (Array.isArray(window.__globalServerMembers[k])) {
+            window.__globalServerMembers[k] = window.__globalServerMembers[k].filter(m => (m.handle || '').toLowerCase().replace('@', '') !== cleanH);
+          }
+        });
+      }
+
+      try {
+        const uDir = JSON.parse(ziorseGetStorage('ziorse_user_directory') || '{}');
+        delete uDir[fullH];
+        delete uDir[cleanH];
+        ziorseSetStorage('ziorse_user_directory', uDir);
+      } catch (e) {}
+
+      renderOnlineMembers();
+      updateRightSidebar();
+      renderDMs();
+      renderFeed();
+    });
+
     function syncWithSocketServer() {
       if (!socket || !window.dataStore) return;
       socket.emit('get-online-users');
@@ -697,6 +764,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (window.dataStore.currentUser) {
         const cu = window.dataStore.currentUser;
+        // Anında varlık pingi gönder
+        socket.emit('client-presence-ping', {
+          handle: cu.handle,
+          status: window.dataStore.userStatus || { type: 'online', text: '' }
+        });
         socket.emit('sync-user-profile', {
           name: cu.name,
           handle: cu.handle,
@@ -759,13 +831,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('connect', () => {
       syncWithSocketServer();
+      if (window.dataStore && window.dataStore.currentUser) {
+        socket.emit('client-presence-ping', {
+          handle: window.dataStore.currentUser.handle,
+          status: window.dataStore.userStatus || { type: 'online' }
+        });
+      }
       if (typeof fetchLivePublicServers === 'function') fetchLivePublicServers();
       updateRightSidebar();
     });
 
     syncWithSocketServer();
 
-    // 12 saniyede bir aktiflik ve varlık pingi gönder
+    // 4 saniyede bir aktiflik ve varlık pingi gönder
     setInterval(() => {
       if (socket && socket.connected && window.dataStore && window.dataStore.currentUser) {
         socket.emit('client-presence-ping', {
@@ -773,7 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
           status: window.dataStore.userStatus || { type: 'online' }
         });
       }
-    }, 12000);
+    }, 4000);
 
     socket.on('new-post-event', (post) => {
       if (post && post.id) {
