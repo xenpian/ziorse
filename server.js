@@ -372,6 +372,17 @@ setInterval(async () => {
 
     if (changed) {
       console.log('[Ziorse MySQL Watcher] Hesap silinmesi/eklenmesi algılandı. Otomatik arındırma ve senkronizasyon yapılıyor...');
+      // Silinen hesapları tespit et ve zorla çıkış yaptır
+      const deletedHandles = [...knownHandles].filter(h => !currentHandles.has(h));
+      deletedHandles.forEach(dh => {
+        const cleanDh = dh.replace('@', '');
+        activeOnlineHandles.delete(cleanDh);
+        // O hesaba ait açık olan soket varsa anında zorla çıkış yaptır
+        io.to(cleanDh).emit('force-logout', { handle: dh, reason: 'account_deleted' });
+        io.to(dh).emit('force-logout', { handle: dh, reason: 'account_deleted' });
+        io.emit('account-deleted', { handle: dh });
+      });
+
       await loadSyncDb();
       io.emit('accounts-updated', globalAccounts);
       io.emit('user-directory-updated', globalUserDirectory);
@@ -380,7 +391,7 @@ setInterval(async () => {
       io.emit('invite-registry-updated', globalInviteRegistry);
     }
   } catch (e) { }
-}, 2500);
+}, 1200);
 
 function ensureOfficialServerBackend() {
   const officialCode = 'ziorse';
