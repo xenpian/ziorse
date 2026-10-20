@@ -1,21 +1,21 @@
 {
   "name": "ziorse-spatial-social",
   "version": "1.0.0",
-  "description": "Ziorse Desktop Social Network - Production Full-Stack Edition",
-  "main": "main.js",
+  "description": "Ziorse - Modern Spatial Social Web Platform",
+  "main": "server.js",
   "scripts": {
-    "dev": "electron .",
-    "start": "electron .",
+    "dev": "node server.js",
+    "start": "node server.js",
     "server": "node server.js",
     "sync": "node scripts/github-auto-sync.js",
     "db": "node scripts/ziorse-db-engine.js",
     "db:reset": "node scripts/ziorse-db-engine.js --reset",
-    "build:win": "electron-builder --win nsis"
+    "electron:dev": "electron ."
   },
   "keywords": [
-    "electron",
     "social-network",
-    "desktop-app",
+    "web-app",
+    "website",
     "ziorse",
     "socketio",
     "webrtc"
