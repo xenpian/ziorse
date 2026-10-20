@@ -837,6 +837,8 @@ app.post('/api/invite/register', (req, res) => {
   io.emit('invite-registry-updated', globalInviteRegistry);
   io.emit('public-servers-updated', globalInviteRegistry);
   res.json({ success: true, registry: globalInviteRegistry });
+});
+
 app.get('/api/admin/reload-servers', async (req, res) => {
   try {
     const dbServers = await mysqlDb.getAllServers();
