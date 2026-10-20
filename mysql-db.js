@@ -432,11 +432,11 @@ async function ensureOfficialServerAndDefaults() {
 
   const defaultCategories = [
     {
-      id: 'cat-ziorse-genel',
+      id: generateStrictId(17),
       name: 'METİN KANALLARI',
       collapsed: false,
       channels: [
-        { id: 'chat', name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
+        { id: generateStrictId(18), name: 'chat', type: 'text', topic: 'Ziorse Sohbet Kanalı' }
       ]
     }
   ];
@@ -516,7 +516,8 @@ async function initDatabase(options = {}) {
 async function getAllAccounts() {
   const [rows] = await getPool().query('SELECT * FROM accounts ORDER BY id ASC');
   return rows.map(r => ({
-    id: r.id,
+    id: r.user_id || String(r.id),
+    user_id: r.user_id || String(r.id),
     handle: r.handle,
     name: r.name,
     email: r.email,
@@ -546,7 +547,8 @@ async function getAccountByLogin(identifier) {
   if (rows.length === 0) return null;
   const r = rows[0];
   return {
-    id: r.id,
+    id: r.user_id || String(r.id),
+    user_id: r.user_id || String(r.id),
     handle: r.handle,
     name: r.name,
     email: r.email,
@@ -567,13 +569,15 @@ async function createAccount(acc) {
   const p = getPool();
   const handle = acc.handle.startsWith('@') ? acc.handle : '@' + acc.handle;
   const email = acc.email.toLowerCase().trim();
+  const userId = acc.user_id && String(acc.user_id).length === 19 ? acc.user_id : generateStrictId(19);
 
   const [res] = await p.query(`
     INSERT INTO accounts (
-      handle, name, email, password, avatar, banner, bio,
+      user_id, handle, name, email, password, avatar, banner, bio,
       font_style, font_weight, name_color, name_effects, avatar_frame, member_theme
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `, [
+    userId,
     handle,
     acc.name || handle.replace('@', ''),
     email,
@@ -591,6 +595,8 @@ async function createAccount(acc) {
 
   // user_directory tablosuna da ekle
   await upsertUserProfile(handle, {
+    id: userId,
+    user_id: userId,
     name: acc.name || handle.replace('@', ''),
     handle,
     avatar: acc.avatar || '',
