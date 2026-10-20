@@ -283,6 +283,17 @@ async function loadSyncDb() {
     const mems = await mysqlDb.getAllServerMembers();
     globalServerMembers = (mems && typeof mems === 'object') ? mems : {};
 
+    // Yalnızca MySQL accounts tablosunda kayıtlı gerçek hesapları üye ve dizin listesinde tut
+    const validHandles = new Set(globalAccounts.map(a => (a.handle || '').toLowerCase()));
+    Object.keys(globalServerMembers).forEach(code => {
+      globalServerMembers[code] = globalServerMembers[code].filter(m => m && m.handle && validHandles.has(m.handle.toLowerCase()));
+    });
+    Object.keys(globalUserDirectory).forEach(h => {
+      if (!validHandles.has(h.toLowerCase())) {
+        delete globalUserDirectory[h];
+      }
+    });
+
     const reqs = await mysqlDb.getAllFriendRequests();
     globalFriendRequests = (reqs && typeof reqs === 'object') ? reqs : {};
 
