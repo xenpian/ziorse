@@ -1676,6 +1676,7 @@ class DataStore {
       return;
     }
     if (this.storageKeyServers.endsWith('_guest')) return;
+    if (!Array.isArray(this.servers)) return;
     ziorseSetStorage(this.storageKeyServers, this.servers);
   }
 
