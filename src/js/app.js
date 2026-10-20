@@ -4451,6 +4451,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let allServers = window.dataStore.servers || [];
     let folders = window.dataStore.loadServerFolders() || [];
 
+    // Garantili Tekilleştirme (De-duplication)
+    const seenServerKeys = new Set();
+    allServers = allServers.filter(s => {
+      if (!s) return false;
+      const key = (s.inviteCode || s.id || '').toLowerCase();
+      if (!key || seenServerKeys.has(key)) return false;
+      seenServerKeys.add(key);
+      return true;
+    });
+    if (window.dataStore) window.dataStore.servers = allServers;
+
     // ziorse.com daima en başta olmalı (Index 0)
     const zIdx = allServers.findIndex(s => s.id === 'srv-ziorse-official' || s.inviteCode === 'ziorse');
     if (zIdx > 0) {
