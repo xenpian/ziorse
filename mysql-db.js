@@ -996,6 +996,7 @@ module.exports = {
 
   // Members
   getAllServerMembers,
+  getServerMembers,
   addServerMember,
   removeServerMember,
 
