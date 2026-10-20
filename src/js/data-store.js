@@ -1464,29 +1464,30 @@ class DataStore {
         if (!info) continue;
         const oHandle = (info.ownerHandle || '').toLowerCase().replace('@', '');
         if (oHandle === cleanUser) {
-          const alreadyInList = existingInviteCodes.has(code) || (info.serverId && existingServerIds.has(String(info.serverId)));
+          const srvId = info.serverId ? String(info.serverId) : null;
+          const alreadyInList = existingInviteCodes.has(code) || (srvId && existingServerIds.has(srvId));
           if (!alreadyInList) {
             const restoredSrv = {
-              id: info.serverId || 'srv-' + code,
-              name: info.serverName || 'Sunucu',
-              icon: info.serverIcon || 'Z',
-              banner: info.serverBanner || '',
+              id: srvId || ('srv-' + code),
+              name: info.serverName || info.name || 'Sunucu',
+              icon: info.serverIcon || info.icon || 'Z',
+              banner: info.serverBanner || info.banner || '',
               inviteCode: code,
               memberCount: info.memberCount || 1,
               ownerHandle: info.ownerHandle || targetHandle,
               ownerName: info.ownerName || (this.currentUser ? this.currentUser.name : '') || '',
               ownerAvatar: info.ownerAvatar || (this.currentUser ? this.currentUser.avatar : '') || '',
-              joined: false,
+              joined: true,
               isPublic: info.isPublic !== false,
               description: info.serverDescription || info.description || '',
               categories: Array.isArray(info.categories) && info.categories.length > 0 ? JSON.parse(JSON.stringify(info.categories)) : this._makeDefaultCategories(),
               roles: Array.isArray(info.roles) ? JSON.parse(JSON.stringify(info.roles)) : [],
               memberRoles: (info.memberRoles && typeof info.memberRoles === 'object') ? JSON.parse(JSON.stringify(info.memberRoles)) : {}
             };
-            this._migrateServerCategories(restoredSrv);
+            this._migrateServerCategories(restoredSrv, false);
             list.push(restoredSrv);
             existingInviteCodes.add(code);
-            existingServerIds.add(String(restoredSrv.id));
+            if (restoredSrv.id) existingServerIds.add(String(restoredSrv.id));
             reconciled = true;
           }
         }
@@ -1497,14 +1498,15 @@ class DataStore {
         if (!code || !Array.isArray(membersList)) return;
         const isMem = membersList.some(m => m && (m.handle || '').toLowerCase().replace('@', '') === cleanUser);
         if (isMem) {
-          const info = registry[code] || {};
-          const alreadyInList = existingInviteCodes.has(code) || (info.serverId && existingServerIds.has(String(info.serverId)));
+          const info = registry[code] || (window.__globalInviteRegistry && window.__globalInviteRegistry[code]) || {};
+          const srvId = info.serverId ? String(info.serverId) : null;
+          const alreadyInList = existingInviteCodes.has(code) || (srvId && existingServerIds.has(srvId));
           if (!alreadyInList) {
             const restoredSrv = {
-              id: info.serverId || 'srv-' + code,
-              name: info.serverName || 'Sunucu',
-              icon: info.serverIcon || 'Z',
-              banner: info.serverBanner || '',
+              id: srvId || ('srv-' + code),
+              name: info.serverName || info.name || 'Sunucu',
+              icon: info.serverIcon || info.icon || 'Z',
+              banner: info.serverBanner || info.banner || '',
               inviteCode: code,
               memberCount: Math.max(info.memberCount || 1, membersList.length),
               ownerHandle: info.ownerHandle || '',
@@ -1517,10 +1519,10 @@ class DataStore {
               roles: Array.isArray(info.roles) ? JSON.parse(JSON.stringify(info.roles)) : [],
               memberRoles: (info.memberRoles && typeof info.memberRoles === 'object') ? JSON.parse(JSON.stringify(info.memberRoles)) : {}
             };
-            this._migrateServerCategories(restoredSrv);
+            this._migrateServerCategories(restoredSrv, false);
             list.push(restoredSrv);
             existingInviteCodes.add(code);
-            existingServerIds.add(String(restoredSrv.id));
+            if (restoredSrv.id) existingServerIds.add(String(restoredSrv.id));
             reconciled = true;
           }
         }
@@ -1556,7 +1558,12 @@ class DataStore {
         const origLen = list.length;
         list = list.filter(s => {
           if (!s) return false;
+          // 1. Resmi sunucu daima kalır
           if (s.inviteCode === 'ziorse' || s.id === 'srv-ziorse-official' || (s.name && s.name.toLowerCase() === 'ziorse.com')) return true;
+          // 2. KULLANICININ KENDİ SAHİP OLDUĞU SUNUCU ASLA SİLİNEMEZ!
+          const sOwner = (s.ownerHandle || '').toLowerCase().replace('@', '');
+          if (sOwner && sOwner === cleanUser) return true;
+          // 3. Registry eşleşmesi kontrolü (inviteCode veya serverId)
           const code = s.inviteCode || s.id;
           return !!(reg[code] || reg[s.id] || (s.inviteCode && reg[s.inviteCode]));
         });
