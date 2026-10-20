@@ -173,6 +173,9 @@ ipcMain.on('store-set-sync', (event, key, val) => {
 
 ipcMain.on('store-get-all-sync', (event) => {
   const store = { ...readPersistentStore(true) };
+  for (const k of Object.keys(store)) {
+    if (k.startsWith('ziorse_srv_members_')) delete store[k];
+  }
   const u = getElectronUserSession();
   if (u) {
     store['ziorse_real_user_v14'] = u;
