@@ -40,6 +40,10 @@ app.use(express.static(path.join(__dirname, 'src')));
 app.use('/uploads', express.static(uploadsDir));
 app.use('/sounds', express.static(path.join(__dirname, 'sounds')));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src', 'index.html'));
+});
+
 const framesDir = path.join(__dirname, 'src', 'assets', 'avatar-frames');
 const rootFramesDir = path.join(__dirname, 'assets', 'avatar-frames');
 if (!fs.existsSync(framesDir)) fs.mkdirSync(framesDir, { recursive: true });
