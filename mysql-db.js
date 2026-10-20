@@ -763,7 +763,12 @@ async function getAllServers() {
 async function upsertServer(code, info) {
   const p = getPool();
   const inviteCode = code || info.inviteCode || info.serverId;
-  const serverId = info.serverId || inviteCode;
+  let serverId = info.serverId;
+  if (!serverId || String(serverId).length !== 15 || !/^\d{15}$/.test(String(serverId))) {
+    serverId = generateStrictId(15);
+  }
+  info.serverId = serverId;
+
   const serverName = info.serverName || info.name || 'Sunucu';
   const desc = info.serverDescription || info.description || '';
   const icon = info.serverIcon || info.icon || '';
@@ -775,7 +780,22 @@ async function upsertServer(code, info) {
   const isOfficial = info.isOfficial === true ? 1 : 0;
   const type = info.serverType || 'community';
   const count = info.memberCount || 1;
-  const cats = JSON.stringify(info.categories || []);
+
+  let categories = Array.isArray(info.categories) ? info.categories : [];
+  categories.forEach(cat => {
+    if (!cat.id || String(cat.id).length !== 17 || !/^\d{17}$/.test(String(cat.id))) {
+      cat.id = generateStrictId(17);
+    }
+    if (Array.isArray(cat.channels)) {
+      cat.channels.forEach(ch => {
+        if (!ch.id || String(ch.id).length !== 18 || !/^\d{18}$/.test(String(ch.id))) {
+          ch.id = generateStrictId(18);
+        }
+      });
+    }
+  });
+  info.categories = categories;
+  const cats = JSON.stringify(categories);
   const roles = JSON.stringify(info.roles || []);
   const mRoles = JSON.stringify(info.memberRoles || {});
 
