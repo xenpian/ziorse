@@ -4809,9 +4809,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aktif soket online listesinde bulunan tüm kullanıcıları çevrimiçi olarak ekle
     (window.__globalOnlineHandles || []).forEach(h => {
       const cleanH = (h || '').toLowerCase().replace('@', '');
+      const fullH = '@' + cleanH;
       if (!cleanH || cleanH === cu.handle.toLowerCase().replace('@', '')) return;
+      if (!dir[fullH] && !dir[cleanH]) return;
       if (!allUsersMap.has(cleanH) || !allUsersMap.get(cleanH).isOnline) {
-        const fullH = '@' + cleanH;
         const uProf = window.dataStore.getUserProfile(fullH) || {};
         allUsersMap.set(cleanH, {
           handle: fullH,
