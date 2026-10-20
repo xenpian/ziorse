@@ -1,7 +1,0 @@
-[
-  {
-    "handle": "@fafafa",
-    "name": "fafafa",
-    "avatar": "https://i.imgur.com/w3OhOmW.jpeg"
-  }
-]

@@ -232,38 +232,8 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-// ── PERSISTENT GLOBAL SYNC STORES & DB ───────────────────────
-const dbFilePath = path.join(__dirname, 'server-sync-db.json');
-const DB_TXT_DIR = path.join(__dirname, 'database_txt');
-const SYSTEM_TXT_DIR = path.join(DB_TXT_DIR, 'system');
-const POSTS_TXT_DIR = path.join(DB_TXT_DIR, 'posts');
-const DMS_TXT_DIR = path.join(DB_TXT_DIR, 'dms');
-
-function ensureDbTxtDirs() {
-  [DB_TXT_DIR, SYSTEM_TXT_DIR, POSTS_TXT_DIR, DMS_TXT_DIR].forEach(dir => {
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  });
-}
-
-function saveServerMembersTxt(code) {
-  if (!code || !globalServerMembers[code]) return;
-  try {
-    ensureDbTxtDirs();
-    const memFilePath = path.join(SYSTEM_TXT_DIR, `ziorse_srv_members_${encodeURIComponent(code)}.txt`);
-    fs.writeFile(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8', () => { });
-  } catch (e) {
-    console.error('[Ziorse DB] Server members txt kaydetme hatasi:', e);
-  }
-}
-
-function saveInviteRegistryTxt() {
-  try {
-    ensureDbTxtDirs();
-    fs.writeFile(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8', () => { });
-  } catch (e) {
-    console.error('[Ziorse DB] Invite registry txt kaydetme hatasi:', e);
-  }
-}
+// ── MYSQL DATABASE ENGINE & PERSISTENCE (gusgon) ─────────────
+const mysqlDb = require('./mysql-db');
 
 let serverPosts = [];
 let globalInviteRegistry = {};
@@ -294,208 +264,68 @@ let globalUserDirectory = {
   }
 };
 
-function loadSyncDb() {
+function saveServerMembersTxt(code) {
+  if (!code || !globalServerMembers[code]) return;
   try {
-    if (fs.existsSync(dbFilePath)) {
-      const content = fs.readFileSync(dbFilePath, 'utf8');
-      const data = JSON.parse(content);
-      if (Array.isArray(data.accounts) && data.accounts.length > 0) {
-        globalAccounts = data.accounts;
-      }
-      if (data.userDirectory && typeof data.userDirectory === 'object') {
-        globalUserDirectory = Object.assign({}, globalUserDirectory, data.userDirectory);
-      }
-      if (data.inviteRegistry && typeof data.inviteRegistry === 'object') {
-        globalInviteRegistry = data.inviteRegistry;
-      }
-      if (data.serverMembers && typeof data.serverMembers === 'object') {
-        globalServerMembers = data.serverMembers;
-      }
-      if (data.friendRequests && typeof data.friendRequests === 'object') {
-        globalFriendRequests = data.friendRequests;
-      }
-      if (Array.isArray(data.posts) && data.posts.length > 0) {
-        serverPosts = data.posts;
-      }
-
-      // Merge accounts from txt database
-      const txtAccPath = path.join(__dirname, 'database_txt', 'system', 'ziorse_accounts.txt');
-      if (fs.existsSync(txtAccPath)) {
-        try {
-          const raw = JSON.parse(fs.readFileSync(txtAccPath, 'utf8'));
-          if (Array.isArray(raw)) {
-            raw.forEach(acc => {
-              if (acc && acc.handle && !globalAccounts.some(a => (a.handle && a.handle.toLowerCase() === acc.handle.toLowerCase()) || (a.email && acc.email && a.email.toLowerCase() === acc.email.toLowerCase()))) {
-                globalAccounts.push(acc);
-              }
-            });
-          }
-        } catch (e) { }
-      }
-
-      // Merge invite registry from txt database
-      const txtInvitePath = path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt');
-      if (fs.existsSync(txtInvitePath)) {
-        try {
-          const rawInvite = JSON.parse(fs.readFileSync(txtInvitePath, 'utf8'));
-          if (rawInvite && typeof rawInvite === 'object') {
-            globalInviteRegistry = Object.assign({}, globalInviteRegistry, rawInvite);
-          }
-        } catch (e) { }
-      }
-
-      // Merge all server members from database_txt/system/
-      try {
-        ensureDbTxtDirs();
-        const sysMemFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.startsWith('ziorse_srv_members_') && f.endsWith('.txt'));
-        sysMemFiles.forEach(f => {
-          const code = decodeURIComponent(f.replace('ziorse_srv_members_', '').replace(/\.txt$/, ''));
-          try {
-            const rawMembers = JSON.parse(fs.readFileSync(path.join(SYSTEM_TXT_DIR, f), 'utf8'));
-            if (Array.isArray(rawMembers)) {
-              if (!globalServerMembers[code]) globalServerMembers[code] = [];
-              rawMembers.forEach(rm => {
-                if (rm && rm.handle) {
-                  const cleanH = rm.handle.toLowerCase();
-                  const existingIdx = globalServerMembers[code].findIndex(m => m.handle.toLowerCase() === cleanH);
-                  if (existingIdx === -1) {
-                    globalServerMembers[code].push(rm);
-                  } else {
-                    globalServerMembers[code][existingIdx] = { ...globalServerMembers[code][existingIdx], ...rm };
-                  }
-                }
-              });
-            }
-          } catch (e) { }
-        });
-      } catch (e) { }
-
-      // Reconcile and ensure all server members (owners, past posters, registry members) are preserved in globalServerMembers
-      Object.keys(globalInviteRegistry).forEach(code => {
-        if (!globalServerMembers[code]) globalServerMembers[code] = [];
-        const info = globalInviteRegistry[code];
-        if (info.ownerHandle) {
-          const oHandle = info.ownerHandle.startsWith('@') ? info.ownerHandle : '@' + info.ownerHandle;
-          const cleanH = oHandle.toLowerCase();
-          if (!globalServerMembers[code].some(m => m.handle.toLowerCase() === cleanH)) {
-            const userProf = globalUserDirectory[oHandle] || globalUserDirectory['@' + oHandle.replace('@', '')] || {};
-            globalServerMembers[code].unshift({
-              handle: oHandle,
-              name: userProf.name || info.ownerName || oHandle.replace('@', ''),
-              avatar: userProf.avatar || info.ownerAvatar || ''
-            });
-          }
-        }
-        if (Array.isArray(info.members)) {
-          info.members.forEach(im => {
-            if (im && im.handle) {
-              const imHandle = im.handle.startsWith('@') ? im.handle : '@' + im.handle;
-              const cleanH = imHandle.toLowerCase();
-              if (!globalServerMembers[code].some(m => m.handle.toLowerCase() === cleanH)) {
-                const userProf = globalUserDirectory[imHandle] || globalUserDirectory['@' + imHandle.replace('@', '')] || {};
-                globalServerMembers[code].push({
-                  handle: imHandle,
-                  name: userProf.name || im.name || imHandle.replace('@', ''),
-                  avatar: userProf.avatar || im.avatar || ''
-                });
-              }
-            }
-          });
-        }
+    if (Array.isArray(globalServerMembers[code])) {
+      globalServerMembers[code].forEach(m => {
+        mysqlDb.addServerMember(code, m).catch(() => {});
       });
-
-      // Extract server members from posts with serverChannelKey
-      serverPosts.forEach(p => {
-        if (p && p.handle && p.serverChannelKey) {
-          const parts = p.serverChannelKey.split(':');
-          const serverCode = parts[0];
-          if (serverCode && globalInviteRegistry[serverCode]) {
-            if (!globalServerMembers[serverCode]) globalServerMembers[serverCode] = [];
-            const pHandle = p.handle.startsWith('@') ? p.handle : '@' + p.handle;
-            const cleanH = pHandle.toLowerCase();
-            if (!globalServerMembers[serverCode].some(m => m.handle.toLowerCase() === cleanH)) {
-              const userProf = globalUserDirectory[pHandle] || globalUserDirectory['@' + pHandle.replace('@', '')] || {};
-              globalServerMembers[serverCode].push({
-                handle: pHandle,
-                name: userProf.name || p.name || pHandle.replace('@', ''),
-                avatar: userProf.avatar || p.avatar || ''
-              });
-            }
-          }
-        }
-      });
-
-      // Ensure latest names & avatars from userDirectory
-      Object.keys(globalServerMembers).forEach(code => {
-        globalServerMembers[code].forEach(m => {
-          if (m && m.handle) {
-            const h = m.handle.startsWith('@') ? m.handle : '@' + m.handle;
-            const prof = globalUserDirectory[h] || globalUserDirectory['@' + h.replace('@', '')];
-            if (prof) {
-              if (prof.name) m.name = prof.name;
-              if (prof.avatar) m.avatar = prof.avatar;
-            }
-          }
-        });
-        if (globalInviteRegistry[code]) {
-          globalInviteRegistry[code].memberCount = Math.max(globalServerMembers[code].length, globalInviteRegistry[code].memberCount || 1);
-        }
-      });
-
-      // Ensure all accounts from globalAccounts are in globalUserDirectory with their latest avatar and banner
-      globalAccounts.forEach(acc => {
-        if (acc && acc.handle) {
-          const h = acc.handle.startsWith('@') ? acc.handle : '@' + acc.handle;
-          if (!globalUserDirectory[h]) {
-            globalUserDirectory[h] = {
-              name: acc.name || h.replace('@', ''),
-              handle: h,
-              avatar: acc.avatar || '',
-              banner: acc.banner || '#999999',
-              bio: acc.bio || '',
-              followers: 0,
-              following: 0,
-              status: { type: 'offline', text: '' }
-            };
-          } else {
-            if (acc.avatar && (!globalUserDirectory[h].avatar || globalUserDirectory[h].avatar.length < 50)) {
-              globalUserDirectory[h].avatar = acc.avatar;
-            }
-            if (acc.banner && (!globalUserDirectory[h].banner || globalUserDirectory[h].banner === '#999999')) {
-              globalUserDirectory[h].banner = acc.banner;
-            }
-            if (acc.name && !globalUserDirectory[h].name) {
-              globalUserDirectory[h].name = acc.name;
-            }
-            if (acc.bio && !globalUserDirectory[h].bio) {
-              globalUserDirectory[h].bio = acc.bio;
-            }
-          }
-        }
-      });
-
-      // Sanitize large base64 in globalInviteRegistry to prevent socket choke
-      if (globalInviteRegistry && typeof globalInviteRegistry === 'object') {
-        for (const code in globalInviteRegistry) {
-          const reg = globalInviteRegistry[code];
-          if (reg) {
-            if (reg.serverBanner && reg.serverBanner.startsWith('data:image/')) {
-              reg.serverBanner = extractDataUrlToUpload(reg.serverBanner, 'server_banner');
-            }
-            if (reg.serverIcon && reg.serverIcon.startsWith('data:image/')) {
-              reg.serverIcon = extractDataUrlToUpload(reg.serverIcon, 'server_icon');
-            }
-            if (reg.ownerAvatar && reg.ownerAvatar.startsWith('data:image/')) {
-              reg.ownerAvatar = extractDataUrlToUpload(reg.ownerAvatar, 'owner_avatar');
-            }
-          }
-        }
-      }
-
-      console.log(`[Ziorse Server DB] Yüklendi: ${globalAccounts.length} hesap, ${Object.keys(globalUserDirectory).length} kullanıcı dizini, ${Object.keys(globalServerMembers).length} sunucu üye havuzu.`);
     }
+  } catch (e) {
+    console.error('[Ziorse MySQL] Server members kaydetme hatasi:', e);
+  }
+}
+
+function saveInviteRegistryTxt() {
+  try {
+    Object.entries(globalInviteRegistry).forEach(([code, info]) => {
+      mysqlDb.upsertServer(code, info).catch(() => {});
+    });
+  } catch (e) {
+    console.error('[Ziorse MySQL] Invite registry kaydetme hatasi:', e);
+  }
+}
+
+async function loadSyncDb() {
+  try {
+    // MySQL veritabanını başlat (gusgon) ve 15 saniyede bir ping at
+    await mysqlDb.initDatabase();
+
+    const accs = await mysqlDb.getAllAccounts();
+    if (Array.isArray(accs) && accs.length > 0) {
+      globalAccounts = accs;
+    }
+
+    const uDir = await mysqlDb.getUserDirectory();
+    if (uDir && Object.keys(uDir).length > 0) {
+      globalUserDirectory = Object.assign({}, globalUserDirectory, uDir);
+    }
+
+    const srvs = await mysqlDb.getAllServers();
+    if (srvs && Object.keys(srvs).length > 0) {
+      globalInviteRegistry = srvs;
+    }
+
+    const mems = await mysqlDb.getAllServerMembers();
+    if (mems && Object.keys(mems).length > 0) {
+      globalServerMembers = mems;
+    }
+
+    const reqs = await mysqlDb.getAllFriendRequests();
+    if (reqs && Object.keys(reqs).length > 0) {
+      globalFriendRequests = reqs;
+    }
+
+    const psts = await mysqlDb.getAllPosts();
+    if (Array.isArray(psts) && psts.length > 0) {
+      serverPosts = psts;
+    }
+
+    ensureOfficialServerBackend();
+    console.log(`[Ziorse Server MySQL (gusgon)] Başarıyla yüklendi: ${globalAccounts.length} hesap, ${Object.keys(globalUserDirectory).length} kullanıcı dizini, ${Object.keys(globalInviteRegistry).length} sunucu, ${serverPosts.length} gönderi.`);
   } catch (err) {
-    console.error('[Ziorse Server DB] DB Okuma Hatası:', err);
+    console.error('[Ziorse Server MySQL] DB Yükleme Hatası:', err);
   }
 }
 
@@ -520,20 +350,35 @@ function extractDataUrlToUpload(dataUrl, prefix = 'avatar') {
 let saveDbTimer = null;
 function saveSyncDb() {
   if (saveDbTimer) clearTimeout(saveDbTimer);
-  saveDbTimer = setTimeout(() => {
+  saveDbTimer = setTimeout(async () => {
     saveDbTimer = null;
     try {
-      const data = {
-        accounts: globalAccounts,
-        userDirectory: globalUserDirectory,
-        inviteRegistry: globalInviteRegistry,
-        serverMembers: globalServerMembers,
-        friendRequests: globalFriendRequests,
-        posts: serverPosts
-      };
-      fs.writeFile(dbFilePath, JSON.stringify(data, null, 2), 'utf8', () => { });
+      // 1. User Directory senkronizasyonu
+      for (const [h, prof] of Object.entries(globalUserDirectory)) {
+        mysqlDb.upsertUserProfile(h, prof).catch(() => {});
+      }
+      // 2. Sunucu davet kayıtları (Servers)
+      for (const [code, info] of Object.entries(globalInviteRegistry)) {
+        mysqlDb.upsertServer(code, info).catch(() => {});
+      }
+      // 3. Sunucu üyeleri
+      for (const [code, members] of Object.entries(globalServerMembers)) {
+        if (Array.isArray(members)) {
+          members.forEach(m => mysqlDb.addServerMember(code, m).catch(() => {}));
+        }
+      }
+      // 4. Arkadaşlık istekleri
+      for (const [th, reqs] of Object.entries(globalFriendRequests)) {
+        if (Array.isArray(reqs)) {
+          reqs.forEach(r => mysqlDb.saveFriendRequest(th, r).catch(() => {}));
+        }
+      }
+      // 5. Gönderiler (Posts)
+      if (Array.isArray(serverPosts)) {
+        serverPosts.slice(0, 50).forEach(p => mysqlDb.savePost(p).catch(() => {}));
+      }
     } catch (err) {
-      console.error('[Ziorse Server DB] DB Yazma Hatası:', err);
+      console.error('[Ziorse MySQL] DB Kayıt Hatası:', err);
     }
   }, 150);
 }
@@ -884,30 +729,17 @@ app.get('/api/public-servers', (req, res) => {
 
 
 
-function readAllStoreData() {
-  ensureDbTxtDirs();
-  const store = {};
+let memorySystemStore = {};
 
+async function readAllStoreData() {
   try {
-    const sysFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.endsWith('.txt'));
-    for (const file of sysFiles) {
-      const key = decodeURIComponent(file.replace(/\.txt$/, ''));
-      // Active user sessions are strictly local to each client/browser and must NEVER be shared across instances
-      if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
-      const content = fs.readFileSync(path.join(SYSTEM_TXT_DIR, file), 'utf8');
-      try {
-        const parsed = JSON.parse(content);
-        if (parsed !== null && parsed !== undefined) {
-          store[key] = parsed;
-        }
-      } catch {
-        if (content && content !== 'null' && content !== 'undefined') {
-          store[key] = content;
-        }
-      }
+    const dbStore = await mysqlDb.getAllStoreValues();
+    if (dbStore && typeof dbStore === 'object') {
+      memorySystemStore = { ...dbStore };
     }
   } catch (e) { }
 
+  const store = { ...memorySystemStore };
   if (serverPosts && serverPosts.length > 0) {
     store['ziorse_real_posts_v14'] = serverPosts;
   }
@@ -918,43 +750,52 @@ function readAllStoreData() {
   return store;
 }
 
-app.get('/api/store/all', (req, res) => {
-  res.json(readAllStoreData());
+app.get('/api/store/all', async (req, res) => {
+  const store = await readAllStoreData();
+  res.json(store);
 });
 
-app.get('/api/store/get/:key', (req, res) => {
+app.get('/api/store/get/:key', async (req, res) => {
   const key = req.params.key;
   if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
     return res.json({ key, value: null });
   }
-  const store = readAllStoreData();
-  res.json({ key, value: store[key] !== undefined ? store[key] : null });
+
+  let val = memorySystemStore[key];
+  if (val === undefined) {
+    try {
+      val = await mysqlDb.getStoreValue(key);
+      if (val !== null && val !== undefined) {
+        memorySystemStore[key] = val;
+      }
+    } catch (e) { }
+  }
+
+  if (val === undefined) {
+    const store = await readAllStoreData();
+    val = store[key] !== undefined ? store[key] : null;
+  }
+  res.json({ key, value: val !== undefined ? val : null });
 });
 
-app.post('/api/store/set', (req, res) => {
+app.post('/api/store/set', async (req, res) => {
   const { key, val } = req.body;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
   // Client session keys are isolated per browser/application instance
   if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
     return res.json({ success: true, localOnly: true });
   }
-  ensureDbTxtDirs();
 
   try {
-    const safeKey = encodeURIComponent(key);
-    const filename = `${safeKey}.txt`;
-    const filePath = path.join(SYSTEM_TXT_DIR, filename);
-
     if (val === null || val === undefined) {
-      if (fs.existsSync(filePath)) {
-        try { fs.unlinkSync(filePath); } catch (e) { }
-      }
+      delete memorySystemStore[key];
+      await mysqlDb.deleteStoreValue(key).catch(() => {});
       io.emit('store-synced', { key, val: null });
       return res.json({ success: true });
     }
 
-    const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
-    fs.writeFile(filePath, strVal, 'utf8', () => { });
+    memorySystemStore[key] = val;
+    mysqlDb.setStoreValue(key, val).catch(() => {});
 
     if (key === 'ziorse_invite_registry' && typeof val === 'object') {
       globalInviteRegistry = Object.assign(globalInviteRegistry, val);
@@ -996,21 +837,16 @@ app.post('/api/store/set', (req, res) => {
   }
 });
 
-app.post(['/api/store/delete', '/api/store/remove'], (req, res) => {
+app.post(['/api/store/delete', '/api/store/remove'], async (req, res) => {
   const { key } = req.body;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
   if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
     return res.json({ success: true, localOnly: true });
   }
-  ensureDbTxtDirs();
 
   try {
-    const safeKey = encodeURIComponent(key);
-    const filename = `${safeKey}.txt`;
-    const filePath = path.join(SYSTEM_TXT_DIR, filename);
-    if (fs.existsSync(filePath)) {
-      try { fs.unlinkSync(filePath); } catch (e) { }
-    }
+    delete memorySystemStore[key];
+    await mysqlDb.deleteStoreValue(key).catch(() => {});
     io.emit('store-synced', { key, val: null });
     res.json({ success: true });
   } catch (err) {
@@ -1018,21 +854,16 @@ app.post(['/api/store/delete', '/api/store/remove'], (req, res) => {
   }
 });
 
-app.delete('/api/store/:key', (req, res) => {
+app.delete('/api/store/:key', async (req, res) => {
   const key = req.params.key;
   if (!key) return res.status(400).json({ error: 'Key zorunludur.' });
   if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') {
     return res.json({ success: true, localOnly: true });
   }
-  ensureDbTxtDirs();
 
   try {
-    const safeKey = encodeURIComponent(key);
-    const filename = `${safeKey}.txt`;
-    const filePath = path.join(SYSTEM_TXT_DIR, filename);
-    if (fs.existsSync(filePath)) {
-      try { fs.unlinkSync(filePath); } catch (e) { }
-    }
+    delete memorySystemStore[key];
+    await mysqlDb.deleteStoreValue(key).catch(() => {});
     io.emit('store-synced', { key, val: null });
     res.json({ success: true });
   } catch (err) {
@@ -1041,52 +872,68 @@ app.delete('/api/store/:key', (req, res) => {
 });
 
 // ── ADVANCED DATABASE ENGINE HEALTH & RECONCILIATION API ──
-app.get('/api/db/stats', (req, res) => {
-  ensureDbTxtDirs();
-  const sysFiles = fs.readdirSync(SYSTEM_TXT_DIR).filter(f => f.endsWith('.txt'));
-  const postFiles = fs.readdirSync(POSTS_TXT_DIR).filter(f => f.endsWith('.txt'));
-  const dmFiles = fs.readdirSync(DMS_TXT_DIR).filter(f => f.endsWith('.txt'));
+app.get('/api/db/stats', async (req, res) => {
+  try {
+    const [accCount] = await mysqlDb.getPool().query('SELECT COUNT(*) as cnt FROM accounts');
+    const [srvCount] = await mysqlDb.getPool().query('SELECT COUNT(*) as cnt FROM servers');
+    const [postCount] = await mysqlDb.getPool().query('SELECT COUNT(*) as cnt FROM posts');
+    const [dmCount] = await mysqlDb.getPool().query('SELECT COUNT(*) as cnt FROM dms');
+    const [storeCount] = await mysqlDb.getPool().query('SELECT COUNT(*) as cnt FROM system_store');
+    const [userCount] = await mysqlDb.getPool().query('SELECT COUNT(*) as cnt FROM user_directory');
 
-  res.json({
-    status: 'healthy',
-    engine: '1000-message chunked TXT + RAM parity v14',
-    collections: {
-      accounts: globalAccounts ? globalAccounts.length : 0,
-      servers: globalInviteRegistry ? Object.keys(globalInviteRegistry).length : 0,
-      serverMemberTables: Object.keys(globalServerMembers).length,
-      userProfiles: Object.keys(globalUserDirectory).length,
-      systemTables: sysFiles.length,
-      postChunks: postFiles.length,
-      dmChunks: dmFiles.length
-    },
-    totalPosts: serverPosts ? serverPosts.length : 0
-  });
+    res.json({
+      status: 'healthy',
+      engine: 'MySQL 8 (gusgon) + 15s Keep-Alive Ping',
+      pingInterval: '15000ms',
+      database: 'gusgon',
+      collections: {
+        accounts: accCount[0].cnt,
+        servers: srvCount[0].cnt,
+        posts: postCount[0].cnt,
+        dms: dmCount[0].cnt,
+        userProfiles: userCount[0].cnt,
+        systemStore: storeCount[0].cnt
+      },
+      totalPosts: serverPosts ? serverPosts.length : 0
+    });
+  } catch (err) {
+    res.json({
+      status: 'healthy',
+      engine: 'MySQL (gusgon)',
+      collections: {
+        accounts: globalAccounts ? globalAccounts.length : 0,
+        servers: globalInviteRegistry ? Object.keys(globalInviteRegistry).length : 0,
+        serverMemberTables: Object.keys(globalServerMembers).length,
+        userProfiles: Object.keys(globalUserDirectory).length,
+        systemStore: Object.keys(memorySystemStore).length
+      },
+      totalPosts: serverPosts ? serverPosts.length : 0
+    });
+  }
 });
 
-app.post('/api/db/reconcile', (req, res) => {
+app.post('/api/db/reconcile', async (req, res) => {
   try {
-    ensureDbTxtDirs();
     let restoredCount = 0;
-    Object.keys(globalInviteRegistry).forEach(code => {
-      const info = globalInviteRegistry[code];
+    for (const [code, info] of Object.entries(globalInviteRegistry)) {
       if (!globalServerMembers[code]) globalServerMembers[code] = [];
       if (info.ownerHandle) {
         const oHandle = info.ownerHandle.startsWith('@') ? info.ownerHandle : '@' + info.ownerHandle;
         const cleanH = oHandle.toLowerCase();
         if (!globalServerMembers[code].some(m => m.handle && m.handle.toLowerCase() === cleanH)) {
-          globalServerMembers[code].unshift({
+          const userProf = globalUserDirectory[oHandle] || {};
+          const ownerMem = {
             handle: oHandle,
             name: info.ownerName || oHandle.replace('@', ''),
             avatar: info.ownerAvatar || ''
-          });
+          };
+          globalServerMembers[code].unshift(ownerMem);
+          await mysqlDb.addServerMember(code, ownerMem);
           restoredCount++;
         }
       }
-      const memFilePath = path.join(SYSTEM_TXT_DIR, `ziorse_srv_members_${encodeURIComponent(code)}.txt`);
-      fs.writeFileSync(memFilePath, JSON.stringify(globalServerMembers[code], null, 2), 'utf8');
-    });
-
-    fs.writeFileSync(path.join(SYSTEM_TXT_DIR, 'ziorse_invite_registry.txt'), JSON.stringify(globalInviteRegistry, null, 2), 'utf8');
+      await mysqlDb.upsertServer(code, info);
+    }
 
     io.emit('server-members-updated', globalServerMembers);
     io.emit('invite-registry-updated', globalInviteRegistry);
@@ -1611,6 +1458,8 @@ io.on('connection', (socket) => {
     if (!data) return;
     if (!data.timestamp) data.timestamp = new Date().toISOString();
 
+    mysqlDb.saveDM(data).catch(() => {});
+
     const toH = data.toHandle ? data.toHandle.toLowerCase() : '';
     const fromH = data.fromHandle ? data.fromHandle.toLowerCase() : '';
     const cleanTo = toH.replace('@', '');
@@ -1684,13 +1533,15 @@ io.on('connection', (socket) => {
       const th = data.targetHandle.startsWith('@') ? data.targetHandle : '@' + data.targetHandle;
       if (!globalFriendRequests[th]) globalFriendRequests[th] = [];
       globalFriendRequests[th] = globalFriendRequests[th].filter(r => r.handle !== data.from.handle);
-      globalFriendRequests[th].push({
+      const reqObj = {
         handle: data.from.handle,
         name: data.from.name,
         avatar: data.from.avatar,
         firstMessage: data.firstMessage || null,
         timestamp: data.timestamp || new Date().toISOString()
-      });
+      };
+      globalFriendRequests[th].push(reqObj);
+      mysqlDb.saveFriendRequest(th, reqObj).catch(() => {});
       saveSyncDb();
       io.emit('receive-friend-request', { ...data, targetHandle: th });
     }
@@ -1698,12 +1549,22 @@ io.on('connection', (socket) => {
 
   socket.on('accept-friend-request', (data) => {
     if (data) {
+      const th = data.targetHandle || (data.target ? data.target.handle : null);
+      const fh = data.fromHandle || (data.from ? data.from.handle : null);
+      if (th && fh) {
+        mysqlDb.deleteFriendRequest(th, fh).catch(() => {});
+      }
       io.emit('friend-request-accepted', data);
     }
   });
 
   socket.on('reject-friend-request', (data) => {
     if (data) {
+      const th = data.targetHandle || (data.target ? data.target.handle : null);
+      const fh = data.fromHandle || (data.from ? data.from.handle : null);
+      if (th && fh) {
+        mysqlDb.deleteFriendRequest(th, fh).catch(() => {});
+      }
       io.emit('friend-request-rejected', data);
     }
   });
@@ -1759,6 +1620,7 @@ io.on('connection', (socket) => {
 
       serverPosts = serverPosts.filter(p => p.id !== post.id);
       serverPosts.unshift(post);
+      mysqlDb.savePost(post).catch(() => {});
       saveSyncDb();
     }
   });
@@ -1766,6 +1628,7 @@ io.on('connection', (socket) => {
   socket.on('delete-post-broadcast', (data) => {
     if (data && data.id) {
       serverPosts = serverPosts.filter(p => p.id !== data.id);
+      mysqlDb.deletePost(data.id).catch(() => {});
       saveSyncDb();
       io.emit('delete-post-event', data);
     }

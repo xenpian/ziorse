@@ -4,10 +4,12 @@
   "description": "Ziorse Desktop Social Network - Production Full-Stack Edition",
   "main": "main.js",
   "scripts": {
+    "dev": "electron .",
     "start": "electron .",
     "server": "node server.js",
     "sync": "node scripts/github-auto-sync.js",
     "db": "node scripts/ziorse-db-engine.js",
+    "db:reset": "node scripts/ziorse-db-engine.js --reset",
     "build:win": "electron-builder --win nsis"
   },
   "keywords": [
@@ -28,6 +30,7 @@
     "js-tokens": "^10.0.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.2.0",
+    "mysql2": "^3.24.6",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3"
   },

@@ -39,218 +39,64 @@ function startGitHubAutoSync() {
 }
 
 // ══════════════════════════════════════════════════════════════════
-// 1000-MESSAGE CHUNKED TXT DATABASE ENGINE
+// MYSQL DATABASE ENGINE (gusgon) & LIVE RAM PARITY (0ms Latency)
 // ══════════════════════════════════════════════════════════════════
-const CHUNK_SIZE = 1000;
-const DB_DIR = path.join(__dirname, 'database_txt');
-const POSTS_DIR = path.join(DB_DIR, 'posts');
-const DMS_DIR = path.join(DB_DIR, 'dms');
-const SYSTEM_DIR = path.join(DB_DIR, 'system');
-const BACKUP_DIR = path.join(DB_DIR, 'backups');
-
-function ensureDbDirs() {
-  [DB_DIR, POSTS_DIR, DMS_DIR, SYSTEM_DIR, BACKUP_DIR].forEach(dir => {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-  });
-}
-
-function performDatabaseBackup() {
-  try {
-    ensureDbDirs();
-    const now = new Date();
-    const dateStr = now.toISOString().slice(0, 10);
-    const targetFolder = path.join(BACKUP_DIR, `backup_${dateStr}`);
-    if (!fs.existsSync(targetFolder)) fs.mkdirSync(targetFolder, { recursive: true });
-
-    const coreFiles = ['ziorse_accounts.txt', 'ziorse_invite_registry.txt', 'ziorse_user_directory.txt'];
-    coreFiles.forEach(f => {
-      const src = path.join(SYSTEM_DIR, f);
-      if (fs.existsSync(src)) {
-        fs.copyFileSync(src, path.join(targetFolder, f));
-      }
-    });
-  } catch (e) { }
-}
+const mysqlDb = require('./mysql-db');
 
 let memoryStore = null;
 let saveDebounceTimer = null;
+const dirtyKeys = new Set();
 
-// Read & assemble from 1000-message .txt chunk files with live disk refresh
-function readPersistentStore(forceRefreshSystem = false) {
-  ensureDbDirs();
-  if (memoryStore === null) {
-    memoryStore = {};
-
-    // Check legacy migration first
-    const legacyPath1 = path.join(app.getPath('userData'), 'ziorse-persistent-store.json');
-    const legacyPath2 = path.join(__dirname, 'ziorse-data.json');
-
-    let legacyData = null;
-    try {
-      if (fs.existsSync(legacyPath1)) {
-        legacyData = JSON.parse(fs.readFileSync(legacyPath1, 'utf8'));
-      } else if (fs.existsSync(legacyPath2)) {
-        legacyData = JSON.parse(fs.readFileSync(legacyPath2, 'utf8'));
+function readPersistentStore(forceRefresh = false) {
+  if (memoryStore === null || forceRefresh) {
+    if (!memoryStore) memoryStore = {};
+    // Asynchronous background hydration from MySQL
+    mysqlDb.getAllStoreValues().then(storeVals => {
+      if (storeVals && typeof storeVals === 'object') {
+        memoryStore = Object.assign({}, storeVals, memoryStore);
       }
-    } catch (e) { }
-
-    if (legacyData) {
-      console.log('[TxtDatabase] Eski veritabanı bulundu, 1000 mesajlık TXT dosyalarına aktarılıyor...');
-      memoryStore = legacyData;
-      flushPersistentStore(); // Immediately writes to chunked txt files
-
-      // Delete legacy files to free space and finalize transition
-      try { if (fs.existsSync(legacyPath1)) fs.unlinkSync(legacyPath1); } catch { }
-      try { if (fs.existsSync(legacyPath2)) fs.unlinkSync(legacyPath2); } catch { }
-      console.log('[TxtDatabase] Eski JSON dosyaları silindi, TXT parçalı veritabanı aktif!');
-      return memoryStore;
-    }
-
-    // 1. Read Posts from posts_chunk_*.txt
-    try {
-      const postFiles = fs.readdirSync(POSTS_DIR)
-        .filter(f => f.startsWith('posts_chunk_') && f.endsWith('.txt'))
-        .sort();
-
-      let allPosts = [];
-      for (const file of postFiles) {
-        const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8').trim();
-        if (!content) continue;
-        const lines = content.split('\n');
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed) continue;
-          try {
-            allPosts.push(JSON.parse(trimmed));
-          } catch { }
-        }
-      }
-      if (allPosts.length > 0) {
-        memoryStore['ziorse_real_posts_v14'] = allPosts;
-      }
-    } catch (err) {
-      console.error('[TxtDatabase] Error reading posts chunks:', err.message);
-    }
-
-    // 2. Read DMs from dms_chunk_*.txt
-    try {
-      const dmFiles = fs.readdirSync(DMS_DIR)
-        .filter(f => f.startsWith('dms_chunk_') && f.endsWith('.txt'))
-        .sort();
-
-      let allThreads = [];
-      for (const file of dmFiles) {
-        const content = fs.readFileSync(path.join(DMS_DIR, file), 'utf8').trim();
-        if (!content) continue;
-        const lines = content.split('\n');
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed) continue;
-          try {
-            allThreads.push(JSON.parse(trimmed));
-          } catch { }
-        }
-      }
-      if (allThreads.length > 0) {
-        memoryStore['ziorse_real_dms_v14'] = allThreads;
-      }
-    } catch (err) {
-      console.error('[TxtDatabase] Error reading DM chunks:', err.message);
-    }
+    }).catch(() => {});
   }
-
-  // 3. Read or Refresh System metadata files
-  if (forceRefreshSystem || Object.keys(memoryStore).length <= 2) {
-    try {
-      const sysFiles = fs.readdirSync(SYSTEM_DIR).filter(f => f.endsWith('.txt'));
-      for (const file of sysFiles) {
-        const key = decodeURIComponent(file.replace(/\.txt$/, ''));
-        if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
-        const content = fs.readFileSync(path.join(SYSTEM_DIR, file), 'utf8');
-        try {
-          const parsed = JSON.parse(content);
-          if (parsed !== null && parsed !== undefined) {
-            memoryStore[key] = parsed;
-          }
-        } catch {
-          if (content && content !== 'null' && content !== 'undefined') {
-            memoryStore[key] = content;
-          }
-        }
-      }
-    } catch (err) {
-      console.error('[TxtDatabase] Error reading system txt files:', err.message);
-    }
-  }
-
   return memoryStore;
 }
 
-// Optimized Persistent Store Engine with Dirty Key Tracking & Async Non-blocking I/O
-const dirtyKeys = new Set();
+// Initial hydration from MySQL
+(async () => {
+  try {
+    await mysqlDb.initDatabase();
+    const [storeVals, posts, servers, uDir, accs] = await Promise.all([
+      mysqlDb.getAllStoreValues().catch(() => ({})),
+      mysqlDb.getAllPosts().catch(() => []),
+      mysqlDb.getAllServers().catch(() => ({})),
+      mysqlDb.getUserDirectory().catch(() => ({})),
+      mysqlDb.getAllAccounts().catch(() => [])
+    ]);
+    memoryStore = { ...storeVals };
+    if (posts && posts.length > 0) memoryStore['ziorse_real_posts_v14'] = posts;
+    if (servers && Object.keys(servers).length > 0) memoryStore['ziorse_invite_registry'] = servers;
+    if (uDir && Object.keys(uDir).length > 0) memoryStore['ziorse_user_directory'] = uDir;
+    if (accs && accs.length > 0) memoryStore['ziorse_accounts'] = accs;
+    console.log('[Main Process MySQL (gusgon)] RAM önbellek başarıyla yüklendi.');
+  } catch (err) {
+    console.warn('[Main Process MySQL] Başlatma uyarısı:', err.message);
+  }
+})();
 
 async function flushPersistentStoreAsync() {
   if (!memoryStore) return;
-  ensureDbDirs();
-
   const keysToSave = new Set(dirtyKeys);
   dirtyKeys.clear();
   if (keysToSave.size === 0) return;
 
-  const writePromises = [];
-
-  // 1. Save Posts if dirty
-  if (keysToSave.has('ziorse_real_posts_v14')) {
-    const posts = Array.isArray(memoryStore['ziorse_real_posts_v14'])
-      ? memoryStore['ziorse_real_posts_v14']
-      : (typeof memoryStore['ziorse_real_posts_v14'] === 'string'
-        ? (() => { try { return JSON.parse(memoryStore['ziorse_real_posts_v14']); } catch { return []; } })()
-        : []);
-
-    if (posts.length > 0) {
-      const totalChunks = Math.ceil(posts.length / CHUNK_SIZE);
-      for (let c = 0; c < totalChunks; c++) {
-        const chunkPosts = posts.slice(c * CHUNK_SIZE, (c + 1) * CHUNK_SIZE);
-        const chunkNum = String(c + 1).padStart(4, '0');
-        const filename = `posts_chunk_${chunkNum}.txt`;
-        const fileContent = chunkPosts.map(p => JSON.stringify(p)).join('\n');
-        writePromises.push(fs.promises.writeFile(path.join(POSTS_DIR, filename), fileContent, 'utf8').catch(() => {}));
-      }
-    }
-  }
-
-  // 2. Save DMs if dirty
-  if (keysToSave.has('ziorse_real_dms_v14')) {
-    const dms = memoryStore['ziorse_real_dms_v14'];
-    if (dms) {
-      const dmList = Array.isArray(dms) ? dms : (typeof dms === 'string' ? (() => { try { return JSON.parse(dms); } catch { return []; } })() : []);
-      if (dmList.length > 0) {
-        const dmChunks = Math.ceil(dmList.length / CHUNK_SIZE);
-        for (let c = 0; c < dmChunks; c++) {
-          const chunkDms = dmList.slice(c * CHUNK_SIZE, (c + 1) * CHUNK_SIZE);
-          const chunkNum = String(c + 1).padStart(4, '0');
-          const filename = `dms_chunk_${chunkNum}.txt`;
-          const fileContent = chunkDms.map(d => JSON.stringify(d)).join('\n');
-          writePromises.push(fs.promises.writeFile(path.join(DMS_DIR, filename), fileContent, 'utf8').catch(() => {}));
-        }
-      }
-    }
-  }
-
-  // 3. Save only modified system metadata keys
   for (const key of keysToSave) {
-    if (key === 'ziorse_real_posts_v14' || key === 'ziorse_real_dms_v14' || key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
+    if (key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
     const val = memoryStore[key];
-    if (val === undefined) continue;
-    const safeKey = encodeURIComponent(key);
-    const filename = `${safeKey}.txt`;
-    const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
-    writePromises.push(fs.promises.writeFile(path.join(SYSTEM_DIR, filename), strVal, 'utf8').catch(() => {}));
+    if (val === undefined || val === null) {
+      mysqlDb.deleteStoreValue(key).catch(() => {});
+    } else {
+      mysqlDb.setStoreValue(key, val).catch(() => {});
+    }
   }
-
-  await Promise.all(writePromises).catch(() => {});
 }
 
 function flushPersistentStore() {
@@ -258,44 +104,7 @@ function flushPersistentStore() {
     clearTimeout(saveDebounceTimer);
     saveDebounceTimer = null;
   }
-  if (!memoryStore) return;
-  ensureDbDirs();
-
-  // Full flush for shutdown
-  const posts = Array.isArray(memoryStore['ziorse_real_posts_v14'])
-    ? memoryStore['ziorse_real_posts_v14']
-    : [];
-  if (posts.length > 0) {
-    const totalChunks = Math.ceil(posts.length / CHUNK_SIZE);
-    for (let c = 0; c < totalChunks; c++) {
-      const chunkPosts = posts.slice(c * CHUNK_SIZE, (c + 1) * CHUNK_SIZE);
-      const chunkNum = String(c + 1).padStart(4, '0');
-      try {
-        fs.writeFileSync(path.join(POSTS_DIR, `posts_chunk_${chunkNum}.txt`), chunkPosts.map(p => JSON.stringify(p)).join('\n'), 'utf8');
-      } catch { }
-    }
-  }
-
-  const dms = memoryStore['ziorse_real_dms_v14'];
-  if (dms && Array.isArray(dms) && dms.length > 0) {
-    const dmChunks = Math.ceil(dms.length / CHUNK_SIZE);
-    for (let c = 0; c < dmChunks; c++) {
-      const chunkDms = dms.slice(c * CHUNK_SIZE, (c + 1) * CHUNK_SIZE);
-      const chunkNum = String(c + 1).padStart(4, '0');
-      try {
-        fs.writeFileSync(path.join(DMS_DIR, `dms_chunk_${chunkNum}.txt`), chunkDms.map(d => JSON.stringify(d)).join('\n'), 'utf8');
-      } catch { }
-    }
-  }
-
-  for (const [key, val] of Object.entries(memoryStore)) {
-    if (key === 'ziorse_real_posts_v14' || key === 'ziorse_real_dms_v14' || key === 'ziorse_real_user_v14' || key === 'ziorse_jwt_token' || key === 'ziorse_user') continue;
-    try {
-      const strVal = typeof val === 'object' && val !== null ? JSON.stringify(val, null, 2) : String(val);
-      fs.writeFileSync(path.join(SYSTEM_DIR, `${encodeURIComponent(key)}.txt`), strVal, 'utf8');
-    } catch { }
-  }
-  dirtyKeys.clear();
+  flushPersistentStoreAsync();
 }
 
 function schedulePersistentStoreSave(key) {
@@ -304,10 +113,10 @@ function schedulePersistentStoreSave(key) {
   saveDebounceTimer = setTimeout(() => {
     saveDebounceTimer = null;
     flushPersistentStoreAsync();
-  }, 400);
+  }, 200);
 }
 
-// Electron-Private User Session File (Isolated from browser ports and shared db_txt)
+// Electron-Private User Session File (Isolated from browser ports and shared db)
 const ELECTRON_USER_SESSION_FILE = path.join(app.getPath('userData'), 'electron_user_session.json');
 
 function getElectronUserSession() {
@@ -330,29 +139,14 @@ function setElectronUserSession(val) {
   } catch { }
 }
 
-// Synchronous Store Bridge (0ms Instant RAM IPC with live disk parity)
+// Synchronous Store Bridge (0ms Instant RAM IPC with live MySQL parity)
 ipcMain.on('store-get-sync', (event, key) => {
   if (key === 'ziorse_real_user_v14') {
     event.returnValue = getElectronUserSession();
     return;
   }
   const store = readPersistentStore();
-  if (key) {
-    const safeKey = encodeURIComponent(key);
-    const filePath = path.join(SYSTEM_DIR, `${safeKey}.txt`);
-    try {
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf8');
-        try {
-          const parsed = JSON.parse(content);
-          if (parsed !== null && parsed !== undefined) store[key] = parsed;
-        } catch {
-          if (content && content !== 'null') store[key] = content;
-        }
-      }
-    } catch (e) { }
-  }
-  event.returnValue = store[key] !== undefined ? store[key] : null;
+  event.returnValue = (store && store[key] !== undefined) ? store[key] : null;
 });
 
 ipcMain.on('store-set-sync', (event, key, val) => {
@@ -364,11 +158,8 @@ ipcMain.on('store-set-sync', (event, key, val) => {
   const store = readPersistentStore();
   if (val === null || val === undefined) {
     delete store[key];
-    const safeKey = encodeURIComponent(key);
-    const filename = `${safeKey}.txt`;
-    const filePath = path.join(SYSTEM_DIR, filename);
-    try { if (fs.existsSync(filePath)) fs.unlinkSync(filePath); } catch (e) { }
     dirtyKeys.delete(key);
+    mysqlDb.deleteStoreValue(key).catch(() => {});
   } else {
     store[key] = val;
     schedulePersistentStoreSave(key);
@@ -393,15 +184,20 @@ ipcMain.on('store-reload-sync', (event) => {
 });
 
 // Async Store Bridge
-ipcMain.handle('store-get', (event, key) => {
+ipcMain.handle('store-get', async (event, key) => {
   if (key === 'ziorse_real_user_v14') {
     return getElectronUserSession();
   }
   const store = readPersistentStore();
-  return store[key] !== undefined ? store[key] : null;
+  if (store && store[key] !== undefined) return store[key];
+  try {
+    return await mysqlDb.getStoreValue(key);
+  } catch (e) {
+    return null;
+  }
 });
 
-ipcMain.handle('store-set', (event, key, val) => {
+ipcMain.handle('store-set', async (event, key, val) => {
   if (key === 'ziorse_real_user_v14') {
     setElectronUserSession(val);
     return true;
@@ -409,20 +205,21 @@ ipcMain.handle('store-set', (event, key, val) => {
   const store = readPersistentStore();
   if (val === null || val === undefined) {
     delete store[key];
-    const safeKey = encodeURIComponent(key);
-    const filename = `${safeKey}.txt`;
-    const filePath = path.join(SYSTEM_DIR, filename);
-    try { if (fs.existsSync(filePath)) fs.unlinkSync(filePath); } catch (e) { }
     dirtyKeys.delete(key);
+    await mysqlDb.deleteStoreValue(key).catch(() => {});
   } else {
     store[key] = val;
-    schedulePersistentStoreSave(key);
+    await mysqlDb.setStoreValue(key, val).catch(() => {});
   }
   return true;
 });
 
-ipcMain.handle('store-get-all', () => {
+ipcMain.handle('store-get-all', async () => {
   const store = { ...readPersistentStore() };
+  try {
+    const dbVals = await mysqlDb.getAllStoreValues();
+    Object.assign(store, dbVals);
+  } catch (e) {}
   const u = getElectronUserSession();
   if (u) {
     store['ziorse_real_user_v14'] = u;
