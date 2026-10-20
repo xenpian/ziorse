@@ -92,11 +92,7 @@ function renderServerBadgesHtml(srv) {
   const bookmarkBadgeHtml = `<span class="srv-badge srv-badge-bookmark" title="Kullanıcı Sunucusu"><i data-lucide="bookmark" style="width:11px;height:11px;"></i></span>`;
 
   return `
-    <span class="srv-badges-wrap">
-      ${typeBadgeHtml}
-      ${visibilityBadgeHtml}
-      ${bookmarkBadgeHtml}
-    </span>
+
   `;
 }
 window.renderServerBadgesHtml = renderServerBadgesHtml;
