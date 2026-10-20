@@ -369,6 +369,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (registry && typeof registry === 'object') {
         ziorseSetStorage('ziorse_invite_registry', registry);
       }
+      if (window.dataStore) {
+        window.dataStore.servers = window.dataStore.loadServers();
+        if (typeof renderServers === 'function') renderServers();
+      }
       renderFeed();
       renderDMs();
       if (typeof renderPublicServers === 'function') renderPublicServers();
