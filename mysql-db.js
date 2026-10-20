@@ -756,6 +756,9 @@ async function getAllServers() {
       roles: roles,
       memberRoles: memberRoles
     };
+    if (r.server_id) {
+      registry[String(r.server_id)] = registry[r.invite_code];
+    }
   });
   return registry;
 }
