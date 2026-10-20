@@ -2129,7 +2129,7 @@ class DataStore {
     if (!srv || !categoryName.trim()) return null;
     this._migrateServerCategories(srv);
     const newCat = {
-      id: 'cat-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      id: generateStrictId(17),
       name: categoryName.trim().toUpperCase(),
       collapsed: false,
       channels: []
@@ -2150,7 +2150,7 @@ class DataStore {
     if (!cat) return null;
     cat.collapsed = false;
     const newCh = {
-      id: 'ch-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      id: generateStrictId(18),
       name: channelName.trim().toLowerCase().replace(/\s+/g, '-'),
       type
     };
