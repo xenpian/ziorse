@@ -582,46 +582,17 @@ class DataStore {
   }
 
   _loadGlobalDirectory() {
+    if (window.__globalUserDirectory && Object.keys(window.__globalUserDirectory).length > 0) {
+      return Object.assign({}, window.__globalUserDirectory);
+    }
+
     let local = {};
     try {
       const saved = ziorseGetStorage('ziorse_user_directory');
       local = (typeof saved === 'string' ? JSON.parse(saved) : saved) || {};
     } catch { local = {}; }
 
-    const combined = Object.assign({}, local, window.__globalUserDirectory || {});
-
-    // Also merge all registered accounts from ziorse_accounts
-    try {
-      const rawAccounts = ziorseGetStorage('ziorse_accounts');
-      const accountsList = (typeof rawAccounts === 'string' ? JSON.parse(rawAccounts) : rawAccounts) || [];
-      if (Array.isArray(accountsList)) {
-        accountsList.forEach(acc => {
-          if (acc && acc.handle) {
-            const h = acc.handle.startsWith('@') ? acc.handle : '@' + acc.handle;
-            const existing = combined[h] || {};
-            combined[h] = {
-              name: acc.name || existing.name || h.replace('@', ''),
-              handle: h,
-              avatar: acc.avatar || existing.avatar || DEFAULT_AVATAR,
-              banner: acc.banner || existing.banner || '#999999',
-              bio: acc.bio || existing.bio || '',
-              followers: existing.followers || 0,
-              following: existing.following || 0,
-              status: existing.status || { type: 'offline', text: '' },
-              ...existing
-            };
-            if (acc.avatar && (!existing.avatar || existing.avatar === DEFAULT_AVATAR)) {
-              combined[h].avatar = acc.avatar;
-            }
-            if (acc.banner && (!existing.banner || existing.banner === '#999999')) {
-              combined[h].banner = acc.banner;
-            }
-          }
-        });
-      }
-    } catch { }
-
-    return combined;
+    return local;
   }
 
   // -------------------------------------------------------
