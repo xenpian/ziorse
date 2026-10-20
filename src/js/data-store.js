@@ -1416,8 +1416,8 @@ class DataStore {
     officialSrv.isOfficial = true;
     officialSrv.id = 'srv-ziorse-official';
     officialSrv.inviteCode = 'ziorse';
-    officialSrv.ownerHandle = '@sa';
-    officialSrv.ownerName = 'sa';
+    officialSrv.ownerHandle = regOfficial.ownerHandle || '@justawp';
+    officialSrv.ownerName = regOfficial.ownerName || 'justawp';
 
     // Dinamik alanları aktar
     if (regOfficial.serverName) officialSrv.name = regOfficial.serverName;
