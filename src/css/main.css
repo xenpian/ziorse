@@ -647,7 +647,7 @@ h3,
   letter-spacing: -0.3px;
 }
 
-/* Drag Header Bar */
+/* Web Header Bar */
 .app-header {
   height: var(--header-height, 40px);
   background: var(--bg-sidebar);
@@ -657,7 +657,6 @@ h3,
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  -webkit-app-region: drag;
   position: absolute;
   top: var(--app-gap, 10px);
   left: var(--app-gap, 10px);
@@ -671,7 +670,6 @@ h3,
   align-items: center;
   gap: 8px;
   color: var(--text-main);
-  -webkit-app-region: no-drag;
 }
 
 .header-app-logo {
@@ -692,7 +690,6 @@ h3,
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  -webkit-app-region: drag;
   max-width: 45%;
 }
 
